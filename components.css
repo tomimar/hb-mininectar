@@ -1,0 +1,1401 @@
+/* ============================================================
+   Hummingbird Design System — Components
+   Requires: tokens.css
+   ============================================================ */
+
+/* ── Base reset ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-text);
+  background-color: var(--ui-bg-secondary);
+  -webkit-font-smoothing: antialiased;
+}
+
+
+/* ── Typography semantic classes ──────────────────────────── */
+
+.hb-text-heading {
+  font-size: var(--font-size-16);
+  line-height: var(--line-height-default);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-heading-small {
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bolder);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-body {
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-body-bold {
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-caption {
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-caption-bold {
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-none);
+}
+
+.hb-text-all-caps {
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--tracking-1);
+  text-transform: uppercase;
+}
+
+
+/* ── Avatar ───────────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-avatar hb-avatar--md">SD</div>
+    <img class="hb-avatar hb-avatar--lg" src="..." alt="...">
+
+  Color override via CSS custom property on the element:
+    <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: #17b360">SD</div>
+*/
+
+.hb-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--hb-avatar-bg, var(--ui-interaction));
+  color: var(--ui-text-knockout);
+  flex-shrink: 0;
+  user-select: none;
+  font-family: var(--font-family);
+}
+
+.hb-avatar--sm {
+  width: 24px;
+  height: 24px;
+  /* heading: 16px / 500 */
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-default);
+}
+
+.hb-avatar--md {
+  width: 32px;
+  height: 32px;
+  /* bodyBold: 14px / 500 */
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+}
+
+.hb-avatar--lg {
+  width: 40px;
+  height: 40px;
+  /* captionBold: 12px / 500 */
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+}
+
+.hb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* ── AvatarGroup ──────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-avatar-group">
+      <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg:...">EC</div>
+      <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg:...">SD</div>
+      <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg:...">AC</div>
+    </div>
+
+  Negative margins per spec: Large -16px, Medium -10px, Small -8px
+  Separation ring: box-shadow 0 0 0 2px --ui-bg
+*/
+
+.hb-avatar-group {
+  display: inline-flex;
+  align-items: center;
+  isolation: isolate;
+}
+
+/* Negative margins + separation ring */
+.hb-avatar-group .hb-avatar--lg {
+  margin-right: -16px;
+  box-shadow: 0 0 0 2px var(--ui-bg);
+  position: relative;
+}
+.hb-avatar-group .hb-avatar--md {
+  margin-right: -10px;
+  box-shadow: 0 0 0 2px var(--ui-bg);
+  position: relative;
+}
+.hb-avatar-group .hb-avatar--sm {
+  margin-right: -8px;
+  box-shadow: 0 0 0 2px var(--ui-bg);
+  position: relative;
+}
+
+/* Last child: reset margin */
+.hb-avatar-group > *:last-child {
+  margin-right: 0;
+}
+
+/* Z-index: leftmost on top */
+.hb-avatar-group > *:nth-child(1) { z-index: 5; }
+.hb-avatar-group > *:nth-child(2) { z-index: 4; }
+.hb-avatar-group > *:nth-child(3) { z-index: 3; }
+.hb-avatar-group > *:nth-child(4) { z-index: 2; }
+.hb-avatar-group > *:nth-child(5) { z-index: 1; }
+
+/* Overflow counter (+N) */
+.hb-avatar-group__overflow {
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-tertiary);
+  margin-left: var(--spacing-8);
+  flex-shrink: 0;
+}
+
+
+/* ── Button ───────────────────────────────────────────────── */
+/*
+  Usage:
+    <button class="hb-btn hb-btn--primary hb-btn--lg">Label</button>
+    <button class="hb-btn hb-btn--secondary hb-btn--sm">Label</button>
+
+  Types:    primary, secondary, tertiary, ghost, danger, confirmation
+  Sizes:    lg (40px, default), sm (32px)
+  Modifiers: hb-btn--full-width, disabled / [disabled]
+*/
+
+.hb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-8);
+  border: none;
+  border-radius: var(--border-radius-8);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  letter-spacing: var(--tracking-none);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+  outline: none;
+  position: relative;
+}
+
+/* Sizes */
+.hb-btn--lg {
+  height: 40px;
+  padding: var(--spacing-8) var(--spacing-12);
+}
+
+.hb-btn--sm {
+  height: 32px;
+  padding: var(--spacing-8);
+  gap: var(--spacing-4);
+}
+
+.hb-btn--full-width {
+  width: 100%;
+}
+
+/* Primary */
+.hb-btn--primary {
+  background: var(--ui-interaction);
+  color: var(--ui-text-knockout);
+}
+.hb-btn--primary:hover {
+  background: var(--ui-interaction-highlighted);
+}
+.hb-btn--primary:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Secondary */
+.hb-btn--secondary {
+  background: transparent;
+  color: var(--ui-text);
+  border: 1px solid var(--ui-border-secondary);
+}
+.hb-btn--secondary:hover {
+  background: var(--ui-bg-secondary);
+}
+.hb-btn--secondary:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Tertiary */
+.hb-btn--tertiary {
+  background: transparent;
+  color: var(--ui-interaction-link);
+  border: none;
+}
+.hb-btn--tertiary:hover {
+  background: var(--ui-interaction-soft);
+}
+.hb-btn--tertiary:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Ghost */
+.hb-btn--ghost {
+  background: transparent;
+  color: var(--ui-text);
+  border: none;
+}
+.hb-btn--ghost:hover {
+  background: var(--ui-bg-secondary);
+}
+.hb-btn--ghost:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Danger */
+.hb-btn--danger {
+  background: var(--ui-status-danger);
+  color: var(--ui-text-knockout);
+}
+.hb-btn--danger:hover {
+  background: var(--ui-status-danger-highlighted);
+}
+.hb-btn--danger:focus-visible {
+  outline: 2px solid var(--ui-status-danger-soft);
+  outline-offset: 1px;
+}
+
+/* Confirmation */
+.hb-btn--confirmation {
+  background: var(--ui-status-success);
+  color: var(--ui-text-knockout);
+}
+.hb-btn--confirmation:hover {
+  background: var(--ui-status-success-contrast);
+}
+.hb-btn--confirmation:focus-visible {
+  outline: 2px solid var(--ui-status-success-soft);
+  outline-offset: 1px;
+}
+
+/* ── Form field wrapper ───────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-field">
+      <label class="hb-field__label">Label <span class="hb-field__required">*</span></label>
+      <input class="hb-input" ...>
+      <p class="hb-field__help">Help text</p>
+    </div>
+*/
+
+.hb-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  width: 100%;
+}
+
+.hb-field__label {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  display: flex;
+  align-items: flex-start;
+}
+
+.hb-field__required {
+  color: var(--ui-status-danger-text);
+}
+
+.hb-field__help {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-tertiary);
+}
+
+.hb-field__error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-status-danger-text);
+}
+
+
+/* ── Input ────────────────────────────────────────────────── */
+/*
+  Usage:
+    <input class="hb-input" type="text" placeholder="...">
+    <input class="hb-input hb-input--sm" type="text">
+    <input class="hb-input hb-input--error" type="text">
+*/
+
+.hb-input {
+  width: 100%;
+  height: 40px;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  padding: var(--spacing-2) var(--spacing-12);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  transition: border-color 100ms ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.hb-input::placeholder {
+  color: var(--ui-disabled);
+}
+
+.hb-input:hover {
+  border-color: var(--ui-text);
+}
+
+.hb-input:focus {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-input:disabled {
+  background: var(--ui-bg-tertiary);
+  border-color: var(--ui-border-secondary);
+  color: var(--ui-disabled);
+  cursor: not-allowed;
+}
+
+.hb-input--sm {
+  height: 32px;
+}
+
+.hb-input--error {
+  border-color: var(--ui-status-danger);
+}
+
+.hb-input--error:focus {
+  box-shadow: 0 0 0 2px var(--ui-status-danger-soft);
+}
+
+
+/* ── Textarea ─────────────────────────────────────────────── */
+/*
+  Usage:
+    <textarea class="hb-textarea" rows="3"></textarea>
+*/
+
+.hb-textarea {
+  width: 100%;
+  min-height: calc(3 * 22.4px + 2 * var(--spacing-8));
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  padding: var(--spacing-8) var(--spacing-12);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  resize: vertical;
+  transition: border-color 100ms ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.hb-textarea::placeholder {
+  color: var(--ui-disabled);
+}
+
+.hb-textarea:hover {
+  border-color: var(--ui-text);
+}
+
+.hb-textarea:focus {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-textarea:disabled {
+  background: var(--ui-bg-tertiary);
+  border-color: var(--ui-border-secondary);
+  color: var(--ui-disabled);
+  cursor: not-allowed;
+  resize: none;
+}
+
+.hb-textarea--error {
+  border-color: var(--ui-status-danger);
+}
+
+.hb-textarea--error:focus {
+  box-shadow: 0 0 0 2px var(--ui-status-danger-soft);
+}
+
+
+/* ── Select ───────────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-select">
+      <select>
+        <option value="">Placeholder</option>
+        <option>Option 1</option>
+      </select>
+    </div>
+*/
+
+.hb-select {
+  position: relative;
+  width: 100%;
+}
+
+.hb-select select {
+  width: 100%;
+  height: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  padding: var(--spacing-2) var(--spacing-12);
+  padding-right: 36px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  cursor: pointer;
+  outline: none;
+  transition: border-color 100ms ease;
+  box-sizing: border-box;
+}
+
+.hb-select select:hover {
+  border-color: var(--ui-text);
+}
+
+.hb-select select:focus {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-select select:disabled {
+  background: var(--ui-bg-tertiary);
+  border-color: var(--ui-border-secondary);
+  color: var(--ui-disabled);
+  cursor: not-allowed;
+}
+
+/* Chevron icon */
+.hb-select::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23595959' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px;
+}
+
+.hb-select--sm select {
+  height: 32px;
+}
+
+.hb-select--error select {
+  border-color: var(--ui-status-danger);
+}
+
+.hb-select--error select:focus {
+  box-shadow: 0 0 0 2px var(--ui-status-danger-soft);
+}
+
+
+/* ── DatePicker ───────────────────────────────────────────── */
+/*
+  Usage (with Alpine.js):
+    <div class="hb-datepicker">
+      <div class="hb-datepicker__header"> ... </div>
+      <div class="hb-datepicker__grid"> ... </div>
+      <button class="hb-datepicker__today">Today</button>
+    </div>
+*/
+
+.hb-datepicker {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  z-index: 50;
+  background: var(--ui-bg);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-overlay);
+  padding: var(--spacing-16);
+  width: 284px;
+}
+
+.hb-datepicker__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 32px;
+  margin-bottom: var(--spacing-8);
+}
+
+.hb-datepicker__month-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-family: var(--font-family);
+}
+
+.hb-datepicker__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+}
+
+.hb-datepicker__nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-8);
+  cursor: pointer;
+  color: var(--ui-text);
+  transition: background 100ms ease;
+}
+
+.hb-datepicker__nav-btn:hover {
+  background: var(--ui-bg-secondary);
+}
+
+/* Day labels row + day cells grid */
+.hb-datepicker__grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  width: 252px;
+}
+
+.hb-datepicker__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  text-align: center;
+}
+
+.hb-datepicker__day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  border-radius: 2px;
+}
+
+.hb-datepicker__day:hover::before,
+.hb-datepicker__day--today::before,
+.hb-datepicker__day--selected::before {
+  content: '';
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--border-radius-round);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+
+.hb-datepicker__day:hover::before {
+  background: var(--ui-bg-secondary);
+}
+
+.hb-datepicker__day--today::before {
+  background: var(--ui-bg-secondary);
+}
+
+.hb-datepicker__day--selected::before {
+  background: var(--ui-interaction);
+}
+
+.hb-datepicker__day--selected {
+  color: var(--ui-text-knockout);
+  font-weight: var(--font-weight-bold);
+}
+
+.hb-datepicker__day--other-month {
+  color: var(--ui-text-tertiary);
+}
+
+/* Today button */
+.hb-datepicker__today {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 32px;
+  padding: var(--spacing-8);
+  background: none;
+  border: none;
+  border-radius: var(--border-radius-8);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-interaction-link);
+  cursor: pointer;
+  margin-top: var(--spacing-4);
+  transition: background 100ms ease;
+}
+
+.hb-datepicker__today:hover {
+  background: var(--ui-bg-secondary);
+}
+
+/* Year view grid */
+.hb-datepicker__year-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-8);
+  padding-top: var(--spacing-8);
+  width: 252px;
+  min-height: 248px;
+}
+
+.hb-datepicker__year {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 20px;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+  border-radius: 2px;
+  transition: background 100ms ease;
+}
+
+.hb-datepicker__year:hover {
+  background: var(--ui-bg-secondary);
+  border-radius: var(--border-radius-round);
+}
+
+.hb-datepicker__year--selected {
+  background: var(--ui-interaction);
+  color: var(--ui-text-knockout);
+  border-radius: var(--border-radius-round);
+  font-weight: var(--font-weight-bold);
+}
+
+
+/* ── DateInput ────────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-date-input">
+      <input type="date" class="hb-date-input__field">
+      <svg class="hb-date-input__icon">...</svg>
+    </div>
+
+  Or with native date input (icon shown via wrapper):
+    <div class="hb-date-input">
+      <input type="date">
+    </div>
+*/
+
+.hb-date-input {
+  position: relative;
+  width: 100%;
+}
+
+.hb-date-input input[type="date"],
+.hb-date-input__field {
+  width: 100%;
+  height: 40px;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  padding: var(--spacing-2) var(--spacing-12);
+  padding-right: 40px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  outline: none;
+  transition: border-color 100ms ease;
+  box-sizing: border-box;
+}
+
+.hb-date-input input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.hb-date-input input[type="date"]:hover,
+.hb-date-input__field:hover {
+  border-color: var(--ui-text);
+}
+
+.hb-date-input input[type="date"]:focus,
+.hb-date-input__field:focus {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-date-input__icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--ui-icon);
+  width: 20px;
+  height: 20px;
+}
+
+
+/* ── Radio ────────────────────────────────────────────────── */
+/*
+  Usage:
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="group" value="opt1">
+      <span>Option 1</span>
+    </label>
+
+  RadioGroup:
+    <div class="hb-radio-group">
+      <span class="hb-radio-group__label">Question</span>
+      <label class="hb-radio-row">...</label>
+    </div>
+*/
+
+.hb-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-round);
+  background: var(--ui-bg);
+  cursor: pointer;
+  position: relative;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.hb-radio:hover {
+  border-color: var(--ui-interaction);
+}
+
+.hb-radio:checked {
+  background: var(--ui-interaction);
+  border-color: var(--ui-interaction);
+}
+
+.hb-radio:checked::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--ui-text-knockout);
+  border-radius: var(--border-radius-round);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hb-radio:checked:hover {
+  background: var(--ui-interaction-highlighted);
+  border-color: var(--ui-interaction-highlighted);
+}
+
+.hb-radio:disabled {
+  background: var(--ui-disabled-soft);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+.hb-radio:disabled:checked {
+  background: var(--ui-disabled);
+  border-color: var(--ui-disabled);
+}
+
+.hb-radio:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 2px;
+}
+
+.hb-radio-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  height: 40px;
+  cursor: pointer;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-radio-row:has(.hb-radio:disabled) {
+  cursor: not-allowed;
+  color: var(--ui-disabled);
+}
+
+.hb-radio-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.hb-radio-group__label {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  letter-spacing: var(--tracking-none);
+}
+
+
+/* ── Modal ────────────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-modal-overlay" @click="close">
+      <div class="hb-modal" @click.stop>
+        <div class="hb-modal__header">
+          <span class="hb-modal__title">Title</span>
+          <button class="hb-modal__close">×</button>
+        </div>
+        <div class="hb-modal__body">...</div>
+        <div class="hb-modal__footer">
+          <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
+          <button class="hb-btn hb-btn--primary hb-btn--lg">Confirm</button>
+        </div>
+      </div>
+    </div>
+*/
+
+.hb-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.hb-modal {
+  background: var(--ui-bg-overlay);
+  border-radius: var(--border-radius-16);
+  box-shadow: var(--shadow-floating);
+  width: 100%;
+  max-width: 720px;
+  min-width: 400px;
+  overflow: hidden;
+  position: relative;
+  margin: var(--spacing-24);
+}
+
+.hb-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-16);
+}
+
+.hb-modal__title {
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.5;
+  color: var(--ui-text);
+  font-family: var(--font-family);
+}
+
+.hb-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius-8);
+  color: var(--ui-icon);
+  transition: background 100ms ease;
+  flex-shrink: 0;
+}
+
+.hb-modal__close:hover {
+  background: var(--ui-bg-secondary);
+}
+
+.hb-modal__body {
+  padding: var(--spacing-16);
+}
+
+.hb-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-16);
+  padding: var(--spacing-16);
+}
+
+
+/* ── PopupSelect ──────────────────────────────────────────── */
+/*
+  Usage (MultiSelect, no search):
+    <div class="hb-popup-select">
+      <div class="hb-popup-select__header">
+        <span>Label</span>
+        <button class="hb-popup-select__clear">Clear</button>
+      </div>
+      <div class="hb-popup-select__list">
+        <label class="hb-popup-select__option">
+          <input type="checkbox" class="hb-checkbox">
+          <span class="hb-popup-select__label">Option</span>
+          <span class="hb-popup-select__count">3</span>
+        </label>
+      </div>
+    </div>
+*/
+
+.hb-popup-select {
+  background: var(--ui-bg);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-overlay);
+  overflow: hidden;
+  min-width: 200px;
+}
+
+/* Header row (title + clear button) */
+.hb-popup-select__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-8) var(--spacing-12);
+}
+
+.hb-popup-select__clear {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-interaction-link);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: var(--line-height-ui);
+  font-family: var(--font-family);
+}
+
+.hb-popup-select__clear:hover {
+  color: var(--ui-interaction-contrast);
+}
+
+/* Option list */
+.hb-popup-select__list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Individual option row */
+.hb-popup-select__option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  height: 40px;
+  padding: var(--spacing-8) var(--spacing-16);
+  cursor: pointer;
+  position: relative;
+  background: var(--ui-bg);
+  transition: background 100ms ease;
+}
+
+.hb-popup-select__option::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: transparent;
+  transition: background 100ms ease;
+}
+
+.hb-popup-select__option:hover {
+  background: var(--ui-bg-secondary);
+}
+
+/* Accent bar when checked */
+.hb-popup-select__option:has(.hb-checkbox:checked) {
+  background: var(--ui-bg-secondary);
+}
+
+.hb-popup-select__option:has(.hb-checkbox:checked)::before {
+  background: var(--ui-interaction);
+}
+
+.hb-popup-select__label {
+  flex: 1;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hb-popup-select__count {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-text-tertiary);
+  flex-shrink: 0;
+}
+
+/* ── Checkbox ─────────────────────────────────────────────── */
+/*
+  Standalone usage (without PopupSelect):
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox">
+      <span>Label</span>
+    </label>
+
+  CheckboxGroup:
+    <div class="hb-checkbox-group">
+      <span class="hb-checkbox-group__label">Group label</span>
+      <label class="hb-checkbox-row">...</label>
+    </div>
+*/
+
+.hb-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  background: var(--ui-bg);
+  cursor: pointer;
+  position: relative;
+  transition: background 100ms ease, border-color 100ms ease;
+}
+
+.hb-checkbox:hover {
+  border-color: var(--ui-interaction);
+}
+
+.hb-checkbox:checked {
+  background: var(--ui-interaction);
+  border-color: var(--ui-interaction);
+}
+
+.hb-checkbox:checked:hover {
+  background: var(--ui-interaction-highlighted);
+  border-color: var(--ui-interaction-highlighted);
+}
+
+/* Checkmark via SVG */
+.hb-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  /* matches Figma inset: 23.29% top, 14.21% left, 20.83% bottom, 12.5% right */
+  top: 14.21%;
+  left: 14.21%;
+  width: 73.29%;
+  height: 65.5%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.hb-checkbox:disabled {
+  background: var(--ui-disabled-soft);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+
+.hb-checkbox:disabled:checked {
+  background: var(--ui-disabled);
+  border-color: var(--ui-disabled);
+}
+
+.hb-checkbox:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 2px;
+}
+
+/* Row wrapper (checkbox + label, 40px click zone) */
+.hb-checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  height: 40px;
+  cursor: pointer;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-checkbox-row:has(.hb-checkbox:disabled) {
+  cursor: not-allowed;
+  color: var(--ui-disabled);
+}
+
+/* CheckboxGroup */
+.hb-checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.hb-checkbox-group__label {
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  letter-spacing: var(--tracking-none);
+}
+
+
+/* ── Tag ──────────────────────────────────────────────────── */
+/*
+  Usage:
+    <span class="hb-tag hb-tag--blue">Open</span>
+    <span class="hb-tag hb-tag--green">
+      <svg>...</svg> Resolved
+      <button class="hb-tag__remove" aria-label="Remove">×</button>
+    </span>
+
+  Color variants: grey, green, red, yellow, blue, orange, pink, brown, purple, outlined
+  Modifier: hb-tag--add (24×24 icon-only AddTag button)
+
+  TagGroup wrapper:
+    <div class="hb-tag-group">...</div>
+*/
+
+.hb-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-2) var(--spacing-8);
+  border-radius: var(--border-radius-8);
+  font-family: var(--font-family);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.6;
+  letter-spacing: var(--tracking-none);
+  white-space: nowrap;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inner content wrapper (icon + label) */
+.hb-tag__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.hb-tag__inner span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Remove button */
+.hb-tag__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+  opacity: 0.6;
+  transition: opacity 100ms ease;
+  border-radius: var(--border-radius-4);
+  line-height: 1;
+  font-size: 14px;
+}
+
+.hb-tag__remove:hover {
+  opacity: 1;
+}
+
+/* Color variants */
+.hb-tag--grey {
+  background: var(--ui-bg-tertiary);
+  color: var(--ui-text-secondary);
+}
+
+.hb-tag--green {
+  background: var(--ui-expressive-green-soft);
+  color: var(--ui-expressive-green-contrast);
+}
+
+.hb-tag--red {
+  background: var(--ui-expressive-red-soft);
+  color: var(--ui-expressive-red-contrast);
+}
+
+.hb-tag--yellow {
+  background: var(--ui-expressive-yellow-soft);
+  color: var(--ui-expressive-yellow-contrast);
+}
+
+.hb-tag--blue {
+  background: var(--ui-expressive-blue-soft);
+  color: var(--ui-expressive-blue-contrast);
+}
+
+.hb-tag--orange {
+  background: var(--ui-expressive-orange-soft);
+  color: var(--ui-expressive-orange-contrast);
+}
+
+.hb-tag--pink {
+  background: var(--ui-expressive-pink-soft);
+  color: var(--ui-expressive-pink-contrast);
+}
+
+.hb-tag--brown {
+  background: var(--ui-expressive-brown-soft);
+  color: var(--ui-expressive-brown-contrast);
+}
+
+.hb-tag--purple {
+  background: var(--ui-expressive-purple-soft);
+  color: var(--ui-expressive-purple-contrast);
+}
+
+.hb-tag--outlined {
+  background: transparent;
+  border: 1px solid var(--ui-border);
+  color: var(--ui-text);
+}
+
+
+/* AddTag — 24×24 icon-only button */
+.hb-tag--add {
+  width: 24px;
+  height: 24px;
+  padding: var(--spacing-2) var(--spacing-4);
+  background: transparent;
+  color: var(--ui-text-secondary);
+  cursor: pointer;
+  border: none;
+  max-width: none;
+  flex-shrink: 0;
+}
+
+.hb-tag--add:hover {
+  background: var(--ui-bg-secondary);
+}
+
+/* TagGroup container */
+.hb-tag-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+  align-items: flex-start;
+}
+
+
+/* Disabled (all types) */
+.hb-btn:disabled,
+.hb-btn[disabled],
+.hb-btn--disabled {
+  background: var(--ui-disabled-soft) !important;
+  color: var(--ui-disabled) !important;
+  border-color: transparent !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}
