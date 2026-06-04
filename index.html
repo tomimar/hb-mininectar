@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>hb-mininectar — Hummingbird Prototyping DS</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--ui-bg-secondary);
+      margin: 0;
+    }
+
+    /* Header */
+    .site-header {
+      background: var(--ui-bg);
+      border-bottom: 1px solid var(--ui-border);
+      padding: var(--spacing-16) var(--spacing-48);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .site-header__logo {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-12);
+    }
+
+    .site-header__badge {
+      background: var(--ui-expressive-blue-soft);
+      color: var(--ui-expressive-blue-contrast);
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-bold);
+      padding: 2px var(--spacing-8);
+      border-radius: var(--border-radius-round);
+      font-family: var(--font-family);
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--ui-bg);
+      border-bottom: 1px solid var(--ui-border);
+      padding: var(--spacing-64) var(--spacing-48);
+    }
+
+    .hero__inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero__eyebrow {
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-bold);
+      color: var(--ui-text-tertiary);
+      letter-spacing: var(--tracking-1);
+      text-transform: uppercase;
+      font-family: var(--font-family);
+      margin-bottom: var(--spacing-12);
+    }
+
+    .hero__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      font-family: var(--font-family);
+      line-height: 1.2;
+      margin: 0 0 var(--spacing-16) 0;
+    }
+
+    .hero__description {
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-regular);
+      color: var(--ui-text-secondary);
+      font-family: var(--font-family);
+      line-height: var(--line-height-ui);
+      margin: 0 0 var(--spacing-32) 0;
+      max-width: 560px;
+    }
+
+    .hero__links {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-12);
+    }
+
+    /* Layout */
+    .content {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: var(--spacing-48);
+    }
+
+    /* Section */
+    .section {
+      margin-bottom: var(--spacing-64);
+    }
+
+    .section__title {
+      font-size: var(--font-size-16);
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      font-family: var(--font-family);
+      margin: 0 0 var(--spacing-24) 0;
+      padding-bottom: var(--spacing-12);
+      border-bottom: 1px solid var(--ui-border);
+    }
+
+    /* Card */
+    .card {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+    }
+
+    .card__header {
+      padding: var(--spacing-12) var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+      background: var(--ui-bg-secondary);
+    }
+
+    .card__body {
+      padding: var(--spacing-24);
+    }
+
+    /* Usage block */
+    .usage {
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16);
+      margin-top: var(--spacing-16);
+    }
+
+    .usage__label {
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-bold);
+      color: var(--ui-text-tertiary);
+      letter-spacing: var(--tracking-1);
+      text-transform: uppercase;
+      font-family: var(--font-family);
+      margin-bottom: var(--spacing-8);
+    }
+
+    pre {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.6;
+      color: var(--ui-text-secondary);
+      white-space: pre-wrap;
+      word-break: break-all;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+    }
+
+    /* Component preview */
+    .preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-12);
+      align-items: center;
+      padding: var(--spacing-24);
+      background: var(--ui-bg);
+      border-radius: var(--border-radius-8);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-16);
+    }
+
+    /* Token pill */
+    .token-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-12);
+      padding: var(--spacing-8) 0;
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .token-row:last-child { border-bottom: none; }
+
+    .token-swatch {
+      width: 32px;
+      height: 32px;
+      border-radius: var(--border-radius-4);
+      border: 1px solid var(--ui-border);
+      flex-shrink: 0;
+    }
+
+    .token-name {
+      font-size: var(--font-size-12);
+      font-weight: var(--font-weight-bold);
+      color: var(--ui-text);
+      font-family: monospace;
+      flex: 1;
+    }
+
+    .token-value {
+      font-size: var(--font-size-12);
+      color: var(--ui-text-tertiary);
+      font-family: monospace;
+    }
+
+    /* Install block */
+    .install {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+    }
+
+    .install pre {
+      color: #e8e8e8;
+      font-size: var(--font-size-12);
+    }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-48);
+      background: var(--ui-bg);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="site-header__logo">
+      <svg width="28" height="22" viewBox="0 0 41 32" fill="none">
+        <path fill="var(--ui-text)" d="M41 3.336L40.544 2.676L32.076 8.083C31.161 7.792 29.315 7.350 27.454 7.757C25.782 8.122 24.551 9.104 23.680 10.766C23.218 11.653 22.901 12.658 22.537 13.820C22.369 14.355 22.195 14.908 21.996 15.488C21.863 15.869 21.730 16.237 21.594 16.599C14.635 15.219 10.947 9.476 11.707 1.130L11.812 0L10.722 0.272C10.637 0.295 8.611 0.813 6.398 2.539C2.330 5.714 0 10.475 0 15.597C0 19.403 1.292 22.905 3.451 25.693L3.429 25.709C3.574 25.898 3.736 26.078 3.897 26.247C6.876 29.766 11.292 32 16.218 32C20.435 32 24.244 30.508 26.941 27.797C29.125 25.604 30.740 22.723 31.740 19.236C32.541 16.455 32.968 13.208 33.019 9.591L41 3.336Z"/>
+      </svg>
+      <span class="hb-text-body-bold" style="color: var(--ui-text);">hb-mininectar</span>
+      <span class="site-header__badge">v1</span>
+    </div>
+    <a href="https://github.com/tomimar/hb-mininectar" target="_blank" class="hb-btn hb-btn--secondary hb-btn--sm">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub
+    </a>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow">Hummingbird · Design System</p>
+      <h1 class="hero__title">A mini design system<br>for rapid prototyping</h1>
+      <p class="hero__description">hb-mininectar is a lightweight CSS design system built on top of Hummingbird's Nectar DS tokens. It gives Claude Code everything it needs to build consistent, on-brand HTML prototypes — fast.</p>
+      <div class="hero__links">
+        <a href="https://github.com/tomimar/hb-mininectar/blob/main/CLAUDE.md" target="_blank" class="hb-btn hb-btn--primary hb-btn--lg">Read the docs</a>
+        <a href="https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System" target="_blank" class="hb-btn hb-btn--ghost hb-btn--lg">Figma DS →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Install -->
+    <section class="section">
+      <h2 class="section__title">Installation</h2>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-16);">Add two lines to the <code>&lt;head&gt;</code> of any HTML prototype. No build step, no dependencies.</p>
+      <div class="install">
+        <pre>&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css"&gt;
+&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css"&gt;</pre>
+      </div>
+    </section>
+
+    <!-- Tokens -->
+    <section class="section">
+      <h2 class="section__title">Tokens</h2>
+      <div class="grid-2">
+
+        <div class="card">
+          <div class="card__header">
+            <span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Scaffolding</span>
+          </div>
+          <div class="card__body">
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-bg); border: 1px solid var(--ui-border);"></div><span class="token-name">--ui-bg</span><span class="token-value">#ffffff</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-bg-secondary);"></div><span class="token-name">--ui-bg-secondary</span><span class="token-value">#f5f5f5</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-bg-tertiary);"></div><span class="token-name">--ui-bg-tertiary</span><span class="token-value">#e8e8e8</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-border);"></div><span class="token-name">--ui-border</span><span class="token-value">#d1d1d1</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Interaction</span>
+          </div>
+          <div class="card__body">
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-interaction);"></div><span class="token-name">--ui-interaction</span><span class="token-value">#0a6cff</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-interaction-contrast);"></div><span class="token-name">--ui-interaction-contrast</span><span class="token-value">#003f9e</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-interaction-soft);"></div><span class="token-name">--ui-interaction-soft</span><span class="token-value">#ccdeff</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-interaction-link);"></div><span class="token-name">--ui-interaction-link</span><span class="token-value">#005eeb</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Status</span>
+          </div>
+          <div class="card__body">
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-status-danger);"></div><span class="token-name">--ui-status-danger</span><span class="token-value">#e32402</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-status-danger-soft);"></div><span class="token-name">--ui-status-danger-soft</span><span class="token-value">#fdd5ce</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-status-success);"></div><span class="token-name">--ui-status-success</span><span class="token-value">#1e8536</span></div>
+            <div class="token-row"><div class="token-swatch" style="background: var(--ui-status-success-soft);"></div><span class="token-name">--ui-status-success-soft</span><span class="token-value">#c7ebcb</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__header">
+            <span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Spacing</span>
+          </div>
+          <div class="card__body">
+            <div class="token-row"><span class="token-name">--spacing-4</span><span class="token-value">4px</span></div>
+            <div class="token-row"><span class="token-name">--spacing-8</span><span class="token-value">8px</span></div>
+            <div class="token-row"><span class="token-name">--spacing-16</span><span class="token-value">16px</span></div>
+            <div class="token-row"><span class="token-name">--spacing-24</span><span class="token-value">24px</span></div>
+            <div class="token-row"><span class="token-name">--spacing-32 → 80</span><span class="token-value">32–80px</span></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Components -->
+    <section class="section">
+      <h2 class="section__title">Components</h2>
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-16);">
+
+        <!-- Typography -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Typography</span></div>
+          <div class="card__body" style="display: flex; flex-direction: column; gap: var(--spacing-8);">
+            <p class="hb-text-heading" style="margin:0">Heading — 16px / 500</p>
+            <p class="hb-text-heading-small" style="margin:0">Heading Small — 14px / 600</p>
+            <p class="hb-text-body" style="margin:0">Body — 14px / 400</p>
+            <p class="hb-text-body-bold" style="margin:0">Body Bold — 14px / 500</p>
+            <p class="hb-text-caption" style="margin:0">Caption — 12px / 400</p>
+            <p class="hb-text-caption-bold" style="margin:0">Caption Bold — 12px / 500</p>
+            <p class="hb-text-all-caps" style="margin:0">All Caps — 12px / tracking 1px</p>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Button</span></div>
+          <div class="card__body">
+            <div class="preview">
+              <button class="hb-btn hb-btn--primary hb-btn--lg">Primary</button>
+              <button class="hb-btn hb-btn--secondary hb-btn--lg">Secondary</button>
+              <button class="hb-btn hb-btn--ghost hb-btn--lg">Ghost</button>
+              <button class="hb-btn hb-btn--tertiary hb-btn--lg">Tertiary</button>
+              <button class="hb-btn hb-btn--danger hb-btn--lg">Danger</button>
+              <button class="hb-btn hb-btn--primary hb-btn--sm">Small</button>
+              <button class="hb-btn hb-btn--primary hb-btn--lg" disabled>Disabled</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Tag</span></div>
+          <div class="card__body">
+            <div class="preview">
+              <span class="hb-tag hb-tag--blue">Blue</span>
+              <span class="hb-tag hb-tag--green">Green</span>
+              <span class="hb-tag hb-tag--red">Red</span>
+              <span class="hb-tag hb-tag--orange">Orange</span>
+              <span class="hb-tag hb-tag--yellow">Yellow</span>
+              <span class="hb-tag hb-tag--purple">Purple</span>
+              <span class="hb-tag hb-tag--pink">Pink</span>
+              <span class="hb-tag hb-tag--brown">Brown</span>
+              <span class="hb-tag hb-tag--grey">Grey</span>
+              <span class="hb-tag hb-tag--outlined">Outlined</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Avatar + AvatarGroup</span></div>
+          <div class="card__body">
+            <div class="preview">
+              <div class="hb-avatar hb-avatar--sm">SD</div>
+              <div class="hb-avatar hb-avatar--md">SD</div>
+              <div class="hb-avatar hb-avatar--lg">SD</div>
+              <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
+              <div class="hb-avatar-group">
+                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
+                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
+                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Form fields</span></div>
+          <div class="card__body" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16);">
+            <div class="hb-field">
+              <label class="hb-field__label">Input <span class="hb-field__required">*</span></label>
+              <input class="hb-input" type="text" placeholder="Placeholder">
+            </div>
+            <div class="hb-field">
+              <label class="hb-field__label">Disabled</label>
+              <input class="hb-input" type="text" disabled value="Read-only value">
+            </div>
+            <div class="hb-field">
+              <label class="hb-field__label">Select</label>
+              <div class="hb-select">
+                <select><option value="">Choose an option</option><option>Option 1</option><option>Option 2</option></select>
+              </div>
+            </div>
+            <div class="hb-field">
+              <label class="hb-field__label">Textarea</label>
+              <textarea class="hb-textarea" rows="2" placeholder="Enter text..."></textarea>
+            </div>
+            <div class="hb-field">
+              <label class="hb-field__label">Checkbox</label>
+              <div class="hb-checkbox-group">
+                <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" checked><span>Option A</span></label>
+                <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox"><span>Option B</span></label>
+              </div>
+            </div>
+            <div class="hb-field">
+              <label class="hb-field__label">Radio</label>
+              <div class="hb-radio-group">
+                <label class="hb-radio-row"><input type="radio" class="hb-radio" name="demo" checked><span>Yes</span></label>
+                <label class="hb-radio-row"><input type="radio" class="hb-radio" name="demo"><span>No</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="card">
+          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Modal</span></div>
+          <div class="card__body">
+            <div style="border: 1px solid var(--ui-border); border-radius: var(--border-radius-16); overflow: hidden; max-width: 480px;">
+              <div class="hb-modal__header">
+                <span class="hb-modal__title">Confirm action</span>
+                <button class="hb-modal__close">
+                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+              </div>
+              <div class="hb-modal__body">
+                <p class="hb-text-body" style="color: var(--ui-text); margin:0">You're about to perform this action. This cannot be undone.</p>
+              </div>
+              <div class="hb-modal__footer">
+                <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
+                <button class="hb-btn hb-btn--primary hb-btn--lg">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- For Claude Code -->
+    <section class="section">
+      <h2 class="section__title">Using with Claude Code</h2>
+      <div class="card">
+        <div class="card__body" style="display: flex; flex-direction: column; gap: var(--spacing-16);">
+          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Clone this repo and open it with Claude Code. The <code>CLAUDE.md</code> file gives Claude everything it needs to build a new prototype from scratch.</p>
+          <div class="install">
+            <pre>git clone https://github.com/tomimar/hb-mininectar</pre>
+          </div>
+          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Then tell Claude Code what to build:</p>
+          <div style="background: var(--ui-bg-secondary); border-radius: var(--border-radius-8); padding: var(--spacing-16); border-left: 3px solid var(--ui-interaction);">
+            <p class="hb-text-body-bold" style="color: var(--ui-text); margin:0">"Create a new HTML prototype in a folder called [name]. Use the hb-mininectar design system."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <p class="hb-text-caption" style="color: var(--ui-text-tertiary); margin:0">hb-mininectar · Built by Hummingbird · <a href="https://github.com/tomimar/hb-mininectar" style="color: var(--ui-interaction-link);">github.com/tomimar/hb-mininectar</a></p>
+  </footer>
+
+</body>
+</html>
