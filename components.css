@@ -927,8 +927,15 @@ body {
 .hb-radio-group--inline {
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--spacing-24);
+  gap: var(--spacing-16);
   align-items: center;
+}
+
+/* Label stays on its own line above the horizontal options */
+.hb-radio-group--inline .hb-radio-group__label,
+.hb-radio-group--inline .hb-checkbox-group__label {
+  width: 100%;
+  flex-shrink: 0;
 }
 
 .hb-radio-group__label {
