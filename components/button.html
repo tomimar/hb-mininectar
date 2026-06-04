@@ -9,7 +9,7 @@
   <style>
     * { box-sizing: border-box; }
 
-    body { background: var(--ui-bg-secondary); margin: 0; }
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
 
     /* Layout */
     .page { display: flex; min-height: 100vh; }
@@ -31,9 +31,6 @@
       display: flex;
       align-items: center;
       gap: var(--spacing-4);
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bold);
       color: var(--ui-text-secondary);
       text-decoration: none;
       margin-bottom: var(--spacing-32);
@@ -41,20 +38,12 @@
     .sidenav__back:hover { color: var(--ui-text); }
 
     .sidenav__section {
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bold);
       color: var(--ui-text-tertiary);
-      letter-spacing: var(--tracking-1);
-      text-transform: uppercase;
-      font-family: var(--font-family);
       margin-bottom: var(--spacing-8);
     }
 
     .sidenav__link {
       display: block;
-      font-family: var(--font-family);
-      font-size: var(--font-size-14);
-      font-weight: var(--font-weight-regular);
       color: var(--ui-text-secondary);
       text-decoration: none;
       padding: var(--spacing-4) var(--spacing-8);
@@ -76,16 +65,10 @@
     .page-header { margin-bottom: var(--spacing-48); }
     .page-header__badge {
       display: inline-block;
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bold);
       color: var(--ui-text-tertiary);
-      letter-spacing: var(--tracking-1);
-      text-transform: uppercase;
       margin-bottom: var(--spacing-8);
     }
     .page-header__title {
-      font-family: var(--font-family);
       font-size: 32px;
       font-weight: var(--font-weight-bolder);
       color: var(--ui-text);
@@ -93,11 +76,7 @@
       line-height: 1.2;
     }
     .page-header__desc {
-      font-family: var(--font-family);
-      font-size: var(--font-size-16);
-      font-weight: var(--font-weight-regular);
       color: var(--ui-text-secondary);
-      line-height: var(--line-height-ui);
       margin: 0;
       max-width: 640px;
     }
@@ -105,19 +84,13 @@
     /* Section */
     .section { margin-bottom: var(--spacing-64); }
     .section__title {
-      font-family: var(--font-family);
-      font-size: var(--font-size-16);
-      font-weight: var(--font-weight-bolder);
       color: var(--ui-text);
       margin: 0 0 var(--spacing-4) 0;
       padding-bottom: var(--spacing-16);
       border-bottom: 1px solid var(--ui-border);
     }
     .section__desc {
-      font-family: var(--font-family);
-      font-size: var(--font-size-14);
       color: var(--ui-text-secondary);
-      line-height: var(--line-height-ui);
       margin: var(--spacing-16) 0 var(--spacing-24) 0;
     }
 
@@ -159,15 +132,10 @@
     }
 
     .variant-label {
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bolder);
       color: var(--ui-text);
     }
 
     .variant-desc {
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
       color: var(--ui-text-tertiary);
     }
 
@@ -203,17 +171,12 @@
     .state-table th {
       text-align: left;
       padding: var(--spacing-8) var(--spacing-16);
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bolder);
       color: var(--ui-text-secondary);
       background: var(--ui-bg-secondary);
       border-bottom: 1px solid var(--ui-border);
     }
     .state-table td {
       padding: var(--spacing-12) var(--spacing-16);
-      font-family: var(--font-family);
-      font-size: var(--font-size-14);
       color: var(--ui-text);
       border-bottom: 1px solid var(--ui-border);
       vertical-align: middle;
@@ -243,9 +206,6 @@
     .guidance-card__header--do { background: var(--ui-status-success-soft); }
     .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
     .guidance-card__title {
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
-      font-weight: var(--font-weight-bolder);
     }
     .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
     .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
@@ -266,8 +226,6 @@
       border-radius: var(--border-radius-4);
     }
     .guidance-card__note {
-      font-family: var(--font-family);
-      font-size: var(--font-size-12);
       color: var(--ui-text-secondary);
     }
 
@@ -280,7 +238,6 @@
       border-radius: 50%;
       background: var(--ui-expressive-purple);
       color: white;
-      font-family: var(--font-family);
       font-size: 11px;
       font-weight: var(--font-weight-bolder);
       display: flex;
@@ -308,16 +265,16 @@
 
   <!-- Sidebar -->
   <aside class="sidenav">
-    <a href="../index.html" class="sidenav__back">
+    <a href="../index.html" class="sidenav__back hb-text-caption-bold">
       <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       hb-mininectar
     </a>
-    <div class="sidenav__section">Components</div>
-    <a href="button.html" class="sidenav__link sidenav__link--active">Button</a>
-    <a href="#" class="sidenav__link" style="opacity:.4; cursor:not-allowed;">Tag</a>
-    <a href="#" class="sidenav__link" style="opacity:.4; cursor:not-allowed;">Avatar</a>
-    <a href="#" class="sidenav__link" style="opacity:.4; cursor:not-allowed;">Input</a>
-    <a href="#" class="sidenav__link" style="opacity:.4; cursor:not-allowed;">Modal</a>
+    <div class="sidenav__section hb-text-all-caps">Components</div>
+    <a href="button.html" class="sidenav__link sidenav__link--active hb-text-body">Button</a>
+    <a href="#" class="sidenav__link hb-text-body" style="opacity:.4; cursor:not-allowed;">Tag</a>
+    <a href="#" class="sidenav__link hb-text-body" style="opacity:.4; cursor:not-allowed;">Avatar</a>
+    <a href="#" class="sidenav__link hb-text-body" style="opacity:.4; cursor:not-allowed;">Input</a>
+    <a href="#" class="sidenav__link hb-text-body" style="opacity:.4; cursor:not-allowed;">Modal</a>
   </aside>
 
   <!-- Content -->
@@ -325,22 +282,22 @@
 
     <!-- Header -->
     <header class="page-header">
-      <span class="page-header__badge">Components</span>
+      <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Button</h1>
-      <p class="page-header__desc">Buttons enable users to perform actions. They create a clear visual hierarchy, offer predictable affordance, and support efficient workflows. A consistent button system ensures clarity, reduces cognitive load, and maintains a cohesive experience across interfaces.</p>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Buttons enable users to perform actions. They create a clear visual hierarchy, offer predictable affordance, and support efficient workflows. A consistent button system ensures clarity, reduces cognitive load, and maintains a cohesive experience across interfaces.</p>
     </header>
 
     <!-- Types -->
     <section class="section" id="types">
-      <h2 class="section__title">Types</h2>
-      <p class="section__desc">Each button type represents a different level of emphasis and should be used intentionally to establish a clear visual hierarchy.</p>
+      <h2 class="section__title hb-text-heading-small">Types</h2>
+      <p class="section__desc hb-text-body">Each button type represents a different level of emphasis and should be used intentionally to establish a clear visual hierarchy.</p>
 
       <div class="variant-grid">
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Primary</span>
-            <span class="variant-desc">Highest emphasis. The main action in a view. Use sparingly — one per page.</span>
+            <span class="variant-label hb-text-caption-bold">Primary</span>
+            <span class="variant-desc hb-text-caption">Highest emphasis. The main action in a view. Use sparingly — one per page.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--primary hb-btn--lg">Submit</button>
@@ -351,8 +308,8 @@
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Secondary</span>
-            <span class="variant-desc">Medium emphasis. Most standard actions. The default go-to button.</span>
+            <span class="variant-label hb-text-caption-bold">Secondary</span>
+            <span class="variant-desc hb-text-caption">Medium emphasis. Most standard actions. The default go-to button.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--secondary hb-btn--lg">Export</button>
@@ -363,8 +320,8 @@
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Tertiary</span>
-            <span class="variant-desc">Lightweight text button. Visible but minimal — no background surface.</span>
+            <span class="variant-label hb-text-caption-bold">Tertiary</span>
+            <span class="variant-desc hb-text-caption">Lightweight text button. Visible but minimal — no background surface.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--tertiary hb-btn--lg">Learn more</button>
@@ -375,8 +332,8 @@
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Ghost</span>
-            <span class="variant-desc">Lowest emphasis. For non-critical or contextual actions. No border, no background.</span>
+            <span class="variant-label hb-text-caption-bold">Ghost</span>
+            <span class="variant-desc hb-text-caption">Lowest emphasis. For non-critical or contextual actions. No border, no background.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
@@ -387,8 +344,8 @@
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Confirmation</span>
-            <span class="variant-desc">Positive high-clarity. Confirms successful or approved outcomes. Reinforces confidence.</span>
+            <span class="variant-label hb-text-caption-bold">Confirmation</span>
+            <span class="variant-desc hb-text-caption">Positive high-clarity. Confirms successful or approved outcomes. Reinforces confidence.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--confirmation hb-btn--lg">Approve</button>
@@ -399,8 +356,8 @@
 
         <div class="variant-row">
           <div class="variant-row__header">
-            <span class="variant-label">Danger</span>
-            <span class="variant-desc">Destructive actions. Signals irreversible or harmful operations. Use only for delete/revoke.</span>
+            <span class="variant-label hb-text-caption-bold">Danger</span>
+            <span class="variant-desc hb-text-caption">Destructive actions. Signals irreversible or harmful operations. Use only for delete/revoke.</span>
           </div>
           <div class="preview">
             <button class="hb-btn hb-btn--danger hb-btn--lg">Delete record</button>
@@ -414,34 +371,34 @@
 
     <!-- Sizes -->
     <section class="section" id="sizes">
-      <h2 class="section__title">Sizes</h2>
-      <p class="section__desc">Two sizes are available. Large is the default across the platform. Small is reserved for dense or compact environments.</p>
+      <h2 class="section__title hb-text-heading-small">Sizes</h2>
+      <p class="section__desc hb-text-body">Two sizes are available. Large is the default across the platform. Small is reserved for dense or compact environments.</p>
 
       <div class="state-table-wrap">
         <table class="state-table">
           <thead>
             <tr>
-              <th>Size</th>
-              <th>Class</th>
-              <th>Height</th>
-              <th>Padding</th>
-              <th>Use for</th>
+              <th class="hb-text-caption-bold">Size</th>
+              <th class="hb-text-caption-bold">Class</th>
+              <th class="hb-text-caption-bold">Height</th>
+              <th class="hb-text-caption-bold">Padding</th>
+              <th class="hb-text-caption-bold">Use for</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><button class="hb-btn hb-btn--primary hb-btn--lg">Large</button></td>
-              <td><code>hb-btn--lg</code></td>
-              <td>40px</td>
-              <td>8px / 12px</td>
-              <td>Default. Most views, forms, dialogs</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--primary hb-btn--lg">Large</button></td>
+              <td class="hb-text-body"><code>hb-btn--lg</code></td>
+              <td class="hb-text-body">40px</td>
+              <td class="hb-text-body">8px / 12px</td>
+              <td class="hb-text-body">Default. Most views, forms, dialogs</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--primary hb-btn--sm">Small</button></td>
-              <td><code>hb-btn--sm</code></td>
-              <td>32px</td>
-              <td>8px</td>
-              <td>Dense tables, compact toolbars, banners</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--primary hb-btn--sm">Small</button></td>
+              <td class="hb-text-body"><code>hb-btn--sm</code></td>
+              <td class="hb-text-body">32px</td>
+              <td class="hb-text-body">8px</td>
+              <td class="hb-text-body">Dense tables, compact toolbars, banners</td>
             </tr>
           </tbody>
         </table>
@@ -450,8 +407,8 @@
 
     <!-- States -->
     <section class="section" id="states">
-      <h2 class="section__title">States</h2>
-      <p class="section__desc">All button types support the same interaction states. States are handled automatically via CSS — no extra classes needed.</p>
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">All button types support the same interaction states. States are handled automatically via CSS — no extra classes needed.</p>
 
       <div class="preview" style="gap: var(--spacing-24);">
         <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
@@ -474,12 +431,12 @@
 
       <div class="state-table-wrap">
         <table class="state-table">
-          <thead><tr><th>State</th><th>How it's triggered</th><th>Visual change</th></tr></thead>
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
           <tbody>
-            <tr><td><span class="hb-text-caption-bold">Default</span></td><td>Resting state</td><td>Base background and text color</td></tr>
-            <tr><td><span class="hb-text-caption-bold">Hover</span></td><td><code>:hover</code></td><td>Background darkens slightly (highlighted token)</td></tr>
-            <tr><td><span class="hb-text-caption-bold">Focus</span></td><td><code>:focus-visible</code></td><td>2px ring using <code>--ui-interaction-soft</code></td></tr>
-            <tr><td><span class="hb-text-caption-bold">Disabled</span></td><td><code>disabled</code> attribute</td><td>Background → <code>--ui-disabled-soft</code>, text → <code>--ui-disabled</code>, pointer-events: none</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">Base background and text color</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Background darkens slightly (highlighted token)</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus-visible</code></td><td class="hb-text-body">2px ring using <code>--ui-interaction-soft</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-disabled-soft</code>, text → <code>--ui-disabled</code>, pointer-events: none</td></tr>
           </tbody>
         </table>
       </div>
@@ -487,8 +444,8 @@
 
     <!-- Full-width -->
     <section class="section" id="fullwidth">
-      <h2 class="section__title">Full width</h2>
-      <p class="section__desc">Use <code>hb-btn--full-width</code> when a button should fill its container — common in mobile layouts, confirmation modals, or dedicated action areas.</p>
+      <h2 class="section__title hb-text-heading-small">Full width</h2>
+      <p class="section__desc hb-text-body">Use <code>hb-btn--full-width</code> when a button should fill its container — common in mobile layouts, confirmation modals, or dedicated action areas.</p>
       <div class="preview" style="flex-direction:column;">
         <button class="hb-btn hb-btn--primary hb-btn--lg hb-btn--full-width">Submit form</button>
         <button class="hb-btn hb-btn--secondary hb-btn--lg hb-btn--full-width">Save draft</button>
@@ -498,42 +455,42 @@
 
     <!-- Usage -->
     <section class="section" id="usage">
-      <h2 class="section__title">Usage</h2>
-      <p class="section__desc">Choose the button type based on the action's importance and context within the interface.</p>
+      <h2 class="section__title hb-text-heading-small">Usage</h2>
+      <p class="section__desc hb-text-body">Choose the button type based on the action's importance and context within the interface.</p>
 
       <div class="state-table-wrap" style="margin-bottom:var(--spacing-24)">
         <table class="state-table">
-          <thead><tr><th>Type</th><th>Use for</th><th>Avoid</th></tr></thead>
+          <thead><tr><th class="hb-text-caption-bold">Type</th><th class="hb-text-caption-bold">Use for</th><th class="hb-text-caption-bold">Avoid</th></tr></thead>
           <tbody>
             <tr>
-              <td><button class="hb-btn hb-btn--primary hb-btn--sm">Primary</button></td>
-              <td>Main action: Submit, Save, Create, Send</td>
-              <td>More than one per view. Secondary navigation.</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--primary hb-btn--sm">Primary</button></td>
+              <td class="hb-text-body">Main action: Submit, Save, Create, Send</td>
+              <td class="hb-text-body">More than one per view. Secondary navigation.</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--secondary hb-btn--sm">Secondary</button></td>
-              <td>Standard actions alongside a primary: Export, Filter, Edit</td>
-              <td>Replacing primary in high-stakes flows</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--secondary hb-btn--sm">Secondary</button></td>
+              <td class="hb-text-body">Standard actions alongside a primary: Export, Filter, Edit</td>
+              <td class="hb-text-body">Replacing primary in high-stakes flows</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--tertiary hb-btn--sm">Tertiary</button></td>
-              <td>Supporting actions: Learn more, View all, See details</td>
-              <td>Primary actions or anything destructive</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--tertiary hb-btn--sm">Tertiary</button></td>
+              <td class="hb-text-body">Supporting actions: Learn more, View all, See details</td>
+              <td class="hb-text-body">Primary actions or anything destructive</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--ghost hb-btn--sm">Ghost</button></td>
-              <td>Cancel, Back, Dismiss — low friction exits</td>
-              <td>Main actions. Can be confused with disabled.</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--ghost hb-btn--sm">Ghost</button></td>
+              <td class="hb-text-body">Cancel, Back, Dismiss — low friction exits</td>
+              <td class="hb-text-body">Main actions. Can be confused with disabled.</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--confirmation hb-btn--sm">Confirmation</button></td>
-              <td>Approve, Resolve, Mark as complete</td>
-              <td>Everyday actions — reserve for positive outcomes</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--confirmation hb-btn--sm">Confirmation</button></td>
+              <td class="hb-text-body">Approve, Resolve, Mark as complete</td>
+              <td class="hb-text-body">Everyday actions — reserve for positive outcomes</td>
             </tr>
             <tr>
-              <td><button class="hb-btn hb-btn--danger hb-btn--sm">Danger</button></td>
-              <td>Delete, Revoke, Remove — irreversible actions only</td>
-              <td>Reversible actions. Always pair with a confirmation modal.</td>
+              <td class="hb-text-body"><button class="hb-btn hb-btn--danger hb-btn--sm">Danger</button></td>
+              <td class="hb-text-body">Delete, Revoke, Remove — irreversible actions only</td>
+              <td class="hb-text-body">Reversible actions. Always pair with a confirmation modal.</td>
             </tr>
           </tbody>
         </table>
@@ -542,13 +499,13 @@
 
     <!-- Best practices -->
     <section class="section" id="best-practices">
-      <h2 class="section__title">Best practices</h2>
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
 
       <div class="guidance">
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--do">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title">Do</span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
           </div>
           <div class="guidance-card__body">
             <div>
@@ -556,19 +513,19 @@
                 <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
                 <button class="hb-btn hb-btn--primary hb-btn--lg">Submit form</button>
               </div>
-              <p class="guidance-card__note">Pair a primary action with a ghost or secondary to create clear hierarchy.</p>
+              <p class="guidance-card__note hb-text-caption">Pair a primary action with a ghost or secondary to create clear hierarchy.</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <button class="hb-btn hb-btn--primary hb-btn--lg">Save changes</button>
               </div>
-              <p class="guidance-card__note">Use specific, action-oriented labels. "Save changes" over "OK".</p>
+              <p class="guidance-card__note hb-text-caption">Use specific, action-oriented labels. "Save changes" over "OK".</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <button class="hb-btn hb-btn--danger hb-btn--lg">Delete record</button>
               </div>
-              <p class="guidance-card__note">Use Danger only for irreversible, destructive actions. Always confirm first.</p>
+              <p class="guidance-card__note hb-text-caption">Use Danger only for irreversible, destructive actions. Always confirm first.</p>
             </div>
           </div>
         </div>
@@ -576,7 +533,7 @@
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--dont">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title">Don't</span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
           </div>
           <div class="guidance-card__body">
             <div>
@@ -585,20 +542,20 @@
                 <button class="hb-btn hb-btn--primary hb-btn--lg">Export</button>
                 <button class="hb-btn hb-btn--primary hb-btn--lg">Create</button>
               </div>
-              <p class="guidance-card__note">Don't use multiple primary buttons in the same view.</p>
+              <p class="guidance-card__note hb-text-caption">Don't use multiple primary buttons in the same view.</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <button class="hb-btn hb-btn--primary hb-btn--lg">OK</button>
                 <button class="hb-btn hb-btn--secondary hb-btn--lg">Yes</button>
               </div>
-              <p class="guidance-card__note">Avoid vague labels like "OK", "Yes", "Confirm". Be specific.</p>
+              <p class="guidance-card__note hb-text-caption">Avoid vague labels like "OK", "Yes", "Confirm". Be specific.</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <button class="hb-btn hb-btn--danger hb-btn--lg">Save</button>
               </div>
-              <p class="guidance-card__note">Don't use Danger for non-destructive actions.</p>
+              <p class="guidance-card__note hb-text-caption">Don't use Danger for non-destructive actions.</p>
             </div>
           </div>
         </div>
@@ -607,7 +564,7 @@
 
     <!-- Anatomy -->
     <section class="section" id="anatomy">
-      <h2 class="section__title">Anatomy</h2>
+      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
       <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
         <div style="position:relative; display:inline-flex;">
           <button class="hb-btn hb-btn--primary hb-btn--lg" style="pointer-events:none; padding: 8px 24px;">
@@ -618,22 +575,22 @@
       </div>
       <div class="state-table-wrap">
         <table class="state-table">
-          <thead><tr><th></th><th>Element</th><th>Description</th></tr></thead>
+          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
           <tbody>
             <tr>
-              <td><div class="anatomy-num">1</div></td>
-              <td><span class="hb-text-caption-bold">Container</span></td>
-              <td>Defines size, padding, border-radius and background color. Height: 40px (lg) or 32px (sm).</td>
+              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Container</span></td>
+              <td class="hb-text-body">Defines size, padding, border-radius and background color. Height: 40px (lg) or 32px (sm).</td>
             </tr>
             <tr>
-              <td><div class="anatomy-num">2</div></td>
-              <td><span class="hb-text-caption-bold">Label</span></td>
-              <td>Inter Medium (500), 14px. Always sentence case. Describes the action clearly.</td>
+              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Label</span></td>
+              <td class="hb-text-body">Inter Medium (500), 14px. Always sentence case. Describes the action clearly.</td>
             </tr>
             <tr>
-              <td><div class="anatomy-num">3</div></td>
-              <td><span class="hb-text-caption-bold">Icon (optional)</span></td>
-              <td>20×20px. Can be placed left or right of the label. Use to reinforce meaning, not decorate.</td>
+              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Icon (optional)</span></td>
+              <td class="hb-text-body">20×20px. Can be placed left or right of the label. Use to reinforce meaning, not decorate.</td>
             </tr>
           </tbody>
         </table>
