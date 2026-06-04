@@ -110,6 +110,10 @@ All CSS custom properties. Key ones:
 
 ## Components (components.css)
 
+Components with a dedicated documentation page are linked below — they contain full specs, examples, and usage guidelines. Components without a page include a code snippet as reference.
+
+**Documentation pages:** https://tomimar.github.io/hb-mininectar/
+
 ### Typography
 
 ```html
@@ -149,15 +153,9 @@ All CSS custom properties. Key ones:
 
 ### Button
 
-```html
-<!-- Types: primary / secondary / tertiary / ghost / danger / confirmation -->
-<!-- Sizes: --lg (40px, default) / --sm (32px) -->
-<button class="hb-btn hb-btn--primary hb-btn--lg">Submit</button>
-<button class="hb-btn hb-btn--secondary hb-btn--lg">Cancel</button>
-<button class="hb-btn hb-btn--ghost hb-btn--sm">Back</button>
-<button class="hb-btn hb-btn--danger hb-btn--lg">Delete</button>
-<button class="hb-btn hb-btn--full-width hb-btn--primary hb-btn--lg">Full width</button>
-```
+→ Full documentation: **https://tomimar.github.io/hb-mininectar/components/button.html**
+
+Types: `primary` / `secondary` / `tertiary` / `ghost` / `danger` / `confirmation` · Sizes: `--lg` (default) / `--sm`
 
 ### Tag
 
