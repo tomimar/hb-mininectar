@@ -79,7 +79,6 @@
       font-family: var(--font-family);
       line-height: var(--line-height-ui);
       margin: 0 0 var(--spacing-32) 0;
-      max-width: 560px;
     }
 
     .hero__links {
@@ -257,13 +256,20 @@
   <!-- Content -->
   <main class="content">
 
-    <!-- Install -->
+    <!-- For Claude Code -->
     <section class="section">
-      <h2 class="section__title">Installation</h2>
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-16);">Add two lines to the <code>&lt;head&gt;</code> of any HTML prototype. No build step, no dependencies.</p>
-      <div class="install">
-        <pre>&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css"&gt;
-&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css"&gt;</pre>
+      <h2 class="section__title">Using with Claude Code</h2>
+      <div class="card">
+        <div class="card__body" style="display: flex; flex-direction: column; gap: var(--spacing-16);">
+          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Clone this repo and open it with Claude Code. The <code>CLAUDE.md</code> file gives Claude everything it needs to build a new prototype from scratch.</p>
+          <div class="install">
+            <pre>git clone https://github.com/tomimar/hb-mininectar</pre>
+          </div>
+          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Then tell Claude Code what to build:</p>
+          <div style="background: var(--ui-bg-secondary); border-radius: var(--border-radius-8); padding: var(--spacing-16); border-left: 3px solid var(--ui-interaction);">
+            <p class="hb-text-body-bold" style="color: var(--ui-text); margin:0">"Create a new HTML prototype in a folder called [name]. Use the hb-mininectar design system."</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -409,22 +415,6 @@
       </div>
     </section>
 
-    <!-- For Claude Code -->
-    <section class="section">
-      <h2 class="section__title">Using with Claude Code</h2>
-      <div class="card">
-        <div class="card__body" style="display: flex; flex-direction: column; gap: var(--spacing-16);">
-          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Clone this repo and open it with Claude Code. The <code>CLAUDE.md</code> file gives Claude everything it needs to build a new prototype from scratch.</p>
-          <div class="install">
-            <pre>git clone https://github.com/tomimar/hb-mininectar</pre>
-          </div>
-          <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Then tell Claude Code what to build:</p>
-          <div style="background: var(--ui-bg-secondary); border-radius: var(--border-radius-8); padding: var(--spacing-16); border-left: 3px solid var(--ui-interaction);">
-            <p class="hb-text-body-bold" style="color: var(--ui-text); margin:0">"Create a new HTML prototype in a folder called [name]. Use the hb-mininectar design system."</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
   </main>
 
