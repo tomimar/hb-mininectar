@@ -355,14 +355,14 @@ Add a `custom.css` file inside the prototype folder and link it **after** the DS
 
 ### 3. Validate with the designer
 
-The designer (Tomas) reviews the component in the prototype. Once approved:
+The designer reviews the component in the prototype. Once approved:
 
 ### 4. Add it to hb-mininectar
 
-Copy the component CSS into `/Users/tomasmartinez/Documents/hb-mininectar/components.css`, then push:
+Copy the component CSS into `~/Documents/hb-mininectar/components.css`, then push:
 
 ```bash
-cd /Users/tomasmartinez/Documents/hb-mininectar
+cd ~/Documents/hb-mininectar
 git add components.css
 git commit -m "Add [component-name] component"
 git push
