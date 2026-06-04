@@ -927,7 +927,8 @@ body {
 .hb-radio-group--inline {
   flex-direction: row;
   flex-wrap: wrap;
-  gap: var(--spacing-16);
+  row-gap: var(--spacing-8);
+  column-gap: var(--spacing-24);
   align-items: center;
 }
 
