@@ -8,8 +8,8 @@ It is hosted on GitHub Pages so any prototype can reference it with two lines.
 Add these two lines in the `<head>` of any HTML file:
 
 ```html
-<link rel="stylesheet" href="https://hummingbird-co.github.io/hb-nectar-ds/tokens.css">
-<link rel="stylesheet" href="https://hummingbird-co.github.io/hb-nectar-ds/components.css">
+<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css">
+<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css">
 ```
 
 Also add Tailwind (layout only) and Alpine.js (interactivity):
