@@ -328,3 +328,46 @@ Copy the `hbDatepicker(modelKey)` function from `rfi-phase1/rfi.html` (end of sc
 ## Figma references
 
 - **Nectar Design System**: https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System
+
+---
+
+## Creating new components on the fly
+
+If a prototype needs a component that doesn't exist in the DS yet, follow this workflow:
+
+### 1. Create it locally in the prototype
+
+Add a `custom.css` file inside the prototype folder and link it **after** the DS links:
+
+```html
+<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css">
+<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css">
+<link rel="stylesheet" href="custom.css">
+```
+
+### 2. Follow DS conventions
+
+- Name: `.hb-[component]`, `.hb-[component]__[element]`, `.hb-[component]--[modifier]`
+- Always use tokens — never hardcode colors, sizes or spacing:
+  - ✅ `color: var(--ui-text-secondary)`
+  - ✅ `padding: var(--spacing-8) var(--spacing-16)`
+  - ❌ `color: #595959`
+  - ❌ `padding: 8px 16px`
+- Document the component with a usage comment at the top
+
+### 3. Validate with the designer
+
+The designer (Tomas) reviews the component in the prototype. Once approved:
+
+### 4. Add it to hb-mininectar
+
+Copy the component CSS into `/Users/tomasmartinez/Documents/hb-mininectar/components.css`, then push:
+
+```bash
+cd /Users/tomasmartinez/Documents/hb-mininectar
+git add components.css
+git commit -m "Add [component-name] component"
+git push
+```
+
+Remove `custom.css` from the prototype — all HTML files now get the component from GitHub Pages automatically.
