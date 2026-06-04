@@ -924,6 +924,13 @@ body {
   flex-direction: column;
 }
 
+.hb-radio-group--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-24);
+  align-items: center;
+}
+
 .hb-radio-group__label {
   font-size: var(--font-size-12);
   font-weight: var(--font-weight-bold);
