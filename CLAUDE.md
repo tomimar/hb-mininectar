@@ -357,7 +357,7 @@ Add a `custom.css` file inside the prototype folder and link it **after** the DS
 
 The designer reviews the component in the prototype. Once approved:
 
-### 4. Add it to hb-mininectar
+### 4. Add it to hb-mininectar (optional)
 
 Copy the component CSS into `~/Documents/hb-mininectar/components.css`, then push:
 
@@ -368,7 +368,6 @@ git commit -m "Add [component-name] component"
 git push
 ```
 
-Remove `custom.css` from the prototype — all HTML files now get the component from GitHub Pages automatically.
 
 ---
 
