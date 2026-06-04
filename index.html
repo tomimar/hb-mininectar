@@ -232,9 +232,6 @@
   <!-- Header -->
   <header class="site-header">
     <div class="site-header__logo">
-      <svg width="28" height="22" viewBox="0 0 41 32" fill="none">
-        <path fill="var(--ui-text)" d="M41 3.336L40.544 2.676L32.076 8.083C31.161 7.792 29.315 7.350 27.454 7.757C25.782 8.122 24.551 9.104 23.680 10.766C23.218 11.653 22.901 12.658 22.537 13.820C22.369 14.355 22.195 14.908 21.996 15.488C21.863 15.869 21.730 16.237 21.594 16.599C14.635 15.219 10.947 9.476 11.707 1.130L11.812 0L10.722 0.272C10.637 0.295 8.611 0.813 6.398 2.539C2.330 5.714 0 10.475 0 15.597C0 19.403 1.292 22.905 3.451 25.693L3.429 25.709C3.574 25.898 3.736 26.078 3.897 26.247C6.876 29.766 11.292 32 16.218 32C20.435 32 24.244 30.508 26.941 27.797C29.125 25.604 30.740 22.723 31.740 19.236C32.541 16.455 32.968 13.208 33.019 9.591L41 3.336Z"/>
-      </svg>
       <span class="hb-text-body-bold" style="color: var(--ui-text);">hb-mininectar</span>
       <span class="site-header__badge">v1</span>
     </div>
@@ -252,7 +249,6 @@
       <p class="hero__description">hb-mininectar is a lightweight CSS design system built on top of Hummingbird's Nectar DS tokens. It gives Claude Code everything it needs to build consistent, on-brand HTML prototypes — fast.</p>
       <div class="hero__links">
         <a href="https://github.com/tomimar/hb-mininectar/blob/main/CLAUDE.md" target="_blank" class="hb-btn hb-btn--primary hb-btn--lg">Read the docs</a>
-        <a href="https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System" target="_blank" class="hb-btn hb-btn--ghost hb-btn--lg">Figma DS →</a>
       </div>
     </div>
   </section>
@@ -321,142 +317,6 @@
             <div class="token-row"><span class="token-name">--spacing-16</span><span class="token-value">16px</span></div>
             <div class="token-row"><span class="token-name">--spacing-24</span><span class="token-value">24px</span></div>
             <div class="token-row"><span class="token-name">--spacing-32 → 80</span><span class="token-value">32–80px</span></div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Components -->
-    <section class="section">
-      <h2 class="section__title">Components</h2>
-      <div style="display: flex; flex-direction: column; gap: var(--spacing-16);">
-
-        <!-- Typography -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Typography</span></div>
-          <div class="card__body" style="display: flex; flex-direction: column; gap: var(--spacing-8);">
-            <p class="hb-text-heading" style="margin:0">Heading — 16px / 500</p>
-            <p class="hb-text-heading-small" style="margin:0">Heading Small — 14px / 600</p>
-            <p class="hb-text-body" style="margin:0">Body — 14px / 400</p>
-            <p class="hb-text-body-bold" style="margin:0">Body Bold — 14px / 500</p>
-            <p class="hb-text-caption" style="margin:0">Caption — 12px / 400</p>
-            <p class="hb-text-caption-bold" style="margin:0">Caption Bold — 12px / 500</p>
-            <p class="hb-text-all-caps" style="margin:0">All Caps — 12px / tracking 1px</p>
-          </div>
-        </div>
-
-        <!-- Buttons -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Button</span></div>
-          <div class="card__body">
-            <div class="preview">
-              <button class="hb-btn hb-btn--primary hb-btn--lg">Primary</button>
-              <button class="hb-btn hb-btn--secondary hb-btn--lg">Secondary</button>
-              <button class="hb-btn hb-btn--ghost hb-btn--lg">Ghost</button>
-              <button class="hb-btn hb-btn--tertiary hb-btn--lg">Tertiary</button>
-              <button class="hb-btn hb-btn--danger hb-btn--lg">Danger</button>
-              <button class="hb-btn hb-btn--primary hb-btn--sm">Small</button>
-              <button class="hb-btn hb-btn--primary hb-btn--lg" disabled>Disabled</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Tags -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Tag</span></div>
-          <div class="card__body">
-            <div class="preview">
-              <span class="hb-tag hb-tag--blue">Blue</span>
-              <span class="hb-tag hb-tag--green">Green</span>
-              <span class="hb-tag hb-tag--red">Red</span>
-              <span class="hb-tag hb-tag--orange">Orange</span>
-              <span class="hb-tag hb-tag--yellow">Yellow</span>
-              <span class="hb-tag hb-tag--purple">Purple</span>
-              <span class="hb-tag hb-tag--pink">Pink</span>
-              <span class="hb-tag hb-tag--brown">Brown</span>
-              <span class="hb-tag hb-tag--grey">Grey</span>
-              <span class="hb-tag hb-tag--outlined">Outlined</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Avatar -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Avatar + AvatarGroup</span></div>
-          <div class="card__body">
-            <div class="preview">
-              <div class="hb-avatar hb-avatar--sm">SD</div>
-              <div class="hb-avatar hb-avatar--md">SD</div>
-              <div class="hb-avatar hb-avatar--lg">SD</div>
-              <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-              <div class="hb-avatar-group">
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Form fields</span></div>
-          <div class="card__body" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16);">
-            <div class="hb-field">
-              <label class="hb-field__label">Input <span class="hb-field__required">*</span></label>
-              <input class="hb-input" type="text" placeholder="Placeholder">
-            </div>
-            <div class="hb-field">
-              <label class="hb-field__label">Disabled</label>
-              <input class="hb-input" type="text" disabled value="Read-only value">
-            </div>
-            <div class="hb-field">
-              <label class="hb-field__label">Select</label>
-              <div class="hb-select">
-                <select><option value="">Choose an option</option><option>Option 1</option><option>Option 2</option></select>
-              </div>
-            </div>
-            <div class="hb-field">
-              <label class="hb-field__label">Textarea</label>
-              <textarea class="hb-textarea" rows="2" placeholder="Enter text..."></textarea>
-            </div>
-            <div class="hb-field">
-              <label class="hb-field__label">Checkbox</label>
-              <div class="hb-checkbox-group">
-                <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" checked><span>Option A</span></label>
-                <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox"><span>Option B</span></label>
-              </div>
-            </div>
-            <div class="hb-field">
-              <label class="hb-field__label">Radio</label>
-              <div class="hb-radio-group">
-                <label class="hb-radio-row"><input type="radio" class="hb-radio" name="demo" checked><span>Yes</span></label>
-                <label class="hb-radio-row"><input type="radio" class="hb-radio" name="demo"><span>No</span></label>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="card">
-          <div class="card__header"><span class="hb-text-caption-bold" style="color: var(--ui-text-secondary);">Modal</span></div>
-          <div class="card__body">
-            <div style="border: 1px solid var(--ui-border); border-radius: var(--border-radius-16); overflow: hidden; max-width: 480px;">
-              <div class="hb-modal__header">
-                <span class="hb-modal__title">Confirm action</span>
-                <button class="hb-modal__close">
-                  <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                </button>
-              </div>
-              <div class="hb-modal__body">
-                <p class="hb-text-body" style="color: var(--ui-text); margin:0">You're about to perform this action. This cannot be undone.</p>
-              </div>
-              <div class="hb-modal__footer">
-                <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
-                <button class="hb-btn hb-btn--primary hb-btn--lg">Confirm</button>
-              </div>
-            </div>
           </div>
         </div>
 
