@@ -96,10 +96,9 @@ body {
 .hb-avatar--sm {
   width: 24px;
   height: 24px;
-  /* heading: 16px / 500 */
-  font-size: var(--font-size-16);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-default);
+  font-size: 10px;
+  font-weight: var(--font-weight-bolder);
+  line-height: 1;
 }
 
 .hb-avatar--md {
