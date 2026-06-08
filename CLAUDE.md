@@ -161,6 +161,24 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 ---
 
+## Notion tracking — Component Library
+
+There is a Notion page that tracks every component and its Mini Nectar status:
+
+- **Page**: https://app.notion.com/p/hummingbirdcharm/Components-2eaccc5a525a8089a7ecf6b2e07cdf3f
+- **Database**: "Component Library" (data source `collection://823d7da7-ce4d-4b5b-87e3-5cd333011a47`)
+- **Column**: `Mini Nectar` — a select with three options: `Added`, `Pending`, `Testing`.
+
+**Whenever a component is added to Mini Nectar, keep this column in sync:**
+
+1. Find the component's row in the Component Library (match by the `Component` title).
+2. If the row exists → change its `Mini Nectar` value from `Pending` to `Added`.
+3. If the row does NOT exist → create a new row for the component and set `Mini Nectar` to `Testing`.
+
+Use the Notion tools (`notion-query-data-sources` to find the row, `notion-update-page` with `update_properties` to set the value, `notion-create-pages` to add a new row under the data source).
+
+---
+
 ## Creating new components on the fly
 
 If a prototype needs a component that doesn't exist in the DS yet, follow this workflow:
