@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Form fields — hb-mininectar</title>
+  <title>Select — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <style>
@@ -275,7 +275,10 @@
     <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
     <a href="button.html" class="sidenav__link hb-text-body">Button</a>
     <a href="tag.html" class="sidenav__link hb-text-body">Tag</a>
-    <a href="form-fields.html" class="sidenav__link sidenav__link--active hb-text-body">Form fields</a>
+    <a href="input.html" class="sidenav__link hb-text-body">Input</a>
+    <a href="textarea.html" class="sidenav__link hb-text-body">Textarea</a>
+    <a href="select.html" class="sidenav__link sidenav__link--active hb-text-body">Select</a>
+    <a href="date-input.html" class="sidenav__link hb-text-body">Date input</a>
     <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
     <a href="radio.html" class="sidenav__link hb-text-body">Radio</a>
     <a href="popup-select.html" class="sidenav__link hb-text-body">Popup select</a>
@@ -288,81 +291,13 @@
     <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
-      <h1 class="page-header__title">Form fields</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Form fields capture user input. They share a common wrapper, label, and help-text structure so every control — input, textarea, select, and date input — behaves consistently. Clear labels and predictable states reduce errors and make forms faster to complete.</p>
+      <h1 class="page-header__title">Select</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A wrapper around the native <code>&lt;select&gt;</code> that lets users pick a single value from a predefined list. The wrapper draws a consistent border and custom chevron so the control matches the rest of the field system across browsers.</p>
     </header>
 
-    <!-- Field anatomy -->
-    <section class="section" id="anatomy">
-      <h2 class="section__title hb-text-heading-small">Field anatomy</h2>
-      <p class="section__desc hb-text-body">Every control is wrapped in <code>hb-field</code>, which stacks four parts: a <code>hb-field__label</code> (with an optional <code>hb-field__required</code> asterisk), the control itself, and a <code>hb-field__help</code> hint. On error, swap help text for <code>hb-field__error</code>.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Full name <span class="hb-field__required">*</span></label>
-          <input class="hb-input" type="text" placeholder="Enter your full name">
-          <p class="hb-field__help">As it appears on official documents.</p>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__label"</span><span class="token-class">&gt;</span>Full name <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__required"</span><span class="token-class">&gt;</span>*<span class="token-class">&lt;/span&gt;&lt;/label&gt;</span>
-  <span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter your full name"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;p</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__help"</span><span class="token-class">&gt;</span>As it appears on official documents.<span class="token-class">&lt;/p&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Input -->
-    <section class="section" id="input">
-      <h2 class="section__title hb-text-heading-small">Input</h2>
-      <p class="section__desc hb-text-body">Single-line text input. Modifiers: <code>hb-input--sm</code> for dense layouts and <code>hb-input--error</code> for invalid values. Use the native <code>disabled</code> attribute for read-only views.</p>
-
-      <div class="preview preview--col" style="gap:var(--spacing-24);">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Default</label>
-          <input class="hb-input" type="text" value="Acme Corporation">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">With placeholder</label>
-          <input class="hb-input" type="text" placeholder="Enter a value">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Small</label>
-          <input class="hb-input hb-input--sm" type="text" placeholder="Compact input">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Error</label>
-          <input class="hb-input hb-input--error" type="text" value="invalid@">
-          <p class="hb-field__error">Enter a valid email address.</p>
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Disabled</label>
-          <input class="hb-input" type="text" value="Read-only value" disabled>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter a value"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--sm"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--error"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">disabled</span><span class="token-class">&gt;</span></pre></div>
-    </section>
-
-    <!-- Textarea -->
-    <section class="section" id="textarea">
-      <h2 class="section__title hb-text-heading-small">Textarea</h2>
-      <p class="section__desc hb-text-body">Multi-line input for longer free-form content such as notes or descriptions. Set <code>rows</code> to a sensible default height.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:480px;">
-          <label class="hb-field__label">Description</label>
-          <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
-          <p class="hb-field__help">Up to 500 characters.</p>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;textarea</span> <span class="token-attr">class</span>=<span class="token-str">"hb-textarea"</span> <span class="token-attr">rows</span>=<span class="token-str">"3"</span><span class="token-class">&gt;&lt;/textarea&gt;</span></pre></div>
-    </section>
-
-    <!-- Select -->
-    <section class="section" id="select">
-      <h2 class="section__title hb-text-heading-small">Select</h2>
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
       <p class="section__desc hb-text-body">Wrap a native <code>&lt;select&gt;</code> in <code>hb-select</code>. The wrapper draws the custom chevron and border so the control matches the rest of the field system across browsers.</p>
 
       <div class="preview preview--col">
@@ -383,29 +318,6 @@
     <span class="token-class">&lt;option</span> <span class="token-attr">value</span>=<span class="token-str">""</span><span class="token-class">&gt;</span>Select an option<span class="token-class">&lt;/option&gt;</span>
     <span class="token-class">&lt;option&gt;</span>Open<span class="token-class">&lt;/option&gt;</span>
   <span class="token-class">&lt;/select&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Date input -->
-    <section class="section" id="date">
-      <h2 class="section__title hb-text-heading-small">Date input</h2>
-      <p class="section__desc hb-text-body">Wrap the control in <code>hb-date-input</code> and append a calendar icon using <code>hb-date-input__icon</code>. This is the static text field. For the full interactive calendar (DatePicker), which requires Alpine.js, see the implementation in <code>rfi-phase1/rfi.html</code> — no need to replicate the calendar here.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Due date</label>
-          <div class="hb-date-input" style="position: relative;">
-            <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
-            <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input"</span> <span class="token-attr">style</span>=<span class="token-str">"position: relative;"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"MM/DD/YYYY"</span>
-    <span class="token-attr">style</span>=<span class="token-str">"padding-right: 40px;"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input__icon"</span> <span class="token-attr">viewBox</span>=<span class="token-str">"0 0 24 24"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/svg&gt;</span>
 <span class="token-class">&lt;/div&gt;</span></pre></div>
     </section>
 
@@ -442,22 +354,34 @@
             <div>
               <div class="guidance-card__example">
                 <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Email <span class="hb-field__required">*</span></label>
-                  <input class="hb-input" type="text" placeholder="name@company.com">
-                  <p class="hb-field__help">We'll send confirmations here.</p>
+                  <label class="hb-field__label">Status</label>
+                  <div class="hb-select">
+                    <select>
+                      <option value="">Select an option</option>
+                      <option>Open</option>
+                      <option>In review</option>
+                      <option>Resolved</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Always pair a control with a visible label, and mark required fields.</p>
+              <p class="guidance-card__note hb-text-caption">Wrap the native <code>&lt;select&gt;</code> in <code>hb-select</code> and include a placeholder option.</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Amount</label>
-                  <input class="hb-input hb-input--error" type="text" value="-50">
-                  <p class="hb-field__error">Amount must be greater than zero.</p>
+                  <label class="hb-field__label">Priority</label>
+                  <div class="hb-select">
+                    <select>
+                      <option value="">Select a priority</option>
+                      <option>Low</option>
+                      <option>Medium</option>
+                      <option>High</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Show errors directly below the field, with help text for guidance.</p>
+              <p class="guidance-card__note hb-text-caption">Order options logically (alphabetical, by frequency, or by natural sequence).</p>
             </div>
           </div>
         </div>
@@ -471,19 +395,29 @@
             <div>
               <div class="guidance-card__example">
                 <div class="hb-field" style="width:100%;">
-                  <input class="hb-input" type="text" placeholder="Email">
+                  <label class="hb-field__label">Assignees</label>
+                  <div class="hb-select">
+                    <select multiple>
+                      <option>Elena Cruz</option>
+                      <option>Sam Diaz</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Don't use the placeholder as the label — it disappears once typing starts.</p>
+              <p class="guidance-card__note hb-text-caption">Don't use it for multi-select — use the <a href="popup-select.html">Popup select</a> instead.</p>
             </div>
             <div>
               <div class="guidance-card__example">
                 <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Tax ID</label>
-                  <input class="hb-input" type="text">
+                  <label class="hb-field__label">Company name</label>
+                  <div class="hb-select">
+                    <select>
+                      <option value="">Type a company…</option>
+                    </select>
+                  </div>
                 </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Don't leave required fields unmarked — users can't tell what's mandatory.</p>
+              <p class="guidance-card__note hb-text-caption">Don't use it for free text — use an <code>hb-input</code> when values aren't predefined.</p>
             </div>
           </div>
         </div>

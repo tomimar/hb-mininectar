@@ -179,7 +179,7 @@ Types: `primary` / `secondary` / `tertiary` / `ghost` / `danger` / `confirmation
 </div>
 ```
 
-### Form fields
+### Input
 
 ```html
 <!-- Always wrap fields in hb-field -->
@@ -189,31 +189,42 @@ Types: `primary` / `secondary` / `tertiary` / `ghost` / `danger` / `confirmation
   <p class="hb-field__help">Optional help text</p>
 </div>
 
-<!-- Input modifiers: --sm (32px) / --error -->
+<!-- Modifiers: --sm (32px) / --error -->
+<input class="hb-input hb-input--sm" type="text">
 <input class="hb-input hb-input--error" type="text">
+<input class="hb-input" disabled value="Read-only value">
+```
 
-<!-- Textarea -->
+### Textarea
+
+```html
 <textarea class="hb-textarea" rows="3"></textarea>
+<textarea class="hb-textarea" disabled>Read-only content</textarea>
+```
 
-<!-- Select (wrap native select in hb-select) -->
+### Select
+
+```html
+<!-- Wrap native select in hb-select -->
 <div class="hb-select">
   <select>
     <option value="">Select an option</option>
     <option>Option 1</option>
   </select>
 </div>
+```
 
-<!-- Date input (wrap in hb-date-input, add calendar icon) -->
+### Date input
+
+```html
+<!-- Wrap in hb-date-input, add calendar icon -->
 <div class="hb-date-input" style="position: relative;">
   <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
   <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
   </svg>
 </div>
-
-<!-- Disabled state (read-only views) -->
-<input class="hb-input" disabled value="Read-only value">
-<textarea class="hb-textarea" disabled>Read-only content</textarea>
+<!-- Full interactive calendar (DatePicker) needs Alpine.js — see DatePicker section below -->
 ```
 
 ### Checkbox

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tag — hb-mininectar</title>
+  <title>Textarea — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <style>
@@ -274,9 +274,9 @@
     <div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Components</div>
     <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
     <a href="button.html" class="sidenav__link hb-text-body">Button</a>
-    <a href="tag.html" class="sidenav__link sidenav__link--active hb-text-body">Tag</a>
+    <a href="tag.html" class="sidenav__link hb-text-body">Tag</a>
     <a href="input.html" class="sidenav__link hb-text-body">Input</a>
-    <a href="textarea.html" class="sidenav__link hb-text-body">Textarea</a>
+    <a href="textarea.html" class="sidenav__link sidenav__link--active hb-text-body">Textarea</a>
     <a href="select.html" class="sidenav__link hb-text-body">Select</a>
     <a href="date-input.html" class="sidenav__link hb-text-body">Date input</a>
     <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
@@ -291,83 +291,39 @@
     <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
-      <h1 class="page-header__title">Tag</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Tags are compact labels used to communicate status, category, or metadata. Their color carries meaning, so it should be applied consistently across the platform. Tags help users scan and group information quickly without adding visual noise.</p>
+      <h1 class="page-header__title">Textarea</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A multi-line input for longer free-form content such as notes, descriptions, or comments. It shares the common field wrapper, label, and help-text structure with the rest of the field system. Give it a sensible default height so users can see they have room to write.</p>
     </header>
 
-    <!-- Colors -->
-    <section class="section" id="colors">
-      <h2 class="section__title hb-text-heading-small">Colors</h2>
-      <p class="section__desc hb-text-body">Each tag uses a soft background with a matching contrast text color. Pick the color by meaning, not decoration — see <a href="#usage" style="color:var(--ui-interaction-link)">Usage</a> for semantic mapping.</p>
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">Multi-line input for longer free-form content such as notes or descriptions. Set <code>rows</code> to a sensible default height.</p>
 
-      <div class="preview">
-        <span class="hb-tag hb-tag--grey">Grey</span>
-        <span class="hb-tag hb-tag--green">Green</span>
-        <span class="hb-tag hb-tag--red">Red</span>
-        <span class="hb-tag hb-tag--yellow">Yellow</span>
-        <span class="hb-tag hb-tag--blue">Blue</span>
-        <span class="hb-tag hb-tag--orange">Orange</span>
-        <span class="hb-tag hb-tag--pink">Pink</span>
-        <span class="hb-tag hb-tag--brown">Brown</span>
-        <span class="hb-tag hb-tag--purple">Purple</span>
-        <span class="hb-tag hb-tag--outlined">Outlined</span>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
-<span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--green"</span><span class="token-class">&gt;</span>Resolved<span class="token-class">&lt;/span&gt;</span></pre></div>
-    </section>
-
-    <!-- With remove button -->
-    <section class="section" id="remove">
-      <h2 class="section__title hb-text-heading-small">With remove button</h2>
-      <p class="section__desc hb-text-body">Add <code>hb-tag__remove</code> when a tag represents a removable selection, such as an applied filter or an editable list of values. Always include an <code>aria-label</code> for screen readers.</p>
-
-      <div class="preview">
-        <span class="hb-tag hb-tag--blue">Open<button class="hb-tag__remove" aria-label="Remove">×</button></span>
-        <span class="hb-tag hb-tag--grey">High priority<button class="hb-tag__remove" aria-label="Remove">×</button></span>
-        <span class="hb-tag hb-tag--green">Resolved<button class="hb-tag__remove" aria-label="Remove">×</button></span>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Label
-  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag__remove"</span> <span class="token-attr">aria-label</span>=<span class="token-str">"Remove"</span><span class="token-class">&gt;</span>×<span class="token-class">&lt;/button&gt;</span>
-<span class="token-class">&lt;/span&gt;</span></pre></div>
-    </section>
-
-    <!-- Tag group -->
-    <section class="section" id="group">
-      <h2 class="section__title hb-text-heading-small">Tag group</h2>
-      <p class="section__desc hb-text-body">Wrap multiple tags in <code>hb-tag-group</code> to lay them out in a consistent, wrapping row with even spacing.</p>
-
-      <div class="preview">
-        <div class="hb-tag-group">
-          <span class="hb-tag hb-tag--blue">Open</span>
-          <span class="hb-tag hb-tag--orange">In review</span>
-          <span class="hb-tag hb-tag--green">Resolved</span>
-          <span class="hb-tag hb-tag--grey">Submitted</span>
-          <span class="hb-tag hb-tag--red">Cancelled</span>
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:480px;">
+          <label class="hb-field__label">Description</label>
+          <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
+          <p class="hb-field__help">Up to 500 characters.</p>
         </div>
       </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag-group"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
-  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--green"</span><span class="token-class">&gt;</span>Resolved<span class="token-class">&lt;/span&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
+      <div class="code-block"><pre><span class="token-class">&lt;textarea</span> <span class="token-attr">class</span>=<span class="token-str">"hb-textarea"</span> <span class="token-attr">rows</span>=<span class="token-str">"3"</span><span class="token-class">&gt;&lt;/textarea&gt;</span></pre></div>
     </section>
 
-    <!-- Usage -->
-    <section class="section" id="usage">
-      <h2 class="section__title hb-text-heading-small">Usage</h2>
-      <p class="section__desc hb-text-body">Map colors to meaning consistently so users can learn the system once and recognize status at a glance.</p>
+    <!-- States -->
+    <section class="section" id="states">
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">All field controls share the same interaction states, handled automatically via CSS.</p>
 
       <div class="state-table-wrap">
         <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Tag</th><th class="hb-text-caption-bold">Color</th><th class="hb-text-caption-bold">Common meaning</th></tr></thead>
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
           <tbody>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--blue">Open</span></td><td class="hb-text-body"><code>hb-tag--blue</code></td><td class="hb-text-body">Open, active, informational</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--green">Resolved</span></td><td class="hb-text-body"><code>hb-tag--green</code></td><td class="hb-text-body">Resolved, approved, success</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--red">Cancelled</span></td><td class="hb-text-body"><code>hb-tag--red</code></td><td class="hb-text-body">Cancelled, rejected, error</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--yellow">Pending</span></td><td class="hb-text-body"><code>hb-tag--yellow</code></td><td class="hb-text-body">Pending, needs attention, warning</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--orange">In review</span></td><td class="hb-text-body"><code>hb-tag--orange</code></td><td class="hb-text-body">In progress, in review</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--grey">Submitted</span></td><td class="hb-text-body"><code>hb-tag--grey</code></td><td class="hb-text-body">Neutral, submitted, draft, default</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--purple">Category</span></td><td class="hb-text-body"><code>hb-tag--purple</code> · <code>--pink</code> · <code>--brown</code></td><td class="hb-text-body">Non-status categorization and labels</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--outlined">Default</span></td><td class="hb-text-body"><code>hb-tag--outlined</code></td><td class="hb-text-body">Low-emphasis metadata, counts, neutral chips</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">White background with <code>--ui-border-secondary</code> border</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Border darkens slightly to signal interactivity</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus</code></td><td class="hb-text-body">Border turns blue with a ring using <code>--ui-interaction-soft</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Error</span></td><td class="hb-text-body"><code>hb-input--error</code></td><td class="hb-text-body">Border and ring use <code>--ui-status-danger</code>; pair with <code>hb-field__error</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-bg-tertiary</code>, muted text, no pointer events</td></tr>
           </tbody>
         </table>
       </div>
@@ -386,18 +342,21 @@
           <div class="guidance-card__body">
             <div>
               <div class="guidance-card__example">
-                <span class="hb-tag hb-tag--blue">Open</span>
-                <span class="hb-tag hb-tag--green">Resolved</span>
-                <span class="hb-tag hb-tag--red">Cancelled</span>
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Notes</label>
+                  <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
+                </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Use color consistently for status — the same status is always the same color.</p>
+              <p class="guidance-card__note hb-text-caption">Set a sensible number of <code>rows</code> so the field signals how much room there is.</p>
             </div>
             <div>
               <div class="guidance-card__example">
-                <span class="hb-tag hb-tag--grey">Submitted</span>
-                <span class="hb-tag hb-tag--orange">In review</span>
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Description</label>
+                  <textarea class="hb-textarea" rows="4" placeholder="Describe the request in detail"></textarea>
+                </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Keep labels short — one or two words that read at a glance.</p>
+              <p class="guidance-card__note hb-text-caption">Use it for longer, free-form content like descriptions, notes, or comments.</p>
             </div>
           </div>
         </div>
@@ -410,22 +369,12 @@
           <div class="guidance-card__body">
             <div>
               <div class="guidance-card__example">
-                <span class="hb-tag hb-tag--green">G</span>
-                <span class="hb-tag hb-tag--red">R</span>
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Email</label>
+                  <textarea class="hb-textarea" rows="3" placeholder="name@company.com"></textarea>
+                </div>
               </div>
-              <p class="guidance-card__note hb-text-caption">Don't rely on color alone to convey meaning — always include a clear text label.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <span class="hb-tag hb-tag--blue">A</span>
-                <span class="hb-tag hb-tag--green">B</span>
-                <span class="hb-tag hb-tag--red">C</span>
-                <span class="hb-tag hb-tag--yellow">D</span>
-                <span class="hb-tag hb-tag--orange">E</span>
-                <span class="hb-tag hb-tag--purple">F</span>
-                <span class="hb-tag hb-tag--pink">G</span>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't use too many colors in one view — it overwhelms and dilutes meaning.</p>
+              <p class="guidance-card__note hb-text-caption">Don't use a textarea for short single-line values — use an <code>hb-input</code> instead.</p>
             </div>
           </div>
         </div>
