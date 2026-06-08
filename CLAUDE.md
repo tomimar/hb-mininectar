@@ -161,6 +161,19 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 ---
 
+## Adding a component to Mini Nectar — full checklist
+
+Whenever a new component is added to Mini Nectar, complete ALL of these steps (mirroring how every existing component was done):
+
+1. **Implement the component** in `components.css` (and `tokens.css` if new tokens are needed). Always use tokens, never hardcoded values. Extract exact specs from Figma.
+2. **Create a documentation page** in `components/[component].html`, following the same structure as the existing component pages (copy the layout/`<style>` block from `button.html`).
+3. **Add the page to the sidebar** by registering it in the `components` array in `components/sidebar.js` (label + filename). The sidebar is universal — adding it once updates every page.
+4. **Add a reference link in this CLAUDE.md** — the Figma links table at the bottom, plus the component docs table, so the page is discoverable.
+5. **Update the Notion Component Library** (see below).
+6. **Commit and push** to GitHub.
+
+---
+
 ## Notion tracking — Component Library
 
 There is a Notion page that tracks every component and its Mini Nectar status:
