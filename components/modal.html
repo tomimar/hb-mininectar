@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modal — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    [x-cloak] { display: none !important; }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav">
+    <a href="../index.html" class="sidenav__back hb-text-caption-bold">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      hb-mininectar
+    </a>
+    <div class="sidenav__section hb-text-all-caps">Foundations</div>
+    <a href="typography.html" class="sidenav__link hb-text-body">Typography</a>
+    <div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Components</div>
+    <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
+    <a href="button.html" class="sidenav__link hb-text-body">Button</a>
+    <a href="tag.html" class="sidenav__link hb-text-body">Tag</a>
+    <a href="form-fields.html" class="sidenav__link hb-text-body">Form fields</a>
+    <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
+    <a href="radio.html" class="sidenav__link hb-text-body">Radio</a>
+    <a href="popup-select.html" class="sidenav__link hb-text-body">Popup select</a>
+    <a href="modal.html" class="sidenav__link sidenav__link--active hb-text-body">Modal</a>
+  </aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Modal</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A modal is a focused overlay that interrupts the current flow to capture a decision or a short task. It dims the page behind a centered card, holds the user's attention on a single action, and returns them to where they were once dismissed. Use modals sparingly — only when the interruption is justified.</p>
+    </header>
+
+    <!-- Overview / Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Overview / Anatomy</h2>
+      <p class="section__desc hb-text-body">A modal is built from an overlay and a container that holds four stacked regions. Each region has a defined role.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Overlay</span></td>
+              <td class="hb-text-body">Dimmed backdrop (<code>rgba(0,0,0,0.4)</code>) that covers the page and centers the container. Clicking it dismisses the modal. Class <code>hb-modal-overlay</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Container</span></td>
+              <td class="hb-text-body">White card, max-width 720px, <code>border-radius-16</code>, <code>shadow-floating</code>. Holds the regions below. Class <code>hb-modal</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Header</span></td>
+              <td class="hb-text-body">Title (<code>hb-modal__title</code>) plus an × close button (<code>hb-modal__close</code>). Class <code>hb-modal__header</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">4</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Body</span></td>
+              <td class="hb-text-body">The content area — a short message, form fields, or details. Class <code>hb-modal__body</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">5</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Footer</span></td>
+              <td class="hb-text-body">Right-aligned action buttons — the primary action sits last. Class <code>hb-modal__footer</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Example (interactive) -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">Interactive demo built with Alpine.js. Click <strong>Open modal</strong> to show it. Dismiss by clicking the overlay, the × close button, Cancel, or pressing <code>Esc</code>.</p>
+
+      <div class="preview" style="justify-content:center;" x-data="{ open: false }">
+        <button class="hb-btn hb-btn--primary hb-btn--lg" @click="open = true">Open modal</button>
+
+        <div class="hb-modal-overlay" x-show="open" x-cloak @click="open = false" @keydown.escape.window="open = false">
+          <div class="hb-modal" @click.stop>
+            <div class="hb-modal__header">
+              <span class="hb-modal__title">Submit your response</span>
+              <button class="hb-modal__close" @click="open = false" aria-label="Close">
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+              </button>
+            </div>
+            <div class="hb-modal__body">
+              <p class="hb-text-body" style="color: var(--ui-text)">Once submitted, your response will be sent to the requester and can no longer be edited. Make sure all required fields are complete before continuing.</p>
+            </div>
+            <div class="hb-modal__footer">
+              <button class="hb-btn hb-btn--ghost hb-btn--lg" @click="open = false">Cancel</button>
+              <button class="hb-btn hb-btn--primary hb-btn--lg" @click="open = false">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">x-data</span>=<span class="token-str">"{ open: false }"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary hb-btn--lg"</span> <span class="token-attr">@click</span>=<span class="token-str">"open = true"</span><span class="token-class">&gt;</span>Open modal<span class="token-class">&lt;/button&gt;</span>
+
+  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal-overlay"</span> <span class="token-attr">x-show</span>=<span class="token-str">"open"</span> <span class="token-attr">x-cloak</span>
+       <span class="token-attr">@click</span>=<span class="token-str">"open = false"</span> <span class="token-attr">@keydown.escape.window</span>=<span class="token-str">"open = false"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal"</span> <span class="token-attr">@click.stop</span><span class="token-class">&gt;</span>
+      <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal__header"</span><span class="token-class">&gt;</span>
+        <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal__title"</span><span class="token-class">&gt;</span>Submit your response<span class="token-class">&lt;/span&gt;</span>
+        <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal__close"</span> <span class="token-attr">@click</span>=<span class="token-str">"open = false"</span><span class="token-class">&gt;</span>×<span class="token-class">&lt;/button&gt;</span>
+      <span class="token-class">&lt;/div&gt;</span>
+      <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal__body"</span><span class="token-class">&gt;</span>...<span class="token-class">&lt;/div&gt;</span>
+      <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-modal__footer"</span><span class="token-class">&gt;</span>
+        <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--ghost hb-btn--lg"</span> <span class="token-attr">@click</span>=<span class="token-str">"open = false"</span><span class="token-class">&gt;</span>Cancel<span class="token-class">&lt;/button&gt;</span>
+        <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary hb-btn--lg"</span> <span class="token-attr">@click</span>=<span class="token-str">"open = false"</span><span class="token-class">&gt;</span>Submit<span class="token-class">&lt;/button&gt;</span>
+      <span class="token-class">&lt;/div&gt;</span>
+    <span class="token-class">&lt;/div&gt;</span>
+  <span class="token-class">&lt;/div&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Types -->
+    <section class="section" id="types">
+      <h2 class="section__title hb-text-heading-small">Types</h2>
+      <p class="section__desc hb-text-body">Modals share one structure but differ in their footer action pattern, which signals the nature of the decision.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Type</th><th class="hb-text-caption-bold">When to use</th><th class="hb-text-caption-bold">Footer</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Informational</span></td>
+              <td class="hb-text-body">Communicate something the user only needs to acknowledge.</td>
+              <td class="hb-text-body"><div class="variant-buttons"><button class="hb-btn hb-btn--primary hb-btn--sm">OK</button></div></td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Confirmation</span></td>
+              <td class="hb-text-body">Ask the user to confirm a reversible action before it proceeds.</td>
+              <td class="hb-text-body"><div class="variant-buttons"><button class="hb-btn hb-btn--ghost hb-btn--sm">Cancel</button><button class="hb-btn hb-btn--primary hb-btn--sm">Confirm</button></div></td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Danger</span></td>
+              <td class="hb-text-body">Confirm a destructive, irreversible action such as delete or revoke.</td>
+              <td class="hb-text-body"><div class="variant-buttons"><button class="hb-btn hb-btn--ghost hb-btn--sm">Cancel</button><button class="hb-btn hb-btn--danger hb-btn--sm">Delete</button></div></td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Form</span></td>
+              <td class="hb-text-body">Collect a small amount of input without leaving the current view.</td>
+              <td class="hb-text-body"><div class="variant-buttons"><button class="hb-btn hb-btn--ghost hb-btn--sm">Cancel</button><button class="hb-btn hb-btn--primary hb-btn--sm">Save</button></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
+                <button class="hb-btn hb-btn--danger hb-btn--lg">Delete record</button>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Use specific button labels that name the action being confirmed.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Always provide a way to dismiss — close button, Cancel, overlay click, and Esc.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Keep content concise. A modal is for a single, focused decision.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <button class="hb-btn hb-btn--secondary hb-btn--lg">Yes</button>
+                <button class="hb-btn hb-btn--primary hb-btn--lg">OK</button>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't use vague labels like "OK" or "Yes" — they hide what will happen.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Don't stack modals on top of one another. Resolve one before opening the next.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Don't use a modal for success or error toasts — use a transient notification instead.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

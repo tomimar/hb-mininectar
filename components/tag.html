@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tag — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav">
+    <a href="../index.html" class="sidenav__back hb-text-caption-bold">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      hb-mininectar
+    </a>
+    <div class="sidenav__section hb-text-all-caps">Foundations</div>
+    <a href="typography.html" class="sidenav__link hb-text-body">Typography</a>
+    <div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Components</div>
+    <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
+    <a href="button.html" class="sidenav__link hb-text-body">Button</a>
+    <a href="tag.html" class="sidenav__link sidenav__link--active hb-text-body">Tag</a>
+    <a href="form-fields.html" class="sidenav__link hb-text-body">Form fields</a>
+    <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
+    <a href="radio.html" class="sidenav__link hb-text-body">Radio</a>
+    <a href="popup-select.html" class="sidenav__link hb-text-body">Popup select</a>
+    <a href="modal.html" class="sidenav__link hb-text-body">Modal</a>
+  </aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Tag</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Tags are compact labels used to communicate status, category, or metadata. Their color carries meaning, so it should be applied consistently across the platform. Tags help users scan and group information quickly without adding visual noise.</p>
+    </header>
+
+    <!-- Colors -->
+    <section class="section" id="colors">
+      <h2 class="section__title hb-text-heading-small">Colors</h2>
+      <p class="section__desc hb-text-body">Each tag uses a soft background with a matching contrast text color. Pick the color by meaning, not decoration — see <a href="#usage" style="color:var(--ui-interaction-link)">Usage</a> for semantic mapping.</p>
+
+      <div class="preview">
+        <span class="hb-tag hb-tag--grey">Grey</span>
+        <span class="hb-tag hb-tag--green">Green</span>
+        <span class="hb-tag hb-tag--red">Red</span>
+        <span class="hb-tag hb-tag--yellow">Yellow</span>
+        <span class="hb-tag hb-tag--blue">Blue</span>
+        <span class="hb-tag hb-tag--orange">Orange</span>
+        <span class="hb-tag hb-tag--pink">Pink</span>
+        <span class="hb-tag hb-tag--brown">Brown</span>
+        <span class="hb-tag hb-tag--purple">Purple</span>
+        <span class="hb-tag hb-tag--outlined">Outlined</span>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--green"</span><span class="token-class">&gt;</span>Resolved<span class="token-class">&lt;/span&gt;</span></pre></div>
+    </section>
+
+    <!-- With remove button -->
+    <section class="section" id="remove">
+      <h2 class="section__title hb-text-heading-small">With remove button</h2>
+      <p class="section__desc hb-text-body">Add <code>hb-tag__remove</code> when a tag represents a removable selection, such as an applied filter or an editable list of values. Always include an <code>aria-label</code> for screen readers.</p>
+
+      <div class="preview">
+        <span class="hb-tag hb-tag--blue">Open<button class="hb-tag__remove" aria-label="Remove">×</button></span>
+        <span class="hb-tag hb-tag--grey">High priority<button class="hb-tag__remove" aria-label="Remove">×</button></span>
+        <span class="hb-tag hb-tag--green">Resolved<button class="hb-tag__remove" aria-label="Remove">×</button></span>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Label
+  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag__remove"</span> <span class="token-attr">aria-label</span>=<span class="token-str">"Remove"</span><span class="token-class">&gt;</span>×<span class="token-class">&lt;/button&gt;</span>
+<span class="token-class">&lt;/span&gt;</span></pre></div>
+    </section>
+
+    <!-- Tag group -->
+    <section class="section" id="group">
+      <h2 class="section__title hb-text-heading-small">Tag group</h2>
+      <p class="section__desc hb-text-body">Wrap multiple tags in <code>hb-tag-group</code> to lay them out in a consistent, wrapping row with even spacing.</p>
+
+      <div class="preview">
+        <div class="hb-tag-group">
+          <span class="hb-tag hb-tag--blue">Open</span>
+          <span class="hb-tag hb-tag--orange">In review</span>
+          <span class="hb-tag hb-tag--green">Resolved</span>
+          <span class="hb-tag hb-tag--grey">Submitted</span>
+          <span class="hb-tag hb-tag--red">Cancelled</span>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag-group"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--blue"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tag hb-tag--green"</span><span class="token-class">&gt;</span>Resolved<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Usage -->
+    <section class="section" id="usage">
+      <h2 class="section__title hb-text-heading-small">Usage</h2>
+      <p class="section__desc hb-text-body">Map colors to meaning consistently so users can learn the system once and recognize status at a glance.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Tag</th><th class="hb-text-caption-bold">Color</th><th class="hb-text-caption-bold">Common meaning</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--blue">Open</span></td><td class="hb-text-body"><code>hb-tag--blue</code></td><td class="hb-text-body">Open, active, informational</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--green">Resolved</span></td><td class="hb-text-body"><code>hb-tag--green</code></td><td class="hb-text-body">Resolved, approved, success</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--red">Cancelled</span></td><td class="hb-text-body"><code>hb-tag--red</code></td><td class="hb-text-body">Cancelled, rejected, error</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--yellow">Pending</span></td><td class="hb-text-body"><code>hb-tag--yellow</code></td><td class="hb-text-body">Pending, needs attention, warning</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--orange">In review</span></td><td class="hb-text-body"><code>hb-tag--orange</code></td><td class="hb-text-body">In progress, in review</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--grey">Submitted</span></td><td class="hb-text-body"><code>hb-tag--grey</code></td><td class="hb-text-body">Neutral, submitted, draft, default</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--purple">Category</span></td><td class="hb-text-body"><code>hb-tag--purple</code> · <code>--pink</code> · <code>--brown</code></td><td class="hb-text-body">Non-status categorization and labels</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-tag hb-tag--outlined">Default</span></td><td class="hb-text-body"><code>hb-tag--outlined</code></td><td class="hb-text-body">Low-emphasis metadata, counts, neutral chips</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <span class="hb-tag hb-tag--blue">Open</span>
+                <span class="hb-tag hb-tag--green">Resolved</span>
+                <span class="hb-tag hb-tag--red">Cancelled</span>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Use color consistently for status — the same status is always the same color.</p>
+            </div>
+            <div>
+              <div class="guidance-card__example">
+                <span class="hb-tag hb-tag--grey">Submitted</span>
+                <span class="hb-tag hb-tag--orange">In review</span>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Keep labels short — one or two words that read at a glance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <span class="hb-tag hb-tag--green">G</span>
+                <span class="hb-tag hb-tag--red">R</span>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't rely on color alone to convey meaning — always include a clear text label.</p>
+            </div>
+            <div>
+              <div class="guidance-card__example">
+                <span class="hb-tag hb-tag--blue">A</span>
+                <span class="hb-tag hb-tag--green">B</span>
+                <span class="hb-tag hb-tag--red">C</span>
+                <span class="hb-tag hb-tag--yellow">D</span>
+                <span class="hb-tag hb-tag--orange">E</span>
+                <span class="hb-tag hb-tag--purple">F</span>
+                <span class="hb-tag hb-tag--pink">G</span>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't use too many colors in one view — it overwhelms and dilutes meaning.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

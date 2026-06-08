@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup select — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav">
+    <a href="../index.html" class="sidenav__back hb-text-caption-bold">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      hb-mininectar
+    </a>
+    <div class="sidenav__section hb-text-all-caps">Foundations</div>
+    <a href="typography.html" class="sidenav__link hb-text-body">Typography</a>
+    <div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Components</div>
+    <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
+    <a href="button.html" class="sidenav__link hb-text-body">Button</a>
+    <a href="tag.html" class="sidenav__link hb-text-body">Tag</a>
+    <a href="form-fields.html" class="sidenav__link hb-text-body">Form fields</a>
+    <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
+    <a href="radio.html" class="sidenav__link hb-text-body">Radio</a>
+    <a href="popup-select.html" class="sidenav__link sidenav__link--active hb-text-body">Popup select</a>
+    <a href="modal.html" class="sidenav__link hb-text-body">Modal</a>
+  </aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Popup select</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A popup select is a floating panel for choosing one or more options from a predefined list. It is triggered outside of form contexts — toolbar filters, table-row actions, segment pickers — where a full form field would be too heavy. Each option pairs a checkbox with a label, so users can select several values at once.</p>
+    </header>
+
+    <!-- Overview / Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Overview / Anatomy</h2>
+      <p class="section__desc hb-text-body">The popup select is composed of two regions: a header that names the selection and offers a way to clear it, and a scrollable list of selectable options. It floats above content and is dismissed when the user clicks away or confirms.</p>
+
+      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
+        <div class="hb-popup-select" style="width: 280px;">
+          <div class="hb-popup-select__header">
+            <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Filter by status</span>
+            <button class="hb-popup-select__clear">Clear</button>
+          </div>
+          <div class="hb-popup-select__list">
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-popup-select__label">Open</span>
+              <span class="hb-popup-select__count">12</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox">
+              <span class="hb-popup-select__label">In review</span>
+              <span class="hb-popup-select__count">5</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Header</span></td>
+              <td class="hb-text-body">Names what is being selected. Holds the title label and the clear action. Class <code>hb-popup-select__header</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Clear</span></td>
+              <td class="hb-text-body">Text button that resets all selections in one action. Class <code>hb-popup-select__clear</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">List</span></td>
+              <td class="hb-text-body">Scrollable container that holds the options. Class <code>hb-popup-select__list</code>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">4</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Option</span></td>
+              <td class="hb-text-body">A selectable row: <code>hb-checkbox</code> + <code>hb-popup-select__label</code> + optional <code>hb-popup-select__count</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">A static popup select shown open so its surface and shadow are visible. In production this panel is triggered from a toolbar button or table cell and appears on click.</p>
+
+      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
+        <div class="hb-popup-select" style="width: 280px;">
+          <div class="hb-popup-select__header">
+            <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Filter by status</span>
+            <button class="hb-popup-select__clear">Clear</button>
+          </div>
+          <div class="hb-popup-select__list">
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-popup-select__label">Open</span>
+              <span class="hb-popup-select__count">12</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-popup-select__label">In review</span>
+              <span class="hb-popup-select__count">5</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox">
+              <span class="hb-popup-select__label">Resolved</span>
+              <span class="hb-popup-select__count">38</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox">
+              <span class="hb-popup-select__label">Cancelled</span>
+              <span class="hb-popup-select__count">2</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__header"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-text-heading-small"</span><span class="token-class">&gt;</span>Filter by status<span class="token-class">&lt;/span&gt;</span>
+    <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__clear"</span><span class="token-class">&gt;</span>Clear<span class="token-class">&lt;/button&gt;</span>
+  <span class="token-class">&lt;/div&gt;</span>
+  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__list"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__option"</span><span class="token-class">&gt;</span>
+      <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"checkbox"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-checkbox"</span> <span class="token-attr">checked</span><span class="token-class">&gt;</span>
+      <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__label"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
+      <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__count"</span><span class="token-class">&gt;</span>12<span class="token-class">&lt;/span&gt;</span>
+    <span class="token-class">&lt;/label&gt;</span>
+  <span class="token-class">&lt;/div&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Usage -->
+    <section class="section" id="usage">
+      <h2 class="section__title hb-text-heading-small">Usage</h2>
+      <p class="section__desc hb-text-body">Reach for a popup select when users pick from a known, finite set of values outside of a form. For in-form selection use a Select field instead.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Use when</th><th class="hb-text-caption-bold">Avoid when</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body">Selecting multiple values outside a form — toolbar and table filters.</td>
+              <td class="hb-text-body">The control lives inside a form — use a <strong>Select</strong> field for consistent layout and validation.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body">The set of options is predefined and known up front.</td>
+              <td class="hb-text-body">Users need to enter free text or arbitrary values — use an <strong>input</strong>.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body">A lightweight, dismissible panel fits the surface (toolbar, row action).</td>
+              <td class="hb-text-body">Only one value can ever be chosen and persistent display is needed — consider a Select or Radio group.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-popup-select" style="width: 100%;">
+                  <div class="hb-popup-select__header">
+                    <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Status</span>
+                    <button class="hb-popup-select__clear">Clear</button>
+                  </div>
+                  <div class="hb-popup-select__list">
+                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox" checked><span class="hb-popup-select__label">Open</span><span class="hb-popup-select__count">12</span></label>
+                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox"><span class="hb-popup-select__label">Resolved</span><span class="hb-popup-select__count">38</span></label>
+                  </div>
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Order options logically and show counts so users can gauge impact before selecting.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Keep labels short and scannable — one or two words per option.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-popup-select" style="width: 100%;">
+                  <div class="hb-popup-select__list">
+                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox"><span class="hb-popup-select__label">Open — issues that have been logged but not yet triaged by the team</span></label>
+                  </div>
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't pack long descriptions into options. They break the scannable list rhythm.</p>
+            </div>
+            <div>
+              <p class="guidance-card__note hb-text-caption">Don't use a popup select inside a form — use a Select field so it aligns with surrounding inputs.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>

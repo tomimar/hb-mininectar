@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form fields — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav">
+    <a href="../index.html" class="sidenav__back hb-text-caption-bold">
+      <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      hb-mininectar
+    </a>
+    <div class="sidenav__section hb-text-all-caps">Foundations</div>
+    <a href="typography.html" class="sidenav__link hb-text-body">Typography</a>
+    <div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Components</div>
+    <a href="avatar.html" class="sidenav__link hb-text-body">Avatar</a>
+    <a href="button.html" class="sidenav__link hb-text-body">Button</a>
+    <a href="tag.html" class="sidenav__link hb-text-body">Tag</a>
+    <a href="form-fields.html" class="sidenav__link sidenav__link--active hb-text-body">Form fields</a>
+    <a href="checkbox.html" class="sidenav__link hb-text-body">Checkbox</a>
+    <a href="radio.html" class="sidenav__link hb-text-body">Radio</a>
+    <a href="popup-select.html" class="sidenav__link hb-text-body">Popup select</a>
+    <a href="modal.html" class="sidenav__link hb-text-body">Modal</a>
+  </aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Form fields</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Form fields capture user input. They share a common wrapper, label, and help-text structure so every control — input, textarea, select, and date input — behaves consistently. Clear labels and predictable states reduce errors and make forms faster to complete.</p>
+    </header>
+
+    <!-- Field anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Field anatomy</h2>
+      <p class="section__desc hb-text-body">Every control is wrapped in <code>hb-field</code>, which stacks four parts: a <code>hb-field__label</code> (with an optional <code>hb-field__required</code> asterisk), the control itself, and a <code>hb-field__help</code> hint. On error, swap help text for <code>hb-field__error</code>.</p>
+
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Full name <span class="hb-field__required">*</span></label>
+          <input class="hb-input" type="text" placeholder="Enter your full name">
+          <p class="hb-field__help">As it appears on official documents.</p>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__label"</span><span class="token-class">&gt;</span>Full name <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__required"</span><span class="token-class">&gt;</span>*<span class="token-class">&lt;/span&gt;&lt;/label&gt;</span>
+  <span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter your full name"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;p</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__help"</span><span class="token-class">&gt;</span>As it appears on official documents.<span class="token-class">&lt;/p&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Input -->
+    <section class="section" id="input">
+      <h2 class="section__title hb-text-heading-small">Input</h2>
+      <p class="section__desc hb-text-body">Single-line text input. Modifiers: <code>hb-input--sm</code> for dense layouts and <code>hb-input--error</code> for invalid values. Use the native <code>disabled</code> attribute for read-only views.</p>
+
+      <div class="preview preview--col" style="gap:var(--spacing-24);">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Default</label>
+          <input class="hb-input" type="text" value="Acme Corporation">
+        </div>
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">With placeholder</label>
+          <input class="hb-input" type="text" placeholder="Enter a value">
+        </div>
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Small</label>
+          <input class="hb-input hb-input--sm" type="text" placeholder="Compact input">
+        </div>
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Error</label>
+          <input class="hb-input hb-input--error" type="text" value="invalid@">
+          <p class="hb-field__error">Enter a valid email address.</p>
+        </div>
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Disabled</label>
+          <input class="hb-input" type="text" value="Read-only value" disabled>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter a value"</span><span class="token-class">&gt;</span>
+<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--sm"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
+<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--error"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
+<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">disabled</span><span class="token-class">&gt;</span></pre></div>
+    </section>
+
+    <!-- Textarea -->
+    <section class="section" id="textarea">
+      <h2 class="section__title hb-text-heading-small">Textarea</h2>
+      <p class="section__desc hb-text-body">Multi-line input for longer free-form content such as notes or descriptions. Set <code>rows</code> to a sensible default height.</p>
+
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:480px;">
+          <label class="hb-field__label">Description</label>
+          <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
+          <p class="hb-field__help">Up to 500 characters.</p>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;textarea</span> <span class="token-attr">class</span>=<span class="token-str">"hb-textarea"</span> <span class="token-attr">rows</span>=<span class="token-str">"3"</span><span class="token-class">&gt;&lt;/textarea&gt;</span></pre></div>
+    </section>
+
+    <!-- Select -->
+    <section class="section" id="select">
+      <h2 class="section__title hb-text-heading-small">Select</h2>
+      <p class="section__desc hb-text-body">Wrap a native <code>&lt;select&gt;</code> in <code>hb-select</code>. The wrapper draws the custom chevron and border so the control matches the rest of the field system across browsers.</p>
+
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Status</label>
+          <div class="hb-select">
+            <select>
+              <option value="">Select an option</option>
+              <option>Open</option>
+              <option>In review</option>
+              <option>Resolved</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-select"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;select&gt;</span>
+    <span class="token-class">&lt;option</span> <span class="token-attr">value</span>=<span class="token-str">""</span><span class="token-class">&gt;</span>Select an option<span class="token-class">&lt;/option&gt;</span>
+    <span class="token-class">&lt;option&gt;</span>Open<span class="token-class">&lt;/option&gt;</span>
+  <span class="token-class">&lt;/select&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Date input -->
+    <section class="section" id="date">
+      <h2 class="section__title hb-text-heading-small">Date input</h2>
+      <p class="section__desc hb-text-body">Wrap the control in <code>hb-date-input</code> and append a calendar icon using <code>hb-date-input__icon</code>. This is the static text field. For the full interactive calendar (DatePicker), which requires Alpine.js, see the implementation in <code>rfi-phase1/rfi.html</code> — no need to replicate the calendar here.</p>
+
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Due date</label>
+          <div class="hb-date-input" style="position: relative;">
+            <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
+            <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input"</span> <span class="token-attr">style</span>=<span class="token-str">"position: relative;"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"MM/DD/YYYY"</span>
+    <span class="token-attr">style</span>=<span class="token-str">"padding-right: 40px;"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input__icon"</span> <span class="token-attr">viewBox</span>=<span class="token-str">"0 0 24 24"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/svg&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- States -->
+    <section class="section" id="states">
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">All field controls share the same interaction states, handled automatically via CSS.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">White background with <code>--ui-border-secondary</code> border</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Border darkens slightly to signal interactivity</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus</code></td><td class="hb-text-body">Border turns blue with a ring using <code>--ui-interaction-soft</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Error</span></td><td class="hb-text-body"><code>hb-input--error</code></td><td class="hb-text-body">Border and ring use <code>--ui-status-danger</code>; pair with <code>hb-field__error</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-bg-tertiary</code>, muted text, no pointer events</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Email <span class="hb-field__required">*</span></label>
+                  <input class="hb-input" type="text" placeholder="name@company.com">
+                  <p class="hb-field__help">We'll send confirmations here.</p>
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Always pair a control with a visible label, and mark required fields.</p>
+            </div>
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Amount</label>
+                  <input class="hb-input hb-input--error" type="text" value="-50">
+                  <p class="hb-field__error">Amount must be greater than zero.</p>
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Show errors directly below the field, with help text for guidance.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-field" style="width:100%;">
+                  <input class="hb-input" type="text" placeholder="Email">
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't use the placeholder as the label — it disappears once typing starts.</p>
+            </div>
+            <div>
+              <div class="guidance-card__example">
+                <div class="hb-field" style="width:100%;">
+                  <label class="hb-field__label">Tax ID</label>
+                  <input class="hb-input" type="text">
+                </div>
+              </div>
+              <p class="guidance-card__note hb-text-caption">Don't leave required fields unmarked — users can't tell what's mandatory.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
