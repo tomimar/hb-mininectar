@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Textarea — hb-mininectar</title>
+  <title>Elevation — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <style>
@@ -258,6 +258,18 @@
 
     /* Divider */
     .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+
+    /* Elevation-specific helpers */
+    .elevation-demo {
+      width: 200px;
+      height: 80px;
+      background: var(--ui-bg);
+      border-radius: var(--border-radius-8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ui-text-secondary);
+    }
   </style>
 </head>
 <body>
@@ -271,40 +283,47 @@
 
     <!-- Header -->
     <header class="page-header">
-      <span class="page-header__badge hb-text-all-caps">Components</span>
-      <h1 class="page-header__title">Textarea</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A multi-line input for longer free-form content such as notes, descriptions, or comments. It shares the common field wrapper, label, and help-text structure with the rest of the field system. Give it a sensible default height so users can see they have room to write.</p>
+      <span class="page-header__badge hb-text-all-caps">Foundations</span>
+      <h1 class="page-header__title">Elevation</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Elevation communicates depth through shadow in light mode. It signals that an element floats above the canvas — apply it only when elements overlap other content, such as dropdowns and modals.</p>
     </header>
 
-    <!-- Example -->
-    <section class="section" id="example">
-      <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">Multi-line input for longer free-form content such as notes or descriptions. Set <code>rows</code> to a sensible default height.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:480px;">
-          <label class="hb-field__label">Description</label>
-          <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
-          <p class="hb-field__help">Up to 500 characters.</p>
+    <!-- Shadow tokens -->
+    <section class="section" id="shadows">
+      <h2 class="section__title hb-text-heading-small">Shadow tokens</h2>
+      <p class="section__desc hb-text-body">Two shadow tokens cover the elevation needs of the system. Each is shown on a white surface.</p>
+      <div class="preview" style="gap: var(--spacing-48); padding: var(--spacing-48);">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-12);">
+          <div class="elevation-demo" style="box-shadow: var(--shadow-overlay);"><code>--shadow-overlay</code></div>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Dropdowns, popovers, sticky bars</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-12);">
+          <div class="elevation-demo" style="box-shadow: var(--shadow-floating);"><code>--shadow-floating</code></div>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Modals, floating windows</span>
         </div>
       </div>
-      <div class="code-block"><pre><span class="token-class">&lt;textarea</span> <span class="token-attr">class</span>=<span class="token-str">"hb-textarea"</span> <span class="token-attr">rows</span>=<span class="token-str">"3"</span><span class="token-class">&gt;&lt;/textarea&gt;</span></pre></div>
-    </section>
-
-    <!-- States -->
-    <section class="section" id="states">
-      <h2 class="section__title hb-text-heading-small">States</h2>
-      <p class="section__desc hb-text-body">All field controls share the same interaction states, handled automatically via CSS.</p>
-
       <div class="state-table-wrap">
         <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
+          <thead><tr><th class="hb-text-caption-bold">Token</th><th class="hb-text-caption-bold">Value</th><th class="hb-text-caption-bold">Usage</th></tr></thead>
           <tbody>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">White background with <code>--ui-border-secondary</code> border</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Border darkens slightly to signal interactivity</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus</code></td><td class="hb-text-body">Border turns blue with a ring using <code>--ui-interaction-soft</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Error</span></td><td class="hb-text-body"><code>hb-input--error</code></td><td class="hb-text-body">Border and ring use <code>--ui-status-danger</code>; pair with <code>hb-field__error</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-bg-tertiary</code>, muted text, no pointer events</td></tr>
+            <tr><td class="hb-text-body"><code>--shadow-overlay</code></td><td class="hb-text-body">0 2px 6px rgba(0,0,0,0.16)</td><td class="hb-text-body">Dropdowns, popovers, sticky bars</td></tr>
+            <tr><td class="hb-text-body"><code>--shadow-floating</code></td><td class="hb-text-body">0 8px 24px rgba(0,0,0,0.14)</td><td class="hb-text-body">Modals, floating windows</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Layers -->
+    <section class="section" id="layers">
+      <h2 class="section__title hb-text-heading-small">Layers</h2>
+      <p class="section__desc hb-text-body">Each elevation layer maps to a shadow and a typical use.</p>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Layer</th><th class="hb-text-caption-bold">Shadow</th><th class="hb-text-caption-bold">Usage</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><code>layer-base</code></td><td class="hb-text-body">none</td><td class="hb-text-body">Canvas and inline content</td></tr>
+            <tr><td class="hb-text-body"><code>elevation-overlay</code></td><td class="hb-text-body"><code>--shadow-overlay</code></td><td class="hb-text-body">Dropdowns, popovers</td></tr>
+            <tr><td class="hb-text-body"><code>elevation-floating</code></td><td class="hb-text-body"><code>--shadow-floating</code></td><td class="hb-text-body">Modals</td></tr>
           </tbody>
         </table>
       </div>
@@ -313,7 +332,6 @@
     <!-- Best practices -->
     <section class="section" id="best-practices">
       <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
       <div class="guidance">
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--do">
@@ -321,42 +339,20 @@
             <span class="guidance-card__title hb-text-caption-bold">Do</span>
           </div>
           <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Notes</label>
-                  <textarea class="hb-textarea" rows="3" placeholder="Add any additional context"></textarea>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Set a sensible number of <code>rows</code> so the field signals how much room there is.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Description</label>
-                  <textarea class="hb-textarea" rows="4" placeholder="Describe the request in detail"></textarea>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Use it for longer, free-form content like descriptions, notes, or comments.</p>
-            </div>
+            <p class="guidance-card__note hb-text-caption">Apply shadows only when an element overlaps other content.</p>
+            <p class="guidance-card__note hb-text-caption">Use the layer tokens to keep elevation consistent.</p>
+            <p class="guidance-card__note hb-text-caption">Keep to the two floating levels defined by the system.</p>
           </div>
         </div>
-
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--dont">
             <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             <span class="guidance-card__title hb-text-caption-bold">Don't</span>
           </div>
           <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Email</label>
-                  <textarea class="hb-textarea" rows="3" placeholder="name@company.com"></textarea>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't use a textarea for short single-line values — use an <code>hb-input</code> instead.</p>
-            </div>
+            <p class="guidance-card__note hb-text-caption">Don't use shadows decoratively on resting elements.</p>
+            <p class="guidance-card__note hb-text-caption">Don't stack multiple shadows on one element.</p>
+            <p class="guidance-card__note hb-text-caption">Don't apply elevation to every card or surface.</p>
           </div>
         </div>
       </div>

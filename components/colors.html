@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colors — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+
+    /* Color-specific helpers */
+    .swatch-list { display: flex; flex-direction: column; }
+    .swatch-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-16);
+      padding: var(--spacing-12) 0;
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .swatch-row:last-child { border-bottom: none; }
+    .swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--border-radius-4);
+      border: 1px solid var(--ui-border);
+      flex-shrink: 0;
+    }
+    .swatch-row__name { flex: 1; color: var(--ui-text); }
+    .swatch-row__hex { color: var(--ui-text-tertiary); }
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: var(--spacing-16);
+    }
+    .swatch-family { margin-bottom: var(--spacing-16); }
+    .swatch-family__title { color: var(--ui-text); margin-bottom: var(--spacing-8); display: block; }
+    .swatch-cell { display: flex; flex-direction: column; gap: var(--spacing-4); }
+    .swatch-cell .swatch { width: 100%; height: 48px; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Foundations</span>
+      <h1 class="page-header__title">Colors</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">The color palette is built on the Nectar tokens. Semantic tokens map raw values to intent — scaffolding for surfaces, foreground for text, interaction for actions, status for feedback, and expressive colors for tags and data visualization. Always reference tokens rather than raw hex values.</p>
+    </header>
+
+    <!-- Scaffolding -->
+    <section class="section" id="scaffolding">
+      <h2 class="section__title hb-text-heading-small">Scaffolding</h2>
+      <p class="section__desc hb-text-body">Background and border colors that form the structural surfaces of the interface.</p>
+      <div class="preview preview--col">
+        <div class="swatch-list" style="width:100%;">
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-bg);"></div><code class="swatch-row__name">--ui-bg</code><span class="swatch-row__hex hb-text-caption">#ffffff</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-bg-secondary);"></div><code class="swatch-row__name">--ui-bg-secondary</code><span class="swatch-row__hex hb-text-caption">#f5f5f5</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-bg-tertiary);"></div><code class="swatch-row__name">--ui-bg-tertiary</code><span class="swatch-row__hex hb-text-caption">#e8e8e8</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-bg-overlay);"></div><code class="swatch-row__name">--ui-bg-overlay</code><span class="swatch-row__hex hb-text-caption">#ffffff</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-border);"></div><code class="swatch-row__name">--ui-border</code><span class="swatch-row__hex hb-text-caption">#d1d1d1</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-border-secondary);"></div><code class="swatch-row__name">--ui-border-secondary</code><span class="swatch-row__hex hb-text-caption">#b8b8b8</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Text & icons -->
+    <section class="section" id="text">
+      <h2 class="section__title hb-text-heading-small">Text & icons</h2>
+      <p class="section__desc hb-text-body">Foreground colors for text and iconography across levels of emphasis.</p>
+      <div class="preview preview--col">
+        <div class="swatch-list" style="width:100%;">
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-text);"></div><code class="swatch-row__name">--ui-text</code><span class="swatch-row__hex hb-text-caption">#000000</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-text-secondary);"></div><code class="swatch-row__name">--ui-text-secondary</code><span class="swatch-row__hex hb-text-caption">#595959</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-text-tertiary);"></div><code class="swatch-row__name">--ui-text-tertiary</code><span class="swatch-row__hex hb-text-caption">#767676</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-text-knockout);"></div><code class="swatch-row__name">--ui-text-knockout</code><span class="swatch-row__hex hb-text-caption">#ffffff</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-icon);"></div><code class="swatch-row__name">--ui-icon</code><span class="swatch-row__hex hb-text-caption">#595959</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interaction -->
+    <section class="section" id="interaction">
+      <h2 class="section__title hb-text-heading-small">Interaction</h2>
+      <p class="section__desc hb-text-body">Blue tones for primary actions, focus states, and links.</p>
+      <div class="preview preview--col">
+        <div class="swatch-list" style="width:100%;">
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-interaction);"></div><code class="swatch-row__name">--ui-interaction</code><span class="swatch-row__hex hb-text-caption">#0a6cff</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-interaction-contrast);"></div><code class="swatch-row__name">--ui-interaction-contrast</code><span class="swatch-row__hex hb-text-caption">#003f9e</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-interaction-soft);"></div><code class="swatch-row__name">--ui-interaction-soft</code><span class="swatch-row__hex hb-text-caption">#ccdeff</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-interaction-link);"></div><code class="swatch-row__name">--ui-interaction-link</code><span class="swatch-row__hex hb-text-caption">#005eeb</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Status -->
+    <section class="section" id="status">
+      <h2 class="section__title hb-text-heading-small">Status</h2>
+      <p class="section__desc hb-text-body">Feedback colors that signal danger, success, and warning.</p>
+      <div class="preview preview--col">
+        <div class="swatch-list" style="width:100%;">
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-danger);"></div><code class="swatch-row__name">--ui-status-danger</code><span class="swatch-row__hex hb-text-caption">#e32402</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-danger-text);"></div><code class="swatch-row__name">--ui-status-danger-text</code><span class="swatch-row__hex hb-text-caption">#fd4f30</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-danger-soft);"></div><code class="swatch-row__name">--ui-status-danger-soft</code><span class="swatch-row__hex hb-text-caption">#fdd5ce</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-success);"></div><code class="swatch-row__name">--ui-status-success</code><span class="swatch-row__hex hb-text-caption">#1e8536</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-success-contrast);"></div><code class="swatch-row__name">--ui-status-success-contrast</code><span class="swatch-row__hex hb-text-caption">#065120</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-success-soft);"></div><code class="swatch-row__name">--ui-status-success-soft</code><span class="swatch-row__hex hb-text-caption">#c7ebcb</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-warning);"></div><code class="swatch-row__name">--ui-status-warning</code><span class="swatch-row__hex hb-text-caption">#f3ce45</span></div>
+          <div class="swatch-row"><div class="swatch" style="background: var(--ui-status-warning-contrast);"></div><code class="swatch-row__name">--ui-status-warning-contrast</code><span class="swatch-row__hex hb-text-caption">#655106</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Expressive -->
+    <section class="section" id="expressive">
+      <h2 class="section__title hb-text-heading-small">Expressive</h2>
+      <p class="section__desc hb-text-body">Categorical colors for tags, avatars, and data visualization. Each family has a base, a contrast, and a soft variant. Use for differentiation — never for core UI.</p>
+      <div class="preview preview--col" style="display:block;">
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Blue</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-blue);"></div><code>--ui-expressive-blue</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-blue-contrast);"></div><code>--ui-expressive-blue-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-blue-soft);"></div><code>--ui-expressive-blue-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Green</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-green);"></div><code>--ui-expressive-green</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-green-contrast);"></div><code>--ui-expressive-green-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-green-soft);"></div><code>--ui-expressive-green-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Red</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-red);"></div><code>--ui-expressive-red</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-red-contrast);"></div><code>--ui-expressive-red-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-red-soft);"></div><code>--ui-expressive-red-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Orange</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-orange);"></div><code>--ui-expressive-orange</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-orange-contrast);"></div><code>--ui-expressive-orange-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-orange-soft);"></div><code>--ui-expressive-orange-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Yellow</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-yellow);"></div><code>--ui-expressive-yellow</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-yellow-contrast);"></div><code>--ui-expressive-yellow-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-yellow-soft);"></div><code>--ui-expressive-yellow-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Purple</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-purple);"></div><code>--ui-expressive-purple</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-purple-contrast);"></div><code>--ui-expressive-purple-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-purple-soft);"></div><code>--ui-expressive-purple-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family">
+          <span class="swatch-family__title hb-text-body-bold">Pink</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-pink);"></div><code>--ui-expressive-pink</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-pink-contrast);"></div><code>--ui-expressive-pink-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-pink-soft);"></div><code>--ui-expressive-pink-soft</code></div>
+          </div>
+        </div>
+        <div class="swatch-family" style="margin-bottom:0;">
+          <span class="swatch-family__title hb-text-body-bold">Brown</span>
+          <div class="swatch-grid">
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-brown);"></div><code>--ui-expressive-brown</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-brown-contrast);"></div><code>--ui-expressive-brown-contrast</code></div>
+            <div class="swatch-cell"><div class="swatch" style="background: var(--ui-expressive-brown-soft);"></div><code>--ui-expressive-brown-soft</code></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-caption">Use scaffolding tokens for surfaces and borders.</p>
+            <p class="guidance-card__note hb-text-caption">Use foreground tokens for all text and icons.</p>
+            <p class="guidance-card__note hb-text-caption">Use interaction tokens for primary actions, focus and links.</p>
+            <p class="guidance-card__note hb-text-caption">Use status tokens for feedback — danger, success, warning.</p>
+            <p class="guidance-card__note hb-text-caption">Use expressive colors for tags, avatars and charts.</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-caption">Don't use expressive colors for core UI elements like buttons or backgrounds.</p>
+            <p class="guidance-card__note hb-text-caption">Don't use raw hex values outside the token set.</p>
+            <p class="guidance-card__note hb-text-caption">Don't repurpose status colors for decoration.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>
