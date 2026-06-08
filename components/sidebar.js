@@ -41,10 +41,11 @@
 
     var html = '';
 
-    // Logo / home
-    html += '<a href="' + introHref + '" class="sidenav__back hb-text-caption-bold">';
-    html += '<svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>';
-    html += 'hb-mininectar</a>';
+    // Wordmark + beta badge
+    html += '<div class="sidenav__back" style="gap: var(--spacing-8);">';
+    html += '<span class="hb-text-body-bold" style="color: var(--ui-text);">Mini Nectar</span>';
+    html += '<span class="hb-text-caption-bold" style="background: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue-contrast); padding: 0 var(--spacing-8); border-radius: var(--border-radius-round);">beta</span>';
+    html += '</div>';
 
     // Foundations
     html += '<div class="sidenav__section hb-text-all-caps">Foundations</div>';
