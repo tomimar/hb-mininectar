@@ -108,229 +108,39 @@ All CSS custom properties. Key ones:
 
 ---
 
-## Components (components.css)
+## Components
 
-Components with a dedicated documentation page are linked below — they contain full specs, examples, and usage guidelines. Components without a page include a code snippet as reference.
+Every component has a dedicated documentation page with live examples, all variants/states, usage guidelines and best practices. Browse them in the docs site sidebar:
 
-**Documentation pages:** https://tomimar.github.io/hb-mininectar/
+**Docs site:** https://tomimar.github.io/hb-mininectar/
 
-### Typography
+### Foundations
 
-```html
-<p class="hb-text-heading">Page title (16px/500)</p>
-<p class="hb-text-heading-small">Section title (14px/600)</p>
-<p class="hb-text-body">Default text (14px/400)</p>
-<p class="hb-text-body-bold">Emphasized text (14px/500)</p>
-<p class="hb-text-caption">Small text (12px/400)</p>
-<p class="hb-text-caption-bold">Small bold (12px/500)</p>
-<p class="hb-text-all-caps">LABEL (12px/400/1px tracking)</p>
-```
+| Page | Link |
+|---|---|
+| Colors | https://tomimar.github.io/hb-mininectar/components/colors.html |
+| Spacing | https://tomimar.github.io/hb-mininectar/components/spacing.html |
+| Border radius | https://tomimar.github.io/hb-mininectar/components/border-radius.html |
+| Elevation | https://tomimar.github.io/hb-mininectar/components/elevation.html |
+| Typography | https://tomimar.github.io/hb-mininectar/components/typography.html |
 
-### Avatar
+### Components
 
-```html
-<!-- Sizes: --sm (24px) / --md (32px, default) / --lg (40px) -->
-<div class="hb-avatar hb-avatar--md">SD</div>
+| Component | Classes | Docs |
+|---|---|---|
+| Avatar | `hb-avatar` (`--sm`/`--md`/`--lg`) + `hb-avatar-group` (`__overflow`) | https://tomimar.github.io/hb-mininectar/components/avatar.html |
+| Button | `hb-btn` · types `--primary`/`--secondary`/`--tertiary`/`--ghost`/`--danger`/`--confirmation` · sizes `--lg`/`--sm` · `--full-width` | https://tomimar.github.io/hb-mininectar/components/button.html |
+| Tag | `hb-tag` (10 colors) + `hb-tag__remove` + `hb-tag-group` | https://tomimar.github.io/hb-mininectar/components/tag.html |
+| Input | `hb-field` (`__label`/`__required`/`__help`/`__error`) + `hb-input` (`--sm`/`--error`) | https://tomimar.github.io/hb-mininectar/components/input.html |
+| Textarea | `hb-textarea` | https://tomimar.github.io/hb-mininectar/components/textarea.html |
+| Select | `hb-select` (wraps native `<select>`) | https://tomimar.github.io/hb-mininectar/components/select.html |
+| Date input | `hb-date-input` + `__icon` | https://tomimar.github.io/hb-mininectar/components/date-input.html |
+| Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
+| Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
+| Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
+| Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
 
-<!-- Custom color via CSS variable -->
-<div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-interaction-contrast)">SD</div>
-
-<!-- Expressive colors for team members -->
-<div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-```
-
-### AvatarGroup
-
-```html
-<!-- Avatars overlap automatically. Max 5 visible + overflow counter -->
-<div class="hb-avatar-group">
-  <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-  <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
-  <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-  <span class="hb-avatar-group__overflow">+2</span>
-</div>
-```
-
-### Button
-
-→ Full documentation: **https://tomimar.github.io/hb-mininectar/components/button.html**
-
-Types: `primary` / `secondary` / `tertiary` / `ghost` / `danger` / `confirmation` · Sizes: `--lg` (default) / `--sm`
-
-### Tag
-
-```html
-<!-- Colors: grey / green / red / yellow / blue / orange / pink / brown / purple / outlined -->
-<span class="hb-tag hb-tag--blue">Open</span>
-<span class="hb-tag hb-tag--green">Resolved</span>
-<span class="hb-tag hb-tag--grey">Submitted</span>
-<span class="hb-tag hb-tag--red">Cancelled</span>
-
-<!-- With remove button -->
-<span class="hb-tag hb-tag--blue">
-  Label
-  <button class="hb-tag__remove" aria-label="Remove">×</button>
-</span>
-
-<!-- Group -->
-<div class="hb-tag-group">
-  <span class="hb-tag hb-tag--blue">Tag 1</span>
-  <span class="hb-tag hb-tag--green">Tag 2</span>
-</div>
-```
-
-### Input
-
-```html
-<!-- Always wrap fields in hb-field -->
-<div class="hb-field">
-  <label class="hb-field__label">Label <span class="hb-field__required">*</span></label>
-  <input class="hb-input" type="text" placeholder="Enter value">
-  <p class="hb-field__help">Optional help text</p>
-</div>
-
-<!-- Modifiers: --sm (32px) / --error -->
-<input class="hb-input hb-input--sm" type="text">
-<input class="hb-input hb-input--error" type="text">
-<input class="hb-input" disabled value="Read-only value">
-```
-
-### Textarea
-
-```html
-<textarea class="hb-textarea" rows="3"></textarea>
-<textarea class="hb-textarea" disabled>Read-only content</textarea>
-```
-
-### Select
-
-```html
-<!-- Wrap native select in hb-select -->
-<div class="hb-select">
-  <select>
-    <option value="">Select an option</option>
-    <option>Option 1</option>
-  </select>
-</div>
-```
-
-### Date input
-
-```html
-<!-- Wrap in hb-date-input, add calendar icon -->
-<div class="hb-date-input" style="position: relative;">
-  <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
-  <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-  </svg>
-</div>
-<!-- Full interactive calendar (DatePicker) needs Alpine.js — see DatePicker section below -->
-```
-
-### Checkbox
-
-```html
-<!-- Standalone -->
-<label class="hb-checkbox-row">
-  <input type="checkbox" class="hb-checkbox">
-  <span>Option label</span>
-</label>
-
-<!-- Group -->
-<div class="hb-checkbox-group">
-  <span class="hb-checkbox-group__label">Group label</span>
-  <label class="hb-checkbox-row">
-    <input type="checkbox" class="hb-checkbox">
-    <span>Option 1</span>
-  </label>
-</div>
-```
-
-### Radio
-
-```html
-<!-- Standalone -->
-<label class="hb-radio-row">
-  <input type="radio" class="hb-radio" name="group" value="yes">
-  <span>Yes</span>
-</label>
-
-<!-- Group -->
-<div class="hb-radio-group">
-  <span class="hb-radio-group__label">Question label</span>
-  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="q1" value="Y"><span>Yes</span></label>
-  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="q1" value="N"><span>No</span></label>
-  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="q1" value="NA"><span>N/A</span></label>
-</div>
-```
-
-### PopupSelect (dropdown multiselect)
-
-```html
-<div class="hb-popup-select">
-  <div class="hb-popup-select__header">
-    <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Filter by status</span>
-    <button class="hb-popup-select__clear">Clear</button>
-  </div>
-  <div class="hb-popup-select__list">
-    <label class="hb-popup-select__option">
-      <input type="checkbox" class="hb-checkbox">
-      <span class="hb-popup-select__label">Open</span>
-      <span class="hb-popup-select__count">3</span>
-    </label>
-  </div>
-</div>
-```
-
-### Modal
-
-```html
-<!-- Use x-show + x-cloak with Alpine.js -->
-<div class="hb-modal-overlay" @click="closeModal" @keydown.escape.window="closeModal">
-  <div class="hb-modal" @click.stop>
-    <div class="hb-modal__header">
-      <span class="hb-modal__title">Modal title</span>
-      <button class="hb-modal__close" @click="closeModal" aria-label="Close">
-        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-      </button>
-    </div>
-    <div class="hb-modal__body">
-      <p class="hb-text-body" style="color: var(--ui-text)">Modal content goes here.</p>
-    </div>
-    <div class="hb-modal__footer">
-      <button class="hb-btn hb-btn--ghost hb-btn--lg" @click="closeModal">Cancel</button>
-      <button class="hb-btn hb-btn--primary hb-btn--lg" @click="confirm">Confirm</button>
-    </div>
-  </div>
-</div>
-```
-
-### DatePicker (custom calendar — Alpine.js required)
-
-Copy the `hbDatepicker(modelKey)` function from `rfi-phase1/rfi.html` (end of script).
-
-```html
-<div class="hb-field" x-data="hbDatepicker('fieldKey')" @click.outside="dpOpen = false">
-  <label class="hb-field__label">Date label</label>
-  <div class="hb-date-input" style="position: relative;">
-    <div style="position:relative;width:100%;">
-      <input type="text" class="hb-input" placeholder="MM/DD/YYYY"
-        x-init="dpInit(a['fieldKey'])"
-        :value="dpInputValue"
-        @input="dpHandleInput($event.target.value)"
-        @focus="dpOpen = true"
-        style="padding-right: 40px;">
-      <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--ui-icon);pointer-events:none;">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-      </svg>
-    </div>
-    <!-- Calendar panel — copy full markup from rfi-phase1/rfi.html -->
-  </div>
-</div>
-```
+**DatePicker (interactive calendar):** the full calendar needs Alpine.js. Copy the `hbDatepicker(modelKey)` function and calendar markup from `rfi-phase1/rfi.html` — the static field is documented on the Date input page above.
 
 ---
 
