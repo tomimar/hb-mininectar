@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toast — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Toast</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Short-lived notifications that acknowledge a user action or surface a system event. Unlike alerts, toasts are transient — they appear briefly in a corner of the viewport and never block interaction.</p>
+    </header>
+
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">A solid-colored bar with an icon, message, optional action button and optional dismiss. Max-width 720px, drop shadow.</p>
+      <div class="preview preview--col">
+        <div class="hb-toast hb-toast--info" style="width:100%;">
+          <svg class="hb-toast__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <p class="hb-toast__content">Scheduled maintenance starts Sunday at 2am.</p>
+          <button class="hb-toast__action">Details</button>
+          <button class="hb-toast__dismiss" aria-label="Dismiss"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toast hb-toast--info"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toast__icon"</span> …<span class="token-class">&gt;&lt;/svg&gt;</span>
+  <span class="token-class">&lt;p</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toast__content"</span><span class="token-class">&gt;</span>Message<span class="token-class">&lt;/p&gt;</span>
+  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toast__action"</span><span class="token-class">&gt;</span>Undo<span class="token-class">&lt;/button&gt;</span>
+  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toast__dismiss"</span><span class="token-class">&gt;</span>…<span class="token-class">&lt;/button&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
+    <!-- Types -->
+    <section class="section" id="types">
+      <h2 class="section__title hb-text-heading-small">Types</h2>
+      <p class="section__desc hb-text-body">Five variants. Info and Success auto-dismiss; Warning and Error never do. Loading persists until the process ends.</p>
+      <div class="variant-grid">
+        <div class="variant-row">
+          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Info</span><span class="variant-desc hb-text-caption">Neutral notices. Auto-dismiss after 4s.</span></div>
+          <div class="preview"><div class="hb-toast hb-toast--info" style="width:100%;"><svg class="hb-toast__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-toast__content">Scheduled maintenance at 2am Sunday.</p></div></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Success</span><span class="variant-desc hb-text-caption">Confirms an action. Optionally include "Undo".</span></div>
+          <div class="preview"><div class="hb-toast hb-toast--success" style="width:100%;"><svg class="hb-toast__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-toast__content">Message deleted</p><button class="hb-toast__action">Undo</button></div></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Warning</span><span class="variant-desc hb-text-caption">Black text on yellow. Never auto-dismiss; always dismissible.</span></div>
+          <div class="preview"><div class="hb-toast hb-toast--warning" style="width:100%;"><svg class="hb-toast__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><p class="hb-toast__content">Your session will expire in 5 minutes. Save your changes.</p><button class="hb-toast__dismiss" aria-label="Dismiss"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Error</span><span class="variant-desc hb-text-caption">A failure. Never auto-dismiss. Optional "Retry".</span></div>
+          <div class="preview"><div class="hb-toast hb-toast--error" style="width:100%;"><svg class="hb-toast__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-toast__content">Your request could not be completed. Please try again.</p><button class="hb-toast__dismiss" aria-label="Dismiss"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Loading</span><span class="variant-desc hb-text-caption">Ongoing background process. Spinner + optional "Cancel". Never auto-dismiss.</span></div>
+          <div class="preview"><div class="hb-toast hb-toast--loading" style="width:100%;"><span class="hb-loader hb-loader--circular hb-loader--contrast hb-toast__icon"></span><p class="hb-toast__content">Reading document… This may take a moment.</p><button class="hb-toast__action">Cancel</button></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Behavior -->
+    <section class="section" id="behavior">
+      <h2 class="section__title hb-text-heading-small">Behavior</h2>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Variant</th><th class="hb-text-caption-bold">Auto-dismiss</th><th class="hb-text-caption-bold">Dismissible</th><th class="hb-text-caption-bold">Action link</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">Default / Info</td><td class="hb-text-body">4s</td><td class="hb-text-body">Optional</td><td class="hb-text-body">Optional</td></tr>
+            <tr><td class="hb-text-body">Success</td><td class="hb-text-body">4s</td><td class="hb-text-body">Optional</td><td class="hb-text-body">Optional</td></tr>
+            <tr><td class="hb-text-body">Warning</td><td class="hb-text-body">Never</td><td class="hb-text-body">Required</td><td class="hb-text-body">Required</td></tr>
+            <tr><td class="hb-text-body">Error</td><td class="hb-text-body">Never</td><td class="hb-text-body">Required</td><td class="hb-text-body">Optional ("Retry")</td></tr>
+            <tr><td class="hb-text-body">Loading</td><td class="hb-text-body">Never</td><td class="hb-text-body">Never</td><td class="hb-text-body">Optional ("Cancel")</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Toast vs Alert -->
+    <section class="section" id="vs-alert">
+      <h2 class="section__title hb-text-heading-small">Toast vs Alert</h2>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold"></th><th class="hb-text-caption-bold">Toast</th><th class="hb-text-caption-bold">Alert</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Trigger</span></td><td class="hb-text-body">Action / background process</td><td class="hb-text-body">Page load / system status</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Placement</span></td><td class="hb-text-body">Corner of viewport (overlay)</td><td class="hb-text-body">Top of page (in-flow)</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Lifespan</span></td><td class="hb-text-body">Transient, auto-dismisses</td><td class="hb-text-body">Persistent until resolved</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Use for</span></td><td class="hb-text-body">Feedback, background tasks</td><td class="hb-text-body">System-wide status</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span class="guidance-card__title hb-text-caption-bold">Do</span></div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Keep messages to 1–2 lines.</p>
+            <p class="guidance-card__note hb-text-body">Use only one action link per toast.</p>
+            <p class="guidance-card__note hb-text-body">Stack toasts vertically (max 3 visible).</p>
+            <p class="guidance-card__note hb-text-body">Auto-dismiss info and success toasts.</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg><span class="guidance-card__title hb-text-caption-bold">Don't</span></div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Auto-dismiss errors or warnings.</p>
+            <p class="guidance-card__note hb-text-body">Use for blocking errors — use a Modal.</p>
+            <p class="guidance-card__note hb-text-body">Stack more than 3 toasts at once.</p>
+            <p class="guidance-card__note hb-text-body">Put long copy, multiple CTAs, or form validation in a toast.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>

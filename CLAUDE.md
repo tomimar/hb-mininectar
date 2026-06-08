@@ -137,13 +137,16 @@ Every component has a dedicated documentation page with live examples, all varia
 | Textarea | `hb-textarea` | https://tomimar.github.io/hb-mininectar/components/textarea.html |
 | Select | `hb-select` (wraps native `<select>`) | https://tomimar.github.io/hb-mininectar/components/select.html |
 | Date input | `hb-date-input` + `__icon` | https://tomimar.github.io/hb-mininectar/components/date-input.html |
-| Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
+| Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
 | Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
 | Toggle | `hb-toggle` + `hb-toggle__input`/`__track`/`__thumb`/`__label` | https://tomimar.github.io/hb-mininectar/components/toggle.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
 | Tooltip | `hb-tooltip` + `hb-tooltip__content` (`--top`/`--left`/`--right`) | https://tomimar.github.io/hb-mininectar/components/tooltip.html |
+| Alert | `hb-alert` (`--info`/`--success`/`--warning`/`--error`) + `hb-alert__icon`/`__content`/`__link`/`__dismiss` | https://tomimar.github.io/hb-mininectar/components/alert.html |
+| Toast | `hb-toast` (`--info`/`--success`/`--warning`/`--error`/`--loading`) + `hb-toast__icon`/`__content`/`__action`/`__dismiss` | https://tomimar.github.io/hb-mininectar/components/toast.html |
+| Loader | `hb-loader` (`--circular`/`--linear`/`--contrast`) | https://tomimar.github.io/hb-mininectar/components/loader.html |
 
 **DatePicker (interactive calendar):** use the self-contained `datepicker.js` — plain JavaScript, no Alpine.js. Add `data-hb-datepicker` to a `hb-date-input` wrapper and include the script:
 
@@ -273,3 +276,6 @@ git push
 | Toggle | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8058-2755) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8052-370) | — |
 | Link | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8131-1945) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=7745-1944) | — |
 | Tooltip | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8169-1944) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8169-718) | — |
+| Alert | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8174-1659) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8174-1273) | — |
+| Toast | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-1917) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8239-3395) | — |
+| Loader | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-2332) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-1960) | — |

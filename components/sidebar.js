@@ -42,6 +42,9 @@
       ['Link',            'link.html'],
       ['Modal',           'modal.html'],
       ['Tooltip',         'tooltip.html'],
+      ['Alert',           'alert.html'],
+      ['Toast',           'toast.html'],
+      ['Loader',          'loader.html'],
     ];
 
     var html = '';
