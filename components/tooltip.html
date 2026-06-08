@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tooltip — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Tooltip</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A Tooltip displays a short contextual label that appears when a user hovers over or focuses an element. It is non-interactive — it only delivers information, never contains actions or clickable elements.</p>
+    </header>
+
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">Wrap a trigger in <code>hb-tooltip</code> and add an <code>hb-tooltip__content</code> bubble. It shows on hover or keyboard focus. Hover the button below.</p>
+      <div class="preview" style="padding: var(--spacing-48); justify-content:center;">
+        <span class="hb-tooltip" tabindex="0">
+          <button class="hb-fab hb-fab--secondary hb-fab--icon" aria-label="Info">
+            <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </button>
+          <span class="hb-tooltip__content" role="tooltip">More information about this action</span>
+        </span>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tooltip"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab hb-fab--secondary hb-fab--icon"</span><span class="token-class">&gt;</span>…<span class="token-class">&lt;/button&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-tooltip__content"</span> <span class="token-attr">role</span>=<span class="token-str">"tooltip"</span><span class="token-class">&gt;</span>More information<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;/span&gt;</span></pre></div>
+    </section>
+
+    <!-- The bubble -->
+    <section class="section" id="bubble">
+      <h2 class="section__title hb-text-heading-small">The bubble</h2>
+      <p class="section__desc hb-text-body">The bubble uses <code>--ui-text</code> background, white text, 8px padding, 8px radius, 12px caption type and a max-width of 240px.</p>
+      <div class="preview preview--col">
+        <span class="hb-tooltip__content">Short label</span>
+        <span class="hb-tooltip__content">A longer tooltip wraps onto multiple lines once it reaches its maximum width of 240 pixels.</span>
+      </div>
+    </section>
+
+    <!-- Placement -->
+    <section class="section" id="placement">
+      <h2 class="section__title hb-text-heading-small">Placement</h2>
+      <p class="section__desc hb-text-body">Renders below the trigger by default with an 8px gap. Available placements: top, bottom, left, right (add <code>hb-tooltip__content--top</code> / <code>--left</code> / <code>--right</code>). In production it flips to the opposite side if there isn't enough space.</p>
+      <div class="preview" style="padding: var(--spacing-64); gap: var(--spacing-64); justify-content:center;">
+        <span class="hb-tooltip" tabindex="0">
+          <button class="hb-fab hb-fab--secondary">Top</button>
+          <span class="hb-tooltip__content hb-tooltip__content--top">Tooltip on top</span>
+        </span>
+        <span class="hb-tooltip" tabindex="0">
+          <button class="hb-fab hb-fab--secondary">Bottom</button>
+          <span class="hb-tooltip__content">Tooltip on bottom</span>
+        </span>
+        <span class="hb-tooltip" tabindex="0">
+          <button class="hb-fab hb-fab--secondary">Right</button>
+          <span class="hb-tooltip__content hb-tooltip__content--right">Tooltip on the right</span>
+        </span>
+      </div>
+    </section>
+
+    <!-- Behaviour -->
+    <section class="section" id="behaviour">
+      <h2 class="section__title hb-text-heading-small">Behaviour</h2>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Moment</th><th class="hb-text-caption-bold">Behaviour</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">Show</td><td class="hb-text-body">On hover or keyboard focus (Tab), after a ~300ms delay to avoid accidental triggers.</td></tr>
+            <tr><td class="hb-text-body">Hide</td><td class="hb-text-body">When the cursor leaves, focus is lost, or the user presses Escape.</td></tr>
+            <tr><td class="hb-text-body">Position</td><td class="hb-text-body">Below by default; flips to fit the viewport. 8px gap from the trigger.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Keep tooltip text short.</p>
+            <p class="guidance-card__note hb-text-body">Use sentence case for all tooltip content.</p>
+            <p class="guidance-card__note hb-text-body">Make tooltips accessible via keyboard, not just mouse hover.</p>
+            <p class="guidance-card__note hb-text-body">Use for icon-only buttons that lack a visible label.</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Put links, buttons or interactive elements inside a tooltip.</p>
+            <p class="guidance-card__note hb-text-body">Use tooltips for content the user must read to complete a task.</p>
+            <p class="guidance-card__note hb-text-body">Use a tooltip for critical information that must always be visible.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>

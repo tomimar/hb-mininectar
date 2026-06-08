@@ -1623,3 +1623,225 @@ body {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+
+/* ── Toggle (switch) ──────────────────────────────────────── */
+/*
+  A binary on/off switch that takes effect immediately.
+
+  Usage:
+    <label class="hb-toggle">
+      <input type="checkbox" class="hb-toggle__input" checked>
+      <span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span>
+      <span class="hb-toggle__label">Label</span>
+    </label>
+
+  Track 36×20px · thumb 16×16px · gap track→label 8px.
+*/
+
+.hb-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  cursor: pointer;
+}
+
+.hb-toggle__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+  pointer-events: none;
+}
+
+.hb-toggle__track {
+  position: relative;
+  flex-shrink: 0;
+  width: 36px;
+  height: 20px;
+  background: var(--ui-disabled-soft);
+  border-radius: var(--border-radius-round);
+  transition: background 120ms ease;
+}
+
+.hb-toggle__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: var(--ui-bg);
+  border-radius: 50%;
+  box-shadow: var(--shadow-overlay);
+  transition: transform 120ms ease;
+}
+
+.hb-toggle__label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+/* On */
+.hb-toggle__input:checked + .hb-toggle__track {
+  background: var(--ui-interaction);
+}
+.hb-toggle__input:checked + .hb-toggle__track .hb-toggle__thumb {
+  transform: translateX(16px);
+}
+
+/* Focus */
+.hb-toggle__input:focus-visible + .hb-toggle__track {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 2px;
+}
+
+/* Disabled */
+.hb-toggle__input:disabled + .hb-toggle__track {
+  background: var(--ui-bg-tertiary);
+}
+.hb-toggle__input:checked:disabled + .hb-toggle__track {
+  background: var(--ui-interaction-soft);
+}
+.hb-toggle:has(.hb-toggle__input:disabled) {
+  cursor: not-allowed;
+}
+.hb-toggle:has(.hb-toggle__input:disabled) .hb-toggle__label {
+  color: var(--ui-disabled);
+}
+
+
+/* ── Link ─────────────────────────────────────────────────── */
+/*
+  Usage:
+    <a href="#" class="hb-link">Link</a>
+    <a href="#" class="hb-link hb-link--subtle">Link</a>
+    <a href="#" class="hb-link hb-link--reverse">Link</a>     (dark backgrounds)
+    <a href="#" class="hb-link hb-link--disabled">Link</a>
+    <a href="#" class="hb-link">Link <svg class="hb-link__icon">…</svg></a>  (open in new tab)
+*/
+
+.hb-link {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-4);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-interaction-link);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.hb-link:hover {
+  text-decoration: none;
+}
+
+.hb-link:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 2px;
+  border-radius: var(--border-radius-4);
+  text-decoration: none;
+}
+
+.hb-link__icon {
+  align-self: center;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Subtle — low emphasis */
+.hb-link--subtle {
+  color: var(--ui-text-tertiary);
+  text-decoration: none;
+}
+.hb-link--subtle:hover {
+  text-decoration: underline;
+}
+
+/* Reverse — on dark/colored backgrounds */
+.hb-link--reverse {
+  color: var(--ui-text-knockout);
+  text-decoration: underline;
+}
+
+/* Disabled */
+.hb-link--disabled {
+  color: var(--ui-disabled);
+  text-decoration: none;
+  pointer-events: none;
+  cursor: default;
+}
+
+
+/* ── Tooltip ──────────────────────────────────────────────── */
+/*
+  A short, non-interactive contextual label shown on hover/focus.
+
+  Usage (CSS-driven):
+    <span class="hb-tooltip">
+      <button class="hb-fab hb-fab--secondary hb-fab--icon">…</button>
+      <span class="hb-tooltip__content" role="tooltip">Helpful hint</span>
+    </span>
+
+  Placement: default bottom. Add hb-tooltip__content--top / --left / --right.
+  Standalone bubble: use .hb-tooltip__content on its own.
+*/
+
+.hb-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.hb-tooltip__content {
+  display: inline-block;
+  width: max-content;
+  max-width: 240px;
+  background: var(--ui-text);
+  color: var(--ui-bg);
+  padding: var(--spacing-8);
+  border-radius: var(--border-radius-8);
+  font-family: var(--font-family);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+}
+
+/* Interactive (wrapped) tooltip — positioned + toggled on hover/focus */
+.hb-tooltip .hb-tooltip__content {
+  position: absolute;
+  top: calc(100% + var(--spacing-8));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.hb-tooltip:hover .hb-tooltip__content,
+.hb-tooltip:focus-within .hb-tooltip__content {
+  opacity: 1;
+}
+
+/* Placements */
+.hb-tooltip .hb-tooltip__content--top {
+  top: auto;
+  bottom: calc(100% + var(--spacing-8));
+}
+.hb-tooltip .hb-tooltip__content--left {
+  top: 50%;
+  left: auto;
+  right: calc(100% + var(--spacing-8));
+  transform: translateY(-50%);
+}
+.hb-tooltip .hb-tooltip__content--right {
+  top: 50%;
+  left: calc(100% + var(--spacing-8));
+  transform: translateY(-50%);
+}

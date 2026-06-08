@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Toggle — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Toggle</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Toggles (also known as switches) let users switch a setting between two mutually exclusive states: on and off. Unlike checkboxes, toggles take effect immediately without requiring form submission.</p>
+    </header>
+
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">Wrap a hidden checkbox in <code>hb-toggle</code> with a <code>hb-toggle__track</code> (containing the <code>hb-toggle__thumb</code>) and a <code>hb-toggle__label</code>. The control is fully interactive — click it.</p>
+      <div class="preview preview--col">
+        <label class="hb-toggle">
+          <input type="checkbox" class="hb-toggle__input" checked>
+          <span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span>
+          <span class="hb-toggle__label">Notifications</span>
+        </label>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toggle"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"checkbox"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toggle__input"</span> <span class="token-attr">checked</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toggle__track"</span><span class="token-class">&gt;&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toggle__thumb"</span><span class="token-class">&gt;&lt;/span&gt;&lt;/span&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-toggle__label"</span><span class="token-class">&gt;</span>Notifications<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;/label&gt;</span></pre></div>
+    </section>
+
+    <!-- Size -->
+    <section class="section" id="size">
+      <h2 class="section__title hb-text-heading-small">Size</h2>
+      <p class="section__desc hb-text-body">A single standard size is used across interfaces.</p>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Size</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">Track</td><td class="hb-text-body">36 × 20px</td></tr>
+            <tr><td class="hb-text-body">Thumb</td><td class="hb-text-body">16 × 16px</td></tr>
+            <tr><td class="hb-text-body">Spacing track → label</td><td class="hb-text-body">8px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- States -->
+    <section class="section" id="states">
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">Four core states. On and Off are the active and inactive conditions; disabled variants communicate unavailability without removing the control.</p>
+      <div class="preview" style="gap: var(--spacing-32);">
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:var(--spacing-8);">
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">On</span>
+          <label class="hb-toggle"><input type="checkbox" class="hb-toggle__input" checked><span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span><span class="hb-toggle__label">Label</span></label>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:var(--spacing-8);">
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Off</span>
+          <label class="hb-toggle"><input type="checkbox" class="hb-toggle__input"><span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span><span class="hb-toggle__label">Label</span></label>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:var(--spacing-8);">
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">On (disabled)</span>
+          <label class="hb-toggle"><input type="checkbox" class="hb-toggle__input" checked disabled><span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span><span class="hb-toggle__label">Label</span></label>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:flex-start;gap:var(--spacing-8);">
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Off (disabled)</span>
+          <label class="hb-toggle"><input type="checkbox" class="hb-toggle__input" disabled><span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span><span class="hb-toggle__label">Label</span></label>
+        </div>
+      </div>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">Triggered by</th><th class="hb-text-caption-bold">Track color</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">On</td><td class="hb-text-body"><code>checked</code></td><td class="hb-text-body"><code>--ui-interaction</code></td></tr>
+            <tr><td class="hb-text-body">Off</td><td class="hb-text-body">Resting</td><td class="hb-text-body"><code>--ui-disabled-soft</code></td></tr>
+            <tr><td class="hb-text-body">On (disabled)</td><td class="hb-text-body"><code>checked disabled</code></td><td class="hb-text-body"><code>--ui-interaction-soft</code></td></tr>
+            <tr><td class="hb-text-body">Off (disabled)</td><td class="hb-text-body"><code>disabled</code></td><td class="hb-text-body"><code>--ui-bg-tertiary</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Use toggles for immediate, binary on/off settings.</p>
+            <p class="guidance-card__note hb-text-body">Place the label to the right of the toggle.</p>
+            <p class="guidance-card__note hb-text-body">Keep labels short (e.g. "Notifications", "Dark mode").</p>
+            <p class="guidance-card__note hb-text-body">Ensure the on and off states are always visually distinct.</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Use toggles when changes need confirmation — use Checkbox.</p>
+            <p class="guidance-card__note hb-text-body">Replace grouped multi-selections with toggles.</p>
+            <p class="guidance-card__note hb-text-body">Leave a toggle without a clear text label.</p>
+            <p class="guidance-card__note hb-text-body">Use toggles for destructive actions without confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>

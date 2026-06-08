@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Link — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Link</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Links let users navigate to related content or trigger lightweight actions. They provide a low-emphasis way to move across the product without competing with primary actions.</p>
+    </header>
+
+    <!-- Example -->
+    <section class="section" id="example">
+      <h2 class="section__title hb-text-heading-small">Example</h2>
+      <p class="section__desc hb-text-body">Use <code>hb-link</code> on an anchor. It is underlined by default and removes the underline on hover/focus.</p>
+      <div class="preview">
+        <a href="#example" class="hb-link">View details</a>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;a</span> <span class="token-attr">href</span>=<span class="token-str">"#"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link"</span><span class="token-class">&gt;</span>View details<span class="token-class">&lt;/a&gt;</span></pre></div>
+    </section>
+
+    <!-- Types -->
+    <section class="section" id="types">
+      <h2 class="section__title hb-text-heading-small">Types</h2>
+      <p class="section__desc hb-text-body">Three variants for different contexts. Start with Default; use Subtle when the link competes with more important content, and Reverse only on dark or colored backgrounds.</p>
+      <div class="variant-grid">
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Default</span>
+            <span class="variant-desc hb-text-caption">Underlined, <code>--ui-interaction-link</code>. The go-to in most contexts.</span>
+          </div>
+          <div class="preview"><a href="#types" class="hb-link">Link</a></div>
+          <div class="code-block"><pre><span class="token-class">&lt;a</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link"</span><span class="token-class">&gt;</span>Link<span class="token-class">&lt;/a&gt;</span></pre></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Subtle</span>
+            <span class="variant-desc hb-text-caption">Low emphasis, <code>--ui-text-tertiary</code>, no underline until hover.</span>
+          </div>
+          <div class="preview"><a href="#types" class="hb-link hb-link--subtle">Link</a></div>
+          <div class="code-block"><pre><span class="token-class">&lt;a</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link hb-link--subtle"</span><span class="token-class">&gt;</span>Link<span class="token-class">&lt;/a&gt;</span></pre></div>
+        </div>
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Reverse</span>
+            <span class="variant-desc hb-text-caption">For dark/colored backgrounds, <code>--ui-text-knockout</code>.</span>
+          </div>
+          <div class="preview" style="background: var(--ui-text);"><a href="#types" class="hb-link hb-link--reverse">Link</a></div>
+          <div class="code-block"><pre><span class="token-class">&lt;a</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link hb-link--reverse"</span><span class="token-class">&gt;</span>Link<span class="token-class">&lt;/a&gt;</span></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- States -->
+    <section class="section" id="states">
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">Hover and focus are handled automatically. Disabled is an explicit modifier.</p>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">Triggered by</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><a href="#states" class="hb-link">Link</a></td><td class="hb-text-body">Resting</td><td class="hb-text-body">Underlined, interaction-link color</td></tr>
+            <tr><td class="hb-text-body"><a href="#states" class="hb-link" style="text-decoration:none">Link</a></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Underline removed</td></tr>
+            <tr><td class="hb-text-body"><a href="#states" class="hb-link" style="text-decoration:none;outline:2px solid var(--ui-interaction-soft);outline-offset:2px;border-radius:var(--border-radius-4)">Link</a></td><td class="hb-text-body"><code>:focus-visible</code></td><td class="hb-text-body">2px <code>--ui-interaction-soft</code> ring</td></tr>
+            <tr><td class="hb-text-body"><a class="hb-link hb-link--disabled">Link</a></td><td class="hb-text-body"><code>hb-link--disabled</code></td><td class="hb-text-body">Muted, no underline, not clickable</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Open in new tab -->
+    <section class="section" id="new-tab">
+      <h2 class="section__title hb-text-heading-small">Open in new tab</h2>
+      <p class="section__desc hb-text-body">When a link opens in a new tab, append a 12×12px <code>hb-link__icon</code> to communicate that intent. Use it only when the behavior genuinely differs — not on every external link.</p>
+      <div class="preview">
+        <a href="#new-tab" class="hb-link">Documentation
+          <svg class="hb-link__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5h5v5M19 5l-7 7M10 5H5v14h14v-5"/></svg>
+        </a>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;a</span> <span class="token-attr">href</span>=<span class="token-str">"#"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link"</span> <span class="token-attr">target</span>=<span class="token-str">"_blank"</span><span class="token-class">&gt;</span>Documentation
+  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-link__icon"</span> …<span class="token-class">&gt;&lt;/svg&gt;</span>
+<span class="token-class">&lt;/a&gt;</span></pre></div>
+    </section>
+
+    <!-- Best practices -->
+    <section class="section" id="best-practices">
+      <h2 class="section__title hb-text-heading-small">Best practices</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Use descriptive labels that make sense on their own.</p>
+            <p class="guidance-card__note hb-text-body">Use Default in most contexts; Subtle when it competes with key content.</p>
+            <p class="guidance-card__note hb-text-body">Use Reverse only on dark or colored backgrounds.</p>
+            <p class="guidance-card__note hb-text-body">Use links for low-hierarchy actions (e.g. "Forgot your password?").</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Use links for primary or high-importance actions — use buttons.</p>
+            <p class="guidance-card__note hb-text-body">Use generic text like "click here" or "read more".</p>
+            <p class="guidance-card__note hb-text-body">Mix variants within the same component without a clear reason.</p>
+            <p class="guidance-card__note hb-text-body">Add icons unless they communicate a concrete action.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>

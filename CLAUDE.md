@@ -139,8 +139,11 @@ Every component has a dedicated documentation page with live examples, all varia
 | Date input | `hb-date-input` + `__icon` | https://tomimar.github.io/hb-mininectar/components/date-input.html |
 | Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
 | Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
+| Toggle | `hb-toggle` + `hb-toggle__input`/`__track`/`__thumb`/`__label` | https://tomimar.github.io/hb-mininectar/components/toggle.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
+| Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
+| Tooltip | `hb-tooltip` + `hb-tooltip__content` (`--top`/`--left`/`--right`) | https://tomimar.github.io/hb-mininectar/components/tooltip.html |
 
 **DatePicker (interactive calendar):** use the self-contained `datepicker.js` — plain JavaScript, no Alpine.js. Add `data-hb-datepicker` to a `hb-date-input` wrapper and include the script:
 
@@ -267,3 +270,6 @@ git push
 | DateInput | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=7631-193) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=7631-3471) | [DatePicker](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=7631-4106) |
 | PopupSelect | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8131-4945) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8131-817) | — |
 | Modal | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8351-680) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8322-5572) | — |
+| Toggle | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8058-2755) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8052-370) | — |
+| Link | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8131-1945) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=7745-1944) | — |
+| Tooltip | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8169-1944) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8169-718) | — |

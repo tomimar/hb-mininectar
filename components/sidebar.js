@@ -37,8 +37,11 @@
       ['Date input',      'date-input.html'],
       ['Checkbox',        'checkbox.html'],
       ['Radio',           'radio.html'],
+      ['Toggle',          'toggle.html'],
       ['Popup select',    'popup-select.html'],
+      ['Link',            'link.html'],
       ['Modal',           'modal.html'],
+      ['Tooltip',         'tooltip.html'],
     ];
 
     var html = '';
