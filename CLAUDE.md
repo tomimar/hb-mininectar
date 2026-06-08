@@ -140,7 +140,18 @@ Every component has a dedicated documentation page with live examples, all varia
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
 
-**DatePicker (interactive calendar):** the full calendar needs Alpine.js. Copy the `hbDatepicker(modelKey)` function and calendar markup from `rfi-phase1/rfi.html` — the static field is documented on the Date input page above.
+**DatePicker (interactive calendar):** use the self-contained `datepicker.js` — plain JavaScript, no Alpine.js. Add `data-hb-datepicker` to a `hb-date-input` wrapper and include the script:
+
+```html
+<div class="hb-date-input" data-hb-datepicker style="position:relative;">
+  <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right:40px;">
+  <svg class="hb-date-input__icon" ...><!-- calendar icon --></svg>
+</div>
+
+<script src="https://tomimar.github.io/hb-mininectar/datepicker.js"></script>
+```
+
+It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with auto-inserted slashes, month/year navigation, and a Today shortcut. Values are always `MM/DD/YYYY`. See https://tomimar.github.io/hb-mininectar/components/date-input.html
 
 ---
 

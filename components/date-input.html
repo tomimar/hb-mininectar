@@ -273,18 +273,18 @@
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Date input</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A date field captures a single date. It pairs a text input with a calendar icon so users can recognize the field's purpose at a glance. This is the static text field; for the full interactive calendar (DatePicker) see the note below.</p>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A date field captures a single date. It pairs a text input with a calendar icon and an interactive picker, so users can either type a date or select it visually. Values are always formatted as MM/DD/YYYY.</p>
     </header>
 
     <!-- Example -->
     <section class="section" id="example">
       <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">Wrap the control in <code>hb-date-input</code> and append a calendar icon using <code>hb-date-input__icon</code>. This is the static text field.</p>
+      <p class="section__desc hb-text-body">Add <code>data-hb-datepicker</code> to a <code>hb-date-input</code> wrapper and include <code>datepicker.js</code>. The field works with no dependencies: click to open the calendar, or type a date — slashes are inserted automatically. Try it below.</p>
 
       <div class="preview preview--col">
         <div class="hb-field" style="width:100%;max-width:360px;">
           <label class="hb-field__label">Due date</label>
-          <div class="hb-date-input" style="position: relative;">
+          <div class="hb-date-input" data-hb-datepicker style="position: relative;">
             <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
             <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -292,17 +292,34 @@
           </div>
         </div>
       </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input"</span> <span class="token-attr">style</span>=<span class="token-str">"position: relative;"</span><span class="token-class">&gt;</span>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input"</span> <span class="token-attr">data-hb-datepicker</span> <span class="token-attr">style</span>=<span class="token-str">"position: relative;"</span><span class="token-class">&gt;</span>
   <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"MM/DD/YYYY"</span>
     <span class="token-attr">style</span>=<span class="token-str">"padding-right: 40px;"</span><span class="token-class">&gt;</span>
   <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input__icon"</span> <span class="token-attr">viewBox</span>=<span class="token-str">"0 0 24 24"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/svg&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
+<span class="token-class">&lt;/div&gt;</span>
+
+<span class="token-class">&lt;script</span> <span class="token-attr">src</span>=<span class="token-str">"https://tomimar.github.io/hb-mininectar/datepicker.js"</span><span class="token-class">&gt;&lt;/script&gt;</span></pre></div>
     </section>
 
-    <!-- DatePicker note -->
-    <section class="section" id="datepicker">
-      <h2 class="section__title hb-text-heading-small">DatePicker note</h2>
-      <p class="section__desc hb-text-body">The example above is the static text field only. For the full interactive calendar (DatePicker) — which opens a month grid for point-and-click date selection — Alpine.js is required. See the working implementation in <code>rfi-phase1/rfi.html</code> (copy the <code>hbDatepicker(modelKey)</code> function from the end of its script); there's no need to replicate the calendar here.</p>
+    <!-- Interactive calendar -->
+    <section class="section" id="calendar">
+      <h2 class="section__title hb-text-heading-small">Interactive calendar</h2>
+      <p class="section__desc hb-text-body">The calendar opens below the field on click or focus. It supports month navigation with the arrows, a year view (click the month label), and a <strong>Today</strong> shortcut. Selecting a day fills the field and closes the picker. No framework required — <code>datepicker.js</code> is plain JavaScript.</p>
+      <div class="preview preview--col" style="min-height: 360px; align-items: flex-start;">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Pick a date</label>
+          <div class="hb-date-input" data-hb-datepicker style="position: relative;">
+            <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
+            <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- placeholder kept for structure -->
+    <section class="section" id="datepicker" style="display:none;">
     </section>
 
     <!-- States -->
@@ -389,5 +406,6 @@
   </main>
 </div>
   <script src="sidebar.js"></script>
+  <script src="../datepicker.js"></script>
 </body>
 </html>
