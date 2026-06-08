@@ -113,8 +113,8 @@ body {
 .hb-avatar--lg {
   width: 40px;
   height: 40px;
-  /* captionBold: 12px / 500 */
-  font-size: var(--font-size-12);
+  /* bodyBold: 14px / 500 */
+  font-size: var(--font-size-14);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-ui);
 }
