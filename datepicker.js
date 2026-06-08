@@ -208,9 +208,15 @@
       }
     });
 
-    // Close on outside click
+    // Close on outside click.
+    // Use composedPath() (computed at dispatch time) so that re-rendering the
+    // panel mid-click — which detaches the clicked node — doesn't make the
+    // bubbling listener think the click happened outside and close the panel.
     document.addEventListener('click', function (e) {
-      if (state.open && !wrap.contains(e.target)) closePanel();
+      if (!state.open) return;
+      var path = (typeof e.composedPath === 'function') ? e.composedPath() : null;
+      var inside = path ? path.indexOf(wrap) !== -1 : wrap.contains(e.target);
+      if (!inside) closePanel();
     });
     // Close on Escape
     input.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePanel(); });
