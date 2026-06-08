@@ -26,17 +26,19 @@
 
     // Components: [label, filename]
     var components = [
-      ['Avatar',       'avatar.html'],
-      ['Button',       'button.html'],
-      ['Tag',          'tag.html'],
-      ['Input',        'input.html'],
-      ['Textarea',     'textarea.html'],
-      ['Select',       'select.html'],
-      ['Date input',   'date-input.html'],
-      ['Checkbox',     'checkbox.html'],
-      ['Radio',        'radio.html'],
-      ['Popup select', 'popup-select.html'],
-      ['Modal',        'modal.html'],
+      ['Avatar',          'avatar.html'],
+      ['Button',          'button.html'],
+      ['Floating action', 'floating-action.html'],
+      ['Tag',             'tag.html'],
+      ['Input',           'input.html'],
+      ['Search input',    'search-input.html'],
+      ['Textarea',        'textarea.html'],
+      ['Select',          'select.html'],
+      ['Date input',      'date-input.html'],
+      ['Checkbox',        'checkbox.html'],
+      ['Radio',           'radio.html'],
+      ['Popup select',    'popup-select.html'],
+      ['Modal',           'modal.html'],
     ];
 
     var html = '';

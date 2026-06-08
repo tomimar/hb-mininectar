@@ -54,6 +54,7 @@
   /* ── Elevation ────────────────────────────────── */
   --shadow-overlay:  0 2px 6px rgba(0, 0, 0, 0.16);
   --shadow-floating: 0 8px 24px rgba(0, 0, 0, 0.14);
+  --shadow-action:   0 4px 8px rgba(0, 0, 0, 0.24);  /* FloatingAction */
 
   --ui-bg-overlay: #ffffff;   /* = ui-bg in light mode; differs in dark */
 

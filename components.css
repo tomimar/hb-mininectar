@@ -1414,3 +1414,212 @@ body {
   cursor: not-allowed;
   pointer-events: none;
 }
+
+
+/* ── SearchInput ──────────────────────────────────────────── */
+/*
+  Usage:
+    <div class="hb-search">
+      <svg class="hb-search__icon" ...><!-- search icon --></svg>
+      <input class="hb-search__input" type="text" placeholder="Search…">
+      <button class="hb-search__clear" type="button" aria-label="Clear">
+        <svg ...><!-- close icon --></svg>
+      </button>
+    </div>
+
+  - Default width 320px (override with style/width as needed).
+  - Add the `.hb-search__clear` button only while the field has a value.
+  - Small size: add hb-search--sm.
+*/
+
+.hb-search {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  width: 320px;
+  max-width: 100%;
+  height: 40px;
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  padding: var(--spacing-2) var(--spacing-12);
+  box-sizing: border-box;
+  transition: border-color 100ms ease, box-shadow 100ms ease;
+}
+
+.hb-search:hover {
+  border-color: var(--ui-text);
+}
+
+.hb-search:focus-within {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-search--sm {
+  height: 32px;
+}
+
+.hb-search__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--ui-icon);
+}
+
+.hb-search__input {
+  flex: 1 0 0;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  padding: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-search__input::placeholder {
+  color: var(--ui-disabled);
+}
+
+.hb-search__clear {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--ui-icon);
+  border-radius: var(--border-radius-round);
+  transition: color 100ms ease;
+}
+
+.hb-search__clear:hover {
+  color: var(--ui-text);
+}
+
+/* Disabled */
+.hb-search--disabled,
+.hb-search:has(.hb-search__input:disabled) {
+  background: var(--ui-bg-tertiary);
+  border-color: var(--ui-border-secondary);
+}
+.hb-search--disabled .hb-search__icon,
+.hb-search:has(.hb-search__input:disabled) .hb-search__icon {
+  color: var(--ui-disabled);
+}
+.hb-search__input:disabled {
+  color: var(--ui-disabled);
+  cursor: not-allowed;
+}
+
+
+/* ── FloatingAction ───────────────────────────────────────── */
+/*
+  A compact, pill-shaped high-emphasis action with a drop shadow.
+
+  Usage:
+    <button class="hb-fab hb-fab--primary">Label</button>
+    <button class="hb-fab hb-fab--secondary hb-fab--sm">Label</button>
+    <button class="hb-fab hb-fab--primary hb-fab--icon" aria-label="…">
+      <svg class="hb-fab__icon" ...></svg>
+    </button>
+
+  Sizes: default (40px), hb-fab--sm (32px).
+  Types: hb-fab--primary, hb-fab--secondary.
+  Modifiers: hb-fab--icon (square icon-only), hb-fab--selected, disabled / [disabled].
+*/
+
+.hb-fab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-8);
+  height: 40px;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: none;
+  border-radius: var(--border-radius-round);
+  box-shadow: var(--shadow-action);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  letter-spacing: var(--tracking-none);
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  outline: none;
+  transition: background 120ms ease, color 120ms ease;
+}
+
+.hb-fab__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+/* Sizes */
+.hb-fab--sm {
+  height: 32px;
+  padding: var(--spacing-8);
+  gap: var(--spacing-4);
+}
+
+/* Icon-only (square) */
+.hb-fab--icon {
+  width: 40px;
+  padding: var(--spacing-8) var(--spacing-12);
+}
+.hb-fab--icon.hb-fab--sm {
+  width: 32px;
+  padding: var(--spacing-8);
+}
+
+/* Primary */
+.hb-fab--primary {
+  background: var(--ui-interaction);
+  color: var(--ui-text-knockout);
+}
+.hb-fab--primary:hover {
+  background: var(--ui-interaction-highlighted);
+}
+.hb-fab--primary:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Secondary */
+.hb-fab--secondary {
+  background: var(--ui-bg);
+  color: var(--ui-text);
+}
+.hb-fab--secondary:hover {
+  background: var(--ui-bg-secondary);
+}
+.hb-fab--secondary:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+
+/* Selected */
+.hb-fab--selected {
+  background: var(--ui-text);
+  color: var(--ui-text-knockout);
+}
+
+/* Disabled */
+.hb-fab:disabled,
+.hb-fab[disabled],
+.hb-fab--disabled {
+  background: var(--ui-disabled-soft) !important;
+  color: var(--ui-disabled) !important;
+  cursor: not-allowed;
+  pointer-events: none;
+}

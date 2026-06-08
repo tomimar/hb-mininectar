@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FloatingAction — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label { color: var(--ui-text); }
+    .variant-desc { color: var(--ui-text-tertiary); }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note { color: var(--ui-text-secondary); }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">FloatingAction</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">FloatingAction is a compact, high-emphasis action component designed for quick, contextual interactions. Unlike standard buttons, it is optimized for utility-first scenarios such as quick actions, contextual triggers, and lightweight workflows — it sits on top of content with a pill shape and a drop shadow.</p>
+    </header>
+
+    <!-- Types -->
+    <section class="section" id="types">
+      <h2 class="section__title hb-text-heading-small">Types</h2>
+      <p class="section__desc hb-text-body">Each type represents a different level of emphasis and should be used intentionally to establish a clear hierarchy.</p>
+
+      <div class="variant-grid">
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Primary</span>
+            <span class="variant-desc hb-text-caption">High emphasis. The most important quick action in a local context.</span>
+          </div>
+          <div class="preview">
+            <button class="hb-fab hb-fab--primary">Button</button>
+            <button class="hb-fab hb-fab--primary hb-fab--sm">Button</button>
+          </div>
+          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab hb-fab--primary"</span><span class="token-class">&gt;</span>Button<span class="token-class">&lt;/button&gt;</span></pre></div>
+        </div>
+
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Secondary</span>
+            <span class="variant-desc hb-text-caption">Medium emphasis. Standard contextual actions that stay available without dominating.</span>
+          </div>
+          <div class="preview">
+            <button class="hb-fab hb-fab--secondary">Button</button>
+            <button class="hb-fab hb-fab--secondary hb-fab--sm">Button</button>
+          </div>
+          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab hb-fab--secondary"</span><span class="token-class">&gt;</span>Button<span class="token-class">&lt;/button&gt;</span></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sizes -->
+    <section class="section" id="sizes">
+      <h2 class="section__title hb-text-heading-small">Sizes</h2>
+      <p class="section__desc hb-text-body">Large (40px) is the default. Small (32px) is for dense or compact environments.</p>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead>
+            <tr>
+              <th class="hb-text-caption-bold">Size</th>
+              <th class="hb-text-caption-bold">Class</th>
+              <th class="hb-text-caption-bold">Height</th>
+              <th class="hb-text-caption-bold">Padding / gap</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body"><button class="hb-fab hb-fab--primary">Button</button></td>
+              <td class="hb-text-body">—</td>
+              <td class="hb-text-body">40px</td>
+              <td class="hb-text-body">8px / 12px · gap 8px</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><button class="hb-fab hb-fab--primary hb-fab--sm">Button</button></td>
+              <td class="hb-text-body"><code>hb-fab--sm</code></td>
+              <td class="hb-text-body">32px</td>
+              <td class="hb-text-body">8px · gap 4px</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Icons -->
+    <section class="section" id="icons">
+      <h2 class="section__title hb-text-heading-small">Icons</h2>
+      <p class="section__desc hb-text-body">Icons are always 20×20px. Place an <code>hb-fab__icon</code> before or after the label, or use <code>hb-fab--icon</code> for a square icon-only button.</p>
+
+      <div class="preview">
+        <button class="hb-fab hb-fab--primary">
+          <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+          Left icon
+        </button>
+        <button class="hb-fab hb-fab--primary">
+          Right icon
+          <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </button>
+        <button class="hb-fab hb-fab--secondary hb-fab--icon" aria-label="Route">
+          <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+        </button>
+        <button class="hb-fab hb-fab--secondary">
+          Dropdown
+          <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab hb-fab--primary"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab__icon"</span> …<span class="token-class">&gt;&lt;/svg&gt;</span> Left icon
+<span class="token-class">&lt;/button&gt;</span>
+
+<span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab hb-fab--secondary hb-fab--icon"</span> <span class="token-attr">aria-label</span>=<span class="token-str">"Route"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-fab__icon"</span> …<span class="token-class">&gt;&lt;/svg&gt;</span>
+<span class="token-class">&lt;/button&gt;</span></pre></div>
+    </section>
+
+    <!-- States -->
+    <section class="section" id="states">
+      <h2 class="section__title hb-text-heading-small">States</h2>
+      <p class="section__desc hb-text-body">Hover, focus and disabled are handled automatically via CSS. Selected is an explicit modifier for toggle-like actions.</p>
+
+      <div class="preview" style="gap: var(--spacing-24);">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
+          <button class="hb-fab hb-fab--primary">Default</button>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Default</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
+          <button class="hb-fab hb-fab--primary" style="background:var(--ui-interaction-highlighted)">Hover</button>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Hover</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
+          <button class="hb-fab hb-fab--primary" style="outline:2px solid var(--ui-interaction-soft); outline-offset:1px;">Focus</button>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Focus</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
+          <button class="hb-fab hb-fab--primary" disabled>Disabled</button>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Disabled</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
+          <button class="hb-fab hb-fab--selected">Selected</button>
+          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Selected</span>
+        </div>
+      </div>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">Base background + drop shadow</td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Primary → <code>--ui-interaction-highlighted</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus-visible</code></td><td class="hb-text-body">2px ring using <code>--ui-interaction-soft</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-disabled-soft</code>, text → <code>--ui-disabled</code></td></tr>
+            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Selected</span></td><td class="hb-text-body"><code>hb-fab--selected</code></td><td class="hb-text-body">Background → <code>--ui-text</code> (black), text knockout</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
+      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
+        <button class="hb-fab hb-fab--primary" style="pointer-events:none;">
+          <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 5l7 7-7 7"/></svg>
+          Quick action
+        </button>
+      </div>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Container</span></td>
+              <td class="hb-text-body">Pill shape (<code>--border-radius-round</code>) with a drop shadow (<code>--shadow-action</code>). Height 40px (lg) or 32px (sm).</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Label</span></td>
+              <td class="hb-text-body">Inter Medium (500), 14px. Sentence case, action-oriented.</td>
+            </tr>
+            <tr>
+              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
+              <td class="hb-text-body"><span class="hb-text-caption-bold">Icon (optional)</span></td>
+              <td class="hb-text-body">20×20px. Left, right, or alone (<code>hb-fab--icon</code>). Gap: 8px (lg) / 4px (sm).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Usage -->
+    <section class="section" id="usage">
+      <h2 class="section__title hb-text-heading-small">Usage</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Use for quick, contextual actions that benefit from strong visibility.</p>
+            <p class="guidance-card__note hb-text-body">Reserve Primary for the single most important quick action in a context.</p>
+            <p class="guidance-card__note hb-text-body">Keep labels short and action-oriented.</p>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <p class="guidance-card__note hb-text-body">Replace standard form/page buttons with FloatingAction.</p>
+            <p class="guidance-card__note hb-text-body">Stack multiple primaries in the same context.</p>
+            <p class="guidance-card__note hb-text-body">Use it for destructive actions without confirmation.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+  <script src="sidebar.js"></script>
+</body>
+</html>
