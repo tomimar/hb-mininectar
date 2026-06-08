@@ -1883,9 +1883,11 @@ body {
 
 .hb-alert__icon {
   flex-shrink: 0;
+  display: block;
   width: 20px;
   height: 20px;
-  margin-top: 1px;
+  /* Center the 20px icon on the first 22.4px text line */
+  margin-top: calc((var(--font-size-14) * var(--line-height-ui) - 20px) / 2);
 }
 
 .hb-alert__content {
@@ -1915,6 +1917,8 @@ body {
   background: none;
   cursor: pointer;
   color: inherit;
+  /* Align with the icon on the first text line */
+  margin-top: calc((var(--font-size-14) * var(--line-height-ui) - 20px) / 2);
 }
 
 /* Types */
