@@ -78,6 +78,9 @@ body {
 
   Color override via CSS custom property on the element:
     <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: #17b360">SD</div>
+
+  Muted variant — washed-out color, to de-emphasize an avatar:
+    <div class="hb-avatar hb-avatar--md hb-avatar--muted">SD</div>
 */
 
 .hb-avatar {
@@ -117,6 +120,13 @@ body {
   font-size: var(--font-size-14);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-ui);
+}
+
+/* Muted — renders the assigned color washed out over the background.
+   Use it to de-emphasize avatars, e.g. every participant except the
+   active one in an AvatarGroup. Works with any --hb-avatar-bg. */
+.hb-avatar--muted {
+  background-color: color-mix(in srgb, var(--hb-avatar-bg, var(--ui-interaction)) 30%, var(--ui-bg));
 }
 
 .hb-avatar img {

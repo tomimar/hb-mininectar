@@ -128,7 +128,7 @@ Every component has a dedicated documentation page with live examples, all varia
 
 | Component | Classes | Docs |
 |---|---|---|
-| Avatar | `hb-avatar` (`--sm`/`--md`/`--lg`) + `hb-avatar-group` (`__overflow`) | https://tomimar.github.io/hb-mininectar/components/avatar.html |
+| Avatar | `hb-avatar` (`--sm`/`--md`/`--lg`/`--muted`) + `hb-avatar-group` (`__overflow`) | https://tomimar.github.io/hb-mininectar/components/avatar.html |
 | Button | `hb-btn` · types `--primary`/`--secondary`/`--tertiary`/`--ghost`/`--danger`/`--confirmation` · sizes `--lg`/`--sm` · `--full-width` | https://tomimar.github.io/hb-mininectar/components/button.html |
 | Floating action | `hb-fab` · types `--primary`/`--secondary` · sizes default/`--sm` · `--icon`/`--selected` + `hb-fab__icon` | https://tomimar.github.io/hb-mininectar/components/floating-action.html |
 | Tag | `hb-tag` (10 colors) + `hb-tag__remove` + `hb-tag-group` | https://tomimar.github.io/hb-mininectar/components/tag.html |
