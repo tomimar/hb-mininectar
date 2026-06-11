@@ -79,7 +79,7 @@ body {
   Color override via CSS custom property on the element:
     <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: #17b360">SD</div>
 
-  Muted variant — washed-out color, to de-emphasize an avatar:
+  Muted variant — whole avatar at reduced opacity, to de-emphasize it:
     <div class="hb-avatar hb-avatar--md hb-avatar--muted">SD</div>
 */
 
@@ -122,11 +122,20 @@ body {
   line-height: var(--line-height-ui);
 }
 
-/* Muted — renders the assigned color washed out over the background.
-   Use it to de-emphasize avatars, e.g. every participant except the
-   active one in an AvatarGroup. Works with any --hb-avatar-bg. */
+/* Muted — renders the whole avatar (background + initials) faded to 40%,
+   to de-emphasize it, e.g. every participant except the active one in an
+   AvatarGroup. Works with any --hb-avatar-bg.
+   Implemented without element opacity so overlapping group avatars don't
+   show through each other and the separation ring stays solid: the
+   background fades toward the surface color (--hb-avatar-ring, white by
+   default) and the initials are knockout text at 40% alpha. */
 .hb-avatar--muted {
-  background-color: color-mix(in srgb, var(--hb-avatar-bg, var(--ui-interaction)) 30%, var(--ui-bg));
+  background-color: color-mix(in srgb, var(--hb-avatar-bg, var(--ui-interaction)) 40%, var(--hb-avatar-ring, var(--ui-bg)));
+  color: color-mix(in srgb, var(--ui-text-knockout) 40%, transparent);
+}
+
+.hb-avatar--muted img {
+  opacity: 0.4;
 }
 
 .hb-avatar img {
@@ -146,7 +155,10 @@ body {
     </div>
 
   Negative margins per spec: Large -16px, Medium -10px, Small -8px
-  Separation ring: box-shadow 0 0 0 2px --ui-bg
+  Separation ring: box-shadow 0 0 0 2px, in the surface color behind the
+  group. Defaults to --ui-bg (white); on any other surface, override it
+  on the group so the ring blends in:
+    <div class="hb-avatar-group" style="--hb-avatar-ring: var(--ui-bg-tertiary)">…</div>
 */
 
 .hb-avatar-group {
@@ -158,17 +170,17 @@ body {
 /* Negative margins + separation ring */
 .hb-avatar-group .hb-avatar--lg {
   margin-right: -16px;
-  box-shadow: 0 0 0 2px var(--ui-bg);
+  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
 }
 .hb-avatar-group .hb-avatar--md {
   margin-right: -10px;
-  box-shadow: 0 0 0 2px var(--ui-bg);
+  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
 }
 .hb-avatar-group .hb-avatar--sm {
   margin-right: -8px;
-  box-shadow: 0 0 0 2px var(--ui-bg);
+  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
 }
 
