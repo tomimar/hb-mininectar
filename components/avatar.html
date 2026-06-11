@@ -350,7 +350,7 @@
     <!-- AvatarGroup -->
     <section class="section" id="avatar-group">
       <h2 class="section__title hb-text-heading-small">AvatarGroup</h2>
-      <p class="section__desc hb-text-body">Group overlapping avatars to show several people in a compact space. Avatars overlap with a negative margin (Large -16px, Medium -10px, Small -8px) and carry a 2px ring in the background color to keep them visually separated. The ring defaults to <code>--ui-bg</code> (white); when the group sits on another surface, override it on the group with <code>--hb-avatar-ring</code> (e.g. <code>style="--hb-avatar-ring: var(--ui-bg-tertiary)"</code>) so it blends in. Show a maximum of 5 avatars and collapse the rest into a <code>+N</code> overflow counter.</p>
+      <p class="section__desc hb-text-body">Group overlapping avatars to show several people in a compact space. Avatars overlap with a negative margin (Large -16px, Medium -10px, Small -8px) and keep a 2px separation gap between them. The gap is a transparent cutout — not a painted ring — so it shows whatever surface is behind the group and works on any background without configuration. Show a maximum of 5 avatars and collapse the rest into a <code>+N</code> overflow counter.</p>
 
       <div class="preview">
         <div class="hb-avatar-group">

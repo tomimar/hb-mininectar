@@ -122,19 +122,12 @@ body {
   line-height: var(--line-height-ui);
 }
 
-/* Muted — renders the whole avatar (background + initials) faded to 40%,
-   to de-emphasize it, e.g. every participant except the active one in an
-   AvatarGroup. Works with any --hb-avatar-bg.
-   Implemented without element opacity so overlapping group avatars don't
-   show through each other and the separation ring stays solid: the
-   background fades toward the surface color (--hb-avatar-ring, white by
-   default) and the initials are knockout text at 40% alpha. */
+/* Muted — renders the whole avatar (background + initials) at reduced
+   opacity, to de-emphasize it, e.g. every participant except the active
+   one in an AvatarGroup. Works with any --hb-avatar-bg and any surface.
+   Safe inside hb-avatar-group: the group masks away overlapped areas, so
+   translucent avatars never show through each other. */
 .hb-avatar--muted {
-  background-color: color-mix(in srgb, var(--hb-avatar-bg, var(--ui-interaction)) 40%, var(--hb-avatar-ring, var(--ui-bg)));
-  color: color-mix(in srgb, var(--ui-text-knockout) 40%, transparent);
-}
-
-.hb-avatar--muted img {
   opacity: 0.4;
 }
 
@@ -155,10 +148,10 @@ body {
     </div>
 
   Negative margins per spec: Large -16px, Medium -10px, Small -8px
-  Separation ring: box-shadow 0 0 0 2px, in the surface color behind the
-  group. Defaults to --ui-bg (white); on any other surface, override it
-  on the group so the ring blends in:
-    <div class="hb-avatar-group" style="--hb-avatar-ring: var(--ui-bg-tertiary)">…</div>
+  Separation gap: each overlapped avatar is masked with a circular cutout
+  (previous avatar's radius + 2px), so the 2px gap is truly transparent
+  and shows whatever surface is behind the group — no per-surface
+  configuration needed.
 */
 
 .hb-avatar-group {
@@ -167,21 +160,34 @@ body {
   isolation: isolate;
 }
 
-/* Negative margins + separation ring */
+/* Negative margins */
 .hb-avatar-group .hb-avatar--lg {
   margin-right: -16px;
-  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
 }
 .hb-avatar-group .hb-avatar--md {
   margin-right: -10px;
-  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
 }
 .hb-avatar-group .hb-avatar--sm {
   margin-right: -8px;
-  box-shadow: 0 0 0 2px var(--hb-avatar-ring, var(--ui-bg));
   position: relative;
+}
+
+/* Transparent separation gap: cut a circle out of every overlapped avatar
+   where the previous one (which stacks on top) sits, enlarged by 2px.
+   Circle center/radius derive from each size's diameter and overlap. */
+.hb-avatar-group .hb-avatar--lg + .hb-avatar--lg {
+  -webkit-mask: radial-gradient(circle at -4px 50%, transparent 21.5px, #000 22.5px);
+  mask: radial-gradient(circle at -4px 50%, transparent 21.5px, #000 22.5px);
+}
+.hb-avatar-group .hb-avatar--md + .hb-avatar--md {
+  -webkit-mask: radial-gradient(circle at -6px 50%, transparent 17.5px, #000 18.5px);
+  mask: radial-gradient(circle at -6px 50%, transparent 17.5px, #000 18.5px);
+}
+.hb-avatar-group .hb-avatar--sm + .hb-avatar--sm {
+  -webkit-mask: radial-gradient(circle at -4px 50%, transparent 13.5px, #000 14.5px);
+  mask: radial-gradient(circle at -4px 50%, transparent 13.5px, #000 14.5px);
 }
 
 /* Last child: reset margin */
