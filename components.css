@@ -583,6 +583,173 @@ body {
 }
 
 
+/* ── Multi Select (Select · multi variant) ───────────────────
+  Lets users pick several options. Selections appear as removable
+  tags inside the field; the dropdown lists options with checkboxes.
+  Behaviour (open / type-to-filter / toggle / remove) is wired with
+  Alpine.js in the prototype — this is the markup + styling contract.
+
+  Usage:
+    <div class="hb-multiselect" :class="open && 'is-open'">
+      <div class="hb-multiselect__control">
+        <span class="hb-multiselect__tag">
+          Option 1
+          <button class="hb-multiselect__tag-remove">[x svg]</button>
+        </span>
+        <input class="hb-multiselect__input" placeholder="Select a value">
+        <svg class="hb-multiselect__chevron">[chevron]</svg>
+      </div>
+      <div class="hb-multiselect__menu">
+        <div class="hb-multiselect__option hb-multiselect__option--selected">
+          <input type="checkbox" class="hb-checkbox" checked> Option 1
+        </div>
+        <div class="hb-multiselect__empty">No results found</div>
+      </div>
+    </div>
+
+  Sizes: default (40px) · --sm (32px)
+*/
+.hb-multiselect {
+  position: relative;
+  width: 100%;
+}
+
+.hb-multiselect__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  min-height: 40px;
+  padding: var(--spacing-4) var(--spacing-32) var(--spacing-4) var(--spacing-8);
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border-secondary);
+  border-radius: var(--border-radius-4);
+  cursor: text;
+  box-sizing: border-box;
+  transition: border-color 100ms ease, box-shadow 100ms ease;
+}
+
+.hb-multiselect--sm .hb-multiselect__control { min-height: 32px; }
+
+.hb-multiselect__control:hover { border-color: var(--ui-text); }
+
+.hb-multiselect.is-open .hb-multiselect__control,
+.hb-multiselect__control:focus-within {
+  border-color: var(--ui-interaction);
+  box-shadow: 0 0 0 2px var(--ui-interaction-soft);
+}
+
+.hb-multiselect--disabled .hb-multiselect__control {
+  background: var(--ui-bg-tertiary);
+  cursor: not-allowed;
+}
+
+/* Selected value tag */
+.hb-multiselect__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  height: 24px;
+  padding: 0 var(--spacing-2) 0 var(--spacing-8);
+  background: var(--ui-bg-secondary);
+  border-radius: var(--border-radius-4);
+  font-family: var(--font-family);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  white-space: nowrap;
+}
+
+.hb-multiselect__tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--ui-icon);
+  cursor: pointer;
+  border-radius: var(--border-radius-round);
+  transition: color 100ms ease;
+}
+
+.hb-multiselect__tag-remove:hover { color: var(--ui-status-danger); }
+.hb-multiselect__tag-remove svg { width: 12px; height: 12px; }
+
+/* Type-to-filter input (borderless, grows to fill the row) */
+.hb-multiselect__input {
+  flex: 1;
+  min-width: 60px;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: var(--spacing-4) 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-multiselect__input::placeholder { color: var(--ui-disabled); }
+
+/* Chevron */
+.hb-multiselect__chevron {
+  position: absolute;
+  top: 50%;
+  right: var(--spacing-8);
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  color: var(--ui-icon);
+  pointer-events: none;
+}
+
+/* Dropdown menu */
+.hb-multiselect__menu {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: var(--ui-bg-overlay);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-overlay);
+  padding: var(--spacing-4);
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* Option row — checkbox + label */
+.hb-multiselect__option {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-8);
+  border-radius: var(--border-radius-4);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-multiselect__option:hover,
+.hb-multiselect__option--selected { background: var(--ui-bg-secondary); }
+
+/* Empty / loading state */
+.hb-multiselect__empty {
+  padding: var(--spacing-12);
+  text-align: center;
+  font-family: var(--font-family);
+  font-size: var(--font-size-12);
+  color: var(--ui-text-tertiary);
+}
+
+
 /* ── DatePicker ───────────────────────────────────────────── */
 /*
   Usage (with Alpine.js):

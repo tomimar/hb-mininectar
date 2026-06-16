@@ -302,6 +302,51 @@
 <span class="token-class">&lt;/div&gt;</span></pre></div>
     </section>
 
+    <!-- Multi select -->
+    <section class="section" id="multi-select">
+      <h2 class="section__title hb-text-heading-small">Multi select</h2>
+      <p class="section__desc hb-text-body">Use <code>hb-multiselect</code> when users can pick several options. Selected values appear as removable tags inside the field, and the dropdown lists options with checkboxes. Open / type-to-filter / toggle / remove behaviour is wired with Alpine.js in the prototype; the classes below are the markup and styling contract. Add <code>hb-multiselect--sm</code> for the 32px size.</p>
+
+      <div class="preview preview--col">
+        <div class="hb-field" style="width:100%;max-width:360px;">
+          <label class="hb-field__label">Assignees</label>
+          <div class="hb-multiselect is-open">
+            <div class="hb-multiselect__control">
+              <span class="hb-multiselect__tag">Option 1
+                <button class="hb-multiselect__tag-remove" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+              </span>
+              <span class="hb-multiselect__tag">Option 2
+                <button class="hb-multiselect__tag-remove" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+              </span>
+              <input class="hb-multiselect__input" type="text" placeholder="">
+              <svg class="hb-multiselect__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="hb-multiselect__menu">
+              <div class="hb-multiselect__option hb-multiselect__option--selected"><input type="checkbox" class="hb-checkbox" checked tabindex="-1" style="pointer-events:none;"><span>Option 1</span></div>
+              <div class="hb-multiselect__option hb-multiselect__option--selected"><input type="checkbox" class="hb-checkbox" checked tabindex="-1" style="pointer-events:none;"><span>Option 2</span></div>
+              <div class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox" tabindex="-1" style="pointer-events:none;"><span>Option 3</span></div>
+              <div class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox" tabindex="-1" style="pointer-events:none;"><span>Option 4</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__control"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__tag"</span><span class="token-class">&gt;</span>Option 1
+      <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__tag-remove"</span><span class="token-class">&gt;</span>…<span class="token-class">&lt;/button&gt;</span>
+    <span class="token-class">&lt;/span&gt;</span>
+    <span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__input"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Select a value"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__chevron"</span><span class="token-class">&gt;</span>…<span class="token-class">&lt;/svg&gt;</span>
+  <span class="token-class">&lt;/div&gt;</span>
+  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__menu"</span><span class="token-class">&gt;</span>
+    <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__option hb-multiselect__option--selected"</span><span class="token-class">&gt;</span>
+      <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"checkbox"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-checkbox"</span> <span class="token-attr">checked</span><span class="token-class">&gt;</span> <span class="token-class">&lt;span&gt;</span>Option 1<span class="token-class">&lt;/span&gt;</span>
+    <span class="token-class">&lt;/div&gt;</span>
+    <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-multiselect__empty"</span><span class="token-class">&gt;</span>No results found<span class="token-class">&lt;/div&gt;</span>
+  <span class="token-class">&lt;/div&gt;</span>
+<span class="token-class">&lt;/div&gt;</span></pre></div>
+    </section>
+
     <!-- States -->
     <section class="section" id="states">
       <h2 class="section__title hb-text-heading-small">States</h2>

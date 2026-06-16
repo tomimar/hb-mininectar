@@ -135,7 +135,7 @@ Every component has a dedicated documentation page with live examples, all varia
 | Input | `hb-field` (`__label`/`__required`/`__help`/`__error`) + `hb-input` (`--sm`/`--error`) | https://tomimar.github.io/hb-mininectar/components/input.html |
 | Search input | `hb-search` (`--sm`) + `hb-search__icon`/`__input`/`__clear` | https://tomimar.github.io/hb-mininectar/components/search-input.html |
 | Textarea | `hb-textarea` | https://tomimar.github.io/hb-mininectar/components/textarea.html |
-| Select | `hb-select` (wraps native `<select>`) | https://tomimar.github.io/hb-mininectar/components/select.html |
+| Select | `hb-select` (wraps native `<select>`) · multi variant `hb-multiselect` (`__control`/`__tag`/`__tag-remove`/`__input`/`__chevron`/`__menu`/`__option`/`__empty`, `--sm`/`--disabled`) | https://tomimar.github.io/hb-mininectar/components/select.html |
 | Date input | `hb-date-input` + `__icon` | https://tomimar.github.io/hb-mininectar/components/date-input.html |
 | Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
 | Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
