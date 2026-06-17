@@ -6,8 +6,10 @@
   <title>Select — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
     * { box-sizing: border-box; }
+    [x-cloak] { display: none !important; }
 
     body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
 
@@ -310,22 +312,30 @@
       <div class="preview preview--col">
         <div class="hb-field" style="width:100%;max-width:360px;">
           <label class="hb-field__label">Assignees</label>
-          <div class="hb-multiselect is-open">
-            <div class="hb-multiselect__control">
-              <span class="hb-multiselect__tag">Option 1
-                <button class="hb-multiselect__tag-remove" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
-              </span>
-              <span class="hb-multiselect__tag">Option 2
-                <button class="hb-multiselect__tag-remove" aria-label="Remove"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
-              </span>
-              <input class="hb-multiselect__input" type="text" placeholder="">
-              <svg class="hb-multiselect__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
+          <div class="hb-multiselect" :class="{ 'is-open': open }" @click.outside="open = false"
+               x-data="{
+                 open: false,
+                 query: '',
+                 options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+                 selected: ['Option 1', 'Option 2'],
+                 get filtered() { return this.options.filter(o => o.toLowerCase().includes(this.query.toLowerCase())); },
+                 isSelected(o) { return this.selected.includes(o); },
+                 toggle(o) { this.isSelected(o) ? (this.selected = this.selected.filter(s => s !== o)) : this.selected.push(o); }
+               }">
+            <div class="hb-multiselect__control" @click="open = true; $refs.input.focus()">
+              <template x-for="tag in selected" :key="tag">
+                <span class="hb-multiselect__tag"><span x-text="tag"></span>
+                  <button class="hb-multiselect__tag-remove" aria-label="Remove" @click.stop="toggle(tag)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                </span>
+              </template>
+              <input class="hb-multiselect__input" type="text" placeholder="Select a value" x-ref="input" x-model="query" @focus="open = true">
+              <svg class="hb-multiselect__chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" @click.stop="open = !open"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 9l6 6 6-6"/></svg>
             </div>
-            <div class="hb-multiselect__menu">
-              <div class="hb-multiselect__option hb-multiselect__option--selected"><input type="checkbox" class="hb-checkbox" checked tabindex="-1" style="pointer-events:none;"><span>Option 1</span></div>
-              <div class="hb-multiselect__option hb-multiselect__option--selected"><input type="checkbox" class="hb-checkbox" checked tabindex="-1" style="pointer-events:none;"><span>Option 2</span></div>
-              <div class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox" tabindex="-1" style="pointer-events:none;"><span>Option 3</span></div>
-              <div class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox" tabindex="-1" style="pointer-events:none;"><span>Option 4</span></div>
+            <div class="hb-multiselect__menu" x-show="open" x-cloak>
+              <template x-for="o in filtered" :key="o">
+                <div class="hb-multiselect__option" :class="{ 'hb-multiselect__option--selected': isSelected(o) }" @click="toggle(o)"><input type="checkbox" class="hb-checkbox" :checked="isSelected(o)" tabindex="-1" style="pointer-events:none;"><span x-text="o"></span></div>
+              </template>
+              <div class="hb-multiselect__empty" x-show="filtered.length === 0">No results found</div>
             </div>
           </div>
         </div>
