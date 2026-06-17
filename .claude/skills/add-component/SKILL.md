@@ -71,10 +71,10 @@ The designer reviews the component in the prototype. Once approved:
 
 ### 4. Add it to hb-mininectar (optional)
 
-Copy the component CSS into `~/Documents/hb-mininectar/components.css`, then push:
+Copy the component CSS into the hb-mininectar repo's `components.css`, then push:
 
 ```bash
-cd ~/Documents/hb-mininectar
+# from the hb-mininectar repo root
 git add components.css
 git commit -m "Add [component-name] component"
 git push
