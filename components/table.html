@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+      background: var(--ui-bg);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__title {
+    }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__example {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-8);
+      align-items: center;
+      padding: var(--spacing-16);
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-4);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Anatomy */
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--ui-expressive-purple);
+      color: white;
+      font-size: 11px;
+      font-weight: var(--font-weight-bolder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+  </style>
+  
+  <style>
+    /* Demo-only helpers for this docs page */
+    [x-cloak] { display: none !important; }
+    .callout {
+      display: flex; gap: var(--spacing-8); align-items: flex-start;
+      background: var(--ui-expressive-yellow-soft);
+      border: 1px solid var(--ui-expressive-yellow);
+      color: var(--ui-expressive-brown-contrast);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-12) var(--spacing-16);
+      margin-bottom: var(--spacing-16);
+    }
+    .callout svg { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; }
+  </style>
+
+</head>
+
+<body>
+<div class="page">
+
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Table</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Tables present structured data in rows and columns. In Nectar, the row itself is never the control: every action lives in a cell as a real link or button. This keeps tables operable by keyboard and screen reader, gives each action its own clear target, and follows the accessibility guidance from our Level&nbsp;Access review.</p>
+    </header>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2 class="section__title hb-text-heading-small">Overview</h2>
+      <p class="section__desc hb-text-body">A complete table combines a focusable scroll region, a caption, row selection, a primary link in the row-header column, and explicit row actions. Everything below builds on this base.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-overview" tabindex="0">
+        <table class="hb-table">
+          <caption id="cap-overview" class="hb-table__caption hb-visually-hidden">Review types</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select all rows"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Owner</th>
+              <th scope="col" class="hb-table__cell--num">Cases</th>
+              <th scope="col"><span class="hb-visually-hidden">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select AML transaction review"></td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th>
+              <td>Elena Cruz</td>
+              <td class="hb-table__cell--num">128</td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+            </tr>
+            <tr>
+              <td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select Sanctions screening"></td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th>
+              <td>Marcus Webb</td>
+              <td class="hb-table__cell--num">342</td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+            </tr>
+            <tr>
+              <td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select PEP due diligence"></td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th>
+              <td>Priya Nair</td>
+              <td class="hb-table__cell--num">56</td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit PEP due diligence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete PEP due diligence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
+      <div class="state-table-wrap">
+        <table class="state-table anatomy-table">
+          <tbody>
+            <tr><td><div class="anatomy-num">1</div></td><td><span class="hb-text-caption-bold">Region wrapper</span></td><td class="hb-text-body">A focusable scroll container around the table, so a wide table can be scrolled with the keyboard alone.</td></tr>
+            <tr><td><div class="anatomy-num">2</div></td><td><span class="hb-text-caption-bold">Caption</span></td><td class="hb-text-body">A title that names the table for screen readers. It can stay visually hidden.</td></tr>
+            <tr><td><div class="anatomy-num">3</div></td><td><span class="hb-text-caption-bold">Column headers</span></td><td class="hb-text-body">Every column has a header, including a visually-hidden one for the actions column.</td></tr>
+            <tr><td><div class="anatomy-num">4</div></td><td><span class="hb-text-caption-bold">Row header</span></td><td class="hb-text-body">The identifier column acts as the row's header and holds the primary link.</td></tr>
+            <tr><td><div class="anatomy-num">5</div></td><td><span class="hb-text-caption-bold">Row actions</span></td><td class="hb-text-body">Explicit icon buttons in the last column, named after the row they act on.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Primary action -->
+    <section class="section" id="primary-action">
+      <h2 class="section__title hb-text-heading-small">Primary action</h2>
+      <p class="section__desc hb-text-body">The main action of a row — usually navigating to its detail view — is a real link in the row-header cell, built with the Link component. It is underlined by default, so it is discoverable without relying on hover.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-primary" tabindex="0">
+        <table class="hb-table">
+          <caption id="cap-primary" class="hb-table__caption hb-visually-hidden">Primary action example</caption>
+          <thead><tr><th scope="col">Case</th><th scope="col">Subject</th><th scope="col">Opened</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10482</a></th><td>Aurora Holdings LLC</td><td>Jul 2, 2026</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10483</a></th><td>Meridian Capital</td><td>Jul 3, 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Row actions -->
+    <section class="section" id="row-actions">
+      <h2 class="section__title hb-text-heading-small">Row actions</h2>
+      <p class="section__desc hb-text-body">Secondary actions sit in the last column as icon-only buttons in the Ghost variant. Each button's accessible name includes the row it applies to, so a screen-reader user always knows the target — e.g. "Edit AML transaction review".</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-actions" tabindex="0">
+        <table class="hb-table">
+          <caption id="cap-actions" class="hb-table__caption hb-visually-hidden">Row actions example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col"><span class="hb-visually-hidden">Actions</span></th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Overflow menu -->
+    <section class="section" id="overflow">
+      <h2 class="section__title hb-text-heading-small">Overflow menu</h2>
+      <p class="section__desc hb-text-body">When a row has more than two actions, keep the most frequent one visible and collapse the rest behind a "···" button. Clicking it opens a dropdown where every action is a real button, named after the row it acts on.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-overflow" tabindex="0">
+        <table class="hb-table">
+          <caption id="cap-overflow" class="hb-table__caption hb-visually-hidden">Overflow menu example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col"><span class="hb-visually-hidden">Actions</span></th></tr></thead>
+          <tbody>
+            <tr>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th>
+              <td>Elena Cruz</td>
+              <td class="hb-table__actions">
+                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                <span class="hb-table__overflow" x-data="{ open: false }" @click.outside="open = false" @keydown.escape="open = false">
+                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for AML transaction review"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+                  <div class="hb-table__menu" role="menu" aria-label="More actions for AML transaction review" x-show="open" x-cloak>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Duplicate</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Archive</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Delete</button>
+                  </div>
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th>
+              <td>Marcus Webb</td>
+              <td class="hb-table__actions">
+                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                <span class="hb-table__overflow" x-data="{ open: false }" @click.outside="open = false" @keydown.escape="open = false">
+                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for Sanctions screening"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+                  <div class="hb-table__menu" role="menu" aria-label="More actions for Sanctions screening" x-show="open" x-cloak>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Duplicate</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Archive</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Delete</button>
+                  </div>
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Selection -->
+    <section class="section" id="selection">
+      <h2 class="section__title hb-text-heading-small">Selection</h2>
+      <p class="section__desc hb-text-body">Selecting rows uses a real checkbox in the first column — a clear, familiar control. The header checkbox toggles all rows, and selected rows get a soft highlight automatically.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-select" tabindex="0"
+           x-data="{ all:false, r:[false,false,false] }">
+        <table class="hb-table">
+          <caption id="cap-select" class="hb-table__caption hb-visually-hidden">Selection example</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select all rows" x-model="all" @change="r = r.map(()=>all)"></th>
+              <th scope="col">Name</th><th scope="col">Owner</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select AML transaction review" x-model="r[0]"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td></tr>
+            <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select sanctions screening" x-model="r[1]"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td></tr>
+            <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select PEP due diligence" x-model="r[2]"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th><td>Priya Nair</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Expandable rows -->
+    <section class="section" id="expandable">
+      <h2 class="section__title hb-text-heading-small">Expandable rows</h2>
+      <p class="section__desc hb-text-body">To progressively disclose more content, a disclosure button at the start of the row toggles a detail row underneath. This is the accessible replacement for a clickable row that expands.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-expand" tabindex="0" x-data="{ open:null }">
+        <table class="hb-table">
+          <caption id="cap-expand" class="hb-table__caption hb-visually-hidden">Expandable rows example</caption>
+          <thead><tr><th scope="col" class="hb-table__select-col"><span class="hb-visually-hidden">Expand</span></th><th scope="col">Alert</th><th scope="col">Risk</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-table__select-col">
+                <button type="button" class="hb-table__expander" aria-controls="detail-a1"
+                        :aria-expanded="open===1 ? 'true':'false'"
+                        @click="open = open===1 ? null : 1"
+                        aria-label="Toggle details for ALERT-2201"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+              </td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-2201</a></th>
+              <td><span class="hb-tag hb-tag--red">High</span></td>
+            </tr>
+            <tr class="hb-table__detail-row" id="detail-a1" x-show="open===1" x-cloak>
+              <td colspan="3">
+                <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-4);">Disposition step</div>
+                <div class="hb-text-body">Structuring pattern detected across 4 linked accounts. Recommended: escalate to enhanced due diligence.</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="hb-table__select-col">
+                <button type="button" class="hb-table__expander" aria-controls="detail-a2"
+                        :aria-expanded="open===2 ? 'true':'false'"
+                        @click="open = open===2 ? null : 2"
+                        aria-label="Toggle details for ALERT-2202"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+              </td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-2202</a></th>
+              <td><span class="hb-tag hb-tag--yellow">Medium</span></td>
+            </tr>
+            <tr class="hb-table__detail-row" id="detail-a2" x-show="open===2" x-cloak>
+              <td colspan="3">
+                <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-4);">Disposition step</div>
+                <div class="hb-text-body">Cross-border transfer just under reporting threshold. Recommended: request source-of-funds documentation.</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Whole-row click -->
+    <section class="section" id="row-link">
+      <h2 class="section__title hb-text-heading-small">Whole-row click <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— opt-in</span></h2>
+      <p class="section__desc hb-text-body">If a large click target is worth it, <code>hb-table--row-link</code> stretches the row-header link across the whole row while the semantics stay intact. Other real controls (checkboxes, action buttons) still keep working.</p>
+      <div class="callout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <div class="hb-text-body"><strong>Trade-off:</strong> text in the other cells can no longer be selected or copied. Avoid this variant on data-dense tables where users copy values such as transaction IDs or amounts — use the plain primary link instead.</div>
+      </div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-rowlink" tabindex="0">
+        <table class="hb-table hb-table--row-link">
+          <caption id="cap-rowlink" class="hb-table__caption hb-visually-hidden">Whole-row click example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col"><span class="hb-visually-hidden">Actions</span></th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Density -->
+    <section class="section" id="density">
+      <h2 class="section__title hb-text-heading-small">Density</h2>
+      <p class="section__desc hb-text-body"><code>hb-table--compact</code> tightens row height for dense views where more rows need to fit on screen.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-density" tabindex="0">
+        <table class="hb-table hb-table--compact">
+          <caption id="cap-density" class="hb-table__caption hb-visually-hidden">Compact density example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col" class="hb-table__cell--num">Cases</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__cell--num">128</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__cell--num">342</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th><td>Priya Nair</td><td class="hb-table__cell--num">56</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Grid lines -->
+    <section class="section" id="grid">
+      <h2 class="section__title hb-text-heading-small">Grid lines</h2>
+      <p class="section__desc hb-text-body">Tables come in two variants. By default, cells are separated by a full grid — horizontal and vertical lines, spreadsheet-style, which helps when users read and compare individual values across many columns. <code>hb-table--plain</code> removes the vertical lines for a lighter look when rows are scanned as a whole.</p>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Default — full grid</div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-grid-default" tabindex="0" style="margin-bottom: var(--spacing-24);">
+        <table class="hb-table">
+          <caption id="cap-grid-default" class="hb-table__caption hb-visually-hidden">Default grid example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Stages</th><th scope="col" class="hb-table__cell--num">Version</th><th scope="col">Last modified</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">1260H Investigation</a></th><td><span class="hb-tag hb-tag--grey">1 Stage</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:38 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">314(b) Request (Incoming)</a></th><td><span class="hb-tag hb-tag--grey">2 Stages</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:38 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ABLL US Filing</a></th><td><span class="hb-tag hb-tag--grey">6 Stages</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:39 AM</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Plain — horizontal lines only</div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-grid" tabindex="0">
+        <table class="hb-table hb-table--plain">
+          <caption id="cap-grid" class="hb-table__caption hb-visually-hidden">Horizontal lines only example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Stages</th><th scope="col" class="hb-table__cell--num">Version</th><th scope="col">Last modified</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">1260H Investigation</a></th><td><span class="hb-tag hb-tag--grey">1 Stage</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:38 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">314(b) Request (Incoming)</a></th><td><span class="hb-tag hb-tag--grey">2 Stages</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:38 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ABLL US Filing</a></th><td><span class="hb-tag hb-tag--grey">6 Stages</span></td><td class="hb-table__cell--num">0</td><td>Jun 24, 2026 11:39 AM</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Accessibility guidance -->
+    <section class="section" id="accessibility">
+      <h2 class="section__title hb-text-heading-small">Accessibility</h2>
+      <p class="section__desc hb-text-body">The rules behind this component, straight from the Level&nbsp;Access review.</p>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Give every action its own visible link or button inside a cell.</div>
+            <div class="guidance-card__note hb-text-body">Name repeated actions after their row, so "Edit" always says which item it edits.</div>
+            <div class="guidance-card__note hb-text-body">Keep the identifier column as the row's title, holding the primary link.</div>
+            <div class="guidance-card__note hb-text-body">Make interactivity visible without hover — underlined links, visible buttons, focus rings.</div>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg></span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Make clicking somewhere in the row the only way to act on it.</div>
+            <div class="guidance-card__note hb-text-body">Reveal actions only on mouse hover.</div>
+            <div class="guidance-card__note hb-text-body">Hide the row's primary action inside the overflow menu.</div>
+            <div class="guidance-card__note hb-text-body">Use the whole-row click variant where people need to select or copy cell values.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>

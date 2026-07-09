@@ -2284,3 +2284,282 @@ body {
   0%   { left: -40%; }
   100% { left: 100%; }
 }
+
+/* ── Table ────────────────────────────────────────────────── */
+/*
+  Accessible data table.
+
+  Core principle (per Level Access feedback + Adrian Roselli): the ROW
+  is not the control. Use real <table> semantics and put every action in
+  a cell as a real <a> or <button>. Never attach a click handler to a
+  <tr>, and never turn the table into an ARIA grid just to make a row
+  clickable — both break screen-reader semantics and keyboard operation.
+
+  Structure:
+    <div class="hb-table-wrap" role="region" aria-labelledby="cap-id" tabindex="0">
+      <table class="hb-table">
+        <caption id="cap-id" class="hb-table__caption">Review types</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="hb-table__select-col"><!-- select-all --></th>
+            <th scope="col">Name</th>
+            <th scope="col">Owner</th>
+            <th scope="col" class="hb-table__cell--num">Cases</th>
+            <th scope="col"><span class="hb-visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="hb-table__select-col">
+              <input type="checkbox" class="hb-checkbox" aria-label="Select AML review">
+            </td>
+            <th scope="row" class="hb-table__rowheader">
+              <a href="#" class="hb-link hb-table__link">AML review</a>
+            </th>
+            <td>Elena Cruz</td>
+            <td class="hb-table__cell--num">128</td>
+            <td class="hb-table__actions"><!-- icon buttons w/ contextual aria-label --></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  Modifiers:  hb-table--plain · hb-table--compact · hb-table--row-link
+  Elements:   __caption __rowheader __link __select-col __actions __cell--num
+              __expander __expander-icon __detail-row
+              __overflow __menu __menu-item
+  Utility:    hb-visually-hidden
+*/
+
+/* Scroll container — also the focusable region for keyboard users so a
+   wide table can be scrolled without a mouse (WCAG 2.1.1). */
+.hb-table-wrap {
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  overflow-x: auto;
+  max-width: 100%;
+}
+.hb-table-wrap:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: -2px;
+}
+
+.hb-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+
+.hb-table__caption {
+  text-align: left;
+  padding: var(--spacing-16) var(--spacing-16) var(--spacing-12);
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-default);
+  color: var(--ui-text);
+}
+
+/* Column headers */
+.hb-table thead th {
+  text-align: left;
+  vertical-align: middle;
+  padding: var(--spacing-8) var(--spacing-16);
+  background: var(--ui-bg-secondary);
+  color: var(--ui-text-secondary);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  letter-spacing: var(--tracking-none);
+  border-bottom: 1px solid var(--ui-border);
+  white-space: nowrap;
+}
+
+/* Body cells */
+.hb-table tbody th,
+.hb-table tbody td {
+  text-align: left;
+  vertical-align: middle;
+  padding: var(--spacing-12) var(--spacing-16);
+  border-bottom: 1px solid var(--ui-border);
+  font-weight: var(--font-weight-regular);
+}
+.hb-table tbody tr:last-child > * { border-bottom: none; }
+
+/* Row-header cell = the identifier column. Holds the primary link. */
+.hb-table__rowheader {
+  font-weight: var(--font-weight-bold);
+  color: var(--ui-text);
+}
+
+/* Density */
+.hb-table--compact thead th { padding: var(--spacing-4) var(--spacing-16); }
+.hb-table--compact tbody th,
+.hb-table--compact tbody td { padding: var(--spacing-8) var(--spacing-16); }
+
+/* Lines — by default cells are separated by a full grid (horizontal +
+   vertical lines, spreadsheet-style). hb-table--plain removes the
+   vertical lines for a lighter, rows-only look. */
+.hb-table tr > * + * { border-left: 1px solid var(--ui-border); }
+.hb-table--plain tr > * + * { border-left: none; }
+
+/* Numeric / right-aligned cells */
+.hb-table__cell--num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Row hover — a scan aid, and the affordance for the row-link variant */
+.hb-table tbody tr:hover > * { background: var(--ui-bg-secondary); }
+
+/* Selected row — driven by the checkbox, no JS required */
+.hb-table tbody tr:has(.hb-checkbox:checked) > *,
+.hb-table tbody tr:has(.hb-checkbox:checked):hover > * {
+  background: var(--ui-interaction-soft);
+}
+
+/* Selection + actions columns hug their content */
+.hb-table__select-col { width: 1%; white-space: nowrap; }
+.hb-table__actions {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+.hb-table__actions .hb-btn + .hb-btn,
+.hb-table__actions .hb-btn + .hb-table__overflow,
+.hb-table__actions .hb-fab + .hb-fab { margin-left: var(--spacing-4); }
+
+/* Row actions are icon-only ghost buttons: hb-btn hb-btn--ghost hb-btn--sm */
+.hb-table__actions .hb-btn svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+/* Same hover as the expander button — visible on the hovered row's
+   --ui-bg-secondary background */
+.hb-table__actions .hb-btn--ghost:hover { background: var(--ui-bg-tertiary); }
+
+/* Primary link in the row-header cell — use the Link component:
+   <a class="hb-link hb-table__link">. hb-table__link adds no styling of
+   its own; it marks the link the row-link variant stretches. */
+
+/* ── Whole-row click target (opt-in) ─────────────────────────
+   Block-link pattern (Roselli): the real <a> in the row header stretches
+   over the row via an absolutely-positioned ::after. No JavaScript, no
+   ARIA grid roles — semantics stay intact.
+   Trade-off: text in other cells becomes unselectable. Do NOT use on
+   data-dense tables where copying cell values matters (IDs, amounts). */
+.hb-table--row-link tbody tr { position: relative; }
+.hb-table--row-link .hb-table__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+/* Keep other real controls clickable above the block link */
+.hb-table--row-link .hb-table__select-col,
+.hb-table--row-link .hb-table__actions,
+.hb-table--row-link .hb-table__expander { position: relative; z-index: 1; }
+
+/* ── Overflow menu (more than two actions) ───────────────────
+   Keep the most frequent action visible and collapse the rest behind a
+   "···" trigger — an icon-only ghost hb-btn with aria-haspopup="menu"
+   and aria-expanded. Every menu item is a real <button>.
+     <span class="hb-table__overflow">
+       <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu"
+               aria-expanded="false" aria-label="More actions for …">···</button>
+       <div class="hb-table__menu" role="menu">
+         <button class="hb-table__menu-item" role="menuitem">Archive</button>
+       </div>
+     </span> */
+.hb-table__overflow {
+  position: relative;
+  display: inline-block;
+}
+.hb-table__menu {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  right: 0;
+  z-index: 60;
+  min-width: 160px;
+  background: var(--ui-bg-overlay);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-overlay);
+  padding: var(--spacing-4);
+}
+.hb-table__menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  width: 100%;
+  padding: var(--spacing-8);
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-4);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  text-align: left;
+  cursor: pointer;
+}
+.hb-table__menu-item:hover { background: var(--ui-bg-secondary); }
+.hb-table__menu-item:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: -2px;
+}
+
+/* While an overflow menu is open, let it escape the wrap's scroll clip */
+.hb-table-wrap:has(.hb-table__overflow [aria-expanded="true"]) { overflow: visible; }
+
+/* ── Expando / disclosure row ────────────────────────────────
+   A disclosure <button> in a cell toggles detail row(s) that follow it
+   in the DOM. Detail rows carry the [hidden] attribute when collapsed.
+   Do NOT use aria-expanded on the <tr> (only valid in a treegrid) and do
+   NOT fake row positions with aria-rowindex/aria-rowcount. */
+.hb-table__expander {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-4);
+  color: var(--ui-icon);
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+.hb-table__expander:hover { background: var(--ui-bg-tertiary); }
+.hb-table__expander:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: 1px;
+}
+.hb-table__expander-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform 120ms ease;
+}
+.hb-table__expander[aria-expanded="true"] .hb-table__expander-icon { transform: rotate(90deg); }
+.hb-table__detail-row > td {
+  background: var(--ui-bg-secondary);
+  padding: var(--spacing-16);
+}
+
+/* Visually-hidden — accessible names for icon-only controls / headers */
+.hb-visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}

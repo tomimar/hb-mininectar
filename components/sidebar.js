@@ -38,6 +38,7 @@
       ['Checkbox',        'checkbox.html'],
       ['Radio',           'radio.html'],
       ['Toggle',          'toggle.html'],
+      ['Table',           'table.html'],
       ['Popup select',    'popup-select.html'],
       ['Link',            'link.html'],
       ['Modal',           'modal.html'],
