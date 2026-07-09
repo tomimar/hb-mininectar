@@ -454,8 +454,10 @@
     <!-- Expandable rows -->
     <section class="section" id="expandable">
       <h2 class="section__title hb-text-heading-small">Expandable rows</h2>
-      <p class="section__desc hb-text-body">To progressively disclose more content, a disclosure button at the start of the row toggles a detail row underneath. This is the accessible replacement for a clickable row that expands.</p>
-      <div class="hb-table-wrap" role="region" aria-labelledby="cap-expand" tabindex="0" x-data="{ open:null }">
+      <p class="section__desc hb-text-body">To progressively disclose more content, a disclosure button at the start of the row toggles a detail row underneath. This is the accessible replacement for a clickable row that expands. The revealed content can be a single block of detail, or several rows of related data.</p>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Detail block</div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-expand" tabindex="0" x-data="{ open:null }" style="margin-bottom: var(--spacing-24);">
         <table class="hb-table">
           <caption id="cap-expand" class="hb-table__caption hb-visually-hidden">Expandable rows example</caption>
           <thead><tr><th scope="col" class="hb-table__select-col"><span class="hb-visually-hidden">Expand</span></th><th scope="col">Alert</th><th scope="col">Risk</th></tr></thead>
@@ -490,6 +492,64 @@
               <td colspan="3">
                 <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-4);">Disposition step</div>
                 <div class="hb-text-body">Cross-border transfer just under reporting threshold. Recommended: request source-of-funds documentation.</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Multiple rows</div>
+      <p class="section__desc hb-text-body" style="margin-top: 0;">When the detail is itself tabular, nest a table inside the detail row so the child rows keep their own headers and semantics.</p>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-expand-multi" tabindex="0" x-data="{ open:1 }">
+        <table class="hb-table">
+          <caption id="cap-expand-multi" class="hb-table__caption hb-visually-hidden">Expandable rows with nested rows example</caption>
+          <thead><tr><th scope="col" class="hb-table__select-col"><span class="hb-visually-hidden">Expand</span></th><th scope="col">Alert</th><th scope="col">Risk</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="hb-table__select-col">
+                <button type="button" class="hb-table__expander" aria-controls="detail-m1"
+                        :aria-expanded="open===1 ? 'true':'false'"
+                        @click="open = open===1 ? null : 1"
+                        aria-label="Toggle linked transactions for ALERT-3310"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+              </td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-3310</a></th>
+              <td><span class="hb-tag hb-tag--red">High</span></td>
+            </tr>
+            <tr class="hb-table__detail-row" id="detail-m1" x-show="open===1" x-cloak>
+              <td colspan="3">
+                <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Linked transactions</div>
+                <table class="hb-table hb-table--compact">
+                  <caption class="hb-table__caption hb-visually-hidden">Linked transactions for ALERT-3310</caption>
+                  <thead><tr><th scope="col">Reference</th><th scope="col">Date</th><th scope="col" class="hb-table__cell--num">Amount</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row" class="hb-table__rowheader">TXN-88421</th><td>Jun 21, 2026</td><td class="hb-table__cell--num">$9,800</td></tr>
+                    <tr><th scope="row" class="hb-table__rowheader">TXN-88439</th><td>Jun 22, 2026</td><td class="hb-table__cell--num">$9,750</td></tr>
+                    <tr><th scope="row" class="hb-table__rowheader">TXN-88502</th><td>Jun 23, 2026</td><td class="hb-table__cell--num">$9,900</td></tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td class="hb-table__select-col">
+                <button type="button" class="hb-table__expander" aria-controls="detail-m2"
+                        :aria-expanded="open===2 ? 'true':'false'"
+                        @click="open = open===2 ? null : 2"
+                        aria-label="Toggle linked transactions for ALERT-3311"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+              </td>
+              <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-3311</a></th>
+              <td><span class="hb-tag hb-tag--yellow">Medium</span></td>
+            </tr>
+            <tr class="hb-table__detail-row" id="detail-m2" x-show="open===2" x-cloak>
+              <td colspan="3">
+                <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Linked transactions</div>
+                <table class="hb-table hb-table--compact">
+                  <caption class="hb-table__caption hb-visually-hidden">Linked transactions for ALERT-3311</caption>
+                  <thead><tr><th scope="col">Reference</th><th scope="col">Date</th><th scope="col" class="hb-table__cell--num">Amount</th></tr></thead>
+                  <tbody>
+                    <tr><th scope="row" class="hb-table__rowheader">TXN-90114</th><td>Jun 18, 2026</td><td class="hb-table__cell--num">$14,200</td></tr>
+                    <tr><th scope="row" class="hb-table__rowheader">TXN-90130</th><td>Jun 19, 2026</td><td class="hb-table__cell--num">$6,500</td></tr>
+                  </tbody>
+                </table>
               </td>
             </tr>
           </tbody>
