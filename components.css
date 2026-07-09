@@ -2328,6 +2328,7 @@ body {
   Elements:   __caption __rowheader __link __select-col __actions __cell--num
               __expander __expander-icon __detail-row
               __overflow __menu __menu-item
+              __footer __footer-group __footer-label __pagination __page-info
   Utility:    hb-visually-hidden
 */
 
@@ -2515,6 +2516,56 @@ body {
 
 /* While an overflow menu is open, let it escape the wrap's scroll clip */
 .hb-table-wrap:has(.hb-table__overflow [aria-expanded="true"]) { overflow: visible; }
+
+/* ── Footer (optional) ───────────────────────────────────────
+   A summary + pagination bar shown BELOW the table, as a sibling of
+   hb-table-wrap (not inside it). Use on tables with many rows / pages.
+   Left: row count, a page-size Select, a status line + Refresh link.
+   Right: prev/next buttons around the current-page indicator.
+     <div class="hb-table-wrap">…</div>
+     <div class="hb-table__footer">
+       <div class="hb-table__footer-group"> … </div>
+       <nav class="hb-table__pagination" aria-label="Pagination"> … </nav>
+     </div> */
+.hb-table__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-12) var(--spacing-16);
+  margin-top: var(--spacing-16);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+}
+.hb-table__footer-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  flex-wrap: wrap;
+}
+/* "View" (or similar) label sitting next to its Select */
+.hb-table__footer-label { color: var(--ui-text-secondary); }
+
+/* Pagination: prev/next are icon-only secondary buttons around a
+   current-page indicator */
+.hb-table__pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+.hb-table__pagination .hb-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--ui-icon);
+}
+.hb-table__page-info {
+  color: var(--ui-text-secondary);
+  white-space: nowrap;
+  padding: 0 var(--spacing-4);
+}
 
 /* ── Expando / disclosure row ────────────────────────────────
    A disclosure <button> in a cell toggles detail row(s) that follow it

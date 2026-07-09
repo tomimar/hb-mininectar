@@ -140,7 +140,7 @@ Every component has a dedicated documentation page with live examples, all varia
 | Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
 | Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
 | Toggle | `hb-toggle` + `hb-toggle__input`/`__track`/`__thumb`/`__label` | https://tomimar.github.io/hb-mininectar/components/toggle.html |
-| Table | `hb-table` (`--plain`/`--compact`/`--row-link`) + `hb-table-wrap`/`__caption`/`__rowheader`/`__link` (use with `hb-link`)/`__select-col`/`__actions`/`__cell--num`/`__expander`/`__detail-row`/`__overflow`/`__menu`/`__menu-item` + `hb-visually-hidden` | https://tomimar.github.io/hb-mininectar/components/table.html |
+| Table | `hb-table` (`--plain`/`--compact`/`--row-link`) + `hb-table-wrap`/`__caption`/`__rowheader`/`__link` (use with `hb-link`)/`__select-col`/`__actions`/`__cell--num`/`__expander`/`__detail-row`/`__overflow`/`__menu`/`__menu-item`/`__footer`/`__footer-group`/`__footer-label`/`__pagination`/`__page-info` + `hb-visually-hidden` | https://tomimar.github.io/hb-mininectar/components/table.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
