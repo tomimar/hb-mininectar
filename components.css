@@ -2423,7 +2423,10 @@ body {
 }
 
 /* Selection + actions columns hug their content */
-.hb-table__select-col { width: 1%; white-space: nowrap; }
+.hb-table__select-col { width: 1%; white-space: nowrap; text-align: center; }
+/* Center the checkbox in its cell — as a block it honours the cell's
+   vertical-align:middle, instead of aligning to the text line box */
+.hb-table__select-col .hb-checkbox { display: block; margin: 0 auto; }
 .hb-table__actions {
   width: 1%;
   white-space: nowrap;
