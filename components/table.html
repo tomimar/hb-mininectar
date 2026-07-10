@@ -275,7 +275,7 @@
       padding: var(--spacing-12) var(--spacing-16);
       margin-bottom: var(--spacing-16);
     }
-    .callout svg { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; }
+    .callout .hb-icon { margin-top: 2px; }
   </style>
 
 </head>
@@ -315,21 +315,21 @@
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th>
               <td>Elena Cruz</td>
               <td class="hb-table__cell--num">128</td>
-              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><span class="hb-icon">delete</span></button></td>
             </tr>
             <tr>
               <td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select Sanctions screening"></td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th>
               <td>Marcus Webb</td>
               <td class="hb-table__cell--num">342</td>
-              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><span class="hb-icon">delete</span></button></td>
             </tr>
             <tr>
               <td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select PEP due diligence"></td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th>
               <td>Priya Nair</td>
               <td class="hb-table__cell--num">56</td>
-              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit PEP due diligence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete PEP due diligence"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td>
+              <td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit PEP due diligence"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete PEP due diligence"><span class="hb-icon">delete</span></button></td>
             </tr>
           </tbody>
         </table>
@@ -377,8 +377,8 @@
           <caption id="cap-actions" class="hb-table__caption hb-visually-hidden">Row actions example</caption>
           <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col"><span class="hb-visually-hidden">Actions</span></th></tr></thead>
           <tbody>
-            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
-            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><span class="hb-icon">delete</span></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><span class="hb-icon">delete</span></button></td></tr>
           </tbody>
         </table>
       </div>
@@ -397,9 +397,9 @@
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th>
               <td>Elena Cruz</td>
               <td class="hb-table__actions">
-                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><span class="hb-icon">edit</span></button>
                 <span class="hb-table__overflow" x-data="{ open: false }" @click.outside="open = false" @keydown.escape="open = false">
-                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for AML transaction review"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for AML transaction review"><span class="hb-icon hb-icon--rounded">more_vert</span></button>
                   <div class="hb-table__menu" role="menu" aria-label="More actions for AML transaction review" x-show="open" x-cloak>
                     <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Duplicate</button>
                     <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Archive</button>
@@ -412,9 +412,9 @@
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th>
               <td>Marcus Webb</td>
               <td class="hb-table__actions">
-                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><span class="hb-icon">edit</span></button>
                 <span class="hb-table__overflow" x-data="{ open: false }" @click.outside="open = false" @keydown.escape="open = false">
-                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for Sanctions screening"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></button>
+                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-haspopup="menu" :aria-expanded="open ? 'true' : 'false'" @click="open = !open" aria-label="More actions for Sanctions screening"><span class="hb-icon hb-icon--rounded">more_vert</span></button>
                   <div class="hb-table__menu" role="menu" aria-label="More actions for Sanctions screening" x-show="open" x-cloak>
                     <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Duplicate</button>
                     <button type="button" class="hb-table__menu-item" role="menuitem" @click="open = false">Archive</button>
@@ -467,7 +467,7 @@
                 <button type="button" class="hb-table__expander" aria-controls="detail-a1"
                         :aria-expanded="open===1 ? 'true':'false'"
                         @click="open = open===1 ? null : 1"
-                        aria-label="Toggle details for ALERT-2201"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                        aria-label="Toggle details for ALERT-2201"><span class="hb-icon hb-table__expander-icon">chevron_right</span></button>
               </td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-2201</a></th>
               <td><span class="hb-tag hb-tag--red">High</span></td>
@@ -483,7 +483,7 @@
                 <button type="button" class="hb-table__expander" aria-controls="detail-a2"
                         :aria-expanded="open===2 ? 'true':'false'"
                         @click="open = open===2 ? null : 2"
-                        aria-label="Toggle details for ALERT-2202"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                        aria-label="Toggle details for ALERT-2202"><span class="hb-icon hb-table__expander-icon">chevron_right</span></button>
               </td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-2202</a></th>
               <td><span class="hb-tag hb-tag--yellow">Medium</span></td>
@@ -510,7 +510,7 @@
                 <button type="button" class="hb-table__expander" aria-controls="detail-m1"
                         :aria-expanded="open===1 ? 'true':'false'"
                         @click="open = open===1 ? null : 1"
-                        aria-label="Toggle linked transactions for ALERT-3310"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                        aria-label="Toggle linked transactions for ALERT-3310"><span class="hb-icon hb-table__expander-icon">chevron_right</span></button>
               </td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-3310</a></th>
               <td><span class="hb-tag hb-tag--red">High</span></td>
@@ -534,7 +534,7 @@
                 <button type="button" class="hb-table__expander" aria-controls="detail-m2"
                         :aria-expanded="open===2 ? 'true':'false'"
                         @click="open = open===2 ? null : 2"
-                        aria-label="Toggle linked transactions for ALERT-3311"><svg class="hb-table__expander-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+                        aria-label="Toggle linked transactions for ALERT-3311"><span class="hb-icon hb-table__expander-icon">chevron_right</span></button>
               </td>
               <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">ALERT-3311</a></th>
               <td><span class="hb-tag hb-tag--yellow">Medium</span></td>
@@ -562,7 +562,7 @@
       <h2 class="section__title hb-text-heading-small">Whole-row click <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— opt-in</span></h2>
       <p class="section__desc hb-text-body">If a large click target is worth it, <code>hb-table--row-link</code> stretches the row-header link across the whole row while the semantics stay intact. Other real controls (checkboxes, action buttons) still keep working.</p>
       <div class="callout">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        <span class="hb-icon">info</span>
         <div class="hb-text-body"><strong>Trade-off:</strong> text in the other cells can no longer be selected or copied. Avoid this variant on data-dense tables where users copy values such as transaction IDs or amounts — use the plain primary link instead.</div>
       </div>
       <div class="hb-table-wrap" role="region" aria-labelledby="cap-rowlink" tabindex="0">
@@ -570,8 +570,8 @@
           <caption id="cap-rowlink" class="hb-table__caption hb-visually-hidden">Whole-row click example</caption>
           <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col"><span class="hb-visually-hidden">Actions</span></th></tr></thead>
           <tbody>
-            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
-            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit AML transaction review"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete AML transaction review"><span class="hb-icon">delete</span></button></td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__actions"><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit Sanctions screening"><span class="hb-icon">edit</span></button><button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Delete Sanctions screening"><span class="hb-icon">delete</span></button></td></tr>
           </tbody>
         </table>
       </div>
@@ -658,9 +658,9 @@
           <a href="#" class="hb-link">Refresh</a>
         </div>
         <nav class="hb-table__pagination" aria-label="Pagination">
-          <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm" aria-label="Previous page" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm" aria-label="Previous page" disabled><span class="hb-icon">chevron_left</span></button>
           <span class="hb-table__page-info">1 of 1</span>
-          <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm" aria-label="Next page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+          <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm" aria-label="Next page"><span class="hb-icon">chevron_right</span></button>
         </nav>
       </div>
     </section>
@@ -672,7 +672,7 @@
       <div class="guidance">
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--do">
-            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><span class="hb-icon">check</span></span>
             <span class="guidance-card__title hb-text-caption-bold">Do</span>
           </div>
           <div class="guidance-card__body">
@@ -684,7 +684,7 @@
         </div>
         <div class="guidance-card">
           <div class="guidance-card__header guidance-card__header--dont">
-            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg></span>
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><span class="hb-icon">close</span></span>
             <span class="guidance-card__title hb-text-caption-bold">Don't</span>
           </div>
           <div class="guidance-card__body">

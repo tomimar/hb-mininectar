@@ -213,6 +213,59 @@ body {
 }
 
 
+/* ── Icon ─────────────────────────────────────────────────── */
+/*
+  Material Icons (Google) — the icon set used across Hummingbird.
+  The fonts are loaded in tokens.css. Write the icon NAME as the element's
+  text (the ligature resolves to the glyph): EditIcon → "edit",
+  MoreVertIcon → "more_vert", DeleteIcon → "delete".
+  Browse names: https://mui.com/material-ui/material-icons/
+
+  Usage:
+    <span class="hb-icon">edit</span>                  (Outlined, default)
+    <span class="hb-icon hb-icon--rounded">more_vert</span>  (Rounded — for
+                                    prominent actions / important menus)
+    <span class="hb-icon hb-icon--sm">close</span>     (16px)
+    <span class="hb-icon hb-icon--lg">add</span>       (24px)
+
+  Color: the default is always --ui-icon. Inside a button the icon inherits the
+  button's text color; inside a link it inherits the link color. To force any
+  other color, set `color` inline with a token.
+  Always pair an icon-only control with an accessible name (aria-label).
+*/
+.hb-icon {
+  font-family: 'Material Icons Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: var(--icon-size-md);
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  flex-shrink: 0;
+  color: var(--ui-icon);
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+  -webkit-font-feature-settings: 'liga';
+  user-select: none;
+}
+/* Rounded variant — for prominent actions and important menus */
+.hb-icon--rounded { font-family: 'Material Icons Round'; }
+/* Sizes */
+.hb-icon--sm { font-size: var(--icon-size-sm); }
+.hb-icon--lg { font-size: var(--icon-size-lg); }
+/* Inside buttons and links, the icon follows the control's own color */
+.hb-btn .hb-icon,
+.hb-link .hb-icon { color: currentColor; }
+
+
 /* ── Button ───────────────────────────────────────────────── */
 /*
   Usage:
@@ -2443,6 +2496,10 @@ body {
   flex-shrink: 0;
   color: var(--ui-icon);
 }
+.hb-table__actions .hb-btn .hb-icon {
+  font-size: 18px;
+  color: var(--ui-icon);
+}
 /* Same hover as the expander button — visible on the hovered row's
    --ui-bg-secondary background */
 .hb-table__actions .hb-btn--ghost:hover { background: var(--ui-bg-tertiary); }
@@ -2564,6 +2621,10 @@ body {
   flex-shrink: 0;
   color: var(--ui-icon);
 }
+.hb-table__pagination .hb-btn .hb-icon {
+  font-size: 18px;
+  color: var(--ui-icon);
+}
 .hb-table__page-info {
   color: var(--ui-text-secondary);
   white-space: nowrap;
@@ -2597,6 +2658,7 @@ body {
 .hb-table__expander-icon {
   width: 20px;
   height: 20px;
+  font-size: 20px;
   transition: transform 120ms ease;
 }
 .hb-table__expander[aria-expanded="true"] .hb-table__expander-icon { transform: rotate(90deg); }

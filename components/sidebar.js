@@ -22,6 +22,7 @@
       ['Border radius', prefix + 'border-radius.html', 'border-radius.html'],
       ['Elevation',     prefix + 'elevation.html',     'elevation.html'],
       ['Typography',    prefix + 'typography.html',    'typography.html'],
+      ['Icons',         prefix + 'icons.html',         'icons.html'],
     ];
 
     // Components: [label, filename]

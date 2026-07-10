@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <style>
+    * { box-sizing: border-box; }
+
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+
+    /* Layout */
+    .page { display: flex; min-height: 100vh; }
+
+    /* Sidebar nav */
+    .sidenav {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border);
+      padding: var(--spacing-32) var(--spacing-16);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .sidenav__back {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-4);
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      margin-bottom: var(--spacing-32);
+    }
+    .sidenav__back:hover { color: var(--ui-text); }
+
+    .sidenav__section {
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+
+    .sidenav__link {
+      display: block;
+      color: var(--ui-text-secondary);
+      text-decoration: none;
+      padding: var(--spacing-4) var(--spacing-8);
+      border-radius: var(--border-radius-4);
+      transition: background 100ms, color 100ms;
+      margin-bottom: 2px;
+    }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      max-width: 840px;
+      padding: var(--spacing-48);
+    }
+
+    /* Header */
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge {
+      display: inline-block;
+      color: var(--ui-text-tertiary);
+      margin-bottom: var(--spacing-8);
+    }
+    .page-header__title {
+      font-size: 32px;
+      font-weight: var(--font-weight-bolder);
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-16) 0;
+      line-height: 1.2;
+    }
+    .page-header__desc {
+      color: var(--ui-text-secondary);
+      margin: 0;
+      max-width: 640px;
+    }
+
+    /* Section */
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title {
+      color: var(--ui-text);
+      margin: 0 0 var(--spacing-4) 0;
+      padding-bottom: var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .section__desc {
+      color: var(--ui-text-secondary);
+      margin: var(--spacing-16) 0 var(--spacing-24) 0;
+    }
+
+    /* Preview card */
+    .preview {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-32);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-16);
+      align-items: center;
+      margin-bottom: var(--spacing-16);
+    }
+
+    .preview--col {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    /* Variant rows */
+    .variant-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-24);
+    }
+
+    .variant-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+
+    .variant-row__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-8);
+    }
+
+    .variant-label {
+      color: var(--ui-text);
+    }
+
+    .variant-desc {
+      color: var(--ui-text-tertiary);
+    }
+
+    .variant-buttons {
+      display: flex;
+      gap: var(--spacing-12);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Code block */
+    .code-block {
+      background: var(--ui-text);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16) var(--spacing-24);
+      margin-bottom: var(--spacing-16);
+      overflow-x: auto;
+    }
+    .code-block pre {
+      margin: 0;
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      line-height: 1.7;
+      color: #e8e8e8;
+      white-space: pre;
+    }
+    .code-block .token-class { color: #79c0ff; }
+    .code-block .token-attr { color: #ffa657; }
+    .code-block .token-str { color: #a5d6ff; }
+
+    /* State table */
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th {
+      text-align: left;
+      padding: var(--spacing-8) var(--spacing-16);
+      color: var(--ui-text-secondary);
+      background: var(--ui-bg-secondary);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .state-table td {
+      padding: var(--spacing-12) var(--spacing-16);
+      color: var(--ui-text);
+      border-bottom: 1px solid var(--ui-border);
+      vertical-align: middle;
+    }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table code { white-space: nowrap; }
+    .state-table-wrap {
+      background: var(--ui-bg);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      margin-bottom: var(--spacing-16);
+    }
+
+    /* Do / Don't */
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card {
+      border-radius: var(--border-radius-8);
+      overflow: hidden;
+      border: 1px solid var(--ui-border);
+    }
+    .guidance-card__header {
+      padding: var(--spacing-8) var(--spacing-16);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-8);
+    }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body {
+      padding: var(--spacing-16);
+      background: var(--ui-bg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-12);
+    }
+    .guidance-card__note {
+      color: var(--ui-text-secondary);
+    }
+
+    /* Inline code */
+    code {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 12px;
+      background: var(--ui-bg-secondary);
+      padding: 1px 5px;
+      border-radius: var(--border-radius-4);
+      color: var(--ui-text);
+      border: 1px solid var(--ui-border);
+    }
+
+    /* Divider */
+    .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+
+    /* Icon gallery (docs-only) */
+    .icon-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: var(--spacing-8);
+      width: 100%;
+    }
+    .icon-cell {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--spacing-8);
+      padding: var(--spacing-16) var(--spacing-8);
+      border: 1px solid var(--ui-border);
+      border-radius: var(--border-radius-8);
+      background: var(--ui-bg);
+    }
+    .icon-cell .hb-icon { color: var(--ui-icon); }
+    .icon-cell__name {
+      font-family: 'SF Mono', 'Menlo', monospace;
+      font-size: 11px;
+      color: var(--ui-text-tertiary);
+      text-align: center;
+      word-break: break-all;
+    }
+    /* Baseline check strip: label + icon inline with body text */
+    .inline-demo { display: flex; align-items: center; gap: var(--spacing-8); }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Sidebar -->
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <!-- Content -->
+  <main class="main">
+
+    <!-- Header -->
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Foundations</span>
+      <h1 class="page-header__title">Icons</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Icons carry meaning, save space, and speed up recognition. Hummingbird uses one library for all of them — Google's <a href="https://mui.com/material-ui/material-icons/" class="hb-link" target="_blank" rel="noopener">Material&nbsp;Icons</a> — so every screen and prototype draws from the same familiar, searchable set. Instead of pasting SVG markup, you write the icon's name as text and the font renders the glyph.</p>
+    </header>
+
+    <!-- How we use icons -->
+    <section class="section" id="how">
+      <h2 class="section__title hb-text-heading-small">How we use icons</h2>
+      <p class="section__desc hb-text-body">A few principles keep icons consistent and legible across the product.</p>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <tbody>
+            <tr>
+              <td style="width: 180px;"><span class="hb-text-body-bold">One library</span></td>
+              <td class="hb-text-body">Always Material&nbsp;Icons. Don't mix in icons from other sets or hand-drawn SVGs — if a concept exists in the <a href="https://mui.com/material-ui/material-icons/" class="hb-link" target="_blank" rel="noopener">catalog</a>, use it.</td>
+            </tr>
+            <tr>
+              <td><span class="hb-text-body-bold">Two variants</span></td>
+              <td class="hb-text-body"><strong>Outlined</strong> is the default, everywhere. <strong>Rounded</strong> is reserved for more prominent actions and important menus, where a softer, heavier shape reads better. Don't mix the two within one group of controls.</td>
+            </tr>
+            <tr>
+              <td><span class="hb-text-body-bold">Meaningful, not decorative</span></td>
+              <td class="hb-text-body">Pick icons whose meaning is widely understood (a trash can for delete, a pencil for edit). If an icon needs a caption to be understood, add a text label instead.</td>
+            </tr>
+            <tr>
+              <td><span class="hb-text-body-bold">Always labelled</span></td>
+              <td class="hb-text-body">An icon-only button or link needs an <code>aria-label</code> so screen-reader users know what it does. Never rely on the glyph alone for a critical action.</td>
+            </tr>
+            <tr>
+              <td><span class="hb-text-body-bold">Token sizes &amp; color</span></td>
+              <td class="hb-text-body">Use the size modifiers (16 / 20 / 24px) rather than arbitrary values. Color follows a fixed model: <code>--ui-icon</code> by default, the button's text color inside a button, and the link color inside a link.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2 class="section__title hb-text-heading-small">Basic usage</h2>
+      <p class="section__desc hb-text-body">The Material&nbsp;Icons fonts are loaded by <code>tokens.css</code>, so no extra <code>&lt;link&gt;</code> is needed in a prototype. Add the <code>hb-icon</code> class to a <code>&lt;span&gt;</code> and set its text to the icon name (in <code>snake_case</code>). The <code>Outlined</code> variant is the default.</p>
+      <div class="preview">
+        <div class="icon-gallery">
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">home</span><span class="icon-cell__name">home</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">search</span><span class="icon-cell__name">search</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">settings</span><span class="icon-cell__name">settings</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">edit</span><span class="icon-cell__name">edit</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">delete</span><span class="icon-cell__name">delete</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">add</span><span class="icon-cell__name">add</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">close</span><span class="icon-cell__name">close</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">check</span><span class="icon-cell__name">check</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">more_vert</span><span class="icon-cell__name">more_vert</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">chevron_right</span><span class="icon-cell__name">chevron_right</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">download</span><span class="icon-cell__name">download</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">filter_list</span><span class="icon-cell__name">filter_list</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">visibility</span><span class="icon-cell__name">visibility</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">info</span><span class="icon-cell__name">info</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">warning</span><span class="icon-cell__name">warning</span></div>
+          <div class="icon-cell"><span class="hb-icon hb-icon--lg">calendar_today</span><span class="icon-cell__name">calendar_today</span></div>
+        </div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>edit<span class="token-class">&lt;/span&gt;</span></pre></div>
+      <p class="section__desc hb-text-body" style="margin-bottom: 0;">Browse and search every name in the <a href="https://mui.com/material-ui/material-icons/" class="hb-link" target="_blank" rel="noopener">Material&nbsp;Icons catalog</a>. The name shown in MUI as <code>EditIcon</code> is <code>edit</code>; <code>MoreVertIcon</code> is <code>more_vert</code>; <code>CalendarTodayIcon</code> is <code>calendar_today</code>.</p>
+    </section>
+
+    <!-- Variants -->
+    <section class="section" id="variants">
+      <h2 class="section__title hb-text-heading-small">Variants</h2>
+      <p class="section__desc hb-text-body">Two styles are loaded, mirroring the variants used in Hummingbird. Use <strong>Outlined</strong> as the default; reach for <strong>Rounded</strong> on more prominent actions and important menus, where a softer, weightier shape reads better.</p>
+
+      <div class="variant-grid">
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Outlined — default</span>
+            <span class="variant-desc hb-text-caption">The everyday style. Applied automatically by <code>hb-icon</code>.</span>
+          </div>
+          <div class="preview">
+            <span class="hb-icon hb-icon--lg">home</span>
+            <span class="hb-icon hb-icon--lg">settings</span>
+            <span class="hb-icon hb-icon--lg">calendar_today</span>
+            <span class="hb-icon hb-icon--lg">account_circle</span>
+            <span class="hb-icon hb-icon--lg">notifications</span>
+          </div>
+          <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>settings<span class="token-class">&lt;/span&gt;</span></pre></div>
+        </div>
+
+        <div class="variant-row">
+          <div class="variant-row__header">
+            <span class="variant-label hb-text-caption-bold">Rounded</span>
+            <span class="variant-desc hb-text-caption">Prominent actions and important menus. Add <code>hb-icon--rounded</code>.</span>
+          </div>
+          <div class="preview">
+            <span class="hb-icon hb-icon--rounded hb-icon--lg">home</span>
+            <span class="hb-icon hb-icon--rounded hb-icon--lg">settings</span>
+            <span class="hb-icon hb-icon--rounded hb-icon--lg">calendar_today</span>
+            <span class="hb-icon hb-icon--rounded hb-icon--lg">account_circle</span>
+            <span class="hb-icon hb-icon--rounded hb-icon--lg">notifications</span>
+          </div>
+          <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon hb-icon--rounded"</span><span class="token-class">&gt;</span>settings<span class="token-class">&lt;/span&gt;</span></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sizes -->
+    <section class="section" id="sizes">
+      <h2 class="section__title hb-text-heading-small">Sizes</h2>
+      <p class="section__desc hb-text-body">Three token-backed sizes cover most needs. The default (20px) suits inline UI; <code>--sm</code> (16px) fits dense controls like small buttons and table rows; <code>--lg</code> (24px) is for prominent, standalone icons.</p>
+      <div class="preview" style="align-items: flex-end;">
+        <div class="inline-demo" style="flex-direction: column; gap: var(--spacing-8);"><span class="hb-icon hb-icon--sm">favorite</span><span class="icon-cell__name">--sm · 16</span></div>
+        <div class="inline-demo" style="flex-direction: column; gap: var(--spacing-8);"><span class="hb-icon">favorite</span><span class="icon-cell__name">default · 20</span></div>
+        <div class="inline-demo" style="flex-direction: column; gap: var(--spacing-8);"><span class="hb-icon hb-icon--lg">favorite</span><span class="icon-cell__name">--lg · 24</span></div>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon hb-icon--sm"</span><span class="token-class">&gt;</span>favorite<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>favorite<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon hb-icon--lg"</span><span class="token-class">&gt;</span>favorite<span class="token-class">&lt;/span&gt;</span></pre></div>
+    </section>
+
+    <!-- Color -->
+    <section class="section" id="color">
+      <h2 class="section__title hb-text-heading-small">Color</h2>
+      <p class="section__desc hb-text-body">An icon's default color is always <code>--ui-icon</code>. Inside a <strong>button</strong> it inherits the button's text color, and inside a <strong>link</strong> it inherits the link color — so icons always match the control they sit in. To force a specific color, set <code>color</code> inline with a token.</p>
+      <div class="preview">
+        <span class="hb-icon hb-icon--lg">info</span>
+        <button class="hb-btn hb-btn--primary hb-btn--lg"><span class="hb-icon">check</span>Approve</button>
+        <a href="#" class="hb-link">Download <span class="hb-icon hb-icon--sm">download</span></a>
+        <span class="hb-icon hb-icon--lg" style="color: var(--ui-status-danger);">error</span>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>info<span class="token-class">&lt;/span&gt;</span>                            <span style="color:#6e7681;">&lt;!-- default: --ui-icon --&gt;</span>
+<span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary"</span><span class="token-class">&gt;&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>check<span class="token-class">&lt;/span&gt;</span>Approve<span class="token-class">&lt;/button&gt;</span>
+<span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span> <span class="token-attr">style</span>=<span class="token-str">"color: var(--ui-status-danger);"</span><span class="token-class">&gt;</span>error<span class="token-class">&lt;/span&gt;</span>  <span style="color:#6e7681;">&lt;!-- override --&gt;</span></pre></div>
+    </section>
+
+    <!-- In context -->
+    <section class="section" id="in-context">
+      <h2 class="section__title hb-text-heading-small">In context</h2>
+      <p class="section__desc hb-text-body">Icons pair naturally with other components. Inside a button or link they inherit that control's text color; an icon-only control always needs an accessible name via <code>aria-label</code>.</p>
+      <div class="preview">
+        <button class="hb-btn hb-btn--primary hb-btn--lg"><span class="hb-icon">add</span>New case</button>
+        <button class="hb-btn hb-btn--secondary hb-btn--lg">Export<span class="hb-icon">download</span></button>
+        <button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Edit"><span class="hb-icon">edit</span></button>
+        <a href="#" class="hb-link">Open report <span class="hb-icon hb-icon--sm">open_in_new</span></a>
+      </div>
+      <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary hb-btn--lg"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>add<span class="token-class">&lt;/span&gt;</span>New case
+<span class="token-class">&lt;/button&gt;</span>
+
+<span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--ghost hb-btn--sm"</span> <span class="token-attr">aria-label</span>=<span class="token-str">"Edit"</span><span class="token-class">&gt;</span>
+  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-icon"</span><span class="token-class">&gt;</span>edit<span class="token-class">&lt;/span&gt;</span>
+<span class="token-class">&lt;/button&gt;</span></pre></div>
+    </section>
+
+    <!-- Reference -->
+    <section class="section" id="reference">
+      <h2 class="section__title hb-text-heading-small">Reference</h2>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th>Class</th><th>Effect</th></tr></thead>
+          <tbody>
+            <tr><td><code>hb-icon</code></td><td>Base class. Outlined variant, 20px, default color <code>--ui-icon</code>.</td></tr>
+            <tr><td><code>hb-icon--rounded</code></td><td>Switches to the Rounded variant. For prominent actions / important menus.</td></tr>
+            <tr><td><code>hb-icon--sm</code></td><td>16px (<code>--icon-size-sm</code>).</td></tr>
+            <tr><td><code>hb-icon--lg</code></td><td>24px (<code>--icon-size-lg</code>).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Guidance -->
+    <section class="section" id="guidance">
+      <h2 class="section__title hb-text-heading-small">Guidance</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><span class="hb-icon">check</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Use Material&nbsp;Icons names from the catalog so prototypes share one consistent set.</div>
+            <div class="guidance-card__note hb-text-body">Give every icon-only control an <code>aria-label</code> describing its action.</div>
+            <div class="guidance-card__note hb-text-body">Let icons keep their color model: <code>--ui-icon</code> by default, inheriting inside buttons and links.</div>
+            <div class="guidance-card__note hb-text-body">Reserve the Rounded variant for prominent actions and important menus.</div>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><span class="hb-icon">close</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Paste raw SVG markup for an icon that already exists in Material&nbsp;Icons.</div>
+            <div class="guidance-card__note hb-text-body">Mix Outlined and Rounded within the same group of controls.</div>
+            <div class="guidance-card__note hb-text-body">Hardcode a pixel size or hex color — use the size and color modifiers/tokens.</div>
+            <div class="guidance-card__note hb-text-body">Rely on an icon alone to convey a critical action without a text or ARIA label.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>

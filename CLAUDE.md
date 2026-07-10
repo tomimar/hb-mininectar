@@ -88,6 +88,11 @@ All CSS custom properties. Key ones:
 --spacing-24 --spacing-32 --spacing-40 --spacing-48 --spacing-56
 --spacing-64 --spacing-72 --spacing-80
 
+/* Icon sizes — Material Icons via hb-icon */
+--icon-size-sm           /* 16px — dense controls */
+--icon-size-md           /* 20px — default */
+--icon-size-lg           /* 24px — prominent / standalone */
+
 /* Border radius */
 --border-radius-4        /* inputs, checkboxes */
 --border-radius-8        /* buttons, cards, dropdowns */
@@ -123,6 +128,7 @@ Every component has a dedicated documentation page with live examples, all varia
 | Border radius | https://tomimar.github.io/hb-mininectar/components/border-radius.html |
 | Elevation | https://tomimar.github.io/hb-mininectar/components/elevation.html |
 | Typography | https://tomimar.github.io/hb-mininectar/components/typography.html |
+| Icons | https://tomimar.github.io/hb-mininectar/components/icons.html |
 
 ### Components
 
