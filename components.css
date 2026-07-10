@@ -2421,7 +2421,7 @@ body {
 .hb-table thead th {
   text-align: left;
   vertical-align: middle;
-  padding: var(--spacing-4) var(--spacing-16);
+  padding: var(--spacing-8) var(--spacing-16);
   background: var(--ui-bg-secondary);
   color: var(--ui-text-secondary);
   font-size: var(--font-size-12);
@@ -2449,8 +2449,8 @@ body {
   color: var(--ui-text);
 }
 
-/* Density — compact is the default; --comfortable adds more vertical room */
-.hb-table--comfortable thead th { padding: var(--spacing-8) var(--spacing-16); }
+/* Density — compact is the default; --comfortable adds more vertical room to
+   the body rows only. The header keeps its height across both densities. */
 .hb-table--comfortable tbody th,
 .hb-table--comfortable tbody td { padding: var(--spacing-12) var(--spacing-16); }
 
