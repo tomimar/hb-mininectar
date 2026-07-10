@@ -2377,7 +2377,7 @@ body {
       </table>
     </div>
 
-  Modifiers:  hb-table--plain · hb-table--compact · hb-table--row-link
+  Modifiers:  hb-table--plain · hb-table--comfortable · hb-table--row-link
   Elements:   __caption __rowheader __link __select-col __actions __cell--num
               __expander __expander-icon __detail-row
               __overflow __menu __menu-item
@@ -2421,7 +2421,7 @@ body {
 .hb-table thead th {
   text-align: left;
   vertical-align: middle;
-  padding: var(--spacing-8) var(--spacing-16);
+  padding: var(--spacing-4) var(--spacing-16);
   background: var(--ui-bg-secondary);
   color: var(--ui-text-secondary);
   font-size: var(--font-size-12);
@@ -2437,7 +2437,7 @@ body {
 .hb-table tbody td {
   text-align: left;
   vertical-align: middle;
-  padding: var(--spacing-12) var(--spacing-16);
+  padding: var(--spacing-8) var(--spacing-16);
   border-bottom: 1px solid var(--ui-border);
   font-weight: var(--font-weight-regular);
 }
@@ -2449,10 +2449,10 @@ body {
   color: var(--ui-text);
 }
 
-/* Density */
-.hb-table--compact thead th { padding: var(--spacing-4) var(--spacing-16); }
-.hb-table--compact tbody th,
-.hb-table--compact tbody td { padding: var(--spacing-8) var(--spacing-16); }
+/* Density — compact is the default; --comfortable adds more vertical room */
+.hb-table--comfortable thead th { padding: var(--spacing-8) var(--spacing-16); }
+.hb-table--comfortable tbody th,
+.hb-table--comfortable tbody td { padding: var(--spacing-12) var(--spacing-16); }
 
 /* Lines — by default cells are separated by a full grid (horizontal +
    vertical lines, spreadsheet-style). hb-table--plain removes the

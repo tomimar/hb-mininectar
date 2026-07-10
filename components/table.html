@@ -518,7 +518,7 @@
             <tr class="hb-table__detail-row" id="detail-m1" x-show="open===1" x-cloak>
               <td colspan="3">
                 <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Linked transactions</div>
-                <table class="hb-table hb-table--compact">
+                <table class="hb-table">
                   <caption class="hb-table__caption hb-visually-hidden">Linked transactions for ALERT-3310</caption>
                   <thead><tr><th scope="col">Reference</th><th scope="col">Date</th><th scope="col" class="hb-table__cell--num">Amount</th></tr></thead>
                   <tbody>
@@ -542,7 +542,7 @@
             <tr class="hb-table__detail-row" id="detail-m2" x-show="open===2" x-cloak>
               <td colspan="3">
                 <div class="hb-text-caption-bold" style="color:var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Linked transactions</div>
-                <table class="hb-table hb-table--compact">
+                <table class="hb-table">
                   <caption class="hb-table__caption hb-visually-hidden">Linked transactions for ALERT-3311</caption>
                   <thead><tr><th scope="col">Reference</th><th scope="col">Date</th><th scope="col" class="hb-table__cell--num">Amount</th></tr></thead>
                   <tbody>
@@ -580,10 +580,25 @@
     <!-- Density -->
     <section class="section" id="density">
       <h2 class="section__title hb-text-heading-small">Density</h2>
-      <p class="section__desc hb-text-body"><code>hb-table--compact</code> tightens row height for dense views where more rows need to fit on screen.</p>
-      <div class="hb-table-wrap" role="region" aria-labelledby="cap-density" tabindex="0">
-        <table class="hb-table hb-table--compact">
+      <p class="section__desc hb-text-body">Tables are <strong>compact by default</strong>, so more rows fit on screen — the norm for data-dense views. Add <code>hb-table--comfortable</code> when rows need more breathing room, such as tables with only a few rows or larger touch targets.</p>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Default — compact</div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-density" tabindex="0" style="margin-bottom: var(--spacing-24);">
+        <table class="hb-table">
           <caption id="cap-density" class="hb-table__caption hb-visually-hidden">Compact density example</caption>
+          <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col" class="hb-table__cell--num">Cases</th></tr></thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__cell--num">128</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening</a></th><td>Marcus Webb</td><td class="hb-table__cell--num">342</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th><td>Priya Nair</td><td class="hb-table__cell--num">56</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="hb-text-caption-bold" style="color: var(--ui-text-secondary); margin-bottom: var(--spacing-8);">Comfortable — more vertical room</div>
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-density-comfortable" tabindex="0">
+        <table class="hb-table hb-table--comfortable">
+          <caption id="cap-density-comfortable" class="hb-table__caption hb-visually-hidden">Comfortable density example</caption>
           <thead><tr><th scope="col">Name</th><th scope="col">Owner</th><th scope="col" class="hb-table__cell--num">Cases</th></tr></thead>
           <tbody>
             <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review</a></th><td>Elena Cruz</td><td class="hb-table__cell--num">128</td></tr>
