@@ -276,6 +276,22 @@
       margin-bottom: var(--spacing-16);
     }
     .callout .hb-icon { margin-top: 2px; }
+
+    /* Accessibility note — how a pattern meets 2.5.7 */
+    .a11y-note {
+      display: flex; gap: var(--spacing-12); align-items: flex-start;
+      background: var(--ui-expressive-blue-soft);
+      border: 1px solid var(--ui-expressive-blue);
+      color: var(--ui-expressive-blue-contrast);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16);
+      margin-bottom: var(--spacing-24);
+    }
+    .a11y-note .hb-icon { margin-top: 1px; flex-shrink: 0; }
+    .a11y-note strong { color: var(--ui-text); }
+    .a11y-note__list { margin: var(--spacing-8) 0 0 0; padding-left: var(--spacing-16); }
+    .a11y-note__list li { margin-bottom: var(--spacing-4); color: var(--ui-text-secondary); }
+    .a11y-note__list li:last-child { margin-bottom: 0; }
   </style>
 
 </head>
@@ -641,6 +657,168 @@
       </div>
     </section>
 
+    <!-- Reorder & hide columns -->
+    <section class="section" id="reorder">
+      <h2 class="section__title hb-text-heading-small">Reorder &amp; hide columns</h2>
+      <p class="section__desc hb-text-body">Users rearrange, show and hide columns from a <strong>Columns</strong> panel instead of dragging headers around. The panel is split into <strong>Visible</strong> and <strong>Hidden</strong> groups; a checkbox moves a column between them. Dragging still works for pointer users, but it is never the only way — every reorder is also a single click on an Up or Down button, which satisfies <a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html" class="hb-link" target="_blank" rel="noopener">WCAG&nbsp;2.5.7 Dragging&nbsp;movements</a>.</p>
+
+      <div class="a11y-note">
+        <span class="hb-icon">accessibility_new</span>
+        <div class="hb-text-body">
+          <strong>Single-pointer alternative to drag.</strong>
+          <ul class="a11y-note__list">
+            <li>Each visible column has <strong>Up</strong> / <strong>Down</strong> buttons — reorder with one click, no dragging.</li>
+            <li>A checkbox moves a column between <strong>Visible Columns</strong> and <strong>Hidden Columns</strong>; the last visible column can't be hidden.</li>
+            <li>Hidden columns are listed A→Z. They have no position in the table, so their rows drop the reorder controls.</li>
+            <li>Moving or toggling a column keeps focus on the control pressed and announces the change through an <code>aria-live</code> region.</li>
+            <li>The identifier column (<em>Name</em>) stays pinned as the row's title, so the row is always identifiable.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div x-data="hbColumns()" x-init="init()">
+        <div style="display:flex; justify-content:flex-end; margin-bottom: var(--spacing-12);">
+          <div class="hb-column-manager"
+               @click.outside="open=false"
+               @keydown.escape="open=false; $refs.trigger.focus()">
+            <button x-ref="trigger" type="button" class="hb-btn hb-btn--secondary hb-btn--sm"
+                    aria-haspopup="dialog" :aria-expanded="open ? 'true' : 'false'" @click="open=!open">
+              <span class="hb-icon">view_column</span> Columns
+            </button>
+            <div class="hb-column-manager__panel hb-column-manager__panel--end"
+                 role="dialog" aria-label="Manage columns" x-show="open" x-cloak>
+
+              <!-- Visible Columns -->
+              <div class="hb-column-manager__group">
+                <div class="hb-column-manager__header">
+                  <span class="hb-icon">visibility</span>
+                  <span class="hb-column-manager__title hb-text-caption-bold">Visible Columns</span>
+                  <button type="button" class="hb-popup-select__clear" @click="reset()">Reset</button>
+                </div>
+                <ul class="hb-column-manager__list" aria-label="Visible columns">
+                  <template x-for="(col, i) in visibleCols" :key="col.id">
+                    <li class="hb-column-manager__item"
+                        :class="{ 'is-dragging': dragId===col.id, 'is-drop-target': dragOverId===col.id && dragId!==col.id }"
+                        draggable="true"
+                        @dragstart="dragId=col.id"
+                        @dragend="dragId=null; dragOverId=null"
+                        @dragover.prevent="dragOverId=col.id"
+                        @drop.prevent="drop(col)">
+                      <span class="hb-column-manager__drag hb-icon" aria-hidden="true">drag_indicator</span>
+                      <label class="hb-column-manager__toggle">
+                        <input type="checkbox" class="hb-checkbox" :id="'cm-' + col.id + '-cb'"
+                               :checked="col.visible" :disabled="visibleCount===1"
+                               @change="toggle(col)">
+                        <span class="hb-column-manager__name" x-text="col.label"></span>
+                      </label>
+                      <div class="hb-column-manager__move">
+                        <button type="button" class="hb-column-manager__move-btn"
+                                :id="'cm-' + col.id + '-up'" :disabled="i===0"
+                                :aria-label="'Move ' + col.label + ' up'" @click="move(col, -1)">
+                          <span class="hb-icon">arrow_upward</span>
+                        </button>
+                        <button type="button" class="hb-column-manager__move-btn"
+                                :id="'cm-' + col.id + '-down'" :disabled="i===visibleCols.length-1"
+                                :aria-label="'Move ' + col.label + ' down'" @click="move(col, 1)">
+                          <span class="hb-icon">arrow_downward</span>
+                        </button>
+                      </div>
+                    </li>
+                  </template>
+                </ul>
+              </div>
+
+              <!-- Hidden Columns (A→Z, no reorder) -->
+              <div class="hb-column-manager__group">
+                <div class="hb-column-manager__header">
+                  <span class="hb-icon">visibility_off</span>
+                  <span class="hb-column-manager__title hb-text-caption-bold">Hidden Columns</span>
+                </div>
+                <ul class="hb-column-manager__list" aria-label="Hidden columns">
+                  <template x-for="col in hiddenCols" :key="col.id">
+                    <li class="hb-column-manager__item">
+                      <span class="hb-column-manager__spacer" aria-hidden="true"></span>
+                      <label class="hb-column-manager__toggle">
+                        <input type="checkbox" class="hb-checkbox" :id="'cm-' + col.id + '-cb'"
+                               :checked="col.visible" @change="toggle(col)">
+                        <span class="hb-column-manager__name" x-text="col.label"></span>
+                      </label>
+                    </li>
+                  </template>
+                </ul>
+                <p class="hb-column-manager__empty" x-show="hiddenCols.length===0">No hidden columns.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hb-table-wrap" role="region" aria-labelledby="cap-reorder" tabindex="0">
+          <table class="hb-table">
+            <caption id="cap-reorder" class="hb-table__caption hb-visually-hidden">Reorderable columns example</caption>
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <template x-for="col in visibleCols" :key="col.id">
+                  <th scope="col" :class="col.num ? 'hb-table__cell--num' : ''" x-text="col.label"></th>
+                </template>
+              </tr>
+            </thead>
+            <tbody>
+              <template x-for="row in rows" :key="row.id">
+                <tr>
+                  <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link" x-text="row.name"></a></th>
+                  <template x-for="col in visibleCols" :key="col.id">
+                    <td :class="col.num ? 'hb-table__cell--num' : ''" x-text="row[col.id]"></td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="hb-text-caption" style="color: var(--ui-text-tertiary); margin-top: var(--spacing-8);">Open <strong>Columns</strong>, then drag or use the Up / Down buttons to reorder, and the checkboxes to move columns between Visible and Hidden.</p>
+        <div class="hb-visually-hidden" aria-live="polite" x-text="msg"></div>
+      </div>
+    </section>
+
+    <!-- Resize columns -->
+    <section class="section" id="resize">
+      <h2 class="section__title hb-text-heading-small">Resize columns</h2>
+      <p class="section__desc hb-text-body">Column widths can be adjusted by dragging the divider between two headers. Because a drag can't be the only path (<a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html" class="hb-link" target="_blank" rel="noopener">WCAG&nbsp;2.5.7</a>), the same handle also resizes without any dragging: double-click to fit the content, or focus it and use the arrow keys.</p>
+
+      <div class="a11y-note">
+        <span class="hb-icon">accessibility_new</span>
+        <div class="hb-text-body">
+          <strong>Single-pointer &amp; keyboard alternatives to drag.</strong>
+          <ul class="a11y-note__list">
+            <li><strong>Double-click / double-tap</strong> a handle → auto-fit the column to its content (one action, no drag).</li>
+            <li>The handle is a focusable <code>role="separator"</code>: press <strong>←</strong> / <strong>→</strong> to resize in 16&nbsp;px steps (<strong>Shift</strong> for 48&nbsp;px), or <strong>Enter</strong> / <strong>Home</strong> to auto-fit.</li>
+            <li>Its width is exposed through <code>aria-valuenow</code> / <code>min</code> / <code>max</code>, so screen readers announce each change.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hb-table-wrap" role="region" aria-labelledby="cap-resize" tabindex="0">
+        <table class="hb-table hb-table--resizable" data-hb-resizable>
+          <caption id="cap-resize" class="hb-table__caption hb-visually-hidden">Resizable columns example</caption>
+          <thead>
+            <tr>
+              <th scope="col" style="width: 210px;">Name</th>
+              <th scope="col" style="width: 130px;">Owner</th>
+              <th scope="col" style="width: 120px;">Status</th>
+              <th scope="col">Last modified</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">AML transaction review — periodic</a></th><td>Elena Cruz</td><td>Awaiting review</td><td>Jun 24, 2026 11:38 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">Sanctions screening (EU + OFAC)</a></th><td>Marcus Webb</td><td>Open</td><td>Jun 22, 2026 09:14 AM</td></tr>
+            <tr><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">PEP due diligence</a></th><td>Priya Nair</td><td>Resolved</td><td>Jun 18, 2026 04:02 PM</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hb-text-caption" style="color: var(--ui-text-tertiary); margin-top: var(--spacing-8);">Drag a divider, double-click it to auto-fit, or focus it (Tab) and press the arrow keys.</p>
+    </section>
+
     <!-- Footer -->
     <section class="section" id="footer">
       <h2 class="section__title hb-text-heading-small">Footer <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— optional</span></h2>
@@ -695,6 +873,8 @@
             <div class="guidance-card__note hb-text-body">Name repeated actions after their row, so "Edit" always says which item it edits.</div>
             <div class="guidance-card__note hb-text-body">Keep the identifier column as the row's title, holding the primary link.</div>
             <div class="guidance-card__note hb-text-body">Make interactivity visible without hover — underlined links, visible buttons, focus rings.</div>
+            <div class="guidance-card__note hb-text-body">Pair every drag interaction (reorder, resize) with a single-pointer path — a button, double-click, or arrow keys (WCAG 2.5.7).</div>
+            <div class="guidance-card__note hb-text-body">Keep focus on the control that was pressed and announce the change through an aria-live region.</div>
           </div>
         </div>
         <div class="guidance-card">
@@ -707,6 +887,8 @@
             <div class="guidance-card__note hb-text-body">Reveal actions only on mouse hover.</div>
             <div class="guidance-card__note hb-text-body">Hide the row's primary action inside the overflow menu.</div>
             <div class="guidance-card__note hb-text-body">Use the whole-row click variant where people need to select or copy cell values.</div>
+            <div class="guidance-card__note hb-text-body">Make dragging the only way to reorder or resize columns.</div>
+            <div class="guidance-card__note hb-text-body">Rely on a keyboard-only path as the drag alternative — 2.5.7 requires a single-pointer one too.</div>
           </div>
         </div>
       </div>
@@ -714,6 +896,210 @@
 
   </main>
 </div>
+
+<!-- Demo logic for the Reorder and Resize sections -->
+<script>
+  /* ── Reorder & hide columns (Alpine component) ──────────────
+     Manages the data columns only — the identifier column (Name) is
+     pinned as the row header. Reorder via drag OR Up/Down buttons;
+     show/hide via checkbox. Focus stays on the pressed button and each
+     change is announced through an aria-live region. */
+  function hbColumns() {
+    return {
+      open: false,
+      msg: '',
+      dragId: null,
+      dragOverId: null,
+      _initial: null,
+      columns: [
+        { id: 'owner',    label: 'Owner',         visible: true },
+        { id: 'cases',    label: 'Cases',         visible: true, num: true },
+        { id: 'status',   label: 'Status',        visible: true },
+        { id: 'modified', label: 'Last modified', visible: true },
+        { id: 'assignee', label: 'Assignee',      visible: false },
+        { id: 'priority', label: 'Priority',      visible: false },
+        { id: 'region',   label: 'Region',        visible: false },
+        { id: 'created',  label: 'Created',        visible: false },
+      ],
+      rows: [
+        { id: 1, name: 'AML transaction review', owner: 'Elena Cruz',  cases: 128, status: 'Awaiting review', modified: 'Jun 24, 2026', assignee: 'Elena Cruz',  priority: 'High',   region: 'EMEA', created: 'Jun 10, 2026' },
+        { id: 2, name: 'Sanctions screening',    owner: 'Marcus Webb', cases: 342, status: 'Open',            modified: 'Jun 22, 2026', assignee: 'Marcus Webb', priority: 'Medium', region: 'AMER', created: 'Jun 5, 2026' },
+        { id: 3, name: 'PEP due diligence',      owner: 'Priya Nair',  cases: 56,  status: 'Resolved',        modified: 'Jun 18, 2026', assignee: 'Priya Nair',  priority: 'Low',    region: 'APAC', created: 'May 30, 2026' },
+      ],
+      init() { this._initial = JSON.parse(JSON.stringify(this.columns)); },
+      get visibleCols() { return this.columns.filter(function (c) { return c.visible; }); },
+      get hiddenCols() {
+        return this.columns.filter(function (c) { return !c.visible; })
+          .sort(function (a, b) { return a.label.localeCompare(b.label); });
+      },
+      get visibleCount() { return this.visibleCols.length; },
+      announce(m) { var self = this; this.msg = ''; this.$nextTick(function () { self.msg = m; }); },
+      // Move within the visible group only, swapping with the adjacent
+      // visible column (hidden ones keep their place in the master array).
+      move(col, dir) {
+        var vis = this.visibleCols;
+        var pos = vis.indexOf(col);
+        var swap = vis[pos + dir];
+        if (!swap) return;
+        var arr = this.columns.slice();
+        var i = arr.indexOf(col), j = arr.indexOf(swap);
+        arr[i] = swap; arr[j] = col;
+        this.columns = arr;
+        this.announce(col.label + ' moved to position ' + (pos + dir + 1) + ' of ' + vis.length);
+        var self = this;
+        this.$nextTick(function () {
+          var want = dir < 0 ? 'up' : 'down', other = dir < 0 ? 'down' : 'up';
+          var btn = document.getElementById('cm-' + col.id + '-' + want);
+          if (!btn || btn.disabled) btn = document.getElementById('cm-' + col.id + '-' + other);
+          if (btn) btn.focus();
+        });
+      },
+      // Checkbox — moves the column between the Visible and Hidden groups
+      toggle(col) {
+        col.visible = !col.visible;
+        if (col.visible) {
+          // Re-shown columns land at the end of the visible order
+          var arr = this.columns.slice();
+          arr.splice(arr.indexOf(col), 1);
+          arr.push(col);
+          this.columns = arr;
+        }
+        this.announce(col.label + (col.visible
+          ? ' shown — moved to Visible Columns'
+          : ' hidden — moved to Hidden Columns'));
+        var id = col.id;
+        this.$nextTick(function () {
+          var cb = document.getElementById('cm-' + id + '-cb');
+          if (cb && !cb.disabled) cb.focus();
+        });
+      },
+      // Drag reorder within the visible group
+      drop(targetCol) {
+        if (!this.dragId || this.dragId === targetCol.id) { this.dragOverId = null; return; }
+        var arr = this.columns.slice();
+        var dragged = arr.find(function (c) { return c.id === this.dragId; }, this);
+        arr.splice(arr.indexOf(dragged), 1);
+        arr.splice(arr.indexOf(targetCol), 0, dragged);
+        this.columns = arr;
+        var vis = arr.filter(function (c) { return c.visible; });
+        this.announce(dragged.label + ' moved to position ' + (vis.indexOf(dragged) + 1) + ' of ' + vis.length);
+        this.dragId = null;
+        this.dragOverId = null;
+      },
+      reset() {
+        this.columns = JSON.parse(JSON.stringify(this._initial));
+        this.announce('Columns reset to their defaults');
+      },
+    };
+  }
+
+  /* ── Resize columns (vanilla enhancer) ──────────────────────
+     Enhances every [data-hb-resizable] table: appends a focusable
+     resize handle (role="separator") to each header except the last,
+     which is left flexible. Three ways to resize, none requiring a drag
+     to complete: pointer drag, double-click to auto-fit, and arrow keys. */
+  (function () {
+    var MIN = 72, MAX = 560, STEP = 16, BIG_STEP = 48;
+
+    function live() {
+      var el = document.getElementById('hb-live-region');
+      if (!el) {
+        el = document.createElement('div');
+        el.id = 'hb-live-region';
+        el.className = 'hb-visually-hidden';
+        el.setAttribute('aria-live', 'polite');
+        document.body.appendChild(el);
+      }
+      return el;
+    }
+    function announce(m) { var el = live(); el.textContent = ''; setTimeout(function () { el.textContent = m; }, 30); }
+
+    function setWidth(th, handle, w) {
+      w = Math.max(MIN, Math.min(MAX, Math.round(w)));
+      th.style.width = w + 'px';
+      handle.setAttribute('aria-valuenow', String(w));
+      return w;
+    }
+
+    // Natural (content) width of a column, independent of its current width.
+    function autofitWidth(table, colIndex) {
+      var ths = table.querySelectorAll('thead th');
+      var saved = [];
+      ths.forEach(function (th) { saved.push(th.style.width); });
+      var prevLayout = table.style.tableLayout;
+      table.style.tableLayout = 'auto';
+      ths.forEach(function (th, idx) { th.style.width = idx === colIndex ? 'auto' : (parseFloat(saved[idx]) || th.offsetWidth) + 'px'; });
+      var natural = ths[colIndex].offsetWidth + 8; // small breathing room past the content
+      table.style.tableLayout = prevLayout || '';
+      ths.forEach(function (th, idx) { th.style.width = saved[idx]; });
+      return natural;
+    }
+
+    function initTable(table) {
+      var ths = table.querySelectorAll('thead th');
+      ths.forEach(function (th, i) {
+        if (i === ths.length - 1) return;            // last column flexes, no handle
+        if (th.querySelector('.hb-table__resizer')) return;
+        if (!th.style.width) th.style.width = th.offsetWidth + 'px';
+
+        var name = (th.textContent || 'column').trim();
+        var handle = document.createElement('div');
+        handle.className = 'hb-table__resizer';
+        handle.setAttribute('role', 'separator');
+        handle.setAttribute('tabindex', '0');
+        handle.setAttribute('aria-orientation', 'vertical');
+        handle.setAttribute('aria-label', 'Resize ' + name + ' column');
+        handle.setAttribute('aria-valuemin', String(MIN));
+        handle.setAttribute('aria-valuemax', String(MAX));
+        handle.setAttribute('aria-valuenow', String(Math.round(th.offsetWidth)));
+        th.appendChild(handle);
+
+        // Pointer drag (the convenience path)
+        handle.addEventListener('pointerdown', function (e) {
+          e.preventDefault();
+          var startX = e.clientX, startW = th.offsetWidth;
+          handle.setPointerCapture(e.pointerId);
+          handle.classList.add('is-resizing');
+          function onMove(ev) { setWidth(th, handle, startW + (ev.clientX - startX)); }
+          function onUp() {
+            handle.classList.remove('is-resizing');
+            handle.removeEventListener('pointermove', onMove);
+            handle.removeEventListener('pointerup', onUp);
+          }
+          handle.addEventListener('pointermove', onMove);
+          handle.addEventListener('pointerup', onUp);
+        });
+
+        // Double-click / double-tap → auto-fit (single-pointer, no drag)
+        handle.addEventListener('dblclick', function (e) {
+          e.preventDefault();
+          var w = setWidth(th, handle, autofitWidth(table, i));
+          announce(name + ' column auto-fitted to ' + w + ' pixels');
+        });
+
+        // Keyboard alternative
+        handle.addEventListener('keydown', function (e) {
+          var k = e.key;
+          if (k === 'ArrowRight' || k === 'ArrowLeft') {
+            e.preventDefault();
+            var step = e.shiftKey ? BIG_STEP : STEP;
+            setWidth(th, handle, th.offsetWidth + (k === 'ArrowRight' ? step : -step));
+          } else if (k === 'Enter' || k === 'Home') {
+            e.preventDefault();
+            var w = setWidth(th, handle, autofitWidth(table, i));
+            announce(name + ' column auto-fitted to ' + w + ' pixels');
+          }
+        });
+      });
+    }
+
+    function boot() {
+      document.querySelectorAll('table[data-hb-resizable]').forEach(initTable);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+    else boot();
+  })();
+</script>
 
 <script src="sidebar.js"></script>
 </body>

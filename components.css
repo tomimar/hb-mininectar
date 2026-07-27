@@ -2667,6 +2667,70 @@ body {
   padding: var(--spacing-16);
 }
 
+/* ── Column resize ───────────────────────────────────────────
+   Dragging the column border is only a convenience. WCAG 2.5.7
+   (Dragging movements) requires a single-pointer alternative, so the
+   same resize is always reachable without a drag:
+     • double-click / double-tap the handle → auto-fit to content
+     • focus the handle, press ← / → → resize in fixed 16 px steps
+       (Shift+← / → = 48 px); Enter or Home → auto-fit
+   Add hb-table--resizable to switch the table to a fixed layout, then
+   append a .hb-table__resizer <button> as the last child of every
+   resizable <th>. Column widths are set inline by script; the last
+   column is left width-less so it absorbs slack. See table.html. */
+.hb-table--resizable { table-layout: fixed; }
+.hb-table--resizable thead th { position: relative; overflow: hidden; }
+/* Body cells truncate so a narrowed column stays readable and auto-fit
+   has something to expand back to. */
+.hb-table--resizable tbody th,
+.hb-table--resizable tbody td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The grip: a focusable button straddling the right edge of the header,
+   inside the cell's right padding so it is never clipped. */
+.hb-table__resizer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: col-resize;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none; /* the handle owns the pointer so drag never scrolls */
+}
+/* Visible guide line — appears on hover, focus, and while resizing */
+.hb-table__resizer::before {
+  content: "";
+  width: 2px;
+  height: 56%;
+  border-radius: 1px;
+  background: var(--ui-border-secondary);
+  opacity: 0;
+  transition: opacity 100ms ease, background 100ms ease;
+}
+.hb-table__resizer:hover::before { opacity: 1; }
+.hb-table__resizer:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: -2px;
+  border-radius: var(--border-radius-4);
+}
+.hb-table__resizer:focus-visible::before,
+.hb-table__resizer.is-resizing::before {
+  opacity: 1;
+  background: var(--ui-interaction);
+  width: 2px;
+}
+
 /* Visually-hidden — accessible names for icon-only controls / headers */
 .hb-visually-hidden {
   position: absolute !important;
@@ -2679,4 +2743,190 @@ body {
   clip-path: inset(50%);
   overflow: hidden;
   white-space: nowrap;
+}
+
+/* ── Column manager ──────────────────────────────────────────
+   The single-pointer alternative to dragging column headers around
+   (WCAG 2.5.7). A "Columns" button opens a popover split into two
+   groups: Visible Columns (in table order) and Hidden Columns (sorted
+   A→Z). Toggling a column's checkbox moves it between the groups.
+   Visible rows carry a drag handle and Up / Down buttons so the order
+   can be changed by pointer OR by single clicks — dragging is never the
+   only way. Hidden columns have no table position, so their rows drop
+   the reorder controls. Moving or toggling a column keeps focus on the
+   control that was pressed and announces the change via an aria-live
+   region, so keyboard and screen-reader users stay oriented.
+     <div class="hb-column-manager">
+       <button class="hb-btn hb-btn--secondary hb-btn--sm" aria-haspopup="dialog">…</button>
+       <div class="hb-column-manager__panel" role="dialog">
+         <div class="hb-column-manager__group">
+           <div class="hb-column-manager__header"> visibility icon + title [+ Reset] </div>
+           <ul class="hb-column-manager__list">
+             <li class="hb-column-manager__item">
+               <span class="hb-column-manager__drag">drag_indicator</span>
+               <label class="hb-column-manager__toggle"> checkbox + name </label>
+               <div class="hb-column-manager__move"> ↑ ↓ </div>
+             </li>
+           </ul>
+         </div>
+         <div class="hb-column-manager__group">
+           <div class="hb-column-manager__header"> visibility_off icon + title </div>
+           <ul class="hb-column-manager__list">
+             <li class="hb-column-manager__item">
+               <span class="hb-column-manager__spacer"></span>
+               <label class="hb-column-manager__toggle"> checkbox + name </label>
+             </li>
+           </ul>
+         </div>
+       </div>
+     </div> */
+.hb-column-manager { position: relative; display: inline-block; }
+
+.hb-column-manager__panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  z-index: 60;
+  width: 288px;
+  max-height: 360px;
+  overflow-y: auto;
+  background: var(--ui-bg-overlay);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-floating);
+  padding: var(--spacing-4);
+}
+/* Right-aligned variant when the button sits near the right edge */
+.hb-column-manager__panel--end { left: auto; right: 0; }
+
+/* Groups: Visible Columns / Hidden Columns, split by a divider */
+.hb-column-manager__group + .hb-column-manager__group {
+  margin-top: var(--spacing-4);
+  padding-top: var(--spacing-4);
+  border-top: 1px solid var(--ui-border);
+}
+
+/* Group header — a visibility icon, a title, and (optionally) a Reset link.
+   Sticks to the top while its group scrolls, so the label stays in view. */
+.hb-column-manager__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-8) var(--spacing-8) var(--spacing-4);
+  color: var(--ui-text);
+  position: sticky;
+  top: calc(var(--spacing-4) * -1);
+  background: var(--ui-bg-overlay);
+  z-index: 1;
+}
+.hb-column-manager__header .hb-icon {
+  color: var(--ui-icon);
+  font-size: var(--icon-size-md);
+  flex-shrink: 0;
+}
+.hb-column-manager__title { flex: 1; min-width: 0; }
+
+.hb-column-manager__empty {
+  padding: var(--spacing-8);
+  color: var(--ui-text-tertiary);
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+}
+
+/* Occupies the drag-handle slot on hidden rows so their names line up
+   with the visible rows above */
+.hb-column-manager__spacer { width: 20px; flex-shrink: 0; }
+
+.hb-column-manager__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hb-column-manager__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-8);
+  border-radius: var(--border-radius-4);
+  background: var(--ui-bg-overlay);
+}
+.hb-column-manager__item:hover { background: var(--ui-bg-secondary); }
+/* Dragged row lifts; the row being dragged over shows a drop line on top */
+.hb-column-manager__item.is-dragging { opacity: 0.5; }
+.hb-column-manager__item.is-drop-target {
+  box-shadow: inset 0 2px 0 0 var(--ui-interaction);
+}
+
+/* Drag handle — a convenience for pointer users, not the only path.
+   grab cursor signals it, but Up/Down buttons do the same job. */
+.hb-column-manager__drag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  color: var(--ui-icon);
+  cursor: grab;
+  flex-shrink: 0;
+  font-size: var(--icon-size-md);
+}
+.hb-column-manager__drag:active { cursor: grabbing; }
+
+/* Checkbox + column name — the whole label is the show/hide target */
+.hb-column-manager__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex: 1;
+  min-width: 0;
+  padding: var(--spacing-4) 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  cursor: pointer;
+}
+.hb-column-manager__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Up / Down reorder buttons — the single-pointer alternative to drag */
+.hb-column-manager__move {
+  display: inline-flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.hb-column-manager__move-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-4);
+  color: var(--ui-icon);
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+.hb-column-manager__move-btn:hover { background: var(--ui-bg-tertiary); }
+.hb-column-manager__move-btn:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: -2px;
+}
+.hb-column-manager__move-btn:disabled {
+  color: var(--ui-border-secondary);
+  cursor: default;
+  background: none;
+}
+/* Icon follows the button's own color, so the disabled state greys it out
+   too (by default .hb-icon keeps a fixed --ui-icon color) */
+.hb-column-manager__move-btn .hb-icon {
+  font-size: var(--icon-size-md);
+  color: currentColor;
 }
