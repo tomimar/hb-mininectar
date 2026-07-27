@@ -40,6 +40,7 @@
       ['Radio',           'radio.html'],
       ['Toggle',          'toggle.html'],
       ['Table',           'table.html'],
+      ['Drag',            'drag.html'],
       ['Popup select',    'popup-select.html'],
       ['Link',            'link.html'],
       ['Modal',           'modal.html'],

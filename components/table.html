@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="../components.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="../drag.js"></script>
   <style>
     * { box-sizing: border-box; }
 
@@ -696,30 +697,30 @@
                   <button type="button" class="hb-popup-select__clear" @click="reset()">Reset</button>
                 </div>
                 <ul class="hb-column-manager__list" aria-label="Visible columns">
-                  <template x-for="(col, i) in visibleCols" :key="col.id">
+                  <template x-for="col in visible" :key="col.id">
                     <li class="hb-column-manager__item"
-                        :class="{ 'is-dragging': dragId===col.id, 'is-drop-target': dragOverId===col.id && dragId!==col.id }"
+                        :class="{ 'is-dragging': reorderIsDragging(col), 'is-drop-target': reorderIsDropTarget(col) }"
                         draggable="true"
-                        @dragstart="dragId=col.id"
-                        @dragend="dragId=null; dragOverId=null"
-                        @dragover.prevent="dragOverId=col.id"
-                        @drop.prevent="drop(col)">
+                        @dragstart="reorderDragStart(col)"
+                        @dragend="reorderDragEnd()"
+                        @dragover.prevent="reorderDragOver(col)"
+                        @drop.prevent="reorderDrop(col, visible)">
                       <span class="hb-column-manager__drag hb-icon" aria-hidden="true">drag_indicator</span>
                       <label class="hb-column-manager__toggle">
-                        <input type="checkbox" class="hb-checkbox" :id="'cm-' + col.id + '-cb'"
-                               :checked="col.visible" :disabled="visibleCount===1"
-                               @change="toggle(col)">
+                        <input type="checkbox" class="hb-checkbox" :data-hb-cb="col.id"
+                               :checked="true" :disabled="visibleCount===1"
+                               @change="toggle(col, 'visible')">
                         <span class="hb-column-manager__name" x-text="col.label"></span>
                       </label>
                       <div class="hb-column-manager__move">
                         <button type="button" class="hb-column-manager__move-btn"
-                                :id="'cm-' + col.id + '-up'" :disabled="i===0"
-                                :aria-label="'Move ' + col.label + ' up'" @click="move(col, -1)">
+                                :data-hb-drag-btn="col.id + '-up'" :disabled="!reorderCanUp(col, visible)"
+                                :aria-label="'Move ' + col.label + ' up'" @click="reorderMove(col, -1, visible)">
                           <span class="hb-icon">arrow_upward</span>
                         </button>
                         <button type="button" class="hb-column-manager__move-btn"
-                                :id="'cm-' + col.id + '-down'" :disabled="i===visibleCols.length-1"
-                                :aria-label="'Move ' + col.label + ' down'" @click="move(col, 1)">
+                                :data-hb-drag-btn="col.id + '-down'" :disabled="!reorderCanDown(col, visible)"
+                                :aria-label="'Move ' + col.label + ' down'" @click="reorderMove(col, 1, visible)">
                           <span class="hb-icon">arrow_downward</span>
                         </button>
                       </div>
@@ -735,18 +736,18 @@
                   <span class="hb-column-manager__title hb-text-caption-bold">Hidden Columns</span>
                 </div>
                 <ul class="hb-column-manager__list" aria-label="Hidden columns">
-                  <template x-for="col in hiddenCols" :key="col.id">
+                  <template x-for="col in hiddenSorted" :key="col.id">
                     <li class="hb-column-manager__item">
                       <span class="hb-column-manager__spacer" aria-hidden="true"></span>
                       <label class="hb-column-manager__toggle">
-                        <input type="checkbox" class="hb-checkbox" :id="'cm-' + col.id + '-cb'"
-                               :checked="col.visible" @change="toggle(col)">
+                        <input type="checkbox" class="hb-checkbox" :data-hb-cb="col.id"
+                               :checked="false" @change="toggle(col, 'hidden')">
                         <span class="hb-column-manager__name" x-text="col.label"></span>
                       </label>
                     </li>
                   </template>
                 </ul>
-                <p class="hb-column-manager__empty" x-show="hiddenCols.length===0">No hidden columns.</p>
+                <p class="hb-column-manager__empty" x-show="hidden.length===0">No hidden columns.</p>
               </div>
             </div>
           </div>
@@ -758,7 +759,7 @@
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <template x-for="col in visibleCols" :key="col.id">
+                <template x-for="col in visible" :key="col.id">
                   <th scope="col" :class="col.num ? 'hb-table__cell--num' : ''" x-text="col.label"></th>
                 </template>
               </tr>
@@ -767,7 +768,7 @@
               <template x-for="row in rows" :key="row.id">
                 <tr>
                   <th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link" x-text="row.name"></a></th>
-                  <template x-for="col in visibleCols" :key="col.id">
+                  <template x-for="col in visible" :key="col.id">
                     <td :class="col.num ? 'hb-table__cell--num' : ''" x-text="row[col.id]"></td>
                   </template>
                 </tr>
@@ -776,8 +777,7 @@
           </table>
         </div>
 
-        <p class="hb-text-caption" style="color: var(--ui-text-tertiary); margin-top: var(--spacing-8);">Open <strong>Columns</strong>, then drag or use the Up / Down buttons to reorder, and the checkboxes to move columns between Visible and Hidden.</p>
-        <div class="hb-visually-hidden" aria-live="polite" x-text="msg"></div>
+        <p class="hb-text-caption" style="color: var(--ui-text-tertiary); margin-top: var(--spacing-8);">Open <strong>Columns</strong>, then drag or use the Up / Down buttons to reorder, and the checkboxes to move columns between Visible and Hidden. This panel is built on the shared <a href="drag.html" class="hb-link">Drag</a> component.</p>
       </div>
     </section>
 
@@ -905,92 +905,66 @@
      show/hide via checkbox. Focus stays on the pressed button and each
      change is announced through an aria-live region. */
   function hbColumns() {
-    return {
+    // Reuse the shared reorderable-list logic (drag + Up/Down + aria-live
+    // + focus) from drag.js, and layer the column-specific bits on top:
+    // two groups (Visible / Hidden) with a checkbox that moves a column
+    // between them. The visible array is what the generic reorder acts on.
+    var state = {
       open: false,
-      msg: '',
-      dragId: null,
-      dragOverId: null,
       _initial: null,
-      columns: [
-        { id: 'owner',    label: 'Owner',         visible: true },
-        { id: 'cases',    label: 'Cases',         visible: true, num: true },
-        { id: 'status',   label: 'Status',        visible: true },
-        { id: 'modified', label: 'Last modified', visible: true },
-        { id: 'assignee', label: 'Assignee',      visible: false },
-        { id: 'priority', label: 'Priority',      visible: false },
-        { id: 'region',   label: 'Region',        visible: false },
-        { id: 'created',  label: 'Created',        visible: false },
+      visible: [
+        { id: 'owner',    label: 'Owner' },
+        { id: 'cases',    label: 'Cases', num: true },
+        { id: 'status',   label: 'Status' },
+        { id: 'modified', label: 'Last modified' },
+      ],
+      hidden: [
+        { id: 'assignee', label: 'Assignee' },
+        { id: 'priority', label: 'Priority' },
+        { id: 'region',   label: 'Region' },
+        { id: 'created',  label: 'Created' },
       ],
       rows: [
         { id: 1, name: 'AML transaction review', owner: 'Elena Cruz',  cases: 128, status: 'Awaiting review', modified: 'Jun 24, 2026', assignee: 'Elena Cruz',  priority: 'High',   region: 'EMEA', created: 'Jun 10, 2026' },
         { id: 2, name: 'Sanctions screening',    owner: 'Marcus Webb', cases: 342, status: 'Open',            modified: 'Jun 22, 2026', assignee: 'Marcus Webb', priority: 'Medium', region: 'AMER', created: 'Jun 5, 2026' },
         { id: 3, name: 'PEP due diligence',      owner: 'Priya Nair',  cases: 56,  status: 'Resolved',        modified: 'Jun 18, 2026', assignee: 'Priya Nair',  priority: 'Low',    region: 'APAC', created: 'May 30, 2026' },
       ],
-      init() { this._initial = JSON.parse(JSON.stringify(this.columns)); },
-      get visibleCols() { return this.columns.filter(function (c) { return c.visible; }); },
-      get hiddenCols() {
-        return this.columns.filter(function (c) { return !c.visible; })
-          .sort(function (a, b) { return a.label.localeCompare(b.label); });
+      init() {
+        this._initial = {
+          visible: JSON.parse(JSON.stringify(this.visible)),
+          hidden: JSON.parse(JSON.stringify(this.hidden)),
+        };
       },
-      get visibleCount() { return this.visibleCols.length; },
-      announce(m) { var self = this; this.msg = ''; this.$nextTick(function () { self.msg = m; }); },
-      // Move within the visible group only, swapping with the adjacent
-      // visible column (hidden ones keep their place in the master array).
-      move(col, dir) {
-        var vis = this.visibleCols;
-        var pos = vis.indexOf(col);
-        var swap = vis[pos + dir];
-        if (!swap) return;
-        var arr = this.columns.slice();
-        var i = arr.indexOf(col), j = arr.indexOf(swap);
-        arr[i] = swap; arr[j] = col;
-        this.columns = arr;
-        this.announce(col.label + ' moved to position ' + (pos + dir + 1) + ' of ' + vis.length);
-        var self = this;
-        this.$nextTick(function () {
-          var want = dir < 0 ? 'up' : 'down', other = dir < 0 ? 'down' : 'up';
-          var btn = document.getElementById('cm-' + col.id + '-' + want);
-          if (!btn || btn.disabled) btn = document.getElementById('cm-' + col.id + '-' + other);
-          if (btn) btn.focus();
-        });
+      // Hidden columns are shown A→Z; their underlying order is irrelevant
+      get hiddenSorted() {
+        return this.hidden.slice().sort(function (a, b) { return a.label.localeCompare(b.label); });
       },
-      // Checkbox — moves the column between the Visible and Hidden groups
-      toggle(col) {
-        col.visible = !col.visible;
-        if (col.visible) {
-          // Re-shown columns land at the end of the visible order
-          var arr = this.columns.slice();
-          arr.splice(arr.indexOf(col), 1);
-          arr.push(col);
-          this.columns = arr;
+      get visibleCount() { return this.visible.length; },
+      // Checkbox — moves a column between the Visible and Hidden groups
+      toggle(col, from) {
+        if (from === 'visible') {
+          if (this.visible.length === 1) return;            // keep at least one
+          this.visible.splice(this.visible.indexOf(col), 1);
+          this.hidden.push(col);
+          hbDragAnnounce(col.label + ' hidden — moved to Hidden Columns');
+        } else {
+          this.hidden.splice(this.hidden.indexOf(col), 1);
+          this.visible.push(col);                            // re-shown at the end
+          hbDragAnnounce(col.label + ' shown — moved to Visible Columns');
         }
-        this.announce(col.label + (col.visible
-          ? ' shown — moved to Visible Columns'
-          : ' hidden — moved to Hidden Columns'));
-        var id = col.id;
+        var id = col.id, self = this;
         this.$nextTick(function () {
-          var cb = document.getElementById('cm-' + id + '-cb');
+          var cb = self.$root.querySelector('[data-hb-cb="' + id + '"]');
           if (cb && !cb.disabled) cb.focus();
         });
       },
-      // Drag reorder within the visible group
-      drop(targetCol) {
-        if (!this.dragId || this.dragId === targetCol.id) { this.dragOverId = null; return; }
-        var arr = this.columns.slice();
-        var dragged = arr.find(function (c) { return c.id === this.dragId; }, this);
-        arr.splice(arr.indexOf(dragged), 1);
-        arr.splice(arr.indexOf(targetCol), 0, dragged);
-        this.columns = arr;
-        var vis = arr.filter(function (c) { return c.visible; });
-        this.announce(dragged.label + ' moved to position ' + (vis.indexOf(dragged) + 1) + ' of ' + vis.length);
-        this.dragId = null;
-        this.dragOverId = null;
-      },
       reset() {
-        this.columns = JSON.parse(JSON.stringify(this._initial));
-        this.announce('Columns reset to their defaults');
+        this.visible = JSON.parse(JSON.stringify(this._initial.visible));
+        this.hidden = JSON.parse(JSON.stringify(this._initial.hidden));
+        hbDragAnnounce('Columns reset to their defaults');
       },
     };
+    return Object.assign(state, hbReorder());
   }
 
   /* ── Resize columns (vanilla enhancer) ──────────────────────

@@ -146,7 +146,8 @@ Every component has a dedicated documentation page with live examples, all varia
 | Checkbox | `hb-checkbox` + `hb-checkbox-row` + `hb-checkbox-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/checkbox.html |
 | Radio | `hb-radio` + `hb-radio-row` + `hb-radio-group` (`--inline`) | https://tomimar.github.io/hb-mininectar/components/radio.html |
 | Toggle | `hb-toggle` + `hb-toggle__input`/`__track`/`__thumb`/`__label` | https://tomimar.github.io/hb-mininectar/components/toggle.html |
-| Table | `hb-table` (compact by default · `--plain`/`--comfortable`/`--row-link`/`--resizable`) + `hb-table-wrap`/`__caption`/`__rowheader`/`__link` (use with `hb-link`)/`__select-col`/`__actions`/`__cell--num`/`__expander`/`__detail-row`/`__overflow`/`__menu`/`__menu-item`/`__resizer`/`__footer`/`__footer-group`/`__footer-label`/`__pagination`/`__page-info` + `hb-visually-hidden`. Accessible column reorder/hide via `hb-column-manager` (`__panel`(`--end`)/`__group`/`__header`/`__title`/`__list`/`__item`/`__drag`/`__toggle`/`__name`/`__move`/`__move-btn`/`__spacer`/`__empty`) — Visible/Hidden groups, single-pointer alternatives to dragging (WCAG 2.5.7) | https://tomimar.github.io/hb-mininectar/components/table.html |
+| Table | `hb-table` (compact by default · `--plain`/`--comfortable`/`--row-link`/`--resizable`) + `hb-table-wrap`/`__caption`/`__rowheader`/`__link` (use with `hb-link`)/`__select-col`/`__actions`/`__cell--num`/`__expander`/`__detail-row`/`__overflow`/`__menu`/`__menu-item`/`__resizer`/`__footer`/`__footer-group`/`__footer-label`/`__pagination`/`__page-info` + `hb-visually-hidden`. Accessible column reorder/hide via `hb-column-manager` (`__panel`(`--end`)/`__group`/`__header`/`__title`/`__list`/`__item`/`__drag`/`__toggle`/`__name`/`__move`/`__move-btn`/`__spacer`/`__empty`) — Visible/Hidden groups, single-pointer alternatives to dragging (WCAG 2.5.7). The Columns panel reuses the shared **Drag** component. | https://tomimar.github.io/hb-mininectar/components/table.html |
+| Drag (reorderable list) | `hb-drag` (`--inline`) + `hb-drag__item`(`.is-dragging`/`.is-drop-target`)/`__handle`/`__content`/`__move`/`__move-btn`/`__nested`. Pair with the `hbReorder()` Alpine factory in `drag.js` (spread into `x-data`); shared polite live region `#hb-live-region`. Panel variant (buttons always visible) + inline variant (reveal on hover/focus); supports nested lists. Single-pointer alternative to dragging (WCAG 2.5.7) | https://tomimar.github.io/hb-mininectar/components/drag.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
@@ -167,6 +168,18 @@ Every component has a dedicated documentation page with live examples, all varia
 ```
 
 It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with auto-inserted slashes, month/year navigation, and a Today shortcut. Values are always `MM/DD/YYYY`. See https://tomimar.github.io/hb-mininectar/components/date-input.html
+
+**Drag (reorderable list):** the `hb-drag` component pairs with `drag.js`, which exposes an Alpine factory. Spread it into a component's `x-data` and give it an array to reorder:
+
+```html
+<script src="https://tomimar.github.io/hb-mininectar/drag.js"></script>
+
+<ul class="hb-drag" x-data="Object.assign({ items: [...] }, hbReorder())">
+  <!-- hb-drag__item rows with a handle, content and Up/Down buttons -->
+</ul>
+```
+
+`hbReorder()` provides `reorderMove(item, dir, list)`, `reorderDrop(item, list)`, drag handlers and `reorderCanUp/Down`. Pass each list its own array (nested lists reorder independently). Announcements go through the shared `#hb-live-region`. See https://tomimar.github.io/hb-mininectar/components/drag.html
 
 ---
 

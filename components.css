@@ -2930,3 +2930,128 @@ body {
   font-size: var(--icon-size-md);
   color: currentColor;
 }
+
+/* ── Drag — reorderable list ─────────────────────────────────
+   A generic list whose items can be reordered by dragging OR by
+   Up / Down buttons — the single-pointer alternative required by
+   WCAG 2.5.7 (Dragging movements). Pair with the hbReorder() Alpine
+   factory in drag.js. Two presentations:
+     • default — Up / Down buttons always visible. Use inside a
+       dedicated management panel (e.g. the table Columns panel).
+     • hb-drag--inline — controls hidden until the row is hovered or
+       keyboard-focused, so short lists sit inline in the content with
+       no permanent chrome. Buttons stay in the tab order (revealed on
+       focus), never display:none, so the keyboard path is preserved.
+   Supports nesting: an item's content can hold another .hb-drag whose
+   reorder is independent of its parent's.
+     <ul class="hb-drag">
+       <li class="hb-drag__item">
+         <span class="hb-drag__handle">drag_indicator</span>
+         <span class="hb-drag__content">Item</span>
+         <div class="hb-drag__move"> ↑ ↓ </div>
+       </li>
+     </ul> */
+.hb-drag {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hb-drag__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) var(--spacing-8);
+  border: 1px solid transparent;
+  border-radius: var(--border-radius-8);
+  background: var(--ui-bg);
+}
+.hb-drag__item:hover { background: var(--ui-bg-secondary); }
+/* Dragged row fades; the row being dragged over shows a drop line on top */
+.hb-drag__item.is-dragging { opacity: 0.5; }
+.hb-drag__item.is-drop-target { box-shadow: inset 0 2px 0 0 var(--ui-interaction); }
+
+/* Drag grip — a convenience for pointer users, not the only path */
+.hb-drag__handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  flex-shrink: 0;
+  color: var(--ui-icon);
+  font-size: var(--icon-size-md);
+  cursor: grab;
+}
+.hb-drag__handle:active { cursor: grabbing; }
+
+/* Item body — label or arbitrary content; truncates rather than wraps */
+.hb-drag__content {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Up / Down buttons — the single-pointer alternative to dragging */
+.hb-drag__move {
+  display: inline-flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.hb-drag__move-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-4);
+  color: var(--ui-icon);
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+.hb-drag__move-btn:hover { background: var(--ui-bg-tertiary); }
+.hb-drag__move-btn:focus-visible {
+  outline: 2px solid var(--ui-interaction-soft);
+  outline-offset: -2px;
+}
+.hb-drag__move-btn:disabled {
+  color: var(--ui-border-secondary);
+  cursor: default;
+  background: none;
+}
+/* Icon follows the button colour, so disabled greys the arrow too */
+.hb-drag__move-btn .hb-icon {
+  font-size: var(--icon-size-md);
+  color: currentColor;
+}
+
+/* Inline variant — reveal the grip and buttons on hover / focus only.
+   opacity (not display) keeps the buttons focusable, so a keyboard user
+   Tabbing into the row still reaches them and they become visible. */
+.hb-drag--inline .hb-drag__handle,
+.hb-drag--inline .hb-drag__move {
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+.hb-drag--inline .hb-drag__item:hover .hb-drag__handle,
+.hb-drag--inline .hb-drag__item:hover .hb-drag__move,
+.hb-drag--inline .hb-drag__item:focus-within .hb-drag__handle,
+.hb-drag--inline .hb-drag__item:focus-within .hb-drag__move {
+  opacity: 1;
+}
+/* Nested list sits under the item content, indented from the grip */
+.hb-drag__nested {
+  margin-top: 2px;
+  margin-left: var(--spacing-24);
+}

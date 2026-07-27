@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Drag (reorderable list) — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="../drag.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+    .page { display: flex; min-height: 100vh; }
+
+    .sidenav {
+      width: 220px; flex-shrink: 0; background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border); padding: var(--spacing-32) var(--spacing-16);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidenav__back { display: flex; align-items: center; gap: var(--spacing-4); color: var(--ui-text-secondary); text-decoration: none; margin-bottom: var(--spacing-32); }
+    .sidenav__back:hover { color: var(--ui-text); }
+    .sidenav__section { color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .sidenav__link { display: block; color: var(--ui-text-secondary); text-decoration: none; padding: var(--spacing-4) var(--spacing-8); border-radius: var(--border-radius-4); transition: background 100ms, color 100ms; margin-bottom: 2px; }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    .main { flex: 1; max-width: 840px; padding: var(--spacing-48); }
+
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge { display: inline-block; color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .page-header__title { font-size: 32px; font-weight: var(--font-weight-bolder); color: var(--ui-text); margin: 0 0 var(--spacing-16) 0; line-height: 1.2; }
+    .page-header__desc { color: var(--ui-text-secondary); margin: 0; max-width: 640px; }
+
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title { color: var(--ui-text); margin: 0 0 var(--spacing-4) 0; padding-bottom: var(--spacing-16); border-bottom: 1px solid var(--ui-border); }
+    .section__desc { color: var(--ui-text-secondary); margin: var(--spacing-16) 0 var(--spacing-24) 0; }
+
+    .preview { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-32); margin-bottom: var(--spacing-16); }
+
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table td { padding: var(--spacing-12) var(--spacing-16); color: var(--ui-text); border-bottom: 1px solid var(--ui-border); vertical-align: middle; }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); overflow: hidden; margin-bottom: var(--spacing-16); }
+
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card { border-radius: var(--border-radius-8); overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-bg); }
+    .guidance-card__header { padding: var(--spacing-8) var(--spacing-16); display: flex; align-items: center; gap: var(--spacing-8); }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body { padding: var(--spacing-16); background: var(--ui-bg); display: flex; flex-direction: column; gap: var(--spacing-12); }
+    .guidance-card__note { color: var(--ui-text-secondary); }
+
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num { width: 20px; height: 20px; border-radius: 50%; background: var(--ui-expressive-purple); color: white; font-size: 11px; font-weight: var(--font-weight-bolder); display: flex; align-items: center; justify-content: center; }
+
+    code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; background: var(--ui-bg-secondary); padding: 1px 5px; border-radius: var(--border-radius-4); color: var(--ui-text); border: 1px solid var(--ui-border); }
+
+    [x-cloak] { display: none !important; }
+    .callout {
+      display: flex; gap: var(--spacing-8); align-items: flex-start;
+      background: var(--ui-expressive-yellow-soft); border: 1px solid var(--ui-expressive-yellow);
+      color: var(--ui-expressive-brown-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-12) var(--spacing-16); margin-bottom: var(--spacing-16);
+    }
+    .callout .hb-icon { margin-top: 2px; }
+
+    .a11y-note {
+      display: flex; gap: var(--spacing-12); align-items: flex-start;
+      background: var(--ui-expressive-blue-soft); border: 1px solid var(--ui-expressive-blue);
+      color: var(--ui-expressive-blue-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-16); margin-bottom: var(--spacing-24);
+    }
+    .a11y-note .hb-icon { margin-top: 1px; flex-shrink: 0; }
+    .a11y-note strong { color: var(--ui-text); }
+    .a11y-note__list { margin: var(--spacing-8) 0 0 0; padding-left: var(--spacing-16); }
+    .a11y-note__list li { margin-bottom: var(--spacing-4); color: var(--ui-text-secondary); }
+    .a11y-note__list li:last-child { margin-bottom: 0; }
+
+    /* Fake panel wrapper — to frame the "panel" variant example */
+    .demo-panel { width: 288px; background: var(--ui-bg-overlay); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); box-shadow: var(--shadow-overlay); padding: var(--spacing-4); }
+    .demo-panel__header { display: flex; align-items: center; gap: var(--spacing-8); padding: var(--spacing-8) var(--spacing-8) var(--spacing-4); color: var(--ui-text); }
+    .demo-panel__header .hb-icon { color: var(--ui-icon); font-size: var(--icon-size-md); }
+    .demo-hint { color: var(--ui-text-tertiary); margin-top: var(--spacing-8); }
+    /* Task label in the nested example */
+    .demo-task { font-weight: var(--font-weight-bold); }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Drag</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A reorderable list. Items can be dragged, but dragging is never the only way — each item also carries Up / Down buttons, the single-pointer alternative required by <a href="https://www.w3.org/WAI/WCAG22/Understanding/dragging-movements.html" class="hb-link" target="_blank" rel="noopener">WCAG&nbsp;2.5.7 Dragging&nbsp;movements</a>. Use it anywhere users put things in an order: a Columns panel, a list of sections, or nested Stages → Tasks → Fields.</p>
+    </header>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2 class="section__title hb-text-heading-small">Overview</h2>
+      <p class="section__desc hb-text-body">The list pairs a drag grip with Up / Down buttons. Moving an item — by drag, click or keyboard — keeps focus on the control pressed and announces the new position through a polite <code>aria-live</code> region. The logic lives in the <code>hbReorder()</code> Alpine helper (<code>drag.js</code>); the markup is plain <code>hb-drag</code> classes.</p>
+      <div class="preview">
+        <ul class="hb-drag" style="max-width: 360px;"
+            x-data="Object.assign({ items: [
+              { id: 'ov-a', label: 'Applicant details' },
+              { id: 'ov-b', label: 'Risk factors' },
+              { id: 'ov-c', label: 'Supporting documents' },
+              { id: 'ov-d', label: 'Review notes' },
+            ] }, hbReorder())">
+          <template x-for="item in items" :key="item.id">
+            <li class="hb-drag__item" draggable="true"
+                :class="{ 'is-dragging': reorderIsDragging(item), 'is-drop-target': reorderIsDropTarget(item) }"
+                @dragstart="reorderDragStart(item)" @dragend="reorderDragEnd()"
+                @dragover.prevent="reorderDragOver(item)" @drop.prevent="reorderDrop(item, items)">
+              <span class="hb-drag__handle hb-icon" aria-hidden="true">drag_indicator</span>
+              <span class="hb-drag__content" x-text="item.label"></span>
+              <div class="hb-drag__move">
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(item) + '-up'" :disabled="!reorderCanUp(item, items)"
+                        :aria-label="'Move ' + reorderLabel(item) + ' up'" @click="reorderMove(item, -1, items)">
+                  <span class="hb-icon">arrow_upward</span></button>
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(item) + '-down'" :disabled="!reorderCanDown(item, items)"
+                        :aria-label="'Move ' + reorderLabel(item) + ' down'" @click="reorderMove(item, 1, items)">
+                  <span class="hb-icon">arrow_downward</span></button>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
+      <div class="state-table-wrap">
+        <table class="state-table anatomy-table">
+          <tbody>
+            <tr><td><div class="anatomy-num">1</div></td><td><span class="hb-text-caption-bold">List</span></td><td class="hb-text-body"><code>hb-drag</code> — the reorderable container. One array of items in <code>hbReorder()</code> backs it.</td></tr>
+            <tr><td><div class="anatomy-num">2</div></td><td><span class="hb-text-caption-bold">Item</span></td><td class="hb-text-body"><code>hb-drag__item</code> — a draggable row; gets <code>is-dragging</code> / <code>is-drop-target</code> while a drag is in progress.</td></tr>
+            <tr><td><div class="anatomy-num">3</div></td><td><span class="hb-text-caption-bold">Handle</span></td><td class="hb-text-body"><code>hb-drag__handle</code> — the grip for pointer dragging. Decorative (<code>aria-hidden</code>); never the only way to reorder.</td></tr>
+            <tr><td><div class="anatomy-num">4</div></td><td><span class="hb-text-caption-bold">Content</span></td><td class="hb-text-body"><code>hb-drag__content</code> — the item label or arbitrary content (it can hold a nested list).</td></tr>
+            <tr><td><div class="anatomy-num">5</div></td><td><span class="hb-text-caption-bold">Move buttons</span></td><td class="hb-text-body"><code>hb-drag__move</code> + two <code>hb-drag__move-btn</code> — the single-pointer / keyboard reorder. Disabled at the ends; each names its item.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Accessibility note -->
+    <section class="section" id="behaviour">
+      <h2 class="section__title hb-text-heading-small">Behaviour</h2>
+      <div class="a11y-note">
+        <span class="hb-icon">accessibility_new</span>
+        <div class="hb-text-body">
+          <strong>How it satisfies WCAG 2.5.7.</strong>
+          <ul class="a11y-note__list">
+            <li>Dragging (mouse &amp; touch) works in parallel, but every reorder is also a single click on an <strong>Up</strong> or <strong>Down</strong> button — no dragging required.</li>
+            <li>Up / Down are disabled at the ends of the list.</li>
+            <li>After a move, focus stays on the button pressed (or its sibling if that one became disabled), and the new position is announced through an <code>aria-live="polite"</code> region.</li>
+            <li>Each button's accessible name includes the item — “Move <em>Risk factors</em> up”, not just “Move up”.</li>
+            <li>Nested lists reorder independently: moving a field never disturbs the tasks around it.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel variant -->
+    <section class="section" id="panel">
+      <h2 class="section__title hb-text-heading-small">Panel variant <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— controls always visible</span></h2>
+      <p class="section__desc hb-text-body">The default: Up / Down buttons are always shown next to every item. Use it inside a dedicated management panel — where the whole point of the surface is arranging things — such as the table <a href="table.html#reorder" class="hb-link">Columns</a> panel. This is the same pattern that panel is built from.</p>
+      <div class="preview">
+        <div class="demo-panel"
+             x-data="Object.assign({ items: [
+               { id: 'pn-owner', label: 'Owner' },
+               { id: 'pn-cases', label: 'Cases' },
+               { id: 'pn-status', label: 'Status' },
+               { id: 'pn-modified', label: 'Last modified' },
+             ] }, hbReorder())">
+          <div class="demo-panel__header">
+            <span class="hb-icon">view_column</span>
+            <span class="hb-text-caption-bold">Columns</span>
+          </div>
+          <ul class="hb-drag" aria-label="Columns">
+            <template x-for="item in items" :key="item.id">
+              <li class="hb-drag__item" draggable="true"
+                  :class="{ 'is-dragging': reorderIsDragging(item), 'is-drop-target': reorderIsDropTarget(item) }"
+                  @dragstart="reorderDragStart(item)" @dragend="reorderDragEnd()"
+                  @dragover.prevent="reorderDragOver(item)" @drop.prevent="reorderDrop(item, items)">
+                <span class="hb-drag__handle hb-icon" aria-hidden="true">drag_indicator</span>
+                <span class="hb-drag__content" x-text="item.label"></span>
+                <div class="hb-drag__move">
+                  <button type="button" class="hb-drag__move-btn"
+                          :data-hb-drag-btn="reorderId(item) + '-up'" :disabled="!reorderCanUp(item, items)"
+                          :aria-label="'Move ' + reorderLabel(item) + ' up'" @click="reorderMove(item, -1, items)">
+                    <span class="hb-icon">arrow_upward</span></button>
+                  <button type="button" class="hb-drag__move-btn"
+                          :data-hb-drag-btn="reorderId(item) + '-down'" :disabled="!reorderCanDown(item, items)"
+                          :aria-label="'Move ' + reorderLabel(item) + ' down'" @click="reorderMove(item, 1, items)">
+                    <span class="hb-icon">arrow_downward</span></button>
+                </div>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Inline variant -->
+    <section class="section" id="inline">
+      <h2 class="section__title hb-text-heading-small">Inline variant <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— reveal on hover / focus</span></h2>
+      <p class="section__desc hb-text-body">Add <code>hb-drag--inline</code> for short lists (5–10 items) embedded directly in the content, with no panel around them. The grip and buttons stay hidden until the row is hovered or keyboard-focused, so the list reads cleanly at rest. The buttons remain in the tab order — a keyboard user Tabbing through the row reaches them and they appear on focus — so the single-pointer alternative is never lost.</p>
+      <div class="preview">
+        <ul class="hb-drag hb-drag--inline" style="max-width: 420px;" aria-label="Sections"
+            x-data="Object.assign({ items: [
+              { id: 'in-a', label: 'Business Risk Agent Profile' },
+              { id: 'in-b', label: 'Business or NPO Profile Summary' },
+              { id: 'in-c', label: 'Beneficial Owners & Authorized Signers' },
+              { id: 'in-d', label: 'Cash Management Services' },
+              { id: 'in-e', label: 'Review Materials' },
+            ] }, hbReorder())">
+          <template x-for="item in items" :key="item.id">
+            <li class="hb-drag__item" draggable="true"
+                :class="{ 'is-dragging': reorderIsDragging(item), 'is-drop-target': reorderIsDropTarget(item) }"
+                @dragstart="reorderDragStart(item)" @dragend="reorderDragEnd()"
+                @dragover.prevent="reorderDragOver(item)" @drop.prevent="reorderDrop(item, items)">
+              <span class="hb-drag__handle hb-icon" aria-hidden="true">drag_indicator</span>
+              <span class="hb-drag__content" x-text="item.label"></span>
+              <div class="hb-drag__move">
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(item) + '-up'" :disabled="!reorderCanUp(item, items)"
+                        :aria-label="'Move ' + reorderLabel(item) + ' up'" @click="reorderMove(item, -1, items)">
+                  <span class="hb-icon">arrow_upward</span></button>
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(item) + '-down'" :disabled="!reorderCanDown(item, items)"
+                        :aria-label="'Move ' + reorderLabel(item) + ' down'" @click="reorderMove(item, 1, items)">
+                  <span class="hb-icon">arrow_downward</span></button>
+              </div>
+            </li>
+          </template>
+        </ul>
+        <p class="hb-text-caption demo-hint">Hover a row — or Tab into it — to reveal the grip and buttons.</p>
+      </div>
+    </section>
+
+    <!-- Nested -->
+    <section class="section" id="nested">
+      <h2 class="section__title hb-text-heading-small">Nested lists</h2>
+      <p class="section__desc hb-text-body">Items can contain their own <code>hb-drag</code>. Each list passes its own array to the move buttons and to <code>drop</code>, so reordering one level never touches another — the model behind Stages → Tasks → Fields. Here a list of tasks (inline) holds a nested list of fields under the first task.</p>
+      <div class="preview">
+        <ul class="hb-drag hb-drag--inline" style="max-width: 460px;" aria-label="Tasks"
+            x-data="Object.assign({ tasks: [
+              { id: 't-profile', label: 'Business Risk Agent Profile', fields: [
+                { id: 'f-confirm', label: 'Confirm Address' },
+                { id: 'f-change', label: 'Change Address' },
+                { id: 'f-keep', label: 'Keep Address' },
+              ] },
+              { id: 't-owners', label: 'Beneficial Owners & Authorized Signers', fields: [] },
+              { id: 't-cash', label: 'Cash Management Services', fields: [] },
+              { id: 't-review', label: 'Review Materials', fields: [] },
+            ] }, hbReorder())">
+          <template x-for="task in tasks" :key="task.id">
+            <li class="hb-drag__item" style="flex-wrap: wrap;" draggable="true"
+                :class="{ 'is-dragging': reorderIsDragging(task), 'is-drop-target': reorderIsDropTarget(task) }"
+                @dragstart="reorderDragStart(task)" @dragend="reorderDragEnd()"
+                @dragover.prevent="reorderDragOver(task)" @drop.prevent="reorderDrop(task, tasks)">
+              <span class="hb-drag__handle hb-icon" aria-hidden="true">drag_indicator</span>
+              <span class="hb-drag__content demo-task" x-text="task.label"></span>
+              <div class="hb-drag__move">
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(task) + '-up'" :disabled="!reorderCanUp(task, tasks)"
+                        :aria-label="'Move task ' + reorderLabel(task) + ' up'" @click="reorderMove(task, -1, tasks)">
+                  <span class="hb-icon">arrow_upward</span></button>
+                <button type="button" class="hb-drag__move-btn"
+                        :data-hb-drag-btn="reorderId(task) + '-down'" :disabled="!reorderCanDown(task, tasks)"
+                        :aria-label="'Move task ' + reorderLabel(task) + ' down'" @click="reorderMove(task, 1, tasks)">
+                  <span class="hb-icon">arrow_downward</span></button>
+              </div>
+              <!-- Nested fields (only the first task has any) -->
+              <ul class="hb-drag hb-drag--inline hb-drag__nested" style="flex-basis: 100%;" x-show="task.fields.length" :aria-label="task.label + ' fields'">
+                <template x-for="field in task.fields" :key="field.id">
+                  <li class="hb-drag__item" draggable="true"
+                      :class="{ 'is-dragging': reorderIsDragging(field), 'is-drop-target': reorderIsDropTarget(field) }"
+                      @dragstart.stop="reorderDragStart(field)" @dragend.stop="reorderDragEnd()"
+                      @dragover.prevent.stop="reorderDragOver(field)" @drop.prevent.stop="reorderDrop(field, task.fields)">
+                    <span class="hb-drag__handle hb-icon" aria-hidden="true">drag_indicator</span>
+                    <span class="hb-drag__content" x-text="field.label"></span>
+                    <div class="hb-drag__move">
+                      <button type="button" class="hb-drag__move-btn"
+                              :data-hb-drag-btn="reorderId(field) + '-up'" :disabled="!reorderCanUp(field, task.fields)"
+                              :aria-label="'Move field ' + reorderLabel(field) + ' up'" @click="reorderMove(field, -1, task.fields)">
+                        <span class="hb-icon">arrow_upward</span></button>
+                      <button type="button" class="hb-drag__move-btn"
+                              :data-hb-drag-btn="reorderId(field) + '-down'" :disabled="!reorderCanDown(field, task.fields)"
+                              :aria-label="'Move field ' + reorderLabel(field) + ' down'" @click="reorderMove(field, 1, task.fields)">
+                        <span class="hb-icon">arrow_downward</span></button>
+                    </div>
+                  </li>
+                </template>
+              </ul>
+            </li>
+          </template>
+        </ul>
+        <p class="hb-text-caption demo-hint">Reorder the tasks, or the three fields under the first task — each stays within its own list.</p>
+      </div>
+    </section>
+
+    <!-- Accessibility guidance -->
+    <section class="section" id="accessibility">
+      <h2 class="section__title hb-text-heading-small">Accessibility</h2>
+      <p class="section__desc hb-text-body">A drag interaction is only accessible when it has a single-pointer alternative (WCAG 2.5.7). Keyboard support alone is not enough.</p>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><span class="hb-icon">check</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Offer Up / Down buttons alongside the drag handle, always operable with a single click.</div>
+            <div class="guidance-card__note hb-text-body">Name each button after its item, so the target is clear out of context.</div>
+            <div class="guidance-card__note hb-text-body">Keep focus on the pressed control and announce the new position via aria-live.</div>
+            <div class="guidance-card__note hb-text-body">In the inline variant, reveal controls with opacity so they stay focusable by keyboard.</div>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><span class="hb-icon">close</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Make dragging the only way to reorder.</div>
+            <div class="guidance-card__note hb-text-body">Hide the reveal-on-hover controls with <code>display:none</code> — it drops them from the tab order.</div>
+            <div class="guidance-card__note hb-text-body">Label the buttons only “Move up” / “Move down” with no item name.</div>
+            <div class="guidance-card__note hb-text-body">Let a drag in one nested list drop into another level.</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top: var(--spacing-24);">
+        <span class="hb-icon">info</span>
+        <div class="hb-text-body"><strong>Out of scope for now:</strong> “Move to top / bottom” shortcuts. They aren't needed while lists stay short (5–10 items); revisit if a use case grows to long lists, where repeated single-step moves become tedious.</div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>
