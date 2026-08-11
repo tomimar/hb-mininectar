@@ -84,11 +84,20 @@
     .a11y-note__list li:last-child { margin-bottom: 0; }
 
     /* Fake app frame — to show the nav in the context of a page.
-       One surface throughout: no divider, no colour change. */
-    .demo-app { background: var(--ui-bg); min-height: 420px; }
-    .demo-app__body { flex: 1; min-width: 0; padding: var(--spacing-24) var(--spacing-24) var(--spacing-24) var(--spacing-16); }
+       One surface throughout: no divider, no colour change.
+       The page header sits ABOVE .hb-sidenav-area, never inside it. */
+    .demo-page { background: var(--ui-bg); min-height: 460px; display: flex; flex-direction: column; }
+    .demo-page__header {
+      display: flex; align-items: center; gap: var(--spacing-8);
+      padding: var(--spacing-12) var(--spacing-16);
+      border-bottom: 1px solid var(--ui-border);
+    }
+    .demo-page__header--plain { border-bottom: none; }
+    .demo-app { flex: 1; }
+    .demo-app__body { flex: 1; min-width: 0; padding: var(--spacing-16) var(--spacing-24) var(--spacing-24) var(--spacing-16); }
     .demo-app__bar { display: flex; align-items: center; gap: var(--spacing-8); margin-bottom: var(--spacing-16); }
     .demo-app__crumb { color: var(--ui-text); }
+    .demo-card { border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-24); }
     .demo-hint { color: var(--ui-text-tertiary); margin-top: var(--spacing-8); }
     /* Standalone nav demos — no frame, the nav has no surface of its own */
     .demo-nav-frame { display: inline-block; vertical-align: top; }
@@ -317,51 +326,21 @@
       <p class="section__desc hb-text-body" style="margin-top: calc(var(--spacing-16) * -1);">It is not gone, though. <strong>Hovering the toggle floats the nav back</strong> over the content, live and clickable, so jumping to another section never costs a click on the way. Move away and it retreats; <strong>click the toggle and it is pinned open</strong> again. Same pattern as Notion's sidebar.</p>
 
       <h3 class="hb-text-body-bold" style="margin: 0 0 var(--spacing-8) 0;">Where the toggle goes</h3>
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-16) 0;">The nav has no header of its own — the page already has one — so the toggle lives in the page header, before the title or breadcrumb, and stays in that one spot whether the nav is open or collapsed. Only its icon and its name change. Putting it inside the nav would mean a second copy elsewhere for the way back, and a control that moves is a control users have to look for.</p>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-12) 0;">The nav has no header of its own, so the toggle lives in the <strong>page header</strong> — the band that runs above both the nav and the content — pinned to its left edge, over the nav's own column. That band exists on every page: on Settings it holds the section title, on a Profile it holds the avatar, the name and its tags. A page with no title of its own still has it, and the toggle simply becomes its first element.</p>
+      <div class="callout">
+        <span class="hb-icon">warning</span>
+        <div class="hb-text-body">Keep that header <strong>outside</strong> <code>hb-sidenav-area</code>. The area is what the collapsed nav floats over, so a toggle placed inside it ends up underneath the peek panel — the way back hidden exactly when it is needed.</div>
+      </div>
 
-      <div class="preview preview--flush"
-           x-data="{ collapsed: false, peek: false, timer: null,
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-24) 0 var(--spacing-8) 0;"><strong>A page with a title.</strong> The toggle goes before it.</p>
+      <div class="preview preview--flush" x-data="{ collapsed: false, peek: false, timer: null,
                      show() { clearTimeout(this.timer); this.peek = true },
                      hide() { clearTimeout(this.timer); this.timer = setTimeout(() => this.peek = false, 200) },
                      pin()  { clearTimeout(this.timer); this.collapsed = !this.collapsed; this.peek = false } }">
-        <div class="hb-sidenav-area demo-app">
-          <nav class="hb-sidenav" id="sn-collapse-nav" aria-label="Settings sections"
-               :class="{ 'is-collapsed': collapsed, 'is-peeking': collapsed && peek }"
-               @mouseenter="collapsed && show()" @mouseleave="collapsed && hide()">
-            <div class="hb-sidenav__group">
-              <a href="#collapse" class="hb-sidenav__item">
-                <span class="hb-sidenav__icon hb-icon" aria-hidden="true">person</span>
-                <span class="hb-sidenav__label">User Settings</span>
-              </a>
-            </div>
-            <div class="hb-sidenav__group">
-              <a href="#collapse" class="hb-sidenav__item hb-sidenav__item--active" aria-current="page">
-                <span class="hb-sidenav__icon hb-icon" aria-hidden="true">domain</span>
-                <span class="hb-sidenav__label">Organization Settings</span>
-              </a>
-              <ul class="hb-sidenav__submenu">
-                <li><a href="#collapse" class="hb-sidenav__subitem">Organization Info</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">Members</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">Badges &amp; Permissions</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem hb-sidenav__subitem--active">Review Types</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">Information Request Forms</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">Tags</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">Custom Fields</a></li>
-                <li><a href="#collapse" class="hb-sidenav__subitem">IP Filters</a></li>
-              </ul>
-            </div>
-            <div class="hb-sidenav__group">
-              <a href="#collapse" class="hb-sidenav__item">
-                <span class="hb-sidenav__icon hb-icon" aria-hidden="true">apps</span>
-                <span class="hb-sidenav__label">App Settings</span>
-              </a>
-            </div>
-          </nav>
-
-          <div class="demo-app__body">
-            <div class="demo-app__bar">
-              <button type="button" class="hb-sidenav__toggle"
-                      :aria-expanded="!collapsed" aria-controls="sn-collapse-nav"
+        <div class="demo-page">
+          <div class="demo-page__header">
+            <button type="button" class="hb-sidenav__toggle"
+                      :aria-expanded="!collapsed" aria-controls="sn-settings-nav"
                       :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
                       :title="collapsed ? 'Expand navigation' : 'Collapse navigation'"
                       @mouseenter="collapsed && show()" @mouseleave="collapsed && hide()"
@@ -369,52 +348,158 @@
                       @click="pin()">
                 <span class="hb-icon" aria-hidden="true" x-text="collapsed ? 'last_page' : 'first_page'">first_page</span>
               </button>
-              <span class="demo-app__crumb hb-text-body-bold">Organization Settings <span style="color: var(--ui-text-secondary); font-weight: var(--font-weight-regular);">/ Review Types</span></span>
+            <span class="hb-text-body-bold">Settings</span>
+          </div>
+          <div class="hb-sidenav-area demo-app">
+            <nav class="hb-sidenav" id="sn-settings-nav" aria-label="Settings sections"
+                 :class="{ 'is-collapsed': collapsed, 'is-peeking': collapsed && peek }"
+                 @mouseenter="collapsed && show()" @mouseleave="collapsed && hide()">
+              <div class="hb-sidenav__group">
+                <a href="#collapse" class="hb-sidenav__item">
+                  <span class="hb-sidenav__icon hb-icon" aria-hidden="true">person</span>
+                  <span class="hb-sidenav__label">User Settings</span>
+                </a>
+              </div>
+              <div class="hb-sidenav__group">
+                <a href="#collapse" class="hb-sidenav__item hb-sidenav__item--active" aria-current="page">
+                  <span class="hb-sidenav__icon hb-icon" aria-hidden="true">domain</span>
+                  <span class="hb-sidenav__label">Organization Settings</span>
+                </a>
+                <ul class="hb-sidenav__submenu">
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Organization Info</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Members</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Badges &amp; Permissions</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem hb-sidenav__subitem--active">Review Types</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Information Request Forms</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Tags</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Custom Fields</a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">IP Filters</a></li>
+                </ul>
+              </div>
+              <div class="hb-sidenav__group">
+                <a href="#collapse" class="hb-sidenav__item">
+                  <span class="hb-sidenav__icon hb-icon" aria-hidden="true">apps</span>
+                  <span class="hb-sidenav__label">App Settings</span>
+                </a>
+              </div>
+            </nav>
+
+            <div class="demo-app__body">
+              <div class="demo-app__bar">
+                <span class="demo-app__crumb hb-text-body-bold">Organization Settings <span style="color: var(--ui-text-secondary); font-weight: var(--font-weight-regular);">/ Review Types</span></span>
+              </div>
+              <div class="hb-table-wrap">
+                <table class="hb-table">
+                  <thead><tr><th>Name</th><th>Badges</th><th>Stages</th><th>Version</th><th>Last modified</th></tr></thead>
+                  <tbody>
+                    <tr><td><a href="#collapse" class="hb-table__link hb-link">1260H Investigation</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
+                    <tr><td><a href="#collapse" class="hb-table__link hb-link">314(b) Request (Incoming)</a></td><td></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
+                    <tr><td><a href="#collapse" class="hb-table__link hb-link">AML Investigation</a></td><td><span class="hb-tag">1 Badge</span></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:29 AM</td></tr>
+                    <tr><td><a href="#collapse" class="hb-table__link hb-link">Beneficial Ownership</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:23 AM</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="hb-text-caption demo-hint">Collapse the nav, then hover the toggle — it stays in place, and the nav floats back without being pinned.</p>
             </div>
-            <div class="hb-table-wrap">
-              <table class="hb-table">
-                <thead><tr><th>Name</th><th>Badges</th><th>Stages</th><th>Version</th><th>Last modified</th></tr></thead>
-                <tbody>
-                  <tr><td><a href="#collapse" class="hb-table__link hb-link">1260H Investigation</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
-                  <tr><td><a href="#collapse" class="hb-table__link hb-link">314(b) Request (Incoming)</a></td><td></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
-                  <tr><td><a href="#collapse" class="hb-table__link hb-link">AML Investigation</a></td><td><span class="hb-tag">1 Badge</span></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:29 AM</td></tr>
-                  <tr><td><a href="#collapse" class="hb-table__link hb-link">Beneficial Ownership</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:23 AM</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="hb-text-caption demo-hint">Collapse the nav, then hover the toggle that stays behind — the nav floats back without being pinned.</p>
           </div>
         </div>
       </div>
 
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-24) 0 var(--spacing-16) 0;">Two classes carry the whole behaviour, on top of a <code>hb-sidenav-area</code> wrapper: <code>is-collapsed</code> takes the nav out of the layout and hides it, and <code>is-peeking</code> floats it back. A short delay on leaving keeps the panel from flickering while the pointer travels from the toggle to the nav.</p>
-      <pre><code>&lt;div class="hb-sidenav-area"
-     x-data="{ collapsed: false, peek: false, timer: null,
-               show() { clearTimeout(this.timer); this.peek = true },
-               hide() { clearTimeout(this.timer); this.timer = setTimeout(() =&gt; this.peek = false, 200) },
-               pin()  { clearTimeout(this.timer); this.collapsed = !this.collapsed; this.peek = false } }"&gt;
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-32) 0 var(--spacing-8) 0;"><strong>A page with no title.</strong> On a Profile the content starts straight away with its first card, and the header holds the record itself — avatar, name, tags, primary action. The toggle takes the first slot, still over the nav's column.</p>
+      <div class="preview preview--flush" x-data="{ collapsed: false, peek: false, timer: null,
+                     show() { clearTimeout(this.timer); this.peek = true },
+                     hide() { clearTimeout(this.timer); this.timer = setTimeout(() => this.peek = false, 200) },
+                     pin()  { clearTimeout(this.timer); this.collapsed = !this.collapsed; this.peek = false } }">
+        <div class="demo-page">
+          <div class="demo-page__header">
+            <button type="button" class="hb-sidenav__toggle"
+                      :aria-expanded="!collapsed" aria-controls="sn-profile-nav"
+                      :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+                      :title="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+                      @mouseenter="collapsed && show()" @mouseleave="collapsed && hide()"
+                      @focus="collapsed && show()" @blur="hide()"
+                      @click="pin()">
+                <span class="hb-icon" aria-hidden="true" x-text="collapsed ? 'last_page' : 'first_page'">first_page</span>
+              </button>
+            <span class="hb-avatar hb-avatar--sm" aria-hidden="true"><span class="hb-icon">person</span></span>
+            <span class="hb-text-body-bold">Abel Crona</span>
+            <span class="hb-tag hb-tag--purple">High Risk Country</span>
+            <button type="button" class="hb-btn hb-btn--primary hb-btn--sm" style="margin-left: auto;">Create Case</button>
+          </div>
+          <div class="hb-sidenav-area demo-app">
+            <nav class="hb-sidenav" id="sn-profile-nav" aria-label="Profile sections"
+                 :class="{ 'is-collapsed': collapsed, 'is-peeking': collapsed && peek }"
+                 @mouseenter="collapsed && show()" @mouseleave="collapsed && hide()">
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Information</span></a>
+              <div class="hb-sidenav__group">
+                <a href="#collapse" class="hb-sidenav__item hb-sidenav__item--active" aria-current="page">
+                  <span class="hb-sidenav__label">Relationships</span>
+                  <span class="hb-sidenav__count">4</span>
+                </a>
+                <ul class="hb-sidenav__submenu">
+                  <li><a href="#collapse" class="hb-sidenav__subitem hb-sidenav__subitem--active">Related Profiles <span class="hb-sidenav__count">1</span></a></li>
+                  <li><a href="#collapse" class="hb-sidenav__subitem">Accounts &amp; Devices <span class="hb-sidenav__count">3</span></a></li>
+                </ul>
+              </div>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Related Cases</span><span class="hb-sidenav__count">1</span></a>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Related Requests</span></a>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Alerts</span></a>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Files</span></a>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">External Data</span></a>
+              <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Screenings</span></a>
+            </nav>
 
-  &lt;nav class="hb-sidenav" id="settings-nav" aria-label="Settings"
-       :class="{ 'is-collapsed': collapsed, 'is-peeking': collapsed &amp;&amp; peek }"
-       @mouseenter="collapsed &amp;&amp; show()" @mouseleave="collapsed &amp;&amp; hide()"&gt;
-    &lt;!-- items, no header --&gt;
-  &lt;/nav&gt;
+            <div class="demo-app__body">
+              <div class="demo-card">
+                <div class="demo-app__bar" style="justify-content: space-between;">
+                  <span class="hb-text-body-bold">Related Profiles</span>
+                  <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm"><span class="hb-icon">add</span> Add new</button>
+                </div>
+                <p class="hb-text-caption" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-8) 0;">Institution Relationships</p>
+                <div class="hb-table-wrap">
+                  <table class="hb-table">
+                    <thead><tr><th>Name</th><th>Relationship</th><th>Status</th><th>Actioned At</th></tr></thead>
+                    <tbody>
+                      <tr><td>Dhaulagiri V</td><td>Customer</td><td>Relationship Continues</td><td></td></tr>
+                      <tr><td>Kanchenjunga LLC</td><td>Vendor</td><td>Relationship Continues</td><td>Jul 21, 2026</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <p class="hb-text-caption demo-hint">No page title here — the toggle is simply the first thing in the header.</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  &lt;main&gt;
-    &lt;div class="page-header"&gt;
-      &lt;button type="button" class="hb-sidenav__toggle"
-              :aria-expanded="!collapsed" aria-controls="settings-nav"
-              :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
-              @mouseenter="collapsed &amp;&amp; show()" @mouseleave="collapsed &amp;&amp; hide()"
-              @focus="collapsed &amp;&amp; show()" @blur="hide()"
-              @click="pin()"&gt;
-        &lt;span class="hb-icon" aria-hidden="true"
-              x-text="collapsed ? 'last_page' : 'first_page'"&gt;&lt;/span&gt;
-      &lt;/button&gt;
-      &lt;h1&gt;Organization Settings / Review Types&lt;/h1&gt;
-    &lt;/div&gt;
-    …
-  &lt;/main&gt;
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-24) 0 var(--spacing-16) 0;">Two classes carry the whole behaviour: <code>is-collapsed</code> takes the nav out of the layout and hides it, and <code>is-peeking</code> floats it back. A short delay on leaving keeps the panel from flickering while the pointer travels from the toggle to the nav.</p>
+      <pre><code>&lt;div x-data="{ collapsed: false, peek: false, timer: null,
+             show() { clearTimeout(this.timer); this.peek = true },
+             hide() { clearTimeout(this.timer); this.timer = setTimeout(() =&gt; this.peek = false, 200) },
+             pin()  { clearTimeout(this.timer); this.collapsed = !this.collapsed; this.peek = false } }"&gt;
+
+  &lt;!-- page header — OUTSIDE the area, so the peek panel never covers it --&gt;
+  &lt;header&gt;
+    &lt;button type="button" class="hb-sidenav__toggle"
+            :aria-expanded="!collapsed" aria-controls="settings-nav"
+            :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+            @mouseenter="collapsed &amp;&amp; show()" @mouseleave="collapsed &amp;&amp; hide()"
+            @focus="collapsed &amp;&amp; show()" @blur="hide()"
+            @click="pin()"&gt;
+      &lt;span class="hb-icon" aria-hidden="true"
+            x-text="collapsed ? 'last_page' : 'first_page'"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+    &lt;h1&gt;Settings&lt;/h1&gt;   &lt;!-- or the record's name, or nothing at all --&gt;
+  &lt;/header&gt;
+
+  &lt;div class="hb-sidenav-area"&gt;
+    &lt;nav class="hb-sidenav" id="settings-nav" aria-label="Settings"
+         :class="{ 'is-collapsed': collapsed, 'is-peeking': collapsed &amp;&amp; peek }"
+         @mouseenter="collapsed &amp;&amp; show()" @mouseleave="collapsed &amp;&amp; hide()"&gt;
+      &lt;!-- items --&gt;
+    &lt;/nav&gt;
+    &lt;main&gt; … &lt;/main&gt;
+  &lt;/div&gt;
 &lt;/div&gt;</code></pre>
       <div class="callout">
         <span class="hb-icon">info</span>
@@ -469,6 +554,7 @@
           <div class="guidance-card__body">
             <div class="guidance-card__note hb-text-body">Leave a strip of icons behind — collapsed means collapsed, the content gets the full width.</div>
             <div class="guidance-card__note hb-text-body">Make hover the only way to bring the nav back.</div>
+            <div class="guidance-card__note hb-text-body">Put the toggle inside <code>hb-sidenav-area</code> — the peek panel would cover it.</div>
             <div class="guidance-card__note hb-text-body">Put a chevron on a section that has sub-sections — they are not a dropdown, they belong to the section you are in.</div>
             <div class="guidance-card__note hb-text-body">Nest more than one level of submenu; flatten the section instead.</div>
             <div class="guidance-card__note hb-text-body">Use this for the app's primary navigation — that is the global rail, a different component.</div>

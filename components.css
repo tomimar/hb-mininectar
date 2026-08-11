@@ -3064,6 +3064,7 @@ body {
    a leading icon, a count and a submenu, and the whole nav can be
    collapsed away to hand its width back to wide content such as a
    table.
+     <header> <button class="hb-sidenav__toggle"> + page title </header>
      <div class="hb-sidenav-area">
        <nav class="hb-sidenav">
          <div class="hb-sidenav__section">Group label</div>
@@ -3079,10 +3080,7 @@ body {
            </ul>
          </div>
        </nav>
-       <main>
-         <button class="hb-sidenav__toggle">  ← lives in the page header
-         … page content …
-       </main>
+       <main> … page content … </main>
      </div>
    States on the root: .is-collapsed (out of the layout) +
    .is-peeking (floating back over the content). */
@@ -3110,8 +3108,14 @@ body {
 }
 
 /* Collapse / expand control. The nav carries no header of its own, so
-   this lives in the page header, next to the title or breadcrumb: one
-   button in one place, whether the nav is open or collapsed. */
+   this lives in the page header — the band above the nav and the
+   content — pinned to its left edge, over the nav's own column. One
+   button in one place, whether the nav is open or collapsed; only its
+   icon and its name change.
+   Keep that header OUTSIDE .hb-sidenav-area. The area is what the
+   collapsed nav floats over, so a toggle inside it would end up
+   underneath the peek panel — and the way back would be hidden exactly
+   when it is needed. */
 .hb-sidenav__toggle {
   display: inline-flex;
   align-items: center;
