@@ -3059,10 +3059,11 @@ body {
 
 /* ── Sidenav — collapsible section navigation ────────────────
    The secondary navigation that sits inside a page (Profile,
-   Settings, Case…), listing the sections of that page. Items can
-   carry a leading icon, a count and a submenu; groups can expand
-   and collapse; and the whole nav can be collapsed away to hand its
-   width back to wide content such as a table.
+   Settings, Case…), listing the sections of that page. It shares the
+   surface of the content — no background, no divider. Items can carry
+   a leading icon, a count and a submenu, and the whole nav can be
+   collapsed away to hand its width back to wide content such as a
+   table.
      <div class="hb-sidenav-area">
        <nav class="hb-sidenav">
          <div class="hb-sidenav__header">
@@ -3075,9 +3076,7 @@ body {
            <span class="hb-sidenav__count">4</span>
          </a>
          <div class="hb-sidenav__group">
-           <button class="hb-sidenav__item hb-sidenav__item--expandable" aria-expanded="true">
-             … + <span class="hb-sidenav__chevron hb-icon">expand_more</span>
-           </button>
+           <a class="hb-sidenav__item hb-sidenav__item--active">…</a>
            <ul class="hb-sidenav__submenu">
              <li><a class="hb-sidenav__subitem">…</a></li>
            </ul>
@@ -3096,8 +3095,10 @@ body {
   flex-direction: column;
   gap: var(--spacing-2);
   padding: var(--spacing-8);
-  background: var(--ui-bg);
   font-family: var(--font-family);
+  /* No background and no divider: the nav sits on the same surface as
+     the content it belongs to. Only the floating (peek) panel gets a
+     background of its own. */
 }
 
 /* The page area the nav belongs to. Establishes the containing block
@@ -3238,18 +3239,9 @@ body {
   color: var(--ui-text-secondary);
 }
 
-.hb-sidenav__chevron {
-  flex-shrink: 0;
-  font-size: var(--icon-size-md);
-  color: var(--ui-icon);
-  transition: transform 120ms ease;
-}
-/* Collapsed group — chevron points right */
-.hb-sidenav__item--expandable[aria-expanded="false"] .hb-sidenav__chevron {
-  transform: rotate(-90deg);
-}
-
-/* Submenu — indented under its parent, hung off a rail line */
+/* Submenu — indented under its parent, hung off a rail line. It is
+   shown when its parent is the current section, not behind a
+   disclosure control: there is no chevron, and nothing to expand. */
 .hb-sidenav__submenu {
   list-style: none;
   margin: var(--spacing-2) 0 var(--spacing-4) var(--spacing-24);
@@ -3267,8 +3259,10 @@ body {
   gap: var(--spacing-8);
   padding: var(--spacing-4) var(--spacing-8);
   border-radius: var(--border-radius-4);
-  font-size: var(--font-size-14);
+  /* Caption bold — a sub-section reads one step down from its parent */
+  font-size: var(--font-size-12);
   line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bold);
   color: var(--ui-text-secondary);
   text-decoration: none;
   cursor: pointer;
@@ -3279,7 +3273,7 @@ body {
   outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
 }
-.hb-sidenav__subitem--active { color: var(--ui-text); font-weight: var(--font-weight-bold); }
+.hb-sidenav__subitem--active { color: var(--ui-text); font-weight: var(--font-weight-bolder); }
 /* The active sub-item darkens its segment of the rail */
 .hb-sidenav__subitem--active::before {
   content: '';
@@ -3326,6 +3320,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hb-sidenav, .hb-sidenav__chevron { transition: none; }
+  .hb-sidenav { transition: none; }
   .hb-sidenav.is-collapsed { transition: visibility 0s; transform: none; }
 }
