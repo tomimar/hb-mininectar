@@ -3055,3 +3055,298 @@ body {
   margin-top: 2px;
   margin-left: var(--spacing-24);
 }
+
+
+/* ── Sidenav — collapsible section navigation ────────────────
+   The secondary navigation that sits inside a page (Profile,
+   Settings, Case…), listing the sections of that page. Items can
+   carry a leading icon, a count, and a submenu; groups can expand
+   and collapse; and the whole nav can be collapsed to an icon rail
+   — or hidden entirely — to hand its width back to wide content
+   such as a table.
+     <nav class="hb-sidenav">
+       <div class="hb-sidenav__header">
+         title + <button class="hb-sidenav__toggle">
+       </div>
+       <div class="hb-sidenav__section">Group label</div>
+       <a class="hb-sidenav__item hb-sidenav__item--active">
+         <span class="hb-sidenav__icon hb-icon">person</span>
+         <span class="hb-sidenav__label">Information</span>
+         <span class="hb-sidenav__count">4</span>
+       </a>
+       <div class="hb-sidenav__group">
+         <button class="hb-sidenav__item hb-sidenav__item--expandable" aria-expanded="true">
+           … + <span class="hb-sidenav__chevron hb-icon">expand_more</span>
+         </button>
+         <ul class="hb-sidenav__submenu">
+           <li><a class="hb-sidenav__subitem">…</a></li>
+         </ul>
+       </div>
+     </nav>
+   States on the root: .is-collapsed (icon rail) · .is-hidden (off). */
+.hb-sidenav {
+  --hb-sidenav-width: 240px;
+  --hb-sidenav-rail-width: 56px;
+
+  width: var(--hb-sidenav-width);
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-8);
+  background: var(--ui-bg);
+  font-family: var(--font-family);
+  transition: width 160ms ease, padding 160ms ease;
+}
+
+/* Header — optional title row that hosts the collapse toggle */
+.hb-sidenav__header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
+  margin-bottom: var(--spacing-4);
+}
+.hb-sidenav__title {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bolder);
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Collapse / expand control. Also used standalone (outside the nav)
+   to bring back a nav in the .is-hidden state. */
+.hb-sidenav__toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: var(--border-radius-4);
+  color: var(--ui-icon);
+  cursor: pointer;
+  transition: background 100ms ease, color 100ms ease;
+}
+.hb-sidenav__toggle:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+.hb-sidenav__toggle:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+}
+.hb-sidenav__toggle .hb-icon { font-size: var(--icon-size-md); color: currentColor; }
+
+/* Group label above a set of items */
+.hb-sidenav__section {
+  padding: var(--spacing-8) var(--spacing-12) var(--spacing-4);
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-1);
+  text-transform: uppercase;
+  color: var(--ui-text-tertiary);
+}
+
+/* Item — the navigation row. Works as <a> or <button>. */
+.hb-sidenav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  width: 100%;
+  padding: var(--spacing-8) var(--spacing-12);
+  border: none;
+  border-radius: var(--border-radius-8);
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-text-secondary);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 100ms ease, color 100ms ease;
+}
+.hb-sidenav__item:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+.hb-sidenav__item:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+}
+/* Current section — grey fill plus weight, never colour alone */
+.hb-sidenav__item--active {
+  background: var(--ui-bg-secondary);
+  color: var(--ui-text);
+  font-weight: var(--font-weight-bold);
+}
+.hb-sidenav__item--active:hover { background: var(--ui-bg-tertiary); }
+.hb-sidenav__item:disabled,
+.hb-sidenav__item--disabled {
+  color: var(--ui-disabled);
+  cursor: not-allowed;
+  background: none;
+  pointer-events: none;
+}
+
+/* Slot order inside an item: icon · leading count · label · count · chevron */
+.hb-sidenav__icon {
+  order: -2;
+  flex-shrink: 0;
+  font-size: var(--icon-size-md);
+  color: var(--ui-icon);
+}
+.hb-sidenav__item--active .hb-sidenav__icon,
+.hb-sidenav__item:hover .hb-sidenav__icon { color: var(--ui-text); }
+
+.hb-sidenav__label {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Count — trailing by default; add --start to lead the label instead */
+.hb-sidenav__count {
+  order: 1;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 var(--spacing-4);
+  border-radius: var(--border-radius-round);
+  background: var(--ui-bg-tertiary);
+  font-size: var(--font-size-12);
+  line-height: 1;
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-text-secondary);
+}
+.hb-sidenav__count--start { order: -1; }
+
+.hb-sidenav__chevron {
+  order: 2;
+  flex-shrink: 0;
+  font-size: var(--icon-size-md);
+  color: var(--ui-icon);
+  transition: transform 120ms ease;
+}
+/* Collapsed group — chevron points right */
+.hb-sidenav__item--expandable[aria-expanded="false"] .hb-sidenav__chevron {
+  transform: rotate(-90deg);
+}
+
+/* Submenu — indented under its parent, hung off a rail line */
+.hb-sidenav__submenu {
+  list-style: none;
+  margin: var(--spacing-2) 0 var(--spacing-4) var(--spacing-24);
+  padding: 0 0 0 var(--spacing-12);
+  border-left: 1px solid var(--ui-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.hb-sidenav__subitem {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  padding: var(--spacing-4) var(--spacing-8);
+  border-radius: var(--border-radius-4);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 100ms ease, color 100ms ease;
+}
+.hb-sidenav__subitem:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+.hb-sidenav__subitem:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+}
+.hb-sidenav__subitem--active { color: var(--ui-text); font-weight: var(--font-weight-bold); }
+/* The active sub-item darkens its segment of the rail */
+.hb-sidenav__subitem--active::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--spacing-12) * -1 - 1px);
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--ui-text);
+}
+
+/* ── Collapsed: icon rail ──────────────────────────────────
+   Labels are clipped, not removed, so items keep their accessible
+   name; counts shrink to a dot; submenus and group labels go. */
+.hb-sidenav.is-collapsed {
+  width: var(--hb-sidenav-rail-width);
+  padding-left: var(--spacing-8);
+  padding-right: var(--spacing-8);
+}
+.hb-sidenav.is-collapsed .hb-sidenav__header { justify-content: center; padding: var(--spacing-4); }
+.hb-sidenav.is-collapsed .hb-sidenav__title,
+.hb-sidenav.is-collapsed .hb-sidenav__label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.hb-sidenav.is-collapsed .hb-sidenav__item {
+  justify-content: center;
+  padding: var(--spacing-8);
+}
+.hb-sidenav.is-collapsed .hb-sidenav__chevron,
+.hb-sidenav.is-collapsed .hb-sidenav__submenu { display: none; }
+/* The count becomes a dot on the icon — presence stays visible even
+   though the number no longer fits */
+.hb-sidenav.is-collapsed .hb-sidenav__count {
+  position: absolute;
+  top: var(--spacing-4);
+  right: var(--spacing-4);
+  min-width: 8px;
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  overflow: hidden;
+  color: transparent;
+  background: var(--ui-interaction);
+}
+/* Group labels become a plain divider */
+.hb-sidenav.is-collapsed .hb-sidenav__section {
+  height: 1px;
+  padding: 0;
+  margin: var(--spacing-8) var(--spacing-4);
+  background: var(--ui-border);
+  color: transparent;
+  overflow: hidden;
+}
+
+/* ── Hidden: the nav gives up all of its width ─────────────
+   For navs whose items have no icons, where a rail would be
+   meaningless. Pair with a standalone .hb-sidenav__toggle in the
+   page header to bring it back. */
+.hb-sidenav.is-hidden {
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  overflow: hidden;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-sidenav, .hb-sidenav__chevron { transition: none; }
+}

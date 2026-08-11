@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidenav — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+    .page { display: flex; min-height: 100vh; }
+
+    .sidenav {
+      width: 220px; flex-shrink: 0; background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border); padding: var(--spacing-32) var(--spacing-16);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidenav__back { display: flex; align-items: center; gap: var(--spacing-4); color: var(--ui-text-secondary); text-decoration: none; margin-bottom: var(--spacing-32); }
+    .sidenav__back:hover { color: var(--ui-text); }
+    .sidenav__section { color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .sidenav__link { display: block; color: var(--ui-text-secondary); text-decoration: none; padding: var(--spacing-4) var(--spacing-8); border-radius: var(--border-radius-4); transition: background 100ms, color 100ms; margin-bottom: 2px; }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    .main { flex: 1; max-width: 840px; padding: var(--spacing-48); }
+
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge { display: inline-block; color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .page-header__title { font-size: 32px; font-weight: var(--font-weight-bolder); color: var(--ui-text); margin: 0 0 var(--spacing-16) 0; line-height: 1.2; }
+    .page-header__desc { color: var(--ui-text-secondary); margin: 0; max-width: 640px; }
+
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title { color: var(--ui-text); margin: 0 0 var(--spacing-4) 0; padding-bottom: var(--spacing-16); border-bottom: 1px solid var(--ui-border); }
+    .section__desc { color: var(--ui-text-secondary); margin: var(--spacing-16) 0 var(--spacing-24) 0; }
+
+    .preview { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-32); margin-bottom: var(--spacing-16); }
+    .preview--flush { padding: 0; overflow: hidden; }
+
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table td { padding: var(--spacing-12) var(--spacing-16); color: var(--ui-text); border-bottom: 1px solid var(--ui-border); vertical-align: middle; }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); overflow: hidden; margin-bottom: var(--spacing-16); }
+
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card { border-radius: var(--border-radius-8); overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-bg); }
+    .guidance-card__header { padding: var(--spacing-8) var(--spacing-16); display: flex; align-items: center; gap: var(--spacing-8); }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body { padding: var(--spacing-16); background: var(--ui-bg); display: flex; flex-direction: column; gap: var(--spacing-12); }
+    .guidance-card__note { color: var(--ui-text-secondary); }
+
+    .anatomy-table { width: 100%; }
+    .anatomy-table td:first-child { width: 32px; }
+    .anatomy-num { width: 20px; height: 20px; border-radius: 50%; background: var(--ui-expressive-purple); color: white; font-size: 11px; font-weight: var(--font-weight-bolder); display: flex; align-items: center; justify-content: center; }
+
+    code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; background: var(--ui-bg-secondary); padding: 1px 5px; border-radius: var(--border-radius-4); color: var(--ui-text); border: 1px solid var(--ui-border); }
+    pre { background: var(--ui-bg-secondary); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-16); overflow-x: auto; margin: 0 0 var(--spacing-16) 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 12px; line-height: 1.6; }
+
+    [x-cloak] { display: none !important; }
+    .callout {
+      display: flex; gap: var(--spacing-8); align-items: flex-start;
+      background: var(--ui-expressive-yellow-soft); border: 1px solid var(--ui-expressive-yellow);
+      color: var(--ui-expressive-brown-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-12) var(--spacing-16); margin-bottom: var(--spacing-16);
+    }
+    .callout .hb-icon { margin-top: 2px; }
+
+    .a11y-note {
+      display: flex; gap: var(--spacing-12); align-items: flex-start;
+      background: var(--ui-expressive-blue-soft); border: 1px solid var(--ui-expressive-blue);
+      color: var(--ui-expressive-blue-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-16); margin-bottom: var(--spacing-24);
+    }
+    .a11y-note .hb-icon { margin-top: 1px; flex-shrink: 0; }
+    .a11y-note strong { color: var(--ui-text); }
+    .a11y-note__list { margin: var(--spacing-8) 0 0 0; padding-left: var(--spacing-16); }
+    .a11y-note__list li { margin-bottom: var(--spacing-4); color: var(--ui-text-secondary); }
+    .a11y-note__list li:last-child { margin-bottom: 0; }
+
+    /* Fake app frame — to show the nav in the context of a page */
+    .demo-app { display: flex; background: var(--ui-bg); min-height: 320px; }
+    .demo-app__nav { border-right: 1px solid var(--ui-border); }
+    .demo-app__body { flex: 1; min-width: 0; padding: var(--spacing-24); background: var(--ui-bg-secondary); }
+    .demo-app__bar { display: flex; align-items: center; gap: var(--spacing-8); margin-bottom: var(--spacing-16); }
+    .demo-app__crumb { color: var(--ui-text); }
+    .demo-hint { color: var(--ui-text-tertiary); margin-top: var(--spacing-8); }
+    /* Standalone nav demos sit on a card so the white nav reads against the page */
+    .demo-nav-frame { border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); overflow: hidden; display: inline-block; vertical-align: top; }
+    .demo-row { display: flex; gap: var(--spacing-24); flex-wrap: wrap; align-items: flex-start; }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Sidenav</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">The secondary navigation inside a page — the list of sections of a Profile, a Case or Settings. Items can carry an icon, a count and a submenu, and groups expand and collapse. The whole nav can also be collapsed to an icon rail or hidden entirely, handing its width back to wide content such as a table.</p>
+    </header>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2 class="section__title hb-text-heading-small">Overview</h2>
+      <p class="section__desc hb-text-body">One item per page section. The current section is marked by a grey fill and a heavier weight — never by colour alone. A count on the right tells how many records the section holds; a submenu breaks a section into its sub-sections.</p>
+      <div class="preview">
+        <div class="demo-nav-frame">
+          <nav class="hb-sidenav" aria-label="Profile sections">
+            <a href="#overview" class="hb-sidenav__item">
+              <span class="hb-sidenav__label">Information</span>
+            </a>
+            <div class="hb-sidenav__group">
+              <a href="#overview" class="hb-sidenav__item hb-sidenav__item--active">
+                <span class="hb-sidenav__label">Relationships</span>
+                <span class="hb-sidenav__count">4</span>
+              </a>
+              <ul class="hb-sidenav__submenu">
+                <li><a href="#overview" class="hb-sidenav__subitem hb-sidenav__subitem--active">
+                  <span class="hb-sidenav__label">Related Profiles</span>
+                  <span class="hb-sidenav__count">1</span></a></li>
+                <li><a href="#overview" class="hb-sidenav__subitem">
+                  <span class="hb-sidenav__label">Accounts &amp; Devices</span>
+                  <span class="hb-sidenav__count">3</span></a></li>
+              </ul>
+            </div>
+            <a href="#overview" class="hb-sidenav__item">
+              <span class="hb-sidenav__label">Related Cases</span>
+              <span class="hb-sidenav__count">1</span>
+            </a>
+            <a href="#overview" class="hb-sidenav__item"><span class="hb-sidenav__label">Related Requests</span></a>
+            <a href="#overview" class="hb-sidenav__item"><span class="hb-sidenav__label">Alerts</span></a>
+            <a href="#overview" class="hb-sidenav__item"><span class="hb-sidenav__label">Files</span></a>
+            <a href="#overview" class="hb-sidenav__item"><span class="hb-sidenav__label">Screenings</span></a>
+          </nav>
+        </div>
+      </div>
+    </section>
+
+    <!-- Anatomy -->
+    <section class="section" id="anatomy">
+      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
+      <div class="state-table-wrap">
+        <table class="state-table anatomy-table">
+          <tbody>
+            <tr><td><div class="anatomy-num">1</div></td><td><span class="hb-text-caption-bold">Nav</span></td><td class="hb-text-body"><code>hb-sidenav</code> — the container. 240&nbsp;px wide; override with <code>--hb-sidenav-width</code>.</td></tr>
+            <tr><td><div class="anatomy-num">2</div></td><td><span class="hb-text-caption-bold">Header</span></td><td class="hb-text-body"><code>hb-sidenav__header</code> + <code>__title</code> — optional title row that hosts the collapse toggle.</td></tr>
+            <tr><td><div class="anatomy-num">3</div></td><td><span class="hb-text-caption-bold">Toggle</span></td><td class="hb-text-body"><code>hb-sidenav__toggle</code> — collapse / expand control. Also used standalone to bring back a hidden nav.</td></tr>
+            <tr><td><div class="anatomy-num">4</div></td><td><span class="hb-text-caption-bold">Section label</span></td><td class="hb-text-body"><code>hb-sidenav__section</code> — uppercase label above a group of items. Becomes a divider in the rail.</td></tr>
+            <tr><td><div class="anatomy-num">5</div></td><td><span class="hb-text-caption-bold">Item</span></td><td class="hb-text-body"><code>hb-sidenav__item</code> (<code>--active</code> / <code>--expandable</code> / <code>--disabled</code>) — an <code>&lt;a&gt;</code> for a destination, a <code>&lt;button&gt;</code> for a group that expands.</td></tr>
+            <tr><td><div class="anatomy-num">6</div></td><td><span class="hb-text-caption-bold">Icon</span></td><td class="hb-text-body"><code>hb-sidenav__icon</code> — leading Material icon. Required if the nav is meant to collapse to a rail.</td></tr>
+            <tr><td><div class="anatomy-num">7</div></td><td><span class="hb-text-caption-bold">Label</span></td><td class="hb-text-body"><code>hb-sidenav__label</code> — the item text; truncates rather than wraps.</td></tr>
+            <tr><td><div class="anatomy-num">8</div></td><td><span class="hb-text-caption-bold">Count</span></td><td class="hb-text-body"><code>hb-sidenav__count</code> — record count. Trailing by default; <code>--start</code> places it before the label.</td></tr>
+            <tr><td><div class="anatomy-num">9</div></td><td><span class="hb-text-caption-bold">Chevron</span></td><td class="hb-text-body"><code>hb-sidenav__chevron</code> — on an expandable item; rotates with <code>aria-expanded</code>.</td></tr>
+            <tr><td><div class="anatomy-num">10</div></td><td><span class="hb-text-caption-bold">Submenu</span></td><td class="hb-text-body"><code>hb-sidenav__submenu</code> + <code>hb-sidenav__subitem</code> (<code>--active</code>) — sub-sections, hung off a rail line.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Items -->
+    <section class="section" id="items">
+      <h2 class="section__title hb-text-heading-small">Items, icons and counts</h2>
+      <p class="section__desc hb-text-body">Every slot is optional. An item is a plain label at minimum; add a leading icon for top-level navigation, and a count when the section holds a countable number of records. A count of zero is better left out than shown as <code>0</code>.</p>
+      <div class="preview">
+        <div class="demo-row">
+          <div class="demo-nav-frame">
+            <nav class="hb-sidenav" aria-label="With icons">
+              <div class="hb-sidenav__section">Settings</div>
+              <a href="#items" class="hb-sidenav__item">
+                <span class="hb-sidenav__icon hb-icon">person</span>
+                <span class="hb-sidenav__label">User Settings</span>
+              </a>
+              <a href="#items" class="hb-sidenav__item hb-sidenav__item--active">
+                <span class="hb-sidenav__icon hb-icon">domain</span>
+                <span class="hb-sidenav__label">Organization Settings</span>
+              </a>
+              <a href="#items" class="hb-sidenav__item">
+                <span class="hb-sidenav__icon hb-icon">apps</span>
+                <span class="hb-sidenav__label">App Settings</span>
+              </a>
+              <a href="#items" class="hb-sidenav__item">
+                <span class="hb-sidenav__icon hb-icon">assignment</span>
+                <span class="hb-sidenav__label">Reports</span>
+                <span class="hb-sidenav__count">12</span>
+              </a>
+              <span class="hb-sidenav__item hb-sidenav__item--disabled">
+                <span class="hb-sidenav__icon hb-icon">lock</span>
+                <span class="hb-sidenav__label">Billing</span>
+              </span>
+            </nav>
+          </div>
+          <div class="demo-nav-frame">
+            <nav class="hb-sidenav" aria-label="Leading counts">
+              <div class="hb-sidenav__section">Queues</div>
+              <a href="#items" class="hb-sidenav__item">
+                <span class="hb-sidenav__count hb-sidenav__count--start">8</span>
+                <span class="hb-sidenav__label">My alerts</span>
+              </a>
+              <a href="#items" class="hb-sidenav__item hb-sidenav__item--active">
+                <span class="hb-sidenav__count hb-sidenav__count--start">24</span>
+                <span class="hb-sidenav__label">Unassigned</span>
+              </a>
+              <a href="#items" class="hb-sidenav__item">
+                <span class="hb-sidenav__count hb-sidenav__count--start">3</span>
+                <span class="hb-sidenav__label">Escalated</span>
+              </a>
+            </nav>
+          </div>
+        </div>
+        <p class="hb-text-caption demo-hint">Left: icons with a trailing count. Right: <code>hb-sidenav__count--start</code>, for queues where the number is what you scan.</p>
+      </div>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <tbody>
+            <tr><td class="hb-text-caption-bold" style="width:140px;">Default</td><td class="hb-text-body">Secondary text on a transparent row.</td></tr>
+            <tr><td class="hb-text-caption-bold">Hover</td><td class="hb-text-body"><code>--ui-bg-secondary</code> fill, text and icon go to <code>--ui-text</code>.</td></tr>
+            <tr><td class="hb-text-caption-bold">Focus</td><td class="hb-text-body">2&nbsp;px <code>--ui-interaction</code> outline, inset so it never clips.</td></tr>
+            <tr><td class="hb-text-caption-bold">Active</td><td class="hb-text-body"><code>--ui-bg-secondary</code> fill + bold weight; hover deepens to <code>--ui-bg-tertiary</code>.</td></tr>
+            <tr><td class="hb-text-caption-bold">Disabled</td><td class="hb-text-body"><code>--ui-disabled</code> text, pointer events off.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Submenus -->
+    <section class="section" id="submenus">
+      <h2 class="section__title hb-text-heading-small">Submenus</h2>
+      <p class="section__desc hb-text-body">A section with sub-sections gets an expandable item: a <code>&lt;button&gt;</code> carrying <code>aria-expanded</code> and a chevron, plus a <code>hb-sidenav__submenu</code> list. The submenu hangs off a rail line, and the active sub-item darkens its own segment of that rail. Keep nesting to one level.</p>
+      <div class="preview">
+        <div class="demo-nav-frame"
+             x-data="{ open: { rel: true, alerts: false, google: true }, active: 'profiles' }">
+          <nav class="hb-sidenav" aria-label="Profile sections">
+            <a href="#submenus" class="hb-sidenav__item" :class="active === 'info' && 'hb-sidenav__item--active'" @click.prevent="active = 'info'">
+              <span class="hb-sidenav__icon hb-icon">badge</span>
+              <span class="hb-sidenav__label">Information</span>
+            </a>
+
+            <div class="hb-sidenav__group">
+              <button type="button" class="hb-sidenav__item hb-sidenav__item--expandable"
+                      :class="(active === 'profiles' || active === 'devices') && 'hb-sidenav__item--active'"
+                      :aria-expanded="open.rel" aria-controls="sn-rel" @click="open.rel = !open.rel">
+                <span class="hb-sidenav__icon hb-icon">hub</span>
+                <span class="hb-sidenav__label">Relationships</span>
+                <span class="hb-sidenav__count">4</span>
+                <span class="hb-sidenav__chevron hb-icon" aria-hidden="true">expand_more</span>
+              </button>
+              <ul class="hb-sidenav__submenu" id="sn-rel" x-show="open.rel" x-cloak>
+                <li><a href="#submenus" class="hb-sidenav__subitem" :class="active === 'profiles' && 'hb-sidenav__subitem--active'" @click.prevent="active = 'profiles'">
+                  <span class="hb-sidenav__label">Related Profiles</span><span class="hb-sidenav__count">1</span></a></li>
+                <li><a href="#submenus" class="hb-sidenav__subitem" :class="active === 'devices' && 'hb-sidenav__subitem--active'" @click.prevent="active = 'devices'">
+                  <span class="hb-sidenav__label">Accounts &amp; Devices</span><span class="hb-sidenav__count">3</span></a></li>
+              </ul>
+            </div>
+
+            <div class="hb-sidenav__group">
+              <button type="button" class="hb-sidenav__item hb-sidenav__item--expandable"
+                      :aria-expanded="open.alerts" aria-controls="sn-alerts" @click="open.alerts = !open.alerts">
+                <span class="hb-sidenav__icon hb-icon">notifications</span>
+                <span class="hb-sidenav__label">Alerts</span>
+                <span class="hb-sidenav__count">7</span>
+                <span class="hb-sidenav__chevron hb-icon" aria-hidden="true">expand_more</span>
+              </button>
+              <ul class="hb-sidenav__submenu" id="sn-alerts" x-show="open.alerts" x-cloak>
+                <li><a href="#submenus" class="hb-sidenav__subitem" :class="active === 'open' && 'hb-sidenav__subitem--active'" @click.prevent="active = 'open'">
+                  <span class="hb-sidenav__label">Open</span><span class="hb-sidenav__count">5</span></a></li>
+                <li><a href="#submenus" class="hb-sidenav__subitem" :class="active === 'snoozed' && 'hb-sidenav__subitem--active'" @click.prevent="active = 'snoozed'">
+                  <span class="hb-sidenav__label">Snooze Rules</span><span class="hb-sidenav__count">2</span></a></li>
+              </ul>
+            </div>
+
+            <a href="#submenus" class="hb-sidenav__item" :class="active === 'files' && 'hb-sidenav__item--active'" @click.prevent="active = 'files'">
+              <span class="hb-sidenav__icon hb-icon">folder</span>
+              <span class="hb-sidenav__label">Files</span>
+            </a>
+
+            <div class="hb-sidenav__group">
+              <button type="button" class="hb-sidenav__item hb-sidenav__item--expandable"
+                      :aria-expanded="open.google" aria-controls="sn-google" @click="open.google = !open.google">
+                <span class="hb-sidenav__icon hb-icon">travel_explore</span>
+                <span class="hb-sidenav__label">Google Searches</span>
+                <span class="hb-sidenav__chevron hb-icon" aria-hidden="true">expand_more</span>
+              </button>
+              <ul class="hb-sidenav__submenu" id="sn-google" x-show="open.google" x-cloak>
+                <li><a href="#submenus" class="hb-sidenav__subitem hb-link">Abel Crona scam</a></li>
+                <li><a href="#submenus" class="hb-sidenav__subitem hb-link">Abel Crona fraud</a></li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <p class="hb-text-caption demo-hint">Click a parent to expand or collapse it; click a sub-item to make it current.</p>
+      </div>
+      <div class="callout">
+        <span class="hb-icon">info</span>
+        <div class="hb-text-body">When a sub-item is current, mark its parent as <code>--active</code> too — otherwise the collapsed parent gives no clue where the user is.</div>
+      </div>
+    </section>
+
+    <!-- Collapsing -->
+    <section class="section" id="collapse">
+      <h2 class="section__title hb-text-heading-small">Collapsing</h2>
+      <p class="section__desc hb-text-body">Wide content — a table with ten columns — competes with the nav for horizontal space. Collapsing returns that width on demand. Two states, chosen by whether the items have icons:</p>
+
+      <h3 class="hb-text-body-bold" style="margin: 0 0 var(--spacing-8) 0;">Rail — <code>is-collapsed</code></h3>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-16) 0;">The nav shrinks to 56&nbsp;px and keeps only the icons. Labels are clipped rather than removed, so each item keeps its accessible name; counts shrink to a dot, which says “there is something here” without pretending to be readable. Submenus close — the rail is for jumping to a top-level section, not for browsing. This needs an icon on every item.</p>
+      <div class="preview preview--flush" x-data="{ collapsed: false }">
+        <div class="demo-app">
+          <nav class="hb-sidenav demo-app__nav" :class="collapsed && 'is-collapsed'" id="sn-rail-nav" aria-label="Settings sections">
+            <div class="hb-sidenav__header">
+              <span class="hb-sidenav__title">Settings</span>
+              <button type="button" class="hb-sidenav__toggle"
+                      :aria-expanded="!collapsed" aria-controls="sn-rail-nav"
+                      :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+                      :title="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+                      @click="collapsed = !collapsed">
+                <span class="hb-icon" x-text="collapsed ? 'last_page' : 'first_page'">first_page</span>
+              </button>
+            </div>
+              <div class="hb-sidenav__section">Organization</div>
+              <a href="#collapse" class="hb-sidenav__item" title="Organization Info">
+                <span class="hb-sidenav__icon hb-icon">domain</span>
+                <span class="hb-sidenav__label">Organization Info</span>
+              </a>
+              <a href="#collapse" class="hb-sidenav__item" title="Members">
+                <span class="hb-sidenav__icon hb-icon">group</span>
+                <span class="hb-sidenav__label">Members</span>
+                <span class="hb-sidenav__count">28</span>
+              </a>
+              <a href="#collapse" class="hb-sidenav__item hb-sidenav__item--active" title="Review Types">
+                <span class="hb-sidenav__icon hb-icon">fact_check</span>
+                <span class="hb-sidenav__label">Review Types</span>
+                <span class="hb-sidenav__count">14</span>
+              </a>
+              <a href="#collapse" class="hb-sidenav__item" title="Tags">
+                <span class="hb-sidenav__icon hb-icon">sell</span>
+                <span class="hb-sidenav__label">Tags</span>
+              </a>
+              <div class="hb-sidenav__section">App</div>
+              <a href="#collapse" class="hb-sidenav__item" title="Developers">
+                <span class="hb-sidenav__icon hb-icon">code</span>
+                <span class="hb-sidenav__label">Developers</span>
+              </a>
+              <a href="#collapse" class="hb-sidenav__item" title="IP Filters">
+                <span class="hb-sidenav__icon hb-icon">shield</span>
+                <span class="hb-sidenav__label">IP Filters</span>
+              </a>
+          </nav>
+          <div class="demo-app__body">
+            <div class="demo-app__bar">
+              <span class="demo-app__crumb hb-text-body-bold">Organization Settings / Review Types</span>
+            </div>
+            <div class="hb-table-wrap">
+              <table class="hb-table">
+                <thead><tr><th>Name</th><th>Badges</th><th>Stages</th><th>Version</th><th>Last modified</th></tr></thead>
+                <tbody>
+                  <tr><td><a href="#collapse" class="hb-table__link hb-link">1260H Investigation</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
+                  <tr><td><a href="#collapse" class="hb-table__link hb-link">314(b) Request (Incoming)</a></td><td></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:24 AM</td></tr>
+                  <tr><td><a href="#collapse" class="hb-table__link hb-link">AML Investigation</a></td><td><span class="hb-tag">1 Badge</span></td><td><span class="hb-tag">2 Stages</span></td><td>0</td><td>Jul 23, 2026 10:29 AM</td></tr>
+                  <tr><td><a href="#collapse" class="hb-table__link hb-link">Beneficial Ownership</a></td><td></td><td><span class="hb-tag">1 Stage</span></td><td>0</td><td>Jul 23, 2026 10:23 AM</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hb-text-caption demo-hint">Collapse the nav — the table takes the width back.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="hb-text-body-bold" style="margin: var(--spacing-32) 0 var(--spacing-8) 0;">Hidden — <code>is-hidden</code></h3>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-16) 0;">When the items have no icons — a Profile's sections, say — a rail of anonymous squares helps nobody. Give up the width entirely instead and put a standalone <code>hb-sidenav__toggle</code> in the page header to bring the nav back.</p>
+      <div class="preview preview--flush" x-data="{ hidden: false }">
+        <div class="demo-app">
+          <nav class="hb-sidenav demo-app__nav" :class="hidden && 'is-hidden'" id="sn-hidden-nav"
+               aria-label="Profile sections" :aria-hidden="hidden">
+            <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Information</span></a>
+            <a href="#collapse" class="hb-sidenav__item hb-sidenav__item--active"><span class="hb-sidenav__label">Relationships</span><span class="hb-sidenav__count">4</span></a>
+            <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Related Cases</span><span class="hb-sidenav__count">1</span></a>
+            <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Related Requests</span></a>
+            <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">Alerts</span></a>
+            <a href="#collapse" class="hb-sidenav__item"><span class="hb-sidenav__label">External Data</span></a>
+          </nav>
+          <div class="demo-app__body">
+            <div class="demo-app__bar">
+              <button type="button" class="hb-sidenav__toggle"
+                      :aria-expanded="!hidden" aria-controls="sn-hidden-nav"
+                      :aria-label="hidden ? 'Show sections' : 'Hide sections'"
+                      :title="hidden ? 'Show sections' : 'Hide sections'"
+                      @click="hidden = !hidden">
+                <span class="hb-icon" x-text="hidden ? 'last_page' : 'first_page'">first_page</span>
+              </button>
+              <span class="demo-app__crumb hb-text-body-bold">Related Profiles</span>
+            </div>
+            <div class="hb-table-wrap">
+              <table class="hb-table">
+                <thead><tr><th>Name</th><th>Relationship</th><th>Status</th><th>Actioned At</th></tr></thead>
+                <tbody>
+                  <tr><td>Dhaulagiri V</td><td>Customer</td><td>Relationship Continues</td><td>Jul 23, 2026</td></tr>
+                  <tr><td>Kanchenjunga LLC</td><td>Vendor</td><td>Relationship Continues</td><td>Jul 21, 2026</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="hb-text-caption demo-hint">The toggle lives in the page header, so it stays reachable once the nav is gone.</p>
+          </div>
+        </div>
+      </div>
+
+      <pre><code>&lt;!-- Alpine, the whole pattern --&gt;
+&lt;div x-data="{ collapsed: false }"&gt;
+  &lt;nav class="hb-sidenav" :class="collapsed &amp;&amp; 'is-collapsed'" aria-label="Settings"&gt;
+    &lt;div class="hb-sidenav__header"&gt;
+      &lt;span class="hb-sidenav__title"&gt;Settings&lt;/span&gt;
+      &lt;button type="button" class="hb-sidenav__toggle"
+              :aria-expanded="!collapsed" aria-controls="settings-nav"
+              :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
+              @click="collapsed = !collapsed"&gt;
+        &lt;span class="hb-icon" x-text="collapsed ? 'last_page' : 'first_page'"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+    …
+  &lt;/nav&gt;
+&lt;/div&gt;</code></pre>
+      <div class="callout">
+        <span class="hb-icon">info</span>
+        <div class="hb-text-body">Remember the choice. A user who collapses the nav to read a wide table expects it to stay collapsed on the next page — persist the state (<code>localStorage</code>) per user, not per page.</div>
+      </div>
+    </section>
+
+    <!-- Behaviour / accessibility -->
+    <section class="section" id="behaviour">
+      <h2 class="section__title hb-text-heading-small">Behaviour</h2>
+      <div class="a11y-note">
+        <span class="hb-icon">accessibility_new</span>
+        <div class="hb-text-body">
+          <strong>What the markup has to carry.</strong>
+          <ul class="a11y-note__list">
+            <li>The container is a <code>&lt;nav&gt;</code> with an <code>aria-label</code> — a page often has two navs (the app rail and this one), and they must be told apart.</li>
+            <li>Destinations are <code>&lt;a&gt;</code>; things that expand are <code>&lt;button&gt;</code> with <code>aria-expanded</code> and <code>aria-controls</code> pointing at the submenu.</li>
+            <li>The current item is marked with <code>aria-current="page"</code>, not only with the <code>--active</code> class — fill and weight are for the eye, <code>aria-current</code> is for the screen reader.</li>
+            <li>In the rail, labels are clipped (<code>clip-path</code>), never <code>display:none</code>, so every icon-only item keeps its name. Add <code>title</code> so sighted mouse users get the same label.</li>
+            <li>The toggle's own name changes with its state — “Collapse navigation” / “Expand navigation” — and it carries <code>aria-expanded</code>.</li>
+            <li>Icons are decorative (<code>aria-hidden</code>) when a label is present; the chevron always is.</li>
+            <li>Width transitions are dropped under <code>prefers-reduced-motion</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Guidance -->
+    <section class="section" id="guidance">
+      <h2 class="section__title hb-text-heading-small">Guidelines</h2>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><span class="hb-icon">check</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Offer the collapse toggle wherever the nav sits next to a table or another wide surface.</div>
+            <div class="guidance-card__note hb-text-body">Give every item an icon before you let a nav collapse to a rail.</div>
+            <div class="guidance-card__note hb-text-body">Show a count only when the number is worth acting on, and drop the item's count when it is zero.</div>
+            <div class="guidance-card__note hb-text-body">Keep the current sub-item's parent marked as active as well.</div>
+            <div class="guidance-card__note hb-text-body">Persist the collapsed state across pages.</div>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><span class="hb-icon">close</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Collapse an icon-less nav to a rail — hide it instead.</div>
+            <div class="guidance-card__note hb-text-body">Nest more than one level of submenu; flatten the section instead.</div>
+            <div class="guidance-card__note hb-text-body">Use this for the app's primary navigation — that is the global rail, a different component.</div>
+            <div class="guidance-card__note hb-text-body">Signal the current item by colour alone.</div>
+            <div class="guidance-card__note hb-text-body">Hide the nav with no visible way to bring it back.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>

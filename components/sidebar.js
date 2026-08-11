@@ -41,6 +41,7 @@
       ['Toggle',          'toggle.html'],
       ['Table',           'table.html'],
       ['Drag',            'drag.html'],
+      ['Sidenav',         'sidenav.html'],
       ['Popup select',    'popup-select.html'],
       ['Link',            'link.html'],
       ['Modal',           'modal.html'],
