@@ -3060,33 +3060,35 @@ body {
 /* ── Sidenav — collapsible section navigation ────────────────
    The secondary navigation that sits inside a page (Profile,
    Settings, Case…), listing the sections of that page. Items can
-   carry a leading icon, a count, and a submenu; groups can expand
-   and collapse; and the whole nav can be collapsed to an icon rail
-   — or hidden entirely — to hand its width back to wide content
-   such as a table.
-     <nav class="hb-sidenav">
-       <div class="hb-sidenav__header">
-         title + <button class="hb-sidenav__toggle">
-       </div>
-       <div class="hb-sidenav__section">Group label</div>
-       <a class="hb-sidenav__item hb-sidenav__item--active">
-         <span class="hb-sidenav__icon hb-icon">person</span>
-         <span class="hb-sidenav__label">Information</span>
-         <span class="hb-sidenav__count">4</span>
-       </a>
-       <div class="hb-sidenav__group">
-         <button class="hb-sidenav__item hb-sidenav__item--expandable" aria-expanded="true">
-           … + <span class="hb-sidenav__chevron hb-icon">expand_more</span>
-         </button>
-         <ul class="hb-sidenav__submenu">
-           <li><a class="hb-sidenav__subitem">…</a></li>
-         </ul>
-       </div>
-     </nav>
-   States on the root: .is-collapsed (icon rail) · .is-hidden (off). */
+   carry a leading icon, a count and a submenu; groups can expand
+   and collapse; and the whole nav can be collapsed away to hand its
+   width back to wide content such as a table.
+     <div class="hb-sidenav-area">
+       <nav class="hb-sidenav">
+         <div class="hb-sidenav__header">
+           title + <button class="hb-sidenav__toggle">
+         </div>
+         <div class="hb-sidenav__section">Group label</div>
+         <a class="hb-sidenav__item hb-sidenav__item--active">
+           <span class="hb-sidenav__icon hb-icon">person</span>
+           <span class="hb-sidenav__label">Information</span>
+           <span class="hb-sidenav__count">4</span>
+         </a>
+         <div class="hb-sidenav__group">
+           <button class="hb-sidenav__item hb-sidenav__item--expandable" aria-expanded="true">
+             … + <span class="hb-sidenav__chevron hb-icon">expand_more</span>
+           </button>
+           <ul class="hb-sidenav__submenu">
+             <li><a class="hb-sidenav__subitem">…</a></li>
+           </ul>
+         </div>
+       </nav>
+       <main> … page content … </main>
+     </div>
+   States on the root: .is-collapsed (out of the layout) +
+   .is-peeking (floating back over the content). */
 .hb-sidenav {
   --hb-sidenav-width: 240px;
-  --hb-sidenav-rail-width: 56px;
 
   width: var(--hb-sidenav-width);
   flex-shrink: 0;
@@ -3096,7 +3098,14 @@ body {
   padding: var(--spacing-8);
   background: var(--ui-bg);
   font-family: var(--font-family);
-  transition: width 160ms ease, padding 160ms ease;
+}
+
+/* The page area the nav belongs to. Establishes the containing block
+   the collapsed nav floats in — without it, the peek panel would
+   position itself against the viewport. */
+.hb-sidenav-area {
+  position: relative;
+  display: flex;
 }
 
 /* Header — optional title row that hosts the collapse toggle */
@@ -3119,8 +3128,9 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Collapse / expand control. Also used standalone (outside the nav)
-   to bring back a nav in the .is-hidden state. */
+/* Collapse / expand control. Lives in the nav header while the nav is
+   open, and in the page header once it is collapsed — that copy is
+   the only way back, so it must always be visible. */
 .hb-sidenav__toggle {
   display: inline-flex;
   align-items: center;
@@ -3195,9 +3205,7 @@ body {
   pointer-events: none;
 }
 
-/* Slot order inside an item: icon · leading count · label · count · chevron */
 .hb-sidenav__icon {
-  order: -2;
   flex-shrink: 0;
   font-size: var(--icon-size-md);
   color: var(--ui-icon);
@@ -3213,9 +3221,8 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Count — trailing by default; add --start to lead the label instead */
+/* Count — how many records the section holds */
 .hb-sidenav__count {
-  order: 1;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -3230,10 +3237,8 @@ body {
   font-weight: var(--font-weight-regular);
   color: var(--ui-text-secondary);
 }
-.hb-sidenav__count--start { order: -1; }
 
 .hb-sidenav__chevron {
-  order: 2;
   flex-shrink: 0;
   font-size: var(--icon-size-md);
   color: var(--ui-icon);
@@ -3286,67 +3291,41 @@ body {
   background: var(--ui-text);
 }
 
-/* ── Collapsed: icon rail ──────────────────────────────────
-   Labels are clipped, not removed, so items keep their accessible
-   name; counts shrink to a dot; submenus and group labels go. */
+/* ── Collapsed: the nav leaves the layout ──────────────────
+   Nothing is left behind — no rail, no icons — so the content
+   takes the full width. The nav becomes a floating panel that is
+   hidden until it is asked for: hovering the toggle (or the panel
+   itself) adds .is-peeking and brings it back over the content, so
+   a quick jump costs nothing; clicking the toggle pins it open
+   again. Hidden with visibility, never opacity alone, so a
+   collapsed nav is never reachable by Tab. */
 .hb-sidenav.is-collapsed {
-  width: var(--hb-sidenav-rail-width);
-  padding-left: var(--spacing-8);
-  padding-right: var(--spacing-8);
-}
-.hb-sidenav.is-collapsed .hb-sidenav__header { justify-content: center; padding: var(--spacing-4); }
-.hb-sidenav.is-collapsed .hb-sidenav__title,
-.hb-sidenav.is-collapsed .hb-sidenav__label {
   position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.hb-sidenav.is-collapsed .hb-sidenav__item {
-  justify-content: center;
-  padding: var(--spacing-8);
-}
-.hb-sidenav.is-collapsed .hb-sidenav__chevron,
-.hb-sidenav.is-collapsed .hb-sidenav__submenu { display: none; }
-/* The count becomes a dot on the icon — presence stays visible even
-   though the number no longer fits */
-.hb-sidenav.is-collapsed .hb-sidenav__count {
-  position: absolute;
-  top: var(--spacing-4);
-  right: var(--spacing-4);
-  min-width: 8px;
-  width: 8px;
-  height: 8px;
-  padding: 0;
-  overflow: hidden;
-  color: transparent;
-  background: var(--ui-interaction);
-}
-/* Group labels become a plain divider */
-.hb-sidenav.is-collapsed .hb-sidenav__section {
-  height: 1px;
-  padding: 0;
-  margin: var(--spacing-8) var(--spacing-4);
-  background: var(--ui-border);
-  color: transparent;
-  overflow: hidden;
-}
+  top: var(--spacing-8);
+  left: var(--spacing-8);
+  z-index: 40;
+  max-height: calc(100% - var(--spacing-16));
+  overflow-y: auto;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  background: var(--ui-bg-overlay);
+  box-shadow: var(--shadow-floating);
 
-/* ── Hidden: the nav gives up all of its width ─────────────
-   For navs whose items have no icons, where a rail would be
-   meaningless. Pair with a standalone .hb-sidenav__toggle in the
-   page header to bring it back. */
-.hb-sidenav.is-hidden {
-  width: 0;
-  padding-left: 0;
-  padding-right: 0;
-  overflow: hidden;
+  visibility: hidden;
   opacity: 0;
+  transform: translateX(calc(var(--spacing-8) * -1));
+  pointer-events: none;
+  transition: opacity 120ms ease, transform 120ms ease, visibility 0s linear 120ms;
+}
+.hb-sidenav.is-collapsed.is-peeking {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  transition-delay: 0s;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hb-sidenav, .hb-sidenav__chevron { transition: none; }
+  .hb-sidenav.is-collapsed { transition: visibility 0s; transform: none; }
 }
