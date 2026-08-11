@@ -326,10 +326,10 @@
       <p class="section__desc hb-text-body" style="margin-top: calc(var(--spacing-16) * -1);">It is not gone, though. <strong>Hovering the toggle floats the nav back</strong> over the content, live and clickable, so jumping to another section never costs a click on the way. Move away and it retreats; <strong>click the toggle and it is pinned open</strong> again. Same pattern as Notion's sidebar.</p>
 
       <h3 class="hb-text-body-bold" style="margin: 0 0 var(--spacing-8) 0;">Where the toggle goes</h3>
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-12) 0;">One rule, every page: <strong>the top-left corner of the content</strong>, on its own line above whatever the content starts with — a breadcrumb, a card, a form. It does not depend on the page having a title, or a header at all, so the same markup works on Settings and on a Profile. The button never changes place; only its icon and its name change with the state.</p>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-12) 0;">Always <strong>the top-left corner of the content</strong>, always that same first row. What changes is only what it shares the row with: if the content starts with a title or a breadcrumb, the toggle goes <strong>inline, right before it</strong>; if it starts with a card, a form or a table, the toggle sits <strong>alone on that line</strong>. Either way the button is in the same place on every page — only its icon and its name change with the state.</p>
       <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-24) 0;">The peek panel is offset to clear that row — it hangs from <code>--hb-sidenav-peek-top</code> (56&nbsp;px by default) instead of the very top — so the toggle is never covered by the nav it brings back. Raise the variable if your content starts with a taller header.</p>
 
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-8) 0;"><strong>Settings</strong> — the content starts with a breadcrumb.</p>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: 0 0 var(--spacing-8) 0;"><strong>With a breadcrumb</strong> — the toggle goes inline, before it.</p>
       <div class="preview preview--flush" x-data="{ collapsed: false, peek: false, timer: null,
                      show() { clearTimeout(this.timer); this.peek = true },
                      hide() { clearTimeout(this.timer); this.timer = setTimeout(() => this.peek = false, 200) },
@@ -373,7 +373,7 @@
             </nav>
 
             <div class="demo-app__body">
-              <div class="demo-app__toggle-row">
+              <div class="demo-app__bar">
                 <button type="button" class="hb-sidenav__toggle"
                         :aria-expanded="!collapsed" aria-controls="sn-settings-nav"
                         :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
@@ -383,8 +383,6 @@
                         @click="pin()">
                   <span class="hb-icon" aria-hidden="true" x-text="collapsed ? 'last_page' : 'first_page'">first_page</span>
                 </button>
-              </div>
-              <div class="demo-app__bar">
                 <span class="demo-app__crumb hb-text-body-bold">Organization Settings <span style="color: var(--ui-text-secondary); font-weight: var(--font-weight-regular);">/ Review Types</span></span>
               </div>
               <div class="hb-table-wrap">
@@ -404,7 +402,7 @@
         </div>
       </div>
 
-      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-32) 0 var(--spacing-8) 0;"><strong>Profile</strong> — no title over the content, which starts with a card. Same corner, same markup.</p>
+      <p class="hb-text-body" style="color: var(--ui-text-secondary); margin: var(--spacing-32) 0 var(--spacing-8) 0;"><strong>With nothing to sit next to</strong> — a Profile opens straight into its first card, so the toggle takes that line on its own. Same corner either way.</p>
       <div class="preview preview--flush" x-data="{ collapsed: false, peek: false, timer: null,
                      show() { clearTimeout(this.timer); this.peek = true },
                      hide() { clearTimeout(this.timer); this.timer = setTimeout(() => this.peek = false, 200) },
@@ -486,18 +484,19 @@
   &lt;/nav&gt;
 
   &lt;main&gt;
-    &lt;!-- top-left of the content, on its own line --&gt;
-    &lt;button type="button" class="hb-sidenav__toggle"
+    &lt;!-- inline before the title; alone on the line when there is none --&gt;
+    &lt;div class="page-title"&gt;
+      &lt;button type="button" class="hb-sidenav__toggle"
             :aria-expanded="!collapsed" aria-controls="settings-nav"
             :aria-label="collapsed ? 'Expand navigation' : 'Collapse navigation'"
             @mouseenter="collapsed &amp;&amp; show()" @mouseleave="collapsed &amp;&amp; hide()"
             @focus="collapsed &amp;&amp; show()" @blur="hide()"
             @click="pin()"&gt;
-      &lt;span class="hb-icon" aria-hidden="true"
-            x-text="collapsed ? 'last_page' : 'first_page'"&gt;&lt;/span&gt;
-    &lt;/button&gt;
-
-    &lt;h2&gt;Organization Settings / Review Types&lt;/h2&gt;
+        &lt;span class="hb-icon" aria-hidden="true"
+              x-text="collapsed ? 'last_page' : 'first_page'"&gt;&lt;/span&gt;
+      &lt;/button&gt;
+      &lt;h2&gt;Organization Settings / Review Types&lt;/h2&gt;
+    &lt;/div&gt;
     …
   &lt;/main&gt;
 &lt;/div&gt;</code></pre>
@@ -539,7 +538,7 @@
           </div>
           <div class="guidance-card__body">
             <div class="guidance-card__note hb-text-body">Offer the collapse toggle wherever the nav sits next to a table or another wide surface.</div>
-            <div class="guidance-card__note hb-text-body">Keep the toggle in the same corner — top left of the content — on every page that has a sidenav.</div>
+            <div class="guidance-card__note hb-text-body">Keep the toggle in the same corner — top left of the content — inline before the title when there is one, alone on the line when there is not.</div>
             <div class="guidance-card__note hb-text-body">Let the peeking nav be fully usable — a user should be able to navigate from it without pinning it first.</div>
             <div class="guidance-card__note hb-text-body">Show a count only where the number is worth acting on.</div>
             <div class="guidance-card__note hb-text-body">Keep the current sub-item's parent marked as active as well.</div>

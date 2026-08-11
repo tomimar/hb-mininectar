@@ -3080,8 +3080,8 @@ body {
          </div>
        </nav>
        <main>
-         <button class="hb-sidenav__toggle">   ← top-left of the content
-         … page content …
+         <h2><button class="hb-sidenav__toggle"> Page title</h2>  ← inline
+         … or, with no title, the button alone on the first line …
        </main>
      </div>
    States on the root: .is-collapsed (out of the layout) +
@@ -3114,13 +3114,16 @@ body {
   display: flex;
 }
 
-/* Collapse / expand control. One rule, every page: the top-left
-   corner of the content, above whatever the content starts with — a
-   breadcrumb, a card, a form. It does not depend on the page having a
-   title, or a header at all. One button in one place, whether the nav
-   is open or collapsed; only its icon and its name change.
-   The peek panel is offset to clear this row (see
-   --hb-sidenav-peek-top), so the toggle is never covered. */
+/* Collapse / expand control. Always the top-left corner of the
+   content, and always the same first row — what changes is what it
+   shares that row with:
+     • the content starts with a title or breadcrumb → the toggle goes
+       inline, right before it;
+     • it starts with a card, a form, a table → the toggle sits alone
+       on that first line.
+   One button in one place, whether the nav is open or collapsed; only
+   its icon and its name change. The peek panel is offset to clear the
+   row (see --hb-sidenav-peek-top), so the toggle is never covered. */
 .hb-sidenav__toggle {
   display: inline-flex;
   align-items: center;
