@@ -3066,9 +3066,6 @@ body {
    table.
      <div class="hb-sidenav-area">
        <nav class="hb-sidenav">
-         <div class="hb-sidenav__header">
-           title + <button class="hb-sidenav__toggle">
-         </div>
          <div class="hb-sidenav__section">Group label</div>
          <a class="hb-sidenav__item hb-sidenav__item--active">
            <span class="hb-sidenav__icon hb-icon">person</span>
@@ -3082,7 +3079,10 @@ body {
            </ul>
          </div>
        </nav>
-       <main> … page content … </main>
+       <main>
+         <button class="hb-sidenav__toggle">  ← lives in the page header
+         … page content …
+       </main>
      </div>
    States on the root: .is-collapsed (out of the layout) +
    .is-peeking (floating back over the content). */
@@ -3109,29 +3109,9 @@ body {
   display: flex;
 }
 
-/* Header — optional title row that hosts the collapse toggle */
-.hb-sidenav__header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-8);
-  padding: var(--spacing-4) var(--spacing-4) var(--spacing-4) var(--spacing-12);
-  margin-bottom: var(--spacing-4);
-}
-.hb-sidenav__title {
-  flex: 1;
-  min-width: 0;
-  font-size: var(--font-size-14);
-  line-height: var(--line-height-ui);
-  font-weight: var(--font-weight-bolder);
-  color: var(--ui-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Collapse / expand control. Lives in the nav header while the nav is
-   open, and in the page header once it is collapsed — that copy is
-   the only way back, so it must always be visible. */
+/* Collapse / expand control. The nav carries no header of its own, so
+   this lives in the page header, next to the title or breadcrumb: one
+   button in one place, whether the nav is open or collapsed. */
 .hb-sidenav__toggle {
   display: inline-flex;
   align-items: center;
