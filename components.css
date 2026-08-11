@@ -3064,7 +3064,6 @@ body {
    a leading icon, a count and a submenu, and the whole nav can be
    collapsed away to hand its width back to wide content such as a
    table.
-     <header> <button class="hb-sidenav__toggle"> + page title </header>
      <div class="hb-sidenav-area">
        <nav class="hb-sidenav">
          <div class="hb-sidenav__section">Group label</div>
@@ -3080,12 +3079,20 @@ body {
            </ul>
          </div>
        </nav>
-       <main> … page content … </main>
+       <main>
+         <button class="hb-sidenav__toggle">   ← top-left of the content
+         … page content …
+       </main>
      </div>
    States on the root: .is-collapsed (out of the layout) +
    .is-peeking (floating back over the content). */
 .hb-sidenav {
   --hb-sidenav-width: 240px;
+  /* Where the peek panel starts: below the row the toggle sits in, so
+     the toggle stays visible and clickable. Default clears a 32px
+     toggle under 16px of content padding; raise it if the content
+     starts lower. */
+  --hb-sidenav-peek-top: 56px;
 
   width: var(--hb-sidenav-width);
   flex-shrink: 0;
@@ -3107,15 +3114,13 @@ body {
   display: flex;
 }
 
-/* Collapse / expand control. The nav carries no header of its own, so
-   this lives in the page header — the band above the nav and the
-   content — pinned to its left edge, over the nav's own column. One
-   button in one place, whether the nav is open or collapsed; only its
-   icon and its name change.
-   Keep that header OUTSIDE .hb-sidenav-area. The area is what the
-   collapsed nav floats over, so a toggle inside it would end up
-   underneath the peek panel — and the way back would be hidden exactly
-   when it is needed. */
+/* Collapse / expand control. One rule, every page: the top-left
+   corner of the content, above whatever the content starts with — a
+   breadcrumb, a card, a form. It does not depend on the page having a
+   title, or a header at all. One button in one place, whether the nav
+   is open or collapsed; only its icon and its name change.
+   The peek panel is offset to clear this row (see
+   --hb-sidenav-peek-top), so the toggle is never covered. */
 .hb-sidenav__toggle {
   display: inline-flex;
   align-items: center;
@@ -3276,13 +3281,16 @@ body {
    itself) adds .is-peeking and brings it back over the content, so
    a quick jump costs nothing; clicking the toggle pins it open
    again. Hidden with visibility, never opacity alone, so a
-   collapsed nav is never reachable by Tab. */
+   collapsed nav is never reachable by Tab.
+   The panel hangs below --hb-sidenav-peek-top — the row the toggle
+   sits in — so it never covers the way back. Raise that value when
+   the content starts with a taller header. */
 .hb-sidenav.is-collapsed {
   position: absolute;
-  top: var(--spacing-8);
+  top: var(--hb-sidenav-peek-top);
   left: var(--spacing-8);
   z-index: 40;
-  max-height: calc(100% - var(--spacing-16));
+  max-height: calc(100% - var(--hb-sidenav-peek-top) - var(--spacing-8));
   overflow-y: auto;
   border: 1px solid var(--ui-border);
   border-radius: var(--border-radius-8);
