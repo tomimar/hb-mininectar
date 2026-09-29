@@ -3318,3 +3318,179 @@ body {
   .hb-sidenav { transition: none; }
   .hb-sidenav.is-collapsed { transition: visibility 0s; transform: none; }
 }
+
+
+/* ── Expand (show / hide content) ────────────────────────────
+   The one component for showing and hiding content — what people
+   also call an accordion, a collapsible or a collapse card. A native
+   <button> with aria-expanded + aria-controls; the region it controls
+   comes right after it in the DOM. Open / closed state lives in Alpine.
+
+   Base — behaviour only. Put hb-expand__toggle on any button (usually
+   a tertiary hb-btn); the chevron turns over when it is open.
+     <div class="hb-expand" x-data="{ open: false }">
+       <button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm hb-expand__toggle"
+               aria-controls="x-region" :aria-expanded="open ? 'true' : 'false'"
+               @click="open = !open">
+         <span x-text="open ? 'Show less' : 'Show more details'">Show more details</span>
+         <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+       </button>
+       <div class="hb-expand__region" id="x-region" x-show="open" x-cloak>…</div>
+     </div>
+
+   Card — hb-expand--card. The whole header is ONE button inside a
+   heading (h3 by default — pick the level that fits the page outline).
+   Actions sit next to the heading, never inside the button.
+     <div class="hb-expand hb-expand--card" x-data="{ open: false }">
+       <div class="hb-expand__header">
+         <h3 class="hb-expand__heading">
+           <button type="button" class="hb-expand__toggle" id="x-btn"
+                   aria-controls="x-region" :aria-expanded="open ? 'true' : 'false'"
+                   @click="open = !open">
+             <span class="hb-expand__title">Linked entities</span>
+             <span class="hb-expand__meta">4</span>
+             <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+           </button>
+         </h3>
+         <div class="hb-expand__actions">…ghost hb-btn / overflow menu…</div>
+       </div>
+       <div class="hb-expand__region" id="x-region" role="region" aria-labelledby="x-btn"
+            x-show="open" x-cloak>
+         <div class="hb-expand__body">…</div>   (or <ul class="hb-expand__list">)
+       </div>
+     </div>
+
+   Modifiers: hb-expand--muted-header  grey header (the former HbAccordion look)
+              hb-expand--show-more     content partly visible, toggle at the
+                                       bottom in hb-expand__footer
+   Loading:   aria-busy="true" on the card, hb-expand__skeleton (two
+              hb-expand__skeleton-line) in place of the title, toggle [disabled]
+              and a visually-hidden "Loading …" name inside it. */
+
+.hb-expand__toggle { cursor: pointer; }
+.hb-expand__chevron { transition: transform 120ms ease; }
+/* Closed: points down. Open: points up. */
+.hb-expand__toggle[aria-expanded="true"] .hb-expand__chevron { transform: rotate(180deg); }
+
+/* Card */
+.hb-expand--card {
+  background: var(--ui-bg);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+}
+.hb-expand__header {
+  display: flex;
+  align-items: center;
+  border-radius: calc(var(--border-radius-8) - 1px);
+}
+/* Open: a divider under the header, square bottom corners */
+.hb-expand--card:has(> .hb-expand__header [aria-expanded="true"]) > .hb-expand__header {
+  border-bottom: 1px solid var(--ui-border);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.hb-expand__heading {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  font: inherit;
+  border-radius: inherit;
+}
+/* With actions, the toggle's right edge meets them — no rounding there */
+.hb-expand__header:has(.hb-expand__actions) .hb-expand__heading {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.hb-expand__header .hb-expand__toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  width: 100%;
+  padding: var(--spacing-12) var(--spacing-16);
+  border: none;
+  border-radius: inherit;
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+  text-align: left;
+  transition: background 100ms ease;
+}
+.hb-expand__header .hb-expand__toggle:hover { background: var(--ui-bg-secondary); }
+.hb-expand__header .hb-expand__toggle:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+}
+.hb-expand__title { min-width: 0; }
+.hb-expand__meta { color: var(--ui-text-secondary); }
+.hb-expand__header .hb-expand__chevron { margin-left: auto; }
+
+/* Muted header — grey background */
+.hb-expand--muted-header > .hb-expand__header { background: var(--ui-bg-secondary); }
+.hb-expand--muted-header .hb-expand__header .hb-expand__toggle:hover { background: var(--ui-bg-tertiary); }
+
+/* Header actions — siblings of the heading, never inside the toggle.
+   Icon-only ghost buttons: hb-btn hb-btn--ghost hb-btn--sm */
+.hb-expand__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-shrink: 0;
+  padding: 0 var(--spacing-8);
+}
+.hb-expand__actions .hb-btn .hb-icon { color: var(--ui-icon); }
+.hb-expand--muted-header .hb-expand__actions .hb-btn--ghost:hover { background: var(--ui-bg-tertiary); }
+
+/* Content */
+.hb-expand__body { padding: var(--spacing-16); }
+.hb-expand__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hb-expand__list > li { padding: var(--spacing-12) var(--spacing-16); }
+.hb-expand__list > li + li { border-top: 1px solid var(--ui-border); }
+
+/* Loading — skeleton lines in place of the title */
+.hb-expand__header .hb-expand__toggle:disabled { cursor: default; background: none; }
+.hb-expand__toggle:disabled .hb-expand__chevron { color: var(--ui-disabled); }
+.hb-expand__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-8);
+  flex: 1;
+  padding: var(--spacing-4) 0;
+}
+.hb-expand__skeleton-line {
+  display: block;
+  width: 40%;
+  height: var(--spacing-12);
+  border-radius: var(--border-radius-round);
+  background: var(--ui-bg-tertiary);
+  animation: hb-expand-pulse 1s ease-in-out infinite alternate;
+}
+.hb-expand__skeleton-line + .hb-expand__skeleton-line { width: 28%; }
+@keyframes hb-expand-pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.5; }
+}
+
+/* Show more — the first lines stay visible, the toggle sits at the
+   bottom. Preview height: four lines of body text plus its top padding. */
+.hb-expand--show-more {
+  --hb-expand-preview-height: calc(var(--line-height-ui) * 4em + var(--spacing-16));
+}
+.hb-expand--show-more:has(.hb-expand__toggle[aria-expanded="false"]) > .hb-expand__region {
+  max-height: var(--hb-expand-preview-height);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent);
+          mask-image: linear-gradient(to bottom, #000 50%, transparent);
+}
+.hb-expand__footer { padding: 0 var(--spacing-8) var(--spacing-8); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-expand__chevron { transition: none; }
+  .hb-expand__skeleton-line { animation: none; }
+}

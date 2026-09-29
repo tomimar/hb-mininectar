@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="hb-expand: show and hide content. Covers what is often called an accordion, a collapsible, a collapse card, a disclosure or show more.">
+  <title>Expand (accordion, collapsible) — hb-mininectar</title>
+  <link rel="stylesheet" href="../tokens.css">
+  <link rel="stylesheet" href="../components.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <style>
+    * { box-sizing: border-box; }
+    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
+    .page { display: flex; min-height: 100vh; }
+
+    .sidenav {
+      width: 220px; flex-shrink: 0; background: var(--ui-bg);
+      border-right: 1px solid var(--ui-border); padding: var(--spacing-32) var(--spacing-16);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .sidenav__back { display: flex; align-items: center; gap: var(--spacing-4); color: var(--ui-text-secondary); text-decoration: none; margin-bottom: var(--spacing-32); }
+    .sidenav__back:hover { color: var(--ui-text); }
+    .sidenav__section { color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .sidenav__link { display: block; color: var(--ui-text-secondary); text-decoration: none; padding: var(--spacing-4) var(--spacing-8); border-radius: var(--border-radius-4); transition: background 100ms, color 100ms; margin-bottom: 2px; }
+    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
+    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
+
+    .main { flex: 1; max-width: 840px; padding: var(--spacing-48); }
+
+    .page-header { margin-bottom: var(--spacing-48); }
+    .page-header__badge { display: inline-block; color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
+    .page-header__title { font-size: 32px; font-weight: var(--font-weight-bolder); color: var(--ui-text); margin: 0 0 var(--spacing-16) 0; line-height: 1.2; }
+    .page-header__desc { color: var(--ui-text-secondary); margin: 0; max-width: 640px; }
+
+    .section { margin-bottom: var(--spacing-64); }
+    .section__title { color: var(--ui-text); margin: 0 0 var(--spacing-4) 0; padding-bottom: var(--spacing-16); border-bottom: 1px solid var(--ui-border); }
+    .section__desc { color: var(--ui-text-secondary); margin: var(--spacing-16) 0 var(--spacing-24) 0; }
+
+    .preview { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-32); margin-bottom: var(--spacing-16); }
+
+    .code-block { background: var(--ui-text); border-radius: var(--border-radius-8); padding: var(--spacing-16) var(--spacing-24); margin-bottom: var(--spacing-16); overflow-x: auto; }
+    .code-block pre { margin: 0; font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; line-height: 1.7; color: #e8e8e8; white-space: pre; }
+
+    .state-table { width: 100%; border-collapse: collapse; }
+    .state-table th { text-align: left; padding: var(--spacing-8) var(--spacing-16); color: var(--ui-text-secondary); background: var(--ui-bg-secondary); border-bottom: 1px solid var(--ui-border); }
+    .state-table td { padding: var(--spacing-12) var(--spacing-16); color: var(--ui-text); border-bottom: 1px solid var(--ui-border); vertical-align: top; }
+    .state-table tr:last-child td { border-bottom: none; }
+    .state-table-wrap { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); overflow: hidden; margin-bottom: var(--spacing-16); }
+
+    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
+    .guidance-card { border-radius: var(--border-radius-8); overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-bg); }
+    .guidance-card__header { padding: var(--spacing-8) var(--spacing-16); display: flex; align-items: center; gap: var(--spacing-8); }
+    .guidance-card__header--do { background: var(--ui-status-success-soft); }
+    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
+    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
+    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
+    .guidance-card__body { padding: var(--spacing-16); background: var(--ui-bg); display: flex; flex-direction: column; gap: var(--spacing-12); }
+    .guidance-card__note { color: var(--ui-text-secondary); }
+
+    code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; background: var(--ui-bg-secondary); padding: 1px 5px; border-radius: var(--border-radius-4); color: var(--ui-text); border: 1px solid var(--ui-border); }
+
+    [x-cloak] { display: none !important; }
+    .callout {
+      display: flex; gap: var(--spacing-8); align-items: flex-start;
+      background: var(--ui-expressive-yellow-soft); border: 1px solid var(--ui-expressive-yellow);
+      color: var(--ui-expressive-brown-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-12) var(--spacing-16); margin-bottom: var(--spacing-16);
+    }
+    .callout .hb-icon { margin-top: 2px; }
+    .callout__list { margin: var(--spacing-4) 0 0 0; padding-left: var(--spacing-16); list-style: disc; }
+
+    .a11y-note {
+      display: flex; gap: var(--spacing-12); align-items: flex-start;
+      background: var(--ui-expressive-blue-soft); border: 1px solid var(--ui-expressive-blue);
+      color: var(--ui-expressive-blue-contrast); border-radius: var(--border-radius-8);
+      padding: var(--spacing-16); margin-bottom: var(--spacing-24);
+    }
+    .a11y-note .hb-icon { margin-top: 1px; flex-shrink: 0; }
+    .a11y-note strong { color: var(--ui-text); }
+    .a11y-note__list { margin: var(--spacing-8) 0 0 0; padding-left: var(--spacing-16); }
+    .a11y-note__list li { margin-bottom: var(--spacing-4); color: var(--ui-text-secondary); }
+    .a11y-note__list li:last-child { margin-bottom: 0; }
+
+    .demo-label { color: var(--ui-text-secondary); margin-bottom: var(--spacing-8); }
+    .demo-hint { color: var(--ui-text-tertiary); margin-top: var(--spacing-8); }
+    /* Label / value pairs inside the examples */
+    .demo-dl { display: grid; grid-template-columns: 160px 1fr; gap: var(--spacing-8) var(--spacing-16); margin: 0; }
+    .demo-dl dt { color: var(--ui-text-secondary); }
+    .demo-dl dd { margin: 0; }
+    .demo-secondary { color: var(--ui-text-secondary); }
+    .demo-alert-title { margin: 0 0 var(--spacing-12) 0; }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <aside class="sidenav" id="hb-sidebar"></aside>
+
+  <main class="main">
+
+    <header class="page-header">
+      <span class="page-header__badge hb-text-all-caps">Components</span>
+      <h1 class="page-header__title">Expand</h1>
+      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">The component for showing and hiding content. A button opens and closes a region of content right below it. It covers what people often call an <strong>accordion</strong>, a <strong>collapsible</strong>, a <strong>collapse card</strong> or a <strong>show more</strong>: one behaviour, one card look, and two patterns built from them.</p>
+    </header>
+
+    <!-- Overview -->
+    <section class="section" id="overview">
+      <h2 class="section__title hb-text-heading-small">Overview</h2>
+      <p class="section__desc hb-text-body">There is one behaviour, <code>hb-expand</code>: a native button with <code>aria-expanded</code> and <code>aria-controls</code>, and the region it controls. <code>hb-expand--card</code> gives it the bordered card look. Show more and stacked cards (the "accordion") are patterns built from these, not separate components.</p>
+      <div class="callout">
+        <span class="hb-icon">info</span>
+        <div class="hb-text-body"><strong>Coming from Nectar?</strong> This replaces three components:
+          <ul class="callout__list">
+            <li><code>HbExpand</code> → <code>hb-expand</code> (base).</li>
+            <li><code>HbAccordion</code> → <code>hb-expand--card hb-expand--muted-header</code>. Despite the name it was always a single section.</li>
+            <li><code>HbCollapseCard</code> → <code>hb-expand--card</code>. Its loading state is the card's loading state; its "composed" variant is the <a href="#show-more" class="hb-link">show more</a> pattern.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. Base -->
+    <section class="section" id="base">
+      <h2 class="section__title hb-text-heading-small">Base <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— hb-expand</span></h2>
+      <p class="section__desc hb-text-body">Behaviour only, no chrome. Put <code>hb-expand__toggle</code> on a button, usually a tertiary <a href="button.html" class="hb-link">Button</a>, and place the region straight after it. The chevron turns over when the region is open. Use it for small bits of secondary detail inside other content.</p>
+      <div class="preview">
+        <div style="max-width: 560px;">
+          <h3 class="hb-text-heading demo-alert-title">ALERT-2201 · Cash structuring</h3>
+          <dl class="demo-dl hb-text-body">
+            <dt>Subject</dt><dd>Daniel Okafor</dd>
+            <dt>Amount</dt><dd>$115,200 in 27 days</dd>
+            <dt>Status</dt><dd><span class="hb-tag hb-tag--yellow">In review</span></dd>
+          </dl>
+          <div class="hb-expand" x-data="{ open: false }" style="margin-top: var(--spacing-8);">
+            <button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm hb-expand__toggle" style="margin-left: calc(var(--spacing-8) * -1);"
+                    aria-controls="base-details" :aria-expanded="open ? 'true' : 'false'" @click="open = !open">
+              <span x-text="open ? 'Show less' : 'Show more details'">Show more details</span>
+              <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+            </button>
+            <div class="hb-expand__region" id="base-details" x-show="open" x-cloak>
+              <dl class="demo-dl hb-text-body" style="margin-top: var(--spacing-8);">
+                <dt>Scenario</dt><dd>Cash deposits kept under the $10,000 reporting threshold</dd>
+                <dt>Rule threshold</dt><dd>3+ cash deposits between $8,000 and $9,999 within 30 days</dd>
+                <dt>Detected</dt><dd>29 Jun 2026</dd>
+                <dt>Channel</dt><dd>Branch deposits at 3 locations</dd>
+                <dt>Assigned to</dt><dd>Elena Cruz</dd>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="code-block"><pre>&lt;button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm hb-expand__toggle"
+        aria-controls="alert-details" :aria-expanded="open ? 'true' : 'false'"
+        @click="open = !open"&gt;
+  &lt;span x-text="open ? 'Show less' : 'Show more details'"&gt;Show more details&lt;/span&gt;
+  &lt;span class="hb-icon hb-expand__chevron" aria-hidden="true"&gt;expand_more&lt;/span&gt;
+&lt;/button&gt;
+&lt;div class="hb-expand__region" id="alert-details" x-show="open" x-cloak&gt;…&lt;/div&gt;</pre></div>
+    </section>
+
+    <!-- 2. Card -->
+    <section class="section" id="card">
+      <h2 class="section__title hb-text-heading-small">Card <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— hb-expand--card</span></h2>
+      <p class="section__desc hb-text-body">A bordered, rounded card for a self-contained section. The whole header, title and chevron, is <strong>one native button</strong> placed inside a heading. Examples use <code>h3</code>; pick the level that fits the page outline. The chevron points down when closed and up when open. When the card is open, a divider separates header and content.</p>
+
+      <div class="preview flex flex-col gap-6">
+        <div>
+          <div class="hb-text-caption-bold demo-label">Default · body content</div>
+          <div class="hb-expand hb-expand--card" x-data="{ open: true }">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="card-rules-btn"
+                        aria-controls="card-rules" :aria-expanded="open ? 'true' : 'false'" @click="open = !open">
+                  <span class="hb-expand__title">Triggered rules</span>
+                  <span class="hb-expand__meta">2</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="card-rules" role="region" aria-labelledby="card-rules-btn" x-show="open">
+              <div class="hb-expand__body flex flex-col gap-3 hb-text-body">
+                <div><span class="hb-text-body-bold">R-104 Cash structuring.</span> <span class="demo-secondary">12 cash deposits between $9,400 and $9,900 in 27 days.</span></div>
+                <div><span class="hb-text-body-bold">R-221 Rapid movement of funds.</span> <span class="demo-secondary">83% of deposited cash wired out within 48 hours.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="hb-text-caption-bold demo-label">hb-expand--muted-header · hb-expand__list</div>
+          <div class="hb-expand hb-expand--card hb-expand--muted-header" x-data="{ open: true }">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="card-entities-btn"
+                        aria-controls="card-entities" :aria-expanded="open ? 'true' : 'false'" @click="open = !open">
+                  <span class="hb-expand__title">Linked entities</span>
+                  <span class="hb-expand__meta">4</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="card-entities" role="region" aria-labelledby="card-entities-btn" x-show="open">
+              <ul class="hb-expand__list hb-text-body">
+                <li>Okafor Trading LLC <span class="demo-secondary">· Business · Owned 100% by subject</span></li>
+                <li>Grace Okafor <span class="demo-secondary">· Individual · Joint account holder</span></li>
+                <li>Lagos Freight Partners Ltd <span class="demo-secondary">· Business · Wire counterparty</span></li>
+                <li>Meridian Imports Inc <span class="demo-secondary">· Business · Shared address</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div x-data="{ loading: true, open: false }">
+          <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-8);">
+            <div class="hb-text-caption-bold demo-label" style="margin-bottom: 0;">Loading</div>
+            <button type="button" class="hb-btn hb-btn--secondary hb-btn--sm" @click="loading = !loading; open = false"
+                    x-text="loading ? 'Stop loading' : 'Start loading'">Stop loading</button>
+          </div>
+          <div class="hb-expand hb-expand--card" :aria-busy="loading ? 'true' : 'false'">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="card-loading-btn" :disabled="loading"
+                        aria-controls="card-loading" :aria-expanded="open ? 'true' : 'false'" @click="open = !open">
+                  <span class="hb-expand__skeleton" x-show="loading" aria-hidden="true">
+                    <span class="hb-expand__skeleton-line"></span>
+                    <span class="hb-expand__skeleton-line"></span>
+                  </span>
+                  <span class="hb-visually-hidden" x-show="loading">Loading previous alerts</span>
+                  <span class="hb-expand__title" x-show="!loading" x-cloak>Previous alerts</span>
+                  <span class="hb-expand__meta" x-show="!loading" x-cloak>2</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="card-loading" role="region" aria-labelledby="card-loading-btn" x-show="open" x-cloak>
+              <ul class="hb-expand__list hb-text-body">
+                <li>ALERT-1874 <span class="demo-secondary">· Feb 2026 · Closed, no SAR</span></li>
+                <li>ALERT-1520 <span class="demo-secondary">· Sep 2025 · Closed, SAR filed</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="hb-text-caption demo-hint">While loading, skeleton lines replace the title and the toggle is disabled. The card carries <code>aria-busy="true"</code> and the button keeps a hidden "Loading previous alerts" name.</p>
+        </div>
+      </div>
+
+      <div class="code-block"><pre>&lt;div class="hb-expand hb-expand--card" x-data="{ open: false }"&gt;
+  &lt;div class="hb-expand__header"&gt;
+    &lt;h3 class="hb-expand__heading"&gt;
+      &lt;button type="button" class="hb-expand__toggle" id="rules-btn"
+              aria-controls="rules" :aria-expanded="open ? 'true' : 'false'"
+              @click="open = !open"&gt;
+        &lt;span class="hb-expand__title"&gt;Triggered rules&lt;/span&gt;
+        &lt;span class="hb-expand__meta"&gt;2&lt;/span&gt;
+        &lt;span class="hb-icon hb-expand__chevron" aria-hidden="true"&gt;expand_more&lt;/span&gt;
+      &lt;/button&gt;
+    &lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div class="hb-expand__region" id="rules" role="region" aria-labelledby="rules-btn"
+       x-show="open" x-cloak&gt;
+    &lt;div class="hb-expand__body"&gt;…&lt;/div&gt;   &lt;!-- or &lt;ul class="hb-expand__list"&gt; --&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
+    </section>
+
+    <!-- 3. Header actions -->
+    <section class="section" id="header-actions">
+      <h2 class="section__title hb-text-heading-small">Card with header actions</h2>
+      <p class="section__desc hb-text-body">Actions such as an overflow menu sit <strong>next to</strong> the toggle button in the header, in <code>hb-expand__actions</code>. They are siblings of the heading, never inside the button. Because they are separate elements, clicking an action doesn't toggle the card, with no extra code. The actions reuse the ghost icon <a href="button.html" class="hb-link">Button</a> and the <a href="table.html#overflow" class="hb-link">overflow menu</a> from Table.</p>
+      <div class="preview">
+        <div x-data="{ open: false, lastAction: null }">
+          <div class="hb-expand hb-expand--card">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="actions-btn"
+                        aria-controls="actions-region" :aria-expanded="open ? 'true' : 'false'" @click="open = !open">
+                  <span class="hb-expand__title">Linked accounts</span>
+                  <span class="hb-expand__meta">3</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+              <div class="hb-expand__actions">
+                <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Add linked account" @click="lastAction = 'Add linked account'"><span class="hb-icon">add</span></button>
+                <span class="hb-table__overflow" x-data="{ menu: false }" @click.outside="menu = false" @keydown.escape="menu = false; $refs.trigger.focus()">
+                  <button type="button" class="hb-btn hb-btn--ghost hb-btn--sm" x-ref="trigger" aria-haspopup="menu" :aria-expanded="menu ? 'true' : 'false'" @click="menu = !menu" aria-label="More actions for Linked accounts"><span class="hb-icon hb-icon--rounded">more_vert</span></button>
+                  <div class="hb-table__menu" role="menu" aria-label="More actions for Linked accounts" x-show="menu" x-cloak>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="menu = false; lastAction = 'Export list'">Export list</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="menu = false; lastAction = 'Add note'">Add note</button>
+                    <button type="button" class="hb-table__menu-item" role="menuitem" @click="menu = false; lastAction = 'Remove from case'">Remove from case</button>
+                  </div>
+                </span>
+              </div>
+            </div>
+            <div class="hb-expand__region" id="actions-region" role="region" aria-labelledby="actions-btn" x-show="open" x-cloak>
+              <ul class="hb-expand__list hb-text-body">
+                <li>Personal checking ••4821 <span class="demo-secondary">· Opened 2016 · Active</span></li>
+                <li>Savings ••0937 <span class="demo-secondary">· Opened 2018 · Active</span></li>
+                <li>Business checking ••7710 <span class="demo-secondary">· Okafor Trading LLC · Active</span></li>
+              </ul>
+            </div>
+          </div>
+          <p class="hb-text-caption demo-hint" aria-live="polite">Card is <strong x-text="open ? 'open' : 'closed'">closed</strong><span x-show="lastAction" x-cloak>. Last action: <strong x-text="lastAction"></strong></span>. Use the actions, the card stays as it is.</p>
+        </div>
+      </div>
+      <div class="code-block"><pre>&lt;div class="hb-expand__header"&gt;
+  &lt;h3 class="hb-expand__heading"&gt;
+    &lt;button class="hb-expand__toggle" …&gt;Linked accounts …&lt;/button&gt;
+  &lt;/h3&gt;
+  &lt;div class="hb-expand__actions"&gt;          &lt;!-- sibling, not inside the button --&gt;
+    &lt;button class="hb-btn hb-btn--ghost hb-btn--sm" aria-label="Add linked account"&gt;…&lt;/button&gt;
+    &lt;span class="hb-table__overflow"&gt;…&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
+      <div class="guidance">
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--do">
+            <span style="color:var(--ui-status-success-contrast); display:inline-flex;"><span class="hb-icon">check</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Do</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Put header actions in <code>hb-expand__actions</code>, next to the heading.</div>
+            <div class="guidance-card__note hb-text-body">Name icon-only actions after the section: "More actions for Linked accounts".</div>
+          </div>
+        </div>
+        <div class="guidance-card">
+          <div class="guidance-card__header guidance-card__header--dont">
+            <span style="color:var(--ui-status-danger-contrast); display:inline-flex;"><span class="hb-icon">close</span></span>
+            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
+          </div>
+          <div class="guidance-card__body">
+            <div class="guidance-card__note hb-text-body">Put links, buttons or any other interactive element inside the toggle button. Nested click targets are invalid HTML, and keyboard and screen reader users can't reach them reliably.</div>
+            <div class="guidance-card__note hb-text-body">Fix a nested action with <code>stopPropagation</code>. Move it out of the button instead.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Show more -->
+    <section class="section" id="show-more">
+      <h2 class="section__title hb-text-heading-small">Show more pattern <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— hb-expand--show-more</span></h2>
+      <p class="section__desc hb-text-body">The first lines of the content stay visible and the toggle sits at the bottom of the card, in <code>hb-expand__footer</code>. The intent is different from a card header: <strong>a card header hides a whole section</strong>, while <strong>show more lets you keep reading something you've already started</strong>. Only use it when the content is clearly longer than the preview.</p>
+      <div class="preview">
+        <div class="hb-expand hb-expand--card hb-expand--show-more" x-data="{ open: false }">
+          <div class="hb-expand__region" id="note-region">
+            <div class="hb-expand__body hb-text-body flex flex-col gap-3">
+              <div class="hb-text-caption demo-secondary">Case note · Elena Cruz · 2 Jul 2026</div>
+              <p style="margin: 0;">Subject made 12 cash deposits into personal checking ••4821 between 2 and 28 June 2026, each between $9,400 and $9,900, for a total of $115,200. Deposits were made at three branches, often on the same day, which is consistent with an attempt to avoid currency transaction reporting.</p>
+              <p style="margin: 0;">Within 48 hours of each deposit, most of the funds were moved to business checking ••7710 (Okafor Trading LLC) and then wired to Lagos Freight Partners Ltd. The subject's stated occupation is import/export broker, but the account has no history of trade-related payments, invoices or shipping costs before May 2026.</p>
+              <p style="margin: 0;">KYC was last refreshed in March 2024 and lists expected monthly cash activity under $2,000. Two previous alerts exist: ALERT-1520 (Sep 2025), closed with a SAR for similar structuring, and ALERT-1874 (Feb 2026), closed with no SAR after the customer provided invoices.</p>
+              <p style="margin: 0;">Recommendation: escalate to enhanced due diligence, request source of funds for the June deposits, and prepare a continuing-activity SAR.</p>
+            </div>
+          </div>
+          <div class="hb-expand__footer">
+            <button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm hb-expand__toggle"
+                    aria-controls="note-region" :aria-expanded="open ? 'true' : 'false'"
+                    @click="open = !open; if (!open) $nextTick(() => $el.scrollIntoView({ block: 'nearest' }))">
+              <span x-text="open ? 'Show less' : 'Show more'">Show more</span>
+              <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="hb-text-body demo-secondary" style="margin: 0;">Here the toggle comes after the content, not before it: the reader has already started, and the button is where they stop. Collapsing keeps focus on the button and scrolls it back into view.</p>
+    </section>
+
+    <!-- 5. Stacked cards -->
+    <section class="section" id="stacked">
+      <h2 class="section__title hb-text-heading-small">Stacked cards <span class="hb-text-caption" style="color:var(--ui-text-tertiary);">— the "accordion" pattern</span></h2>
+      <p class="section__desc hb-text-body">Several <code>hb-expand--card</code> sections stacked on one screen, with an "Expand all / Collapse all" button above them. The button label follows the state: it reads "Collapse all" only when every section is open. Any number of sections can be open at the same time.</p>
+      <div class="preview"
+           x-data="{
+             open: { subject: true, accounts: false, transactions: false, alerts: false },
+             get allOpen() { return Object.values(this.open).every(Boolean) },
+             toggleAll() { const next = !this.allOpen; Object.keys(this.open).forEach(k => this.open[k] = next) }
+           }">
+        <div class="flex justify-end" style="margin-bottom: var(--spacing-8);">
+          <button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm" @click="toggleAll()"
+                  aria-controls="rv-subject rv-accounts rv-transactions rv-alerts"
+                  x-text="allOpen ? 'Collapse all' : 'Expand all'">Expand all</button>
+        </div>
+        <div class="flex flex-col gap-2">
+          <div class="hb-expand hb-expand--card">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="rv-subject-btn" aria-controls="rv-subject"
+                        :aria-expanded="open.subject ? 'true' : 'false'" @click="open.subject = !open.subject">
+                  <span class="hb-expand__title">Subject details</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="rv-subject" role="region" aria-labelledby="rv-subject-btn" x-show="open.subject">
+              <div class="hb-expand__body">
+                <dl class="demo-dl hb-text-body">
+                  <dt>Name</dt><dd>Daniel Okafor</dd>
+                  <dt>Date of birth</dt><dd>14 Mar 1981</dd>
+                  <dt>Occupation</dt><dd>Import/export broker</dd>
+                  <dt>Customer since</dt><dd>2016</dd>
+                  <dt>Address</dt><dd>2240 Harbor Blvd, Houston, TX 77002</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <div class="hb-expand hb-expand--card">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="rv-accounts-btn" aria-controls="rv-accounts"
+                        :aria-expanded="open.accounts ? 'true' : 'false'" @click="open.accounts = !open.accounts">
+                  <span class="hb-expand__title">Linked accounts</span>
+                  <span class="hb-expand__meta">3</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="rv-accounts" role="region" aria-labelledby="rv-accounts-btn" x-show="open.accounts" x-cloak>
+              <ul class="hb-expand__list hb-text-body">
+                <li>Personal checking ••4821 <span class="demo-secondary">· Opened 2016 · Active</span></li>
+                <li>Savings ••0937 <span class="demo-secondary">· Opened 2018 · Active</span></li>
+                <li>Business checking ••7710 <span class="demo-secondary">· Okafor Trading LLC · Active</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="hb-expand hb-expand--card">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="rv-transactions-btn" aria-controls="rv-transactions"
+                        :aria-expanded="open.transactions ? 'true' : 'false'" @click="open.transactions = !open.transactions">
+                  <span class="hb-expand__title">Transactions</span>
+                  <span class="hb-expand__meta">12 flagged</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="rv-transactions" role="region" aria-labelledby="rv-transactions-btn" x-show="open.transactions" x-cloak>
+              <ul class="hb-expand__list hb-text-body">
+                <li>2 Jun 2026 · Cash deposit · $9,850 <span class="demo-secondary">· Main St branch</span></li>
+                <li>2 Jun 2026 · Cash deposit · $9,400 <span class="demo-secondary">· Westheimer branch</span></li>
+                <li>4 Jun 2026 · Outgoing wire · $18,900 <span class="demo-secondary">· Lagos Freight Partners Ltd</span></li>
+                <li class="demo-secondary">+ 9 more in the Transactions tab</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="hb-expand hb-expand--card">
+            <div class="hb-expand__header">
+              <h3 class="hb-expand__heading">
+                <button type="button" class="hb-expand__toggle" id="rv-alerts-btn" aria-controls="rv-alerts"
+                        :aria-expanded="open.alerts ? 'true' : 'false'" @click="open.alerts = !open.alerts">
+                  <span class="hb-expand__title">Previous alerts</span>
+                  <span class="hb-expand__meta">2</span>
+                  <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+                </button>
+              </h3>
+            </div>
+            <div class="hb-expand__region" id="rv-alerts" role="region" aria-labelledby="rv-alerts-btn" x-show="open.alerts" x-cloak>
+              <ul class="hb-expand__list hb-text-body">
+                <li>ALERT-1874 <span class="demo-secondary">· Feb 2026 · Closed, no SAR</span></li>
+                <li>ALERT-1520 <span class="demo-secondary">· Sep 2025 · Closed, SAR filed</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <tbody>
+            <tr><td class="hb-text-body-bold" style="width: 200px;">Several open at once</td><td class="hb-text-body">We don't use "only one open at a time". Analysts and investigators often compare sections side by side, such as alerts or subjects, and closing one when they open another gets in their way.</td></tr>
+            <tr><td class="hb-text-body-bold">Expand all</td><td class="hb-text-body">Helps when users need to scan everything, or search the page with the browser's find, which can't see closed sections.</td></tr>
+            <tr><td class="hb-text-body-bold">A pattern, not a component</td><td class="hb-text-body">There is no <code>hb-accordion</code>. This becomes a dedicated component only if three or more real use cases need behaviour beyond this (rule of three).</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 6. When to use what -->
+    <section class="section" id="usage">
+      <h2 class="section__title hb-text-heading-small">When to use what</h2>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold" scope="col">Use</th><th class="hb-text-caption-bold" scope="col">For</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body-bold" style="width: 200px;"><a href="#base" class="hb-link">Base</a></td><td class="hb-text-body">Small bits of secondary detail, inline within other content.</td></tr>
+            <tr><td class="hb-text-body-bold"><a href="#card" class="hb-link">Card</a></td><td class="hb-text-body">Self-contained sections a user may not need every time.</td></tr>
+            <tr><td class="hb-text-body-bold"><a href="#show-more" class="hb-link">Show more</a></td><td class="hb-text-body">Long content where the first part is enough most of the time.</td></tr>
+            <tr><td class="hb-text-body-bold"><a href="#stacked" class="hb-link">Stacked cards</a></td><td class="hb-text-body">Several related sections on one screen.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="callout">
+        <span class="hb-icon">warning</span>
+        <div class="hb-text-body"><strong>Don't collapse:</strong>
+          <ul class="callout__list">
+            <li>Critical information users must see: risk scores, warnings, required actions.</li>
+            <li>Very short content. Opening it costs more than reading it.</li>
+            <li>Content users need on every visit.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="hb-text-body demo-secondary" style="margin: 0;">For expandable rows inside a table, see <a href="table.html#expandable" class="hb-link">Table · Expandable rows</a>. It is the same disclosure logic, applied to rows.</p>
+    </section>
+
+    <!-- 7. Accessibility -->
+    <section class="section" id="accessibility">
+      <h2 class="section__title hb-text-heading-small">Accessibility</h2>
+      <div class="a11y-note">
+        <span class="hb-icon">accessibility_new</span>
+        <div class="hb-text-body">
+          <strong>What every expand needs.</strong>
+          <ul class="a11y-note__list">
+            <li>A native <code>&lt;button type="button"&gt;</code>. Enter and Space work for free, no key handlers needed.</li>
+            <li><code>aria-expanded</code> on the button, updated on every toggle, and <code>aria-controls</code> pointing to the region's <code>id</code>.</li>
+            <li>For cards, the button sits inside a heading, so screen reader users can jump between sections by heading. Cards also name their region with <code>role="region"</code> and <code>aria-labelledby</code>.</li>
+            <li>No interactive elements inside the toggle. Header actions go next to it.</li>
+            <li>A visible focus state. The card header shows a focus ring inside its edge.</li>
+            <li>The content comes right after its toggle in the DOM, so reading order matches what's on screen. Show more is the one exception: the preview comes first and the button follows it.</li>
+            <li>The chevron is decorative (<code>aria-hidden</code>); the state comes from <code>aria-expanded</code>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>
