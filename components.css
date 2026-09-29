@@ -3348,7 +3348,7 @@ body {
                    aria-controls="x-region" :aria-expanded="open ? 'true' : 'false'"
                    @click="open = !open">
              <span class="hb-expand__title">Linked entities</span>
-             <span class="hb-expand__meta">4 entities</span>
+             <span class="hb-expand__meta">4</span>
              <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
            </button>
          </h3>
