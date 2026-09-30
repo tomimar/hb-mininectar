@@ -12,9 +12,9 @@ description: Use when adding a new component to Mini Nectar (hb-mininectar)
 
 Whenever a new component is added to Mini Nectar, complete ALL of these steps (mirroring how every existing component was done):
 
-1. **Implement the component** in `components.css` (and `tokens.css` if new tokens are needed). Always use tokens, never hardcoded values.
+1. **Implement the component** in `components.css` (and `tokens.json` if new tokens are needed — then run `python3 scripts/build_tokens.py` to regenerate `tokens.css`; never edit `tokens.css` by hand). Always use tokens, never hardcoded values.
    - When the spec **is** in Figma, extract the exact values from it.
-   - When the spec is **not** in Figma (common when testing or prototyping a new component), follow the best practices of leading design systems (e.g. Material, Polaris, Carbon, Atlassian) and build it on top of the existing Mini Nectar tokens — reuse spacing, color, radius, elevation and typography tokens so it stays visually consistent. Never invent hardcoded values; if a token is genuinely missing, add it to `tokens.css`.
+   - When the spec is **not** in Figma (common when testing or prototyping a new component), follow the best practices of leading design systems (e.g. Material, Polaris, Carbon, Atlassian) and build it on top of the existing Mini Nectar tokens — reuse spacing, color, radius, elevation and typography tokens so it stays visually consistent. Never invent hardcoded values; if a token is genuinely missing, add it to `tokens.json` (with a light and a dark value) and regenerate.
 2. **Create a documentation page** in `components/[component].html`, following the same structure as the existing component pages (copy the layout/`<style>` block from `button.html`).
 3. **Add the page to the sidebar** by registering it in the `components` array in `components/sidebar.js` (label + filename). The sidebar is universal — adding it once updates every page.
 4. **Add a reference link in the repo's CLAUDE.md** — the Figma links table at the bottom, plus the component docs table, so the page is discoverable.

@@ -4,6 +4,18 @@
    Add a new section/component here once — every page updates.
    ============================================================ */
 (function () {
+  // Theme: light by default; the sidebar toggle switches to dark and remembers it.
+  var THEME_KEY = 'hb-theme';
+  function readTheme() {
+    try { return localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light'; } catch (e) { return 'light'; }
+  }
+  function applyTheme(theme) {
+    if (theme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+  }
+  applyTheme(readTheme());
+
   function build() {
     var el = document.getElementById('hb-sidebar');
     if (!el) return;
@@ -74,7 +86,27 @@
       html += '<a href="' + prefix + c[1] + '" class="sidenav__link hb-text-body' + active + '">' + c[0] + '</a>';
     });
 
+    // Theme toggle, pinned to the bottom of the sidebar
+    var dark = readTheme() === 'dark';
+    html += '<div class="sidenav__footer">';
+    html += '<label class="hb-toggle">';
+    html += '<input type="checkbox" class="hb-toggle__input" id="hb-theme-toggle"' + (dark ? ' checked' : '') + '>';
+    html += '<span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span>';
+    html += '<span class="hb-toggle__label">Dark mode</span>';
+    html += '</label>';
+    html += '</div>';
+
+    el.style.display = 'flex';
+    el.style.flexDirection = 'column';
     el.innerHTML = html;
+
+    var footer = el.querySelector('.sidenav__footer');
+    footer.style.marginTop = 'auto';
+    footer.style.paddingTop = 'var(--spacing-24)';
+
+    document.getElementById('hb-theme-toggle').addEventListener('change', function (e) {
+      applyTheme(e.target.checked ? 'dark' : 'light');
+    });
   }
 
   if (document.readyState === 'loading') {

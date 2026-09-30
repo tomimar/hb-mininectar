@@ -1,154 +1,239 @@
 /* ============================================================
    Hummingbird Design System — Tokens
+   GENERATED from tokens.json — do not edit by hand.
+   Change tokens.json, then run: python3 scripts/build_tokens.py
+
+   Dark mode: add data-theme="dark" to <html>.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto+Mono:wght@400&display=swap');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons+Outlined|Material+Icons+Round');
 
 :root {
 
-  /* ── Font family ──────────────────────────────── */
-  --font-family: 'Inter', sans-serif;
+  /* ── Font family ─────────────────────────────────── */
+  --font-family:                       'Inter', sans-serif;
+  --font-mono:                         "Roboto Mono", ui-monospace, monospace;
 
-  /* ── Font size primitives ─────────────────────── */
-  --font-size-16: 16px;
-  --font-size-14: 14px;
-  --font-size-12: 12px;
+  /* ── Font size ───────────────────────────────────── */
+  --font-size-12:                      12px;
+  --font-size-14:                      14px;
+  --font-size-16:                      16px;
 
-  /* ── Icon sizes ───────────────────────────────── */
-  --icon-size-sm: 16px;   /* dense controls: sm buttons, table rows */
-  --icon-size-md: 20px;   /* default */
-  --icon-size-lg: 24px;   /* prominent actions, standalone */
+  /* ── Icon size ───────────────────────────────────── */
+  --icon-size-sm:                      16px;
+  --icon-size-md:                      20px;
+  --icon-size-lg:                      24px;
 
-  /* ── Line height primitives ───────────────────── */
-  --line-height-default: 1.5;
-  --line-height-ui:      1.6;
+  /* ── Line height ─────────────────────────────────── */
+  --line-height-default:               1.5;
+  --line-height-ui:                    1.6;
 
-  /* ── Font weight primitives ───────────────────── */
-  --font-weight-regular: 400;   /* body text, paragraphs */
-  --font-weight-bold:    500;   /* primary headings, buttons, controls */
-  --font-weight-bolder:  600;   /* section titles, highlights, strong emphasis */
+  /* ── Font weight ─────────────────────────────────── */
+  --font-weight-regular:               400;
+  --font-weight-bold:                  500;
+  --font-weight-bolder:                600;
 
-  /* ── Letter spacing primitives ───────────────── */
-  --tracking-none: 0px;
-  --tracking-1:    1px;
+  /* ── Letter spacing ──────────────────────────────── */
+  --tracking-none:                     0px;
+  --tracking-1:                        1px;
 
+  /* ── Spacing ─────────────────────────────────────── */
+  --spacing-2:                         2px;
+  --spacing-4:                         4px;
+  --spacing-8:                         8px;
+  --spacing-12:                        12px;
+  --spacing-16:                        16px;
+  --spacing-24:                        24px;
+  --spacing-32:                        32px;
+  --spacing-40:                        40px;
+  --spacing-48:                        48px;
+  --spacing-56:                        56px;
+  --spacing-64:                        64px;
+  --spacing-72:                        72px;
+  --spacing-80:                        80px;
 
-  /* ── Spacing ──────────────────────────────────── */
-  --spacing-2:  2px;
-  --spacing-4:  4px;
-  --spacing-8:  8px;
-  --spacing-12: 12px;
-  --spacing-16: 16px;
-  --spacing-24: 24px;
-  --spacing-32: 32px;
-  --spacing-40: 40px;
-  --spacing-48: 48px;
-  --spacing-56: 56px;
-  --spacing-64: 64px;
-  --spacing-72: 72px;
-  --spacing-80: 80px;
+  /* ── Border radius ───────────────────────────────── */
+  --border-radius-4:                   4px;
+  --border-radius-8:                   8px;
+  --border-radius-16:                  16px;
+  --border-radius-round:               9999px;
 
+  /* ── Elevation ───────────────────────────────────── */
+  --shadow-overlay:                    0 2px 6px rgba(0, 0, 0, 0.16);
+  --shadow-floating:                   0 8px 24px rgba(0, 0, 0, 0.14);
+  --shadow-action:                     0 4px 8px rgba(0, 0, 0, 0.24);
 
-  /* ── Border radius ────────────────────────────── */
-  --border-radius-4:     4px;
-  --border-radius-8:     8px;
-  --border-radius-16:    16px;
-  --border-radius-round: 9999px;
+  /* ── Scaffolding ─────────────────────────────────── */
+  --ui-bg:                             #ffffff;
+  --ui-bg-secondary:                   #f5f5f5;
+  --ui-bg-tertiary:                    #e8e8e8;
+  --ui-bg-overlay:                     #ffffff;
+  --ui-border:                         #d1d1d1;
+  --ui-border-secondary:               #b8b8b8;
+  --ui-disabled:                       #949494;
+  --ui-disabled-soft:                  #d8d8d8;
 
+  /* ── Foreground ──────────────────────────────────── */
+  --ui-text:                           #000000;
+  --ui-text-secondary:                 #595959;
+  --ui-text-tertiary:                  #767676;
+  --ui-text-knockout:                  #ffffff;
+  --ui-icon:                           #595959;
+  --ui-icon-secondary:                 #767676;
 
-  /* ── Elevation ────────────────────────────────── */
-  --shadow-overlay:  0 2px 6px rgba(0, 0, 0, 0.16);
-  --shadow-floating: 0 8px 24px rgba(0, 0, 0, 0.14);
-  --shadow-action:   0 4px 8px rgba(0, 0, 0, 0.24);  /* FloatingAction */
+  /* ── Interaction ─────────────────────────────────── */
+  --ui-interaction:                    #0a6cff;
+  --ui-interaction-highlighted:        #005ae0;
+  --ui-interaction-contrast:           #003f9e;
+  --ui-interaction-soft:               #ccdeff;
+  --ui-interaction-link:               #005eeb;
 
-  --ui-bg-overlay: #ffffff;   /* = ui-bg in light mode; differs in dark */
+  /* ── Status: Danger ──────────────────────────────── */
+  --ui-status-danger:                  #e32402;
+  --ui-status-danger-text:             #e32402;
+  --ui-status-danger-highlighted:      #bb1e02;
+  --ui-status-danger-contrast:         #881602;
+  --ui-status-danger-soft:             #fdd5ce;
 
-  /* Semantic elevation layers */
-  /* layer-base:          bg=ui-bg,         shadow=none            */
-  /* elevation-overlay:   bg=ui-bg-overlay, shadow=shadow-overlay  */
-  /* elevation-floating:  bg=ui-bg-overlay, shadow=shadow-floating */
+  /* ── Status: Success ─────────────────────────────── */
+  --ui-status-success:                 #1e8536;
+  --ui-status-success-contrast:        #065120;
+  --ui-status-success-soft:            #c7ebcb;
 
+  /* ── Status: Warning ─────────────────────────────── */
+  --ui-status-warning:                 #f3ce45;
+  --ui-status-warning-contrast:        #655106;
+  --ui-status-warning-soft:            #f8efce;
 
-  /* ── Scaffolding ──────────────────────────────── */
-  --ui-bg:               #ffffff;
-  --ui-bg-secondary:     #f5f5f5;
-  --ui-bg-tertiary:      #e8e8e8;
-  --ui-border:           #d1d1d1;
-  --ui-border-secondary: #b8b8b8;
-  --ui-disabled-soft:    #d8d8d8;
-  --ui-disabled:         #949494;
+  /* ── Expressive: Blue ────────────────────────────── */
+  --ui-expressive-blue:                #0a6cff;
+  --ui-expressive-blue-contrast:       #003f9e;
+  --ui-expressive-blue-soft:           #ccdeff;
 
-  /* ── Foreground ───────────────────────────────── */
-  --ui-text:           #000000;
-  --ui-text-secondary: #595959;
-  --ui-text-tertiary:  #767676;
-  --ui-text-knockout:  #ffffff;
-  --ui-icon:           #595959;
-  --ui-icon-secondary: #767676;
+  /* ── Expressive: Green ───────────────────────────── */
+  --ui-expressive-green:               #1e8536;
+  --ui-expressive-green-contrast:      #065120;
+  --ui-expressive-green-soft:          #c7ebcb;
 
-  /* ── Interaction ──────────────────────────────── */
-  --ui-interaction:             #0a6cff;
-  --ui-interaction-highlighted: #005ae0;
-  --ui-interaction-contrast:    #003f9e;
-  --ui-interaction-soft:        #ccdeff;
-  --ui-interaction-link:        #005eeb;
+  /* ── Expressive: Red ─────────────────────────────── */
+  --ui-expressive-red:                 #e32402;
+  --ui-expressive-red-contrast:        #881602;
+  --ui-expressive-red-soft:            #ffd5ce;
 
-  /* ── Status: Danger ───────────────────────────── */
-  --ui-status-danger:           #e32402;
-  --ui-status-danger-text:      #fd4f30;
-  --ui-status-danger-highlighted: #bb1e02;
-  --ui-status-danger-contrast:  #881602;
-  --ui-status-danger-soft:      #fdd5ce;
+  /* ── Expressive: Yellow ──────────────────────────── */
+  --ui-expressive-yellow:              #f3ce45;
+  --ui-expressive-yellow-contrast:     #655106;
+  --ui-expressive-yellow-soft:         #f8efce;
 
-  /* ── Status: Success ──────────────────────────── */
-  --ui-status-success:          #1e8536;
-  --ui-status-success-contrast: #065120;
-  --ui-status-success-soft:     #c7ebcb;
+  /* ── Expressive: Purple ──────────────────────────── */
+  --ui-expressive-purple:              #6f3bc9;
+  --ui-expressive-purple-contrast:     #200c57;
+  --ui-expressive-purple-soft:         #f4ebfc;
 
-  /* ── Status: Warning ──────────────────────────── */
-  --ui-status-warning:          #f3ce45;
-  --ui-status-warning-contrast: #655106;
-  --ui-status-warning-soft:     #f8efce;
+  /* ── Expressive: Pink ────────────────────────────── */
+  --ui-expressive-pink:                #ff4c97;
+  --ui-expressive-pink-contrast:       #660e3f;
+  --ui-expressive-pink-soft:           #ffdbe7;
 
-  /* ── Expressive: Green ────────────────────────── */
-  --ui-expressive-green:          #1e8536;
-  --ui-expressive-green-contrast: #065120;
-  --ui-expressive-green-soft:     #c7ebcb;
+  /* ── Expressive: Orange ──────────────────────────── */
+  --ui-expressive-orange:              #d45b2f;
+  --ui-expressive-orange-contrast:     #8c2c03;
+  --ui-expressive-orange-soft:         #fde8de;
 
-  /* ── Expressive: Red ──────────────────────────── */
-  --ui-expressive-red:          #e32402;
-  --ui-expressive-red-contrast: #881602;
-  --ui-expressive-red-soft:     #ffd5ce;
+  /* ── Expressive: Brown ───────────────────────────── */
+  --ui-expressive-brown:               #ac6316;
+  --ui-expressive-brown-contrast:      #7a3300;
+  --ui-expressive-brown-soft:          #f8ddc3;
 
-  /* ── Expressive: Yellow ───────────────────────── */
-  --ui-expressive-yellow:          #f3ce45;
-  --ui-expressive-yellow-contrast: #655106;
-  --ui-expressive-yellow-soft:     #f8efce;
+  /* ── Expressive: Light blue ──────────────────────── */
+  --ui-expressive-light-blue-contrast: #0f4c5c;
+  --ui-expressive-light-blue-soft:     #cdeff3;
 
-  /* ── Expressive: Purple ───────────────────────── */
-  --ui-expressive-purple:          #6f3bc9;
-  --ui-expressive-purple-contrast: #200c57;
-  --ui-expressive-purple-soft:     #f4ebfc;
+}
 
-  /* ── Expressive: Pink ─────────────────────────── */
-  --ui-expressive-pink:          #ff4c97;
-  --ui-expressive-pink-contrast: #660e3f;
-  --ui-expressive-pink-soft:     #ffdbe7;
+[data-theme="dark"] {
+  color-scheme: dark;
 
-  /* ── Expressive: Orange ───────────────────────── */
-  --ui-expressive-orange:          #d45b2f;
-  --ui-expressive-orange-contrast: #8c2c03;
-  --ui-expressive-orange-soft:     #fde8de;
+  /* ── Scaffolding ─────────────────────────────────── */
+  --ui-bg:                             #181818;
+  --ui-bg-secondary:                   #242424;
+  --ui-bg-tertiary:                    #303030;
+  --ui-bg-overlay:                     #1e1e1e;
+  --ui-border:                         #424242;
+  --ui-border-secondary:               #5c5c5c;
+  --ui-disabled:                       #686868;
+  --ui-disabled-soft:                  #494949;
 
-  /* ── Expressive: Brown ────────────────────────── */
-  --ui-expressive-brown:          #ac6316;
-  --ui-expressive-brown-contrast: #7a3300;
-  --ui-expressive-brown-soft:     #f8ddc3;
+  /* ── Foreground ──────────────────────────────────── */
+  --ui-text:                           #ffffff;
+  --ui-text-secondary:                 #a6a6a6;
+  --ui-text-tertiary:                  #949494;
+  --ui-icon:                           #a6a6a6;
+  --ui-icon-secondary:                 #949494;
 
-  /* ── Expressive: Blue (interaction alias) ─────── */
-  --ui-expressive-blue:          #0a6cff;
-  --ui-expressive-blue-contrast: #003f9e;
-  --ui-expressive-blue-soft:     #ccdeff;
+  /* ── Interaction ─────────────────────────────────── */
+  --ui-interaction-contrast:           #ccdeff;
+  --ui-interaction-soft:               #003f9e;
+  --ui-interaction-link:               #3888ff;
+
+  /* ── Status: Danger ──────────────────────────────── */
+  --ui-status-danger:                  #d92202;
+  --ui-status-danger-text:             #fd4f30;
+  --ui-status-danger-contrast:         #fdd5ce;
+  --ui-status-danger-soft:             #881602;
+
+  /* ── Status: Success ─────────────────────────────── */
+  --ui-status-success:                 #1d8134;
+  --ui-status-success-contrast:        #c7ebcb;
+  --ui-status-success-soft:            #065120;
+
+  /* ── Status: Warning ─────────────────────────────── */
+  --ui-status-warning:                 #cca52f;
+  --ui-status-warning-contrast:        #f8efce;
+  --ui-status-warning-soft:            #655106;
+
+  /* ── Expressive: Blue ────────────────────────────── */
+  --ui-expressive-blue-contrast:       #ccdeff;
+  --ui-expressive-blue-soft:           #003f9e;
+
+  /* ── Expressive: Green ───────────────────────────── */
+  --ui-expressive-green:               #1d8134;
+  --ui-expressive-green-contrast:      #c7ebcb;
+  --ui-expressive-green-soft:          #065120;
+
+  /* ── Expressive: Red ─────────────────────────────── */
+  --ui-expressive-red:                 #d92202;
+  --ui-expressive-red-contrast:        #ffd5ce;
+  --ui-expressive-red-soft:            #881602;
+
+  /* ── Expressive: Yellow ──────────────────────────── */
+  --ui-expressive-yellow:              #cca52f;
+  --ui-expressive-yellow-contrast:     #f8efce;
+  --ui-expressive-yellow-soft:         #655106;
+
+  /* ── Expressive: Purple ──────────────────────────── */
+  --ui-expressive-purple:              #5127a3;
+  --ui-expressive-purple-contrast:     #f4ebfc;
+  --ui-expressive-purple-soft:         #200c57;
+
+  /* ── Expressive: Pink ────────────────────────────── */
+  --ui-expressive-pink:                #b32460;
+  --ui-expressive-pink-contrast:       #ffdbe7;
+  --ui-expressive-pink-soft:           #660e3f;
+
+  /* ── Expressive: Orange ──────────────────────────── */
+  --ui-expressive-orange:              #cd4004;
+  --ui-expressive-orange-contrast:     #fde8de;
+  --ui-expressive-orange-soft:         #8c2c03;
+
+  /* ── Expressive: Brown ───────────────────────────── */
+  --ui-expressive-brown:               #914c0c;
+  --ui-expressive-brown-contrast:      #f8ddc3;
+  --ui-expressive-brown-soft:          #7a3300;
+
+  /* ── Expressive: Light blue ──────────────────────── */
+  --ui-expressive-light-blue-contrast: #cdeff3;
+  --ui-expressive-light-blue-soft:     #0f4c5c;
 
 }

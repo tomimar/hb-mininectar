@@ -33,7 +33,11 @@ They are shared as a zip folder.
 
 ---
 
-## Tokens (tokens.css)
+## Tokens (tokens.json → tokens.css)
+
+`tokens.json` is the single source of truth for tokens — the Claude Design artifact publishes the same file.
+`tokens.css` is generated from it: never edit it by hand. Change `tokens.json`, then run `python3 scripts/build_tokens.py`.
+Dark mode: add `data-theme="dark"` to `<html>`.
 
 All CSS custom properties. Key ones:
 
