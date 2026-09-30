@@ -3,6 +3,8 @@
 This repository contains the CSS design system for Hummingbird HTML prototypes.
 It is hosted on GitHub Pages so any prototype can reference it with two lines.
 
+**Before designing or building anything, read [guidelines.md](guidelines.md)** — principles, content and tone, color, type, spacing, states and accessibility rules. It is the single source for these rules (the Claude Design artifact's README is a copy of it).
+
 ## How to use in a new prototype
 
 Add these two lines in the `<head>` of any HTML file:
@@ -193,7 +195,7 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 The same system is published as a Claude Design artifact: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd
 
-This repo is the source; the artifact is a copy. **After any change to `tokens.json`, `components.css` or a component's guidelines, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
+This repo is the source; the artifact is a copy. **After any change to `tokens.json`, `guidelines.md`, `components.css` or a component's guidelines, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
 
 ---
 

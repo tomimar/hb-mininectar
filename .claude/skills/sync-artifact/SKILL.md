@@ -1,6 +1,6 @@
 ---
 name: sync-artifact
-description: Use after any change to tokens.json, components.css or a component's guidelines in hb-mininectar, to push the change to the Mini Nectar Claude Design artifact so Claude Design prototypes stay identical to the repo. Covers which artifact files to regenerate (tokens.json, components/bundle.css, components/<Name>/README.md + preview.html) and how to publish them.
+description: Use after any change to tokens.json, guidelines.md, components.css or a component's guidelines in hb-mininectar, to push the change to the Mini Nectar Claude Design artifact so Claude Design prototypes stay identical to the repo. Covers which artifact files to regenerate (tokens.json, components/bundle.css, components/<Name>/README.md + preview.html) and how to publish them.
 ---
 
 ## Sync the Mini Nectar artifact
@@ -18,6 +18,7 @@ drift from Claude Code prototypes.
 | Repo change | Artifact file | How |
 |---|---|---|
 | `tokens.json` | `project/tokens.json` | copy the file as is |
+| `guidelines.md` | `project/README.md` | copy the file as is |
 | `components.css` | `project/components/bundle.css` | `python3 scripts/build_bundle.py <dir>/project/components/bundle.css` |
 | New component | `project/components/<Name>/README.md` + `preview.html` | write both (see below) |
 | Changed component guidelines | `project/components/<Name>/README.md` | update it to match the docs page |
