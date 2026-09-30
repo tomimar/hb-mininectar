@@ -4,7 +4,7 @@ description: Use when adding a new component to Mini Nectar (hb-mininectar)
   or promoting a prototype's custom component into the design system. Covers
   implementing it in components.css using tokens, creating the docs page,
   registering it in sidebar.js, adding Figma + docs links to CLAUDE.md,
-  syncing the Notion Component Library, and committing. Also covers building
+  syncing the Claude Design artifact, syncing the Notion Component Library, and committing. Also covers building
   a component on the fly inside a prototype's custom.css before promotion.
 ---
 
@@ -18,8 +18,9 @@ Whenever a new component is added to Mini Nectar, complete ALL of these steps (m
 2. **Create a documentation page** in `components/[component].html`, following the same structure as the existing component pages (copy the layout/`<style>` block from `button.html`).
 3. **Add the page to the sidebar** by registering it in the `components` array in `components/sidebar.js` (label + filename). The sidebar is universal — adding it once updates every page.
 4. **Add a reference link in the repo's CLAUDE.md** — the Figma links table at the bottom, plus the component docs table, so the page is discoverable.
-5. **Update the Notion Component Library** (see below).
-6. **Commit and push** to GitHub.
+5. **Sync the Claude Design artifact** with the **`sync-artifact`** skill: regenerate `bundle.css` from `components.css` and add the component's `README.md` + `preview.html` (plus `tokens.json` if tokens changed). Otherwise Claude Design prototypes won't have the component.
+6. **Update the Notion Component Library** (see below).
+7. **Commit and push** to GitHub.
 
 ---
 

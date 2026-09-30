@@ -189,6 +189,14 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 ---
 
+## Claude Design artifact
+
+The same system is published as a Claude Design artifact: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd
+
+This repo is the source; the artifact is a copy. **After any change to `tokens.json`, `components.css` or a component's guidelines, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
+
+---
+
 ## Figma references
 
 - **Nectar Design System**: https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System
@@ -197,7 +205,7 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 ## Adding or promoting components
 
-To add a new component to Mini Nectar, or to promote a prototype's custom component into the design system, use the **`add-component`** skill — it covers the full checklist (implement in `components.css` with tokens, docs page, sidebar registration, CLAUDE.md links, Notion sync, commit) and building components on the fly in a prototype's `custom.css`.
+To add a new component to Mini Nectar, or to promote a prototype's custom component into the design system, use the **`add-component`** skill — it covers the full checklist (implement in `components.css` with tokens, docs page, sidebar registration, CLAUDE.md links, artifact sync, Notion sync, commit) and building components on the fly in a prototype's `custom.css`.
 
 ---
 
