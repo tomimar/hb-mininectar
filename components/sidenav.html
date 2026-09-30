@@ -6,62 +6,15 @@
   <title>Sidenav — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
+  <link rel="stylesheet" href="docs.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <style>
-    * { box-sizing: border-box; }
-    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
-    .page { display: flex; min-height: 100vh; }
-
-    .sidenav {
-      width: 220px; flex-shrink: 0; background: var(--ui-bg);
-      border-right: 1px solid var(--ui-border); padding: var(--spacing-32) var(--spacing-16);
-      position: sticky; top: 0; height: 100vh; overflow-y: auto;
-    }
-    .sidenav__back { display: flex; align-items: center; gap: var(--spacing-4); color: var(--ui-text-secondary); text-decoration: none; margin-bottom: var(--spacing-32); }
-    .sidenav__back:hover { color: var(--ui-text); }
-    .sidenav__section { color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
-    .sidenav__link { display: block; color: var(--ui-text-secondary); text-decoration: none; padding: var(--spacing-4) var(--spacing-8); border-radius: var(--border-radius-4); transition: background 100ms, color 100ms; margin-bottom: 2px; }
-    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
-    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
-
-    .main { flex: 1; max-width: 840px; padding: var(--spacing-48); }
-
-    .page-header { margin-bottom: var(--spacing-48); }
-    .page-header__badge { display: inline-block; color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
-    .page-header__title { font-size: 32px; font-weight: var(--font-weight-bolder); color: var(--ui-text); margin: 0 0 var(--spacing-16) 0; line-height: 1.2; }
-    .page-header__desc { color: var(--ui-text-secondary); margin: 0; max-width: 640px; }
-
-    .section { margin-bottom: var(--spacing-64); }
-    .section__title { color: var(--ui-text); margin: 0 0 var(--spacing-4) 0; padding-bottom: var(--spacing-16); border-bottom: 1px solid var(--ui-border); }
-    .section__desc { color: var(--ui-text-secondary); margin: var(--spacing-16) 0 var(--spacing-24) 0; }
-
-    .preview { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-32); margin-bottom: var(--spacing-16); }
+    .preview { display: block; flex-wrap: nowrap; gap: normal; align-items: normal; background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-32); margin-bottom: var(--spacing-16); }
     .preview--flush { padding: 0; overflow: hidden; }
-
-    .state-table { width: 100%; border-collapse: collapse; }
-    .state-table td { padding: var(--spacing-12) var(--spacing-16); color: var(--ui-text); border-bottom: 1px solid var(--ui-border); vertical-align: middle; }
-    .state-table tr:last-child td { border-bottom: none; }
-    .state-table-wrap { background: var(--ui-bg); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); overflow: hidden; margin-bottom: var(--spacing-16); }
-
-    .guidance { display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-16); }
     .guidance-card { border-radius: var(--border-radius-8); overflow: hidden; border: 1px solid var(--ui-border); background: var(--ui-bg); }
-    .guidance-card__header { padding: var(--spacing-8) var(--spacing-16); display: flex; align-items: center; gap: var(--spacing-8); }
-    .guidance-card__header--do { background: var(--ui-status-success-soft); }
-    .guidance-card__header--dont { background: var(--ui-status-danger-soft); }
-    .guidance-card__header--do .guidance-card__title { color: var(--ui-status-success-contrast); }
-    .guidance-card__header--dont .guidance-card__title { color: var(--ui-status-danger-contrast); }
-    .guidance-card__body { padding: var(--spacing-16); background: var(--ui-bg); display: flex; flex-direction: column; gap: var(--spacing-12); }
-    .guidance-card__note { color: var(--ui-text-secondary); }
-
-    .anatomy-table { width: 100%; }
-    .anatomy-table td:first-child { width: 32px; }
-    .anatomy-num { width: 20px; height: 20px; border-radius: 50%; background: var(--ui-expressive-purple); color: white; font-size: 11px; font-weight: var(--font-weight-bolder); display: flex; align-items: center; justify-content: center; }
-
-    code { font-family: 'SF Mono', 'Menlo', monospace; font-size: 12px; background: var(--ui-bg-secondary); padding: 1px 5px; border-radius: var(--border-radius-4); color: var(--ui-text); border: 1px solid var(--ui-border); }
     pre { background: var(--ui-bg-secondary); border: 1px solid var(--ui-border); border-radius: var(--border-radius-8); padding: var(--spacing-16); overflow-x: auto; margin: 0 0 var(--spacing-16) 0; }
     pre code { background: none; border: none; padding: 0; font-size: 12px; line-height: 1.6; }
-
     [x-cloak] { display: none !important; }
     .callout {
       display: flex; gap: var(--spacing-8); align-items: flex-start;
@@ -70,7 +23,6 @@
       padding: var(--spacing-12) var(--spacing-16); margin-bottom: var(--spacing-16);
     }
     .callout .hb-icon { margin-top: 2px; }
-
     .a11y-note {
       display: flex; gap: var(--spacing-12); align-items: flex-start;
       background: var(--ui-expressive-blue-soft); border: 1px solid var(--ui-expressive-blue);
@@ -82,7 +34,6 @@
     .a11y-note__list { margin: var(--spacing-8) 0 0 0; padding-left: var(--spacing-16); }
     .a11y-note__list li { margin-bottom: var(--spacing-4); color: var(--ui-text-secondary); }
     .a11y-note__list li:last-child { margin-bottom: 0; }
-
     /* Fake app frame — to show the nav in the context of a page.
        One surface throughout: no divider, no colour change. */
     .demo-page { background: var(--ui-bg); min-height: 460px; display: flex; flex-direction: column; }

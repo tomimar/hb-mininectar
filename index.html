@@ -6,64 +6,8 @@
   <title>hb-mininectar — Hummingbird Prototyping DS</title>
   <link rel="stylesheet" href="tokens.css">
   <link rel="stylesheet" href="components.css">
+  <link rel="stylesheet" href="components/docs.css">
   <style>
-    * { box-sizing: border-box; }
-    body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-family); color: var(--ui-text); }
-
-    /* Layout */
-    .page { display: flex; min-height: 100vh; }
-
-    /* Sidebar nav */
-    .sidenav {
-      width: 220px;
-      flex-shrink: 0;
-      background: var(--ui-bg);
-      border-right: 1px solid var(--ui-border);
-      padding: var(--spacing-32) var(--spacing-16);
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-    }
-    .sidenav__back {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-4);
-      color: var(--ui-text-secondary);
-      text-decoration: none;
-      margin-bottom: var(--spacing-32);
-    }
-    .sidenav__back:hover { color: var(--ui-text); }
-    .sidenav__section { color: var(--ui-text-tertiary); margin-bottom: var(--spacing-8); }
-    .sidenav__link {
-      display: block;
-      color: var(--ui-text-secondary);
-      text-decoration: none;
-      padding: var(--spacing-4) var(--spacing-8);
-      border-radius: var(--border-radius-4);
-      transition: background 100ms, color 100ms;
-      margin-bottom: 2px;
-    }
-    .sidenav__link:hover { background: var(--ui-bg-secondary); color: var(--ui-text); }
-    .sidenav__link--active { background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast); font-weight: var(--font-weight-bold); }
-
-    /* Main content */
-    .main { flex: 1; max-width: 840px; padding: var(--spacing-48); }
-
-    /* Header */
-    .page-header { margin-bottom: var(--spacing-48); }
-    .page-header__badge {
-      display: inline-block;
-      color: var(--ui-text-tertiary);
-      margin-bottom: var(--spacing-8);
-    }
-    .page-header__title {
-      font-size: 32px;
-      font-weight: var(--font-weight-bolder);
-      color: var(--ui-text);
-      margin: 0 0 var(--spacing-16) 0;
-      line-height: 1.2;
-    }
     .page-header__desc {
       color: var(--ui-text-secondary);
       margin: 0;
@@ -71,17 +15,6 @@
       font-size: var(--font-size-16);
       line-height: var(--line-height-ui);
     }
-
-    /* Section */
-    .section { margin-bottom: var(--spacing-64); }
-    .section__title {
-      color: var(--ui-text);
-      margin: 0 0 var(--spacing-4) 0;
-      padding-bottom: var(--spacing-16);
-      border-bottom: 1px solid var(--ui-border);
-    }
-    .section__desc { color: var(--ui-text-secondary); margin: var(--spacing-16) 0 var(--spacing-24) 0; }
-
     /* Card */
     .card {
       background: var(--ui-bg);
@@ -92,7 +25,6 @@
       flex-direction: column;
       gap: var(--spacing-16);
     }
-
     /* Install / code block */
     .install {
       background: var(--ui-text);
@@ -108,17 +40,6 @@
       font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
       white-space: pre;
     }
-
-    code {
-      font-family: 'SF Mono', 'Menlo', monospace;
-      font-size: 12px;
-      background: var(--ui-bg-secondary);
-      padding: 1px 5px;
-      border-radius: var(--border-radius-4);
-      color: var(--ui-text);
-      border: 1px solid var(--ui-border);
-    }
-
     .github-link {
       display: inline-flex;
       align-items: center;
