@@ -20,17 +20,17 @@ drift from Claude Code prototypes.
 | `tokens.json` | `project/tokens.json` | copy the file as is |
 | `guidelines.md` | `project/README.md` | copy the file as is |
 | `components.css` | `project/components/bundle.css` | `python3 scripts/build_bundle.py <dir>/project/components/bundle.css` |
-| New component | `project/components/<Name>/README.md` + `preview.html` | write both (see below) |
-| Changed component guidelines | `project/components/<Name>/README.md` | update it to match the docs page |
+| `components/<component>.md` | `project/components/<Name>/README.md` | copy the file as is |
+| New component | `project/components/<Name>/preview.html` | write it (see below), plus the README copy above |
 
-`<Name>` is PascalCase (`FloatingAction`, `PopupSelect`).
+`<Name>` is PascalCase (`floating-action.md` → `FloatingAction`, `popup-select.md` → `PopupSelect`; `icons.md` → `Icon`).
 
-### Component README and preview
+### Component guidelines and preview
 
-- **README.md** — guidelines in plain prose: first sentence is a one-line summary,
-  then structure (classes), variants, states, what the consumer provides, and
-  accessibility rules. Source: the component's usage comment in `components.css`
-  and its docs page `components/<component>.html`.
+- **Guidelines** — written in the repo at `components/<component>.md`, never in the
+  artifact directly. Plain prose: first sentence is a one-line summary, then
+  structure (classes), variants, states, what the consumer supplies, when to use
+  it, and accessibility rules. Copy it as the artifact's `README.md`.
 - **preview.html** — line 1 is `<!-- @dsCard group="<Group>" height=<px> -->`,
   then one `<div>` fragment (no doctype) with a small `<style>` and static
   markup showing the main variants and states. No Alpine: set `aria-expanded`,

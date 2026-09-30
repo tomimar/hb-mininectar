@@ -121,6 +121,8 @@ All CSS custom properties. Key ones:
 
 ## Components
 
+**Each component's usage guidelines live in `components/<component>.md`** (e.g. [components/button.md](components/button.md), [components/table.md](components/table.md)) — structure, variants, what the consumer supplies, when to use it and accessibility rules. Read the component's `.md` before using it in a prototype. These files are the single source for component guidelines; the Claude Design artifact's component READMEs are copies of them.
+
 Every component has a dedicated documentation page with live examples, all variants/states, usage guidelines and best practices. Browse them in the docs site sidebar:
 
 **Docs site:** https://tomimar.github.io/hb-mininectar/
