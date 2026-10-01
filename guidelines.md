@@ -39,11 +39,21 @@ One family: Inter, at 12, 14 and 16 pixels. `hb-text-body` (14/1.6/400) is the d
 
 `--font-mono` is for values that are read character by character — hashes, account numbers, API keys — not for code-flavored decoration.
 
-## Space and shape
+## Spacing
 
 A 4px base: `spacing-4` binds an icon to its label, `spacing-8` separates controls in a row, `spacing-12` is the inner padding of an input or a button, `spacing-16` the padding of a card or alert, `spacing-24` the padding of a page panel, `spacing-32` the gap between page sections. `spacing-2` is only ever an optical nudge inside a control.
 
+- Every padding, margin and gap is a spacing token. Never an arbitrary value like 6, 10 or 14px.
+- `spacing-8` and `spacing-16` are the defaults inside components. Reach for the larger steps to separate sections and layout regions.
+- Keep one rhythm inside a component: don't mix steps for the same kind of gap.
+
+## Radius
+
 Radius carries meaning: `border-radius-4` on things you type into or tick, `border-radius-8` on buttons and surfaces, `border-radius-16` on modals, `border-radius-round` on avatars, tags, toggles and floating actions.
+
+- One radius per component. Don't mix corners within it.
+- `border-radius-round` is for small, self-contained shapes. Never on a rectangular content surface like a card or a panel.
+- No values outside the token set.
 
 ## Elevation and borders
 
