@@ -6,7 +6,7 @@
      <div class="guide" data-hb-guide="button.md"></div>       ← the rest
    A fenced block tagged `html preview` renders as a live example
    followed by its code. Needs marked (cdnjs) loaded before this script;
-   Alpine, if the page loads it, starts the rendered examples by itself.
+   hb.js gives the rendered examples their behaviour by itself.
    ============================================================ */
 (function () {
   var target = document.querySelector('[data-hb-guide]');
@@ -49,14 +49,15 @@
 
       // Tables get the docs table look
       target.querySelectorAll('table').forEach(function (table) {
+        if (table.closest('.preview')) return; // example tables keep their own look
         var wrap = document.createElement('div');
         wrap.className = 'state-table-wrap';
         table.classList.add('state-table');
         table.parentNode.insertBefore(wrap, table);
         wrap.appendChild(table);
       });
-      // Interactive examples need no extra step: Alpine (if the page loads
-      // it) picks up x-data on nodes added after it starts.
+      // Interactive examples need no extra step: hb.js listens on the
+      // document and sets up markup added after it starts.
     })
     .catch(function () {
       // file:// can't fetch — point to the published page instead

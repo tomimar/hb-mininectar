@@ -295,7 +295,9 @@
      item and Down on the last, announces each move in the shared
      polite live region (#hb-live-region), and fires an `hb-reorder`
      event on the list ({ detail: { item, from, to } }) for a
-     prototype that needs to react.                                 */
+     prototype that needs to react.
+     The Table's Columns panel (hb-column-manager) reuses all of it
+     with its own class names — see KINDS.                          */
   function announce(msg) {
     var el = document.getElementById('hb-live-region');
     if (!el) {
@@ -311,22 +313,34 @@
   }
   window.hbAnnounce = announce;
 
+  var KINDS = [
+    { list: 'hb-drag', item: 'hb-drag__item', content: 'hb-drag__content',
+      move: 'hb-drag__move', button: 'hb-drag__move-btn' },
+    { list: 'hb-column-manager__list', item: 'hb-column-manager__item', content: 'hb-column-manager__name',
+      move: 'hb-column-manager__move', button: 'hb-column-manager__move-btn' }
+  ];
+  function kindOf(list) {
+    if (!list || !list.classList) return null;
+    for (var i = 0; i < KINDS.length; i++) if (list.classList.contains(KINDS[i].list)) return KINDS[i];
+    return null;
+  }
+  function childWith(el, cls) {
+    return Array.prototype.find.call(el.children, function (c) { return c.classList.contains(cls); });
+  }
+
   function dragItems(list) {
-    return Array.prototype.filter.call(list.children, function (c) {
-      return c.classList.contains('hb-drag__item');
-    });
+    var k = kindOf(list);
+    return Array.prototype.filter.call(list.children, function (c) { return c.classList.contains(k.item); });
   }
   function dragLabel(item) {
-    var content = Array.prototype.find.call(item.children, function (c) {
-      return c.classList.contains('hb-drag__content');
-    });
+    var k = kindOf(item.parentElement);
+    var content = k && (childWith(item, k.content) || item.querySelector('.' + k.content));
     return content ? content.textContent.trim() : '';
   }
   function dragButtons(item) {
-    var move = Array.prototype.find.call(item.children, function (c) {
-      return c.classList.contains('hb-drag__move');
-    });
-    return move ? move.querySelectorAll('.hb-drag__move-btn') : [];
+    var k = kindOf(item.parentElement);
+    var move = k && childWith(item, k.move);
+    return move ? move.querySelectorAll('.' + k.button) : [];
   }
 
   function syncDragList(list) {
@@ -348,11 +362,12 @@
   }
 
   document.addEventListener('click', function (e) {
-    var btn = e.target.closest('.hb-drag__move-btn');
+    var btn = e.target.closest('.hb-drag__move-btn, .hb-column-manager__move-btn');
     if (!btn || btn.disabled) return;
-    var item = btn.closest('.hb-drag__item');
-    var list = item && item.parentElement;
-    if (!list || !list.classList.contains('hb-drag')) return;
+    var list = btn.parentElement && btn.parentElement.parentElement && btn.parentElement.parentElement.parentElement;
+    var k = kindOf(list);
+    if (!k) return;
+    var item = btn.closest('.' + k.item);
     var btns = dragButtons(item);
     var up = btn === btns[0];
     var items = dragItems(list);
@@ -373,9 +388,13 @@
   function clearDropTargets(list) {
     list.querySelectorAll('.is-drop-target').forEach(function (el) { el.classList.remove('is-drop-target'); });
   }
+  function draggableItem(el) {
+    var item = el && el.closest && el.closest('[draggable="true"]');
+    return item && kindOf(item.parentElement) ? item : null;
+  }
 
   document.addEventListener('dragstart', function (e) {
-    var item = e.target.closest && e.target.closest('.hb-drag__item');
+    var item = draggableItem(e.target);
     if (!item || item !== e.target) return; // drag the row, not a link inside it
     dragging = item;
     item.classList.add('is-dragging');
@@ -386,10 +405,11 @@
   });
   document.addEventListener('dragover', function (e) {
     if (!dragging) return;
-    var target = e.target.closest && e.target.closest('.hb-drag__item');
+    var k = kindOf(dragging.parentElement);
+    var target = e.target.closest && e.target.closest('.' + k.item);
     // Only within the same list: nested levels never mix
     while (target && target.parentElement !== dragging.parentElement) {
-      target = target.parentElement.closest('.hb-drag__item');
+      target = target.parentElement.closest('.' + k.item);
     }
     if (!target) return;
     e.preventDefault();
@@ -416,17 +436,310 @@
     dragging = null;
   });
 
-  // Name and enable the buttons of every list — now and whenever a list
-  // is added to the page later (a prototype's script, the docs pages)
-  function syncAllDragLists(root) {
-    if (root.matches && root.matches('ul.hb-drag')) syncDragList(root);
-    if (root.querySelectorAll) root.querySelectorAll('ul.hb-drag').forEach(syncDragList);
+  /* ── Popups: menus and panels ───────────────────────────────
+     A button with aria-haspopup and aria-controls opens and closes the
+     element it controls (which starts `hidden`): the table's row menu
+     (hb-table__menu), the Columns panel (hb-column-manager__panel).
+     A click outside or Escape closes it; Escape returns focus to the
+     button. In a menu, choosing an item closes it, and the arrow keys
+     move between items.                                            */
+  function popupOf(btn) { return document.getElementById(btn.getAttribute('aria-controls')); }
+  function setPopup(btn, open, focusFirst) {
+    var popup = popupOf(btn);
+    if (!popup) return;
+    popup.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open && focusFirst) {
+      var first = popup.querySelector('[role="menuitem"], button, input, a[href]');
+      if (first) first.focus();
+    }
   }
-  function watchDragLists() {
-    syncAllDragLists(document);
+  function openPopupButtons() {
+    return document.querySelectorAll('button[aria-haspopup][aria-controls][aria-expanded="true"]');
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[aria-haspopup][aria-controls]');
+    openPopupButtons().forEach(function (open) {
+      var popup = popupOf(open);
+      if (open === btn || (popup && popup.contains(e.target))) return;
+      setPopup(open, false);
+    });
+    if (btn) {
+      setPopup(btn, btn.getAttribute('aria-expanded') !== 'true', e.detail === 0);
+      return;
+    }
+    // Choosing a menu item closes its menu
+    var item = e.target.closest('[role="menuitem"]');
+    var menu = item && item.closest('[role="menu"]');
+    if (menu && menu.id) {
+      var owner = document.querySelector('button[aria-controls="' + menu.id + '"]');
+      if (owner) { setPopup(owner, false); owner.focus(); }
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      openPopupButtons().forEach(function (open) {
+        var popup = popupOf(open);
+        if (popup && (popup.contains(e.target) || e.target === open)) { setPopup(open, false); open.focus(); }
+      });
+      return;
+    }
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    var menu = e.target.closest && e.target.closest('[role="menu"]');
+    if (!menu) return;
+    var items = Array.prototype.slice.call(menu.querySelectorAll('[role="menuitem"]'));
+    var i = items.indexOf(e.target);
+    if (i === -1) return;
+    e.preventDefault();
+    items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
+  });
+
+  /* ── Table ──────────────────────────────────────────────────
+     - Select all: the header checkbox in __select-col ticks every row;
+       ticking rows by hand keeps it checked / indeterminate.
+     - Expandable rows: button.hb-table__expander with aria-expanded and
+       aria-controls="<detail row id>" (the detail row starts `hidden`).
+     - Resizable columns: table[data-hb-resizable] gets a focusable
+       resize handle (role="separator") in each header but the last.
+       Drag it, double-click it to auto-fit, or use ← / → (Shift for
+       bigger steps), Enter or Home to auto-fit.                      */
+  function rowBoxes(table) {
+    return table.querySelectorAll(':scope > tbody > tr > .hb-table__select-col .hb-checkbox');
+  }
+  function headBox(table) {
+    return table.querySelector(':scope > thead .hb-table__select-col .hb-checkbox');
+  }
+  function syncSelectAll(table) {
+    var all = headBox(table);
+    if (!all) return;
+    var boxes = Array.prototype.slice.call(rowBoxes(table));
+    var on = boxes.filter(function (b) { return b.checked; }).length;
+    all.checked = on > 0 && on === boxes.length;
+    all.indeterminate = on > 0 && on < boxes.length;
+  }
+
+  document.addEventListener('change', function (e) {
+    var box = e.target;
+    if (!box.matches || !box.matches('.hb-table__select-col .hb-checkbox')) return;
+    var table = box.closest('table');
+    if (box === headBox(table)) {
+      rowBoxes(table).forEach(function (b) { b.checked = box.checked; });
+    }
+    syncSelectAll(table);
+  });
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.hb-table__expander[aria-controls]');
+    if (!btn) return;
+    var open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    var detail = document.getElementById(btn.getAttribute('aria-controls'));
+    if (detail) detail.hidden = !open;
+  });
+
+  var RESIZE_MIN = 72, RESIZE_MAX = 560, RESIZE_STEP = 16, RESIZE_BIG_STEP = 48;
+
+  function setColWidth(th, handle, w) {
+    w = Math.max(RESIZE_MIN, Math.min(RESIZE_MAX, Math.round(w)));
+    th.style.width = w + 'px';
+    handle.setAttribute('aria-valuenow', String(w));
+    return w;
+  }
+  // Natural (content) width of a column, independent of its current width
+  function autofitWidth(table, colIndex) {
+    var ths = table.querySelectorAll('thead th');
+    var saved = [];
+    ths.forEach(function (th) { saved.push(th.style.width); });
+    var prevLayout = table.style.tableLayout;
+    table.style.tableLayout = 'auto';
+    ths.forEach(function (th, idx) { th.style.width = idx === colIndex ? 'auto' : (parseFloat(saved[idx]) || th.offsetWidth) + 'px'; });
+    var natural = ths[colIndex].offsetWidth + 8;
+    table.style.tableLayout = prevLayout || '';
+    ths.forEach(function (th, idx) { th.style.width = saved[idx]; });
+    return natural;
+  }
+
+  function initResizable(table) {
+    if (table.hbResizable) return;
+    table.hbResizable = true;
+    var ths = table.querySelectorAll('thead th');
+    ths.forEach(function (th, i) {
+      if (i === ths.length - 1) return; // the last column flexes, no handle
+      if (th.querySelector('.hb-table__resizer')) return;
+      if (!th.style.width) th.style.width = th.offsetWidth + 'px';
+      var name = (th.textContent || 'column').trim();
+      var handle = document.createElement('div');
+      handle.className = 'hb-table__resizer';
+      handle.setAttribute('role', 'separator');
+      handle.setAttribute('tabindex', '0');
+      handle.setAttribute('aria-orientation', 'vertical');
+      handle.setAttribute('aria-label', 'Resize ' + name + ' column');
+      handle.setAttribute('aria-valuemin', String(RESIZE_MIN));
+      handle.setAttribute('aria-valuemax', String(RESIZE_MAX));
+      handle.setAttribute('aria-valuenow', String(Math.round(th.offsetWidth)));
+      th.appendChild(handle);
+
+      handle.addEventListener('pointerdown', function (e) {
+        e.preventDefault();
+        var startX = e.clientX, startW = th.offsetWidth;
+        handle.setPointerCapture(e.pointerId);
+        handle.classList.add('is-resizing');
+        function onMove(ev) { setColWidth(th, handle, startW + (ev.clientX - startX)); }
+        function onUp() {
+          handle.classList.remove('is-resizing');
+          handle.removeEventListener('pointermove', onMove);
+          handle.removeEventListener('pointerup', onUp);
+        }
+        handle.addEventListener('pointermove', onMove);
+        handle.addEventListener('pointerup', onUp);
+      });
+      handle.addEventListener('dblclick', function (e) {
+        e.preventDefault();
+        var w = setColWidth(th, handle, autofitWidth(table, i));
+        announce(name + ' column auto-fitted to ' + w + ' pixels');
+      });
+      handle.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+          e.preventDefault();
+          var step = e.shiftKey ? RESIZE_BIG_STEP : RESIZE_STEP;
+          setColWidth(th, handle, th.offsetWidth + (e.key === 'ArrowRight' ? step : -step));
+        } else if (e.key === 'Enter' || e.key === 'Home') {
+          e.preventDefault();
+          var w = setColWidth(th, handle, autofitWidth(table, i));
+          announce(name + ' column auto-fitted to ' + w + ' pixels');
+        }
+      });
+    });
+  }
+
+  /* ── Table · Columns panel (hb-column-manager) ──────────────
+     The panel lists the table's data columns in two groups:
+       ul.hb-column-manager__list[data-hb-columns="visible"]
+       ul.hb-column-manager__list[data-hb-columns="hidden"]
+     Each li.hb-column-manager__item has data-column="<key>", a
+     checkbox + __name, and both a __drag/__move pair (shown while
+     visible) and a __spacer (shown while hidden). The table's cells
+     carry the same data-column; cells without one (the row header)
+     stay pinned first.
+     The manager root names its table: data-hb-columns-for="<table id>".
+     hb.js reorders the Visible group (Drag behaviour), moves a column
+     between groups with its checkbox (the last visible one can't be
+     hidden; hidden ones list A→Z), mirrors it all on the table, and
+     restores the starting state on a [data-hb-columns-reset] button. */
+  function cmParts(root) {
+    return {
+      visible: root.querySelector('[data-hb-columns="visible"]'),
+      hidden: root.querySelector('[data-hb-columns="hidden"]'),
+      table: document.getElementById(root.getAttribute('data-hb-columns-for')),
+      empty: root.querySelector('.hb-column-manager__empty')
+    };
+  }
+  function cmLabel(item) {
+    var name = item.querySelector('.hb-column-manager__name');
+    return name ? name.textContent.trim() : '';
+  }
+  function cmShape(item, visible) {
+    var box = item.querySelector('.hb-checkbox');
+    if (box) box.checked = visible;
+    item.setAttribute('draggable', visible ? 'true' : 'false');
+    ['hb-column-manager__drag', 'hb-column-manager__move'].forEach(function (cls) {
+      var el = item.querySelector('.' + cls);
+      if (el) el.hidden = !visible;
+    });
+    var spacer = item.querySelector('.hb-column-manager__spacer');
+    if (spacer) spacer.hidden = visible;
+  }
+
+  function cmSync(root) {
+    var p = cmParts(root);
+    if (!p.visible || !p.hidden) return;
+    var visibleItems = dragItems(p.visible);
+    // Hidden group: A→Z, no reorder controls
+    dragItems(p.hidden).sort(function (a, b) { return cmLabel(a).localeCompare(cmLabel(b)); })
+      .forEach(function (item) { cmShape(item, false); p.hidden.appendChild(item); });
+    visibleItems.forEach(function (item) { cmShape(item, true); });
+    // Never hide the last visible column
+    visibleItems.forEach(function (item) {
+      var box = item.querySelector('.hb-checkbox');
+      if (box) box.disabled = visibleItems.length === 1;
+    });
+    if (p.empty) p.empty.hidden = dragItems(p.hidden).length > 0;
+    syncDragList(p.visible);
+    // Mirror on the table: visible columns in order, hidden ones hidden
+    if (!p.table) return;
+    var order = visibleItems.map(function (item) { return item.getAttribute('data-column'); });
+    p.table.querySelectorAll(':scope > thead > tr, :scope > tbody > tr').forEach(function (tr) {
+      var cells = {};
+      tr.querySelectorAll(':scope > [data-column]').forEach(function (c) { cells[c.getAttribute('data-column')] = c; });
+      order.forEach(function (key) { if (cells[key]) { cells[key].hidden = false; tr.appendChild(cells[key]); } });
+      Object.keys(cells).forEach(function (key) {
+        if (order.indexOf(key) === -1) { cells[key].hidden = true; tr.appendChild(cells[key]); }
+      });
+    });
+  }
+
+  function initColumnManager(root) {
+    if (root.hbColumns) return;
+    var p = cmParts(root);
+    if (!p.visible || !p.hidden) return;
+    root.hbColumns = { visible: p.visible.innerHTML, hidden: p.hidden.innerHTML };
+    cmSync(root);
+  }
+
+  document.addEventListener('hb-reorder', function (e) {
+    var root = e.target.closest && e.target.closest('[data-hb-columns-for]');
+    if (root) cmSync(root);
+  });
+
+  document.addEventListener('change', function (e) {
+    var box = e.target;
+    if (!box.matches || !box.matches('.hb-column-manager__item .hb-checkbox')) return;
+    var root = box.closest('[data-hb-columns-for]');
+    if (!root) return;
+    var p = cmParts(root);
+    var item = box.closest('.hb-column-manager__item');
+    if (box.checked) {
+      p.visible.appendChild(item); // shown again at the end
+      announce(cmLabel(item) + ' shown — moved to Visible Columns');
+    } else {
+      p.hidden.appendChild(item);
+      announce(cmLabel(item) + ' hidden — moved to Hidden Columns');
+    }
+    cmSync(root);
+    if (!box.disabled) box.focus();
+  });
+
+  document.addEventListener('click', function (e) {
+    var reset = e.target.closest('[data-hb-columns-reset]');
+    var root = reset && reset.closest('[data-hb-columns-for]');
+    if (!root || !root.hbColumns) return;
+    var p = cmParts(root);
+    p.visible.innerHTML = root.hbColumns.visible;
+    p.hidden.innerHTML = root.hbColumns.hidden;
+    cmSync(root);
+    announce('Columns reset to their defaults');
+  });
+
+  // Set up what needs it — now, and whenever markup is added later
+  // (a prototype's script, the docs pages)
+  function setUp(root) {
+    if (!root.querySelectorAll) return;
+    var all = function (sel, fn) {
+      if (root.matches && root.matches(sel)) fn(root);
+      root.querySelectorAll(sel).forEach(fn);
+    };
+    all('ul.hb-drag', syncDragList);
+    all('[data-hb-columns-for]', initColumnManager);
+    all('table[data-hb-resizable]', initResizable);
+    all('table', syncSelectAll);
+  }
+  function watchDom() {
+    setUp(document);
     new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
-        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) syncAllDragLists(n); });
+        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) setUp(n); });
       });
     }).observe(document.body, { childList: true, subtree: true });
   }
@@ -439,7 +752,7 @@
       if (stored !== null) setCollapsed(toggle, stored === '1');
     });
   }
-  function init() { restoreSidenavs(); watchDragLists(); }
+  function init() { restoreSidenavs(); watchDom(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();

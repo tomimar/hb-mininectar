@@ -6,6 +6,9 @@
 /* ── Base reset ───────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 
+/* `hidden` always hides — hb.js opens and closes components with it */
+[hidden] { display: none !important; }
+
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-14);
@@ -806,7 +809,8 @@ body {
 
 /* ── DatePicker ───────────────────────────────────────────── */
 /*
-  Usage (with Alpine.js):
+  Built and driven by datepicker.js (plain JavaScript) on any
+  [data-hb-datepicker] wrapper. Its markup, for reference:
     <div class="hb-datepicker">
       <div class="hb-datepicker__header"> ... </div>
       <div class="hb-datepicker__grid"> ... </div>
