@@ -26,12 +26,14 @@
       gap: var(--spacing-16);
     }
     /* Install / code block */
+    /* Always dark, in both themes — like .code-block in docs.css */
     .install {
-      background: var(--ui-text);
+      background: #000000;
       border-radius: var(--border-radius-8);
       padding: var(--spacing-16) var(--spacing-24);
       overflow-x: auto;
     }
+    [data-theme="dark"] .install { border: 1px solid var(--ui-border); }
     .install pre {
       margin: 0;
       color: #e8e8e8;
