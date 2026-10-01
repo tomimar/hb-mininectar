@@ -14,11 +14,17 @@ description: Use when starting a new Hummingbird HTML prototype with Mini Nectar
    python3 scripts/new_prototype.py ~/Documents/Prototypes/<name> --template <template>
    ```
 
+   Any folder works — pass the path the user asked for. It must not exist yet.
+
    Add `--offline` if it will be opened without internet (it copies Mini Nectar,
    the fonts, Tailwind and Alpine into `vendor/`) and `--zip` to get `<name>.zip`
    to share. The version defaults to the latest release; `--version vX.Y.Z`
    pins another.
-3. Build inside the `PROTOTYPE AREA` of `index.html`.
+3. Build inside the `PROTOTYPE AREA` of `index.html`. Put overlays (modals) at
+   the end of that area, after the content.
+4. Check it: serve the folder (`python3 -m http.server 4600` from inside it) and
+   open `http://127.0.0.1:4600/` in the browser pane — a `file://` page can't be
+   driven there. Click through every component you used, then stop the server.
 
 ## Building
 
@@ -26,8 +32,9 @@ description: Use when starting a new Hummingbird HTML prototype with Mini Nectar
   — their examples are copy-paste ready.
 - Components work from their markup through `hb.js` (already loaded). Don't write
   JavaScript to open, close or reorder components.
-- Tailwind is for layout only (flex, grid, gap, padding with tokens). Never its
-  colors or type.
+- Tailwind is for layout only — flex, grid, gap, padding — with token values
+  through arbitrary values: `p-[var(--spacing-24)]`, `gap-[var(--spacing-16)]`.
+  Never its colors or type.
 - Alpine.js is optional, for the prototype's own logic: fake data, filters, tabs.
 - Every value is a token. A component the DS doesn't have yet goes in the
   prototype's `custom.css` (named `.hb-<component>`, tokens only); promote it later

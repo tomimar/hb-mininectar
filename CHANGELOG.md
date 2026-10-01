@@ -2,6 +2,14 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
+## Unreleased
+
+**Changed**
+- Table guide: how to combine selection and expandable rows in the same table.
+
+**Fixed**
+- `case-tab` template: the case tag reads "High risk" (sentence case).
+
 ## v1.0.0 — 2026-10-01
 
 First pinned release. Everything about Mini Nectar is now written once, in this repo, and the docs site, Claude Code and Claude Design all read from it.

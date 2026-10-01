@@ -93,6 +93,7 @@ Default (compact, full grid) and `--plain`:
 - **Primary action** — a real `hb-link` in the row-header cell, usually opening the detail view. It is underlined, so it's findable without hover.
 - **Row actions** — icon-only ghost buttons (`hb-btn--ghost hb-btn--sm`) in `__actions`, the last column.
 - **Selection** — a real `hb-checkbox` in `__select-col`, the first column. The header checkbox toggles all rows.
+- **Selection and expand together** — two narrow `__select-col` columns: the checkbox first, then the expander (its header is a `hb-visually-hidden` "Expand"). The detail row's `colspan` covers every column.
 
 Selection — `hb.js` makes the header checkbox tick every row, and keeps it checked or indeterminate as rows change:
 
