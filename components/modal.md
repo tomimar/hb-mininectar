@@ -44,6 +44,7 @@ All modals share one structure. The footer changes with the decision:
 - It closes on the `__close` button, on any button with `data-hb-modal-close` (Cancel, and the commit button in a prototype), on a click on the overlay, or on Escape.
 - On open, focus moves into the modal (the first field, else the first footer button) and Tab stays inside. On close, focus goes back to the button that opened it. The page behind doesn't scroll.
 - Only one modal at a time: opening another closes the first.
+- A modal written without `hidden` starts open — handy to show a screen with the decision already on it.
 - A prototype that needs to act on the choice listens for `hb-modal-close` on the overlay: `event.detail.by` is the button that closed it (none for Escape or an overlay click).
 
 Open each one, then close it every way — ×, Cancel, a click outside, Escape:

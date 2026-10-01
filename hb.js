@@ -812,6 +812,10 @@
     all('[data-hb-columns-for]', initColumnManager);
     all('table[data-hb-resizable]', initResizable);
     all('table', syncSelectAll);
+    // A modal written without `hidden` starts open
+    all('.hb-modal-overlay', function (overlay) {
+      if (!overlay.hidden && !openModal) openModal = { overlay: overlay, trigger: null };
+    });
   }
   function watchDom() {
     setUp(document);
