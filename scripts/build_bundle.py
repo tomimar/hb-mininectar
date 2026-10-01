@@ -33,7 +33,10 @@ def main():
     for bad in ("</script", "<!--"):
         if bad in js.lower():
             sys.exit(f"hb.js contains {bad!r}, which can't be inlined in a <script>")
-    js += f"\nwindow.{NAMESPACE} = window.{NAMESPACE} || {{ behaviour: 'hb.js' }};\n"
+    # Line 1: the header the artifact reads to recognise and load the bundle.
+    # No React components are exported — hb.js only adds behaviour.
+    header = '/* @ds-bundle: {"format":4,"namespace":"%s","components":[]} */\n' % NAMESPACE
+    js = header + js + f"\nwindow.{NAMESPACE} = window.{NAMESPACE} || {{ behaviour: 'hb.js' }};\n"
     (out / "bundle.js").write_text(js)
 
     print(f"Wrote {out / 'bundle.css'} and {out / 'bundle.js'}")
