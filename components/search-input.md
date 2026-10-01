@@ -60,12 +60,12 @@ Handled by CSS on the wrapper:
   </div>
   <div class="hb-search" style="border-color: var(--ui-interaction); box-shadow: 0 0 0 2px var(--ui-interaction-soft);">
     <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-    <input class="hb-search__input" type="text" aria-label="Search entities (focus)" value="Meridian">
+    <input class="hb-search__input" type="text" placeholder="Search entities…" aria-label="Search entities (focus)" value="Meridian">
     <button class="hb-search__clear" type="button" aria-label="Clear search"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
   <div class="hb-search">
     <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-    <input class="hb-search__input" type="text" aria-label="Search entities (filled)" value="Barclays">
+    <input class="hb-search__input" type="text" placeholder="Search entities…" aria-label="Search entities (filled)" value="Barclays">
     <button class="hb-search__clear" type="button" aria-label="Clear search"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
   </div>
   <div class="hb-search">
