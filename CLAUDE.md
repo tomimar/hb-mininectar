@@ -1,7 +1,7 @@
 # Hummingbird Nectar Design System
 
-This repository contains the CSS design system for Hummingbird HTML prototypes.
-It is hosted on GitHub Pages so any prototype can reference it with two lines.
+This repository is Mini Nectar: the design system for Hummingbird HTML prototypes — tokens, component styles, component behaviour and their guides.
+It is the single source for everything: the docs site (GitHub Pages), Claude Code prototypes and the Claude Design artifact all come from it.
 
 **Before designing or building anything, read [guidelines.md](guidelines.md)** — principles, content and tone, color, type, spacing, states and accessibility rules. It is the single source for these rules (the Claude Design artifact's README is a copy of it).
 
@@ -62,81 +62,14 @@ It updates `CHANGELOG.md`, tags `v1.1.0` and pushes. **As you make changes, note
 `tokens.css` is generated from it: never edit it by hand. Change `tokens.json`, then run `python3 scripts/build_tokens.py`.
 Dark mode: add `data-theme="dark"` to `<html>`.
 
-All CSS custom properties. Key ones:
+Every token, with its light value, dark value and a usage note, is in `tokens.json` (and on the Foundations pages of the docs site). Don't copy values from anywhere else — use the token name. The families:
 
-```css
-/* Backgrounds */
---ui-bg                  /* white */
---ui-bg-secondary        /* #f5f5f5 — page background, section bodies */
---ui-bg-tertiary         /* #e8e8e8 — disabled field background */
---ui-bg-overlay          /* white — floating panels (modals, dropdowns) */
-
-/* Borders */
---ui-border              /* #d1d1d1 */
---ui-border-secondary    /* #b8b8b8 — input borders */
-
-/* Text */
---ui-text                /* #000000 */
---ui-text-secondary      /* #595959 */
---ui-text-tertiary       /* #767676 */
---ui-text-knockout       /* #ffffff — text on dark backgrounds */
-
-/* Icons */
---ui-icon                /* #595959 */
-
-/* Interaction (blue) */
---ui-interaction         /* #0a6cff — primary buttons, focus */
---ui-interaction-contrast /* #003f9e — avatar bg, dark blue */
---ui-interaction-soft    /* #ccdeff — focus ring */
---ui-interaction-link    /* #005eeb — links */
-
-/* Status */
---ui-status-danger       /* #e32402 */
---ui-status-danger-text  /* #fd4f30 */
---ui-status-danger-soft  /* #fdd5ce */
---ui-status-success      /* #1e8536 */
---ui-status-success-contrast /* #065120 */
---ui-status-success-soft /* #c7ebcb */
---ui-status-warning      /* #f3ce45 */
---ui-status-warning-contrast /* #655106 */
-
-/* Expressive colors */
---ui-expressive-blue, --ui-expressive-blue-contrast, --ui-expressive-blue-soft
---ui-expressive-green, --ui-expressive-green-contrast, --ui-expressive-green-soft
---ui-expressive-red, --ui-expressive-red-contrast, --ui-expressive-red-soft
---ui-expressive-orange, --ui-expressive-orange-contrast, --ui-expressive-orange-soft
---ui-expressive-yellow, --ui-expressive-yellow-contrast, --ui-expressive-yellow-soft
---ui-expressive-purple, --ui-expressive-purple-contrast, --ui-expressive-purple-soft
---ui-expressive-pink, --ui-expressive-pink-contrast, --ui-expressive-pink-soft
---ui-expressive-brown, --ui-expressive-brown-contrast, --ui-expressive-brown-soft
-
-/* Spacing — use these instead of arbitrary px values */
---spacing-2 --spacing-4 --spacing-8 --spacing-12 --spacing-16
---spacing-24 --spacing-32 --spacing-40 --spacing-48 --spacing-56
---spacing-64 --spacing-72 --spacing-80
-
-/* Icon sizes — Material Icons via hb-icon */
---icon-size-sm           /* 16px — dense controls */
---icon-size-md           /* 20px — default */
---icon-size-lg           /* 24px — prominent / standalone */
-
-/* Border radius */
---border-radius-4        /* inputs, checkboxes */
---border-radius-8        /* buttons, cards, dropdowns */
---border-radius-16       /* modals */
---border-radius-round    /* avatars, pills */
-
-/* Elevation */
---shadow-overlay         /* 0 2px 6px rgba(0,0,0,0.16) — dropdowns */
---shadow-floating        /* 0 8px 24px rgba(0,0,0,0.14) — modals */
-
-/* Typography primitives */
---font-family            /* Inter */
---font-size-12 / --font-size-14 / --font-size-16
---font-weight-regular (400) / --font-weight-bold (500) / --font-weight-bolder (600)
---line-height-default (1.5) / --line-height-ui (1.6)
---tracking-none / --tracking-1
-```
+- **Color** — `--ui-bg*`, `--ui-border*`, `--ui-disabled*` (surfaces); `--ui-text*`, `--ui-icon*` (foreground); `--ui-interaction*` (actions, focus, links); `--ui-status-danger|success|warning*`; `--ui-expressive-<hue>[-soft|-contrast]` (categories, tags, avatars). Every hue has a base, a `-soft` ground and a `-contrast` ink for that ground.
+- **Spacing** — `--spacing-2` … `--spacing-80`, on a 4px base.
+- **Radius** — `--border-radius-4|8|16|round`.
+- **Elevation** — `--shadow-overlay|floating|action`.
+- **Type** — `--font-family`, `--font-mono`, `--font-size-12|14|16`, `--font-weight-regular|bold|bolder`, `--line-height-default|ui`, `--tracking-none|1`; text styles as classes: `hb-text-heading`, `hb-text-heading-small`, `hb-text-body(-bold)`, `hb-text-caption(-bold)`, `hb-text-all-caps`.
+- **Icon size** — `--icon-size-sm|md|lg`.
 
 ---
 
@@ -180,7 +113,7 @@ The Foundations pages have no content of their own: each one shows its section o
 | Table | `hb-table` (compact by default · `--plain`/`--comfortable`/`--row-link`/`--resizable`) + `hb-table-wrap`/`__caption`/`__rowheader`/`__link` (use with `hb-link`)/`__select-col`/`__actions`/`__cell--num`/`__expander`/`__detail-row`/`__overflow`/`__menu`/`__menu-item`/`__resizer`/`__footer`/`__footer-group`/`__footer-label`/`__pagination`/`__page-info` + `hb-visually-hidden`. Behaviour (select all, expandable rows, row menus, resize, Columns panel) from `hb.js` — cells carry `data-column`. Accessible column reorder/hide via `hb-column-manager` (`__panel`(`--end`)/`__group`/`__header`/`__title`/`__list`/`__item`/`__drag`/`__toggle`/`__name`/`__move`/`__move-btn`/`__spacer`/`__empty`) — Visible/Hidden groups, single-pointer alternatives to dragging (WCAG 2.5.7). The Columns panel reuses the shared **Drag** component. | https://tomimar.github.io/hb-mininectar/components/table.html |
 | Drag (reorderable list) | `hb-drag` (`--inline`) + `hb-drag__item`(`.is-dragging`/`.is-drop-target`)/`__handle`/`__content`/`__move`/`__move-btn`/`__nested`. Behaviour from `hb.js` (Up/Down buttons, drag, button names, live-region announcements, an `hb-reorder` event); shared polite live region `#hb-live-region`. Panel variant (buttons always visible) + inline variant (reveal on hover/focus); supports nested lists. Single-pointer alternative to dragging (WCAG 2.5.7) | https://tomimar.github.io/hb-mininectar/components/drag.html |
 | Expand (accordion, collapsible, collapse card, show more) | `hb-expand` + `__toggle`/`__chevron`/`__region`. Card: `hb-expand--card` (`--muted-header`) + `__header`/`__heading`/`__title`/`__meta`/`__actions`/`__body`/`__list`/`__skeleton`/`__skeleton-line`. Show more: `hb-expand--show-more` + `__footer`. The one component for showing and hiding content; replaces Nectar's HbExpand, HbAccordion and HbCollapseCard. The card header is ONE button inside a heading; actions sit next to it, never inside. "Accordion" = stacked cards with Expand all (a pattern, not a component) | https://tomimar.github.io/hb-mininectar/components/expand.html |
-| Sidenav | `hb-sidenav-area` (wrapper) + `hb-sidenav` + `__toggle` (top-left corner of the content, on its own line — same place on every page; the peek panel hangs from `--hb-sidenav-peek-top` so it never covers it)/`__section`/`__group`/`__item`(`--active`/`--disabled`)/`__icon`/`__label`/`__count`/`__submenu`/`__subitem`(`--active`). In-page section navigation with optional icons and counts, plus one level of submenu (caption bold, shown when its parent is the current section — no chevron, nothing to expand). No background or divider: it shares the surface of the content. Collapses away entirely (`is-collapsed`) to give width back to tables, and floats back over the content on hover (`is-peeking`) — the Notion pattern; click the toggle to pin it open. Width via `--hb-sidenav-width` | https://tomimar.github.io/hb-mininectar/components/sidenav.html |
+| Sidenav | `hb-sidenav-area` (wrapper) + `hb-sidenav` + `__toggle` (top-left corner of the content, same place on every page: right before the title, or alone on the first line when the content starts with a card or table; the peek panel hangs from `--hb-sidenav-peek-top` so it never covers it)/`__section`/`__group`/`__item`(`--active`/`--disabled`)/`__icon`/`__label`/`__count`/`__submenu`/`__subitem`(`--active`). In-page section navigation with optional icons and counts, plus one level of submenu (caption bold, shown when its parent is the current section — no chevron, nothing to expand). No background or divider: it shares the surface of the content. Collapses away entirely (`is-collapsed`) to give width back to tables, and floats back over the content on hover (`is-peeking`) — the Notion pattern; click the toggle to pin it open. `hb.js` handles all of it. Width via `--hb-sidenav-width` | https://tomimar.github.io/hb-mininectar/components/sidenav.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
 | Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`). Opens from `data-hb-modal-open`, closes on `data-hb-modal-close` — `hb.js` handles focus and Escape | https://tomimar.github.io/hb-mininectar/components/modal.html |
@@ -197,7 +130,7 @@ The Foundations pages have no content of their own: each one shows its section o
   <svg class="hb-date-input__icon" ...><!-- calendar icon --></svg>
 </div>
 
-<script src="https://tomimar.github.io/hb-mininectar/datepicker.js"></script>
+<script src="…/datepicker.js"></script>   <!-- the templates already load it, pinned -->
 ```
 
 It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with auto-inserted slashes, month/year navigation, and a Today shortcut. Values are always `MM/DD/YYYY`. See https://tomimar.github.io/hb-mininectar/components/date-input.html
