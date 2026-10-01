@@ -66,10 +66,10 @@
 
     var html = '';
 
-    // Wordmark + beta badge
+    // Wordmark + latest release (read from CHANGELOG.md below)
     html += '<div class="sidenav__back" style="gap: var(--spacing-8);">';
     html += '<span class="hb-text-body-bold" style="color: var(--ui-text);">Mini Nectar</span>';
-    html += '<span class="hb-text-caption-bold" style="background: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue-contrast); padding: 0 var(--spacing-8); border-radius: var(--border-radius-round);">beta</span>';
+    html += '<a id="hb-version" class="hb-text-caption-bold" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank" title="Changelog" style="background: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue-contrast); padding: 0 var(--spacing-8); border-radius: var(--border-radius-round); text-decoration: none;" hidden></a>';
     html += '</div>';
 
     // Foundations
@@ -99,6 +99,16 @@
     el.style.display = 'flex';
     el.style.flexDirection = 'column';
     el.innerHTML = html;
+
+    // The badge shows the latest release, so it never goes stale
+    fetch((inComponents ? '../' : '') + 'CHANGELOG.md')
+      .then(function (r) { return r.text(); })
+      .then(function (log) {
+        var m = log.match(/^## (v\d+\.\d+\.\d+)/m);
+        var badge = document.getElementById('hb-version');
+        if (m && badge) { badge.textContent = m[1]; badge.hidden = false; }
+      })
+      .catch(function () {});
 
     var footer = el.querySelector('.sidenav__footer');
     footer.style.marginTop = 'auto';
