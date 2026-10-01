@@ -42,6 +42,16 @@
       font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
       white-space: pre;
     }
+    .intro-h3 { margin: var(--spacing-24) 0 var(--spacing-8) 0; }
+    .intro-muted { color: var(--ui-text-secondary); margin: 0; }
+    .section > .install + .intro-muted, .section > .state-table-wrap + .intro-muted { margin-top: var(--spacing-12); }
+    .intro-quote {
+      background: var(--ui-bg-secondary);
+      border-radius: var(--border-radius-8);
+      padding: var(--spacing-16);
+      border-left: 3px solid var(--ui-interaction);
+    }
+    .intro-quote p { margin: 0; color: var(--ui-text); }
     .github-link {
       display: inline-flex;
       align-items: center;
@@ -61,35 +71,81 @@
 
     <!-- Header -->
     <header class="page-header">
-      <span class="page-header__badge hb-text-all-caps">Foundations</span>
+      <span class="page-header__badge hb-text-all-caps">Mini Nectar</span>
       <h1 class="page-header__title">A mini version of Nectar for prototyping</h1>
-      <p class="page-header__desc">hb-mininectar is a lightweight CSS design system built on top of Hummingbird's Nectar DS tokens. It gives Claude Code everything it needs to build consistent, on-brand HTML prototypes.</p>
+      <p class="page-header__desc">Hummingbird's design system for prototypes and experiments: tokens, components and their behaviour, close enough to Nectar that a prototype reads as the real thing. One source in this repo feeds these docs, Claude Code and Claude Design.</p>
     </header>
 
-    <!-- Using with Claude Code -->
+    <!-- Start a prototype -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">Using with Claude Code</h2>
+      <h2 class="section__title hb-text-heading-small">Start a prototype</h2>
+
+      <h3 class="hb-text-heading-small intro-h3">With Claude Code</h3>
       <div class="card">
-        <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Clone this repo and open it with Claude Code. The <code>CLAUDE.md</code> file gives Claude everything it needs to build a new prototype from scratch.</p>
-        <div class="install">
-          <pre>git clone https://github.com/tomimar/hb-mininectar</pre>
+        <p class="hb-text-body intro-muted">Open this repo in Claude Code and ask for it — the <code>new-prototype</code> skill does the rest:</p>
+        <div class="intro-quote">
+          <p class="hb-text-body-bold">"Create a prototype called alert-review with the case-tab template."</p>
         </div>
-        <p class="hb-text-body" style="color: var(--ui-text-secondary); margin:0">Then tell Claude Code what to build:</p>
-        <div style="background: var(--ui-bg-secondary); border-radius: var(--border-radius-8); padding: var(--spacing-16); border-left: 3px solid var(--ui-interaction);">
-          <p class="hb-text-body-bold" style="color: var(--ui-text); margin:0">"Create a new HTML prototype in a folder called [name]. Use the hb-mininectar design system."</p>
+        <p class="hb-text-body intro-muted">Or run it yourself, from the repo:</p>
+        <div class="install"><pre>python3 scripts/new_prototype.py ~/Documents/Prototypes/alert-review --template case-tab</pre></div>
+        <div class="state-table-wrap" style="margin: 0;">
+          <table class="state-table">
+            <thead><tr><th class="hb-text-caption-bold">Option</th><th class="hb-text-caption-bold">What it does</th></tr></thead>
+            <tbody>
+              <tr><td><code>--template blank</code> · <code>case-tab</code></td><td class="hb-text-body">An empty page, or a tab inside a Hummingbird case.</td></tr>
+              <tr><td><code>--zip</code></td><td class="hb-text-body">Also writes a zip, ready to share.</td></tr>
+              <tr><td><code>--offline</code></td><td class="hb-text-body">Puts everything it loads inside the folder (Mini Nectar, fonts, Tailwind, Alpine), so it opens with no internet.</td></tr>
+              <tr><td><code>--version v1.0.0</code></td><td class="hb-text-body">Pins another release. By default, the latest.</td></tr>
+            </tbody>
+          </table>
         </div>
-        <a href="https://github.com/tomimar/hb-mininectar/blob/main/CLAUDE.md" target="_blank" class="hb-text-caption" style="color: var(--ui-interaction-link); text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">Read Claude instructions →</a>
+      </div>
+
+      <h3 class="hb-text-heading-small intro-h3">With Claude Design</h3>
+      <div class="card">
+        <p class="hb-text-body intro-muted">Pick the <strong>Mini Nectar</strong> design system. It carries the same tokens, guidelines, component guides, styles and behaviour as this repo.</p>
+      </div>
+
+      <h3 class="hb-text-heading-small intro-h3">By hand</h3>
+      <div class="card">
+        <p class="hb-text-body intro-muted">Load Mini Nectar pinned to a release, so later changes never touch a prototype you've shared:</p>
+        <div class="install"><pre data-hb-version-text>&lt;!-- &lt;head&gt; --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/tokens.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/components.css"&gt;
+&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;   &lt;!-- layout only --&gt;
+
+&lt;!-- end of &lt;body&gt; --&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/hb.js"&gt;&lt;/script&gt;
+&lt;script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/datepicker.js"&gt;&lt;/script&gt;</pre></div>
+        <p class="hb-text-body intro-muted"><code>hb.js</code> makes components work from their markup — open, close, menus, reorder. Alpine.js is optional, only for a prototype's own logic. Copy any component's markup from its page here.</p>
       </div>
     </section>
 
-    <!-- Installation -->
+    <!-- Where things live -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">Installation</h2>
-      <p class="section__desc hb-text-body">Add two lines to the <code>&lt;head&gt;</code> of any HTML prototype. No build step, no dependencies.</p>
-      <div class="install">
-        <pre>&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css"&gt;
-&lt;link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css"&gt;</pre>
+      <h2 class="section__title hb-text-heading-small">Where things live</h2>
+      <p class="section__desc hb-text-body">Each thing is written once, in this repo. Everything else is generated from it.</p>
+      <div class="state-table-wrap">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">What</th><th class="hb-text-caption-bold">Written in</th><th class="hb-text-caption-bold">Shows up in</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">Tokens</td><td><code>tokens.json</code></td><td class="hb-text-body"><code>tokens.css</code> (via <code>scripts/build_tokens.py</code>), the Foundations pages, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Design rules</td><td><code>guidelines.md</code></td><td class="hb-text-body">The Foundations pages, Claude Design's README</td></tr>
+            <tr><td class="hb-text-body">Component guide and examples</td><td><code>components/&lt;name&gt;.md</code></td><td class="hb-text-body">Each component page, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Component styles</td><td><code>components.css</code></td><td class="hb-text-body">Every prototype, Claude Design (<code>bundle.css</code>)</td></tr>
+            <tr><td class="hb-text-body">Component behaviour</td><td><code>hb.js</code>, <code>datepicker.js</code></td><td class="hb-text-body">Every prototype, Claude Design (<code>bundle.js</code>)</td></tr>
+          </tbody>
+        </table>
       </div>
+      <p class="hb-text-body intro-muted">After a change, the <code>sync-artifact</code> skill copies it to Claude Design. To add a component, use the <code>add-component</code> skill.</p>
+    </section>
+
+    <!-- Versions -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Versions</h2>
+      <p class="section__desc hb-text-body">Latest release: <strong data-hb-version-text>{version}</strong>. A prototype stays on the release it was created with. When a set of changes is ready for new prototypes, publish a release:</p>
+      <div class="install"><pre>python3 scripts/release.py 1.1.0 "What changed, in one line"</pre></div>
+      <p class="hb-text-body intro-muted">MAJOR when a change can break an existing prototype, MINOR for anything new, PATCH for fixes. Every release is in the <a class="hb-link" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">changelog</a>.</p>
     </section>
 
     <!-- Repo -->
@@ -104,5 +160,15 @@
 </div>
 
 <script src="components/sidebar.js"></script>
+<script>
+  // The latest release comes from CHANGELOG.md, so this page never goes stale
+  fetch('CHANGELOG.md').then(function (r) { return r.text(); }).then(function (log) {
+    var m = log.match(/^## (v\d+\.\d+\.\d+)/m);
+    if (!m) return;
+    document.querySelectorAll('[data-hb-version-text]').forEach(function (el) {
+      el.innerHTML = el.innerHTML.split('{version}').join(m[1]);
+    });
+  }).catch(function () {});
+</script>
 </body>
 </html>
