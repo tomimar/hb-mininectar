@@ -16,6 +16,7 @@ prototype (a class renamed or removed, markup that must change), the
 MINOR number for anything new, the PATCH number for fixes.
 """
 import datetime
+import os
 import pathlib
 import re
 import subprocess
@@ -52,7 +53,10 @@ def main():
     log.write_text(head + entry + body)
 
     git("add", "CHANGELOG.md")
-    git("commit", "-m", f"Release {tag}: {summary}")
+    message = ["-m", f"Release {tag}: {summary}"]
+    if os.environ.get("RELEASE_TRAILER"):  # e.g. a Co-Authored-By line
+        message += ["-m", os.environ["RELEASE_TRAILER"]]
+    git("commit", *message)
     git("tag", "-a", tag, "-m", summary)
     git("push", "origin", "HEAD")
     git("push", "origin", tag)
