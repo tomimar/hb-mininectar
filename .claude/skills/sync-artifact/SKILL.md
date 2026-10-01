@@ -28,9 +28,10 @@ drift from Claude Code prototypes.
 ### Component guidelines and preview
 
 - **Guidelines** — written in the repo at `components/<component>.md`, never in the
-  artifact directly. Plain prose: first sentence is a one-line summary, then
-  structure (classes), variants, states, what the consumer supplies, when to use
-  it, and accessibility rules. Copy it as the artifact's `README.md`.
+  artifact directly. Same format as `components/button.md`: first line is a
+  one-sentence summary (no `#` title), then short `##` sections — variants,
+  sizes, structure, states, writing the label, when to use, Do, Don't, example.
+  Copy it as the artifact's `README.md`.
 - **preview.html** — line 1 is `<!-- @dsCard group="<Group>" height=<px> -->`,
   then one `<div>` fragment (no doctype) with a small `<style>` and static
   markup showing the main variants and states. No Alpine: set `aria-expanded`,

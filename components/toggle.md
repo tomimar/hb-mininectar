@@ -1,13 +1,72 @@
-A binary switch whose change takes effect immediately.
+A binary on/off switch whose change takes effect immediately.
 
-Structure: an `hb-toggle` label wrapping `hb-toggle__input`, an `hb-toggle__track`
-containing `hb-toggle__thumb`, and `hb-toggle__label`. Track 36×20px, thumb 16×16px,
-8px from track to label.
+## Size
 
-Use it for a setting that applies the moment it is flipped — a notification
-preference, a view filter. If the change only lands on Save, use a Checkbox: the
-toggle's whole meaning is immediacy.
+One size:
 
-The consumer supplies the label, phrased as the on state ("Include closed alerts"),
-never as a question and never as a pair of words. If the switch cannot be changed,
-disable it and say why beside it, as with an enforced policy.
+| Element | Size |
+|---|---|
+| Track | 36×20px |
+| Thumb | 16×16px |
+| Track to label | 8px |
+
+## Structure
+
+An `hb-toggle` label wraps a checkbox, the track with its thumb, and the text label.
+
+```html
+<label class="hb-toggle">
+  <input type="checkbox" class="hb-toggle__input">
+  <span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span>
+  <span class="hb-toggle__label">Include closed alerts</span>
+</label>
+```
+
+The label sits to the right of the toggle.
+
+## States
+
+Handled by CSS:
+
+| State | Trigger | Track color |
+|---|---|---|
+| On | `checked` | `ui-interaction` |
+| Off | Resting | `ui-disabled-soft` |
+| On, disabled | `checked` + `disabled` | `ui-interaction-soft` |
+| Off, disabled | `disabled` | `ui-bg-tertiary` |
+
+If the switch cannot be changed, disable it and say why next to it (for example, an enforced policy).
+
+## Writing the label
+
+- Short, in sentence case, phrased as the on state: "Include closed alerts", "Email notifications".
+- Never a question. Never a pair of words ("On/Off").
+
+## When to use
+
+| Use | When |
+|---|---|
+| Toggle | A setting that applies the moment it is flipped: a notification preference, a view filter. |
+| Checkbox | The change only lands on Save, or needs confirmation. A toggle's whole meaning is immediacy. |
+
+## Do
+
+- Use toggles for immediate, binary settings.
+- Keep the on and off states visually distinct.
+
+## Don't
+
+- Don't use toggles for a group of multiple selections. Use checkboxes.
+- Don't leave a toggle without a visible text label.
+- Don't use a toggle for a destructive action without confirmation.
+
+## Example
+
+```html
+<label class="hb-toggle">
+  <input type="checkbox" class="hb-toggle__input" checked disabled>
+  <span class="hb-toggle__track"><span class="hb-toggle__thumb"></span></span>
+  <span class="hb-toggle__label">Require second review for SAR filing</span>
+</label>
+<p class="hb-field__help">Set by your organization's compliance policy.</p>
+```
