@@ -64,6 +64,9 @@
       ['Loader',          'loader.html'],
     ];
 
+    // Exposed for the Introduction page's counts
+    window.hbDocsNav = { foundations: foundations.slice(1), components: components };
+
     var html = '';
 
     // Wordmark + latest release (read from CHANGELOG.md below)

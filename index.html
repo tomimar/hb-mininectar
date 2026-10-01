@@ -52,6 +52,29 @@
       border-left: 3px solid var(--ui-interaction);
     }
     .intro-quote p { margin: 0; color: var(--ui-text); }
+    /* Introduction layout */
+    .intro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-16); }
+    .intro-card { gap: var(--spacing-8); align-items: flex-start; }
+    .intro-card h3, .intro-steps h3 { margin: 0; }
+    .intro-card__icon { color: var(--ui-interaction); }
+    .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-12); }
+    .intro-list li { display: flex; gap: var(--spacing-12); align-items: flex-start; }
+    .intro-list__icon { color: var(--ui-interaction); margin-top: 1px; }
+    .intro-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-16); }
+    .intro-steps .card { gap: var(--spacing-8); }
+    .intro-steps__num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: var(--border-radius-round);
+      background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast);
+      font-weight: var(--font-weight-bolder);
+    }
+    .intro-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--spacing-16); }
+    .intro-stat { gap: var(--spacing-4); text-decoration: none; color: inherit; }
+    .intro-stat:hover { border-color: var(--ui-border-secondary); }
+    .intro-stat__value { font-size: 32px; line-height: 1.2; font-weight: var(--font-weight-bolder); color: var(--ui-text); }
+    .intro-more { display: flex; flex-direction: column; gap: var(--spacing-8); margin-top: var(--spacing-24); }
+    @media (max-width: 640px) { .intro-grid { grid-template-columns: 1fr; } }
+    .intro-footer { display: flex; align-items: center; gap: var(--spacing-16); }
     .github-link {
       display: inline-flex;
       align-items: center;
@@ -71,44 +94,124 @@
 
     <!-- Header -->
     <header class="page-header">
-      <span class="page-header__badge hb-text-all-caps">Mini Nectar</span>
-      <h1 class="page-header__title">A mini version of Nectar for prototyping</h1>
-      <p class="page-header__desc">Hummingbird's design system for prototypes and experiments: tokens, components and their behaviour, close enough to Nectar that a prototype reads as the real thing. One source in this repo feeds these docs, Claude Code and Claude Design.</p>
+      <span class="page-header__badge hb-text-all-caps">Introduction</span>
+      <h1 class="page-header__title">Mini Nectar</h1>
+      <p class="page-header__desc">Hummingbird's design system for prototypes and experiments. It stays close enough to Nectar that a prototype looks like the real product, and loose enough to try what Nectar doesn't have yet.</p>
     </header>
 
-    <!-- Start a prototype -->
+    <!-- 1. What it's for -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">Start a prototype</h2>
+      <h2 class="section__title hb-text-heading-small">What it's for</h2>
+      <div class="intro-grid">
+        <div class="card intro-card">
+          <span class="hb-icon hb-icon--lg intro-card__icon" aria-hidden="true">web</span>
+          <h3 class="hb-text-body-bold">Prototype a screen or a flow</h3>
+          <p class="hb-text-body intro-muted">Put an idea in front of analysts, product or leadership in hours, not sprints.</p>
+        </div>
+        <div class="card intro-card">
+          <span class="hb-icon hb-icon--lg intro-card__icon" aria-hidden="true">science</span>
+          <h3 class="hb-text-body-bold">Try a component before Nectar has it</h3>
+          <p class="hb-text-body intro-muted">Build it in a prototype, test it with real content, then promote it here.</p>
+        </div>
+        <div class="card intro-card">
+          <span class="hb-icon hb-icon--lg intro-card__icon" aria-hidden="true">integration_instructions</span>
+          <h3 class="hb-text-body-bold">Guide development</h3>
+          <p class="hb-text-body intro-muted">Every component comes with its spec: structure, states, behaviour and accessibility rules.</p>
+        </div>
+        <div class="card intro-card">
+          <span class="hb-icon hb-icon--lg intro-card__icon" aria-hidden="true">auto_awesome</span>
+          <h3 class="hb-text-body-bold">Prototype with Claude</h3>
+          <p class="hb-text-body intro-muted">Claude Code and Claude Design already know the system — ask for a screen and it follows the rules.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. What you get -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">What you get</h2>
+      <ul class="intro-list">
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">palette</span><span><strong>It looks like Hummingbird.</strong> Nectar's tokens, type and components, in light and dark mode.</span></li>
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">bolt</span><span><strong>Components work without code.</strong> Menus, modals, tables and reorderable lists behave from their markup through <code>hb.js</code>.</span></li>
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">accessibility_new</span><span><strong>Accessible by default.</strong> Visible focus, full keyboard support and an alternative to every drag.</span></li>
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">sync</span><span><strong>One source.</strong> What changes here reaches these docs, Claude Code and Claude Design.</span></li>
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">inventory_2</span><span><strong>Safe to share.</strong> Prototypes pin a version, so later changes never break them — as a zip, even offline.</span></li>
+      </ul>
+    </section>
+
+    <!-- 3. How it works -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">How it works</h2>
+      <ol class="intro-steps">
+        <li class="card">
+          <span class="intro-steps__num">1</span>
+          <h3 class="hb-text-body-bold">Start it</h3>
+          <p class="hb-text-body intro-muted">Ask Claude for a prototype, or run one command. You get a folder from a template, pinned to the latest version.</p>
+        </li>
+        <li class="card">
+          <span class="intro-steps__num">2</span>
+          <h3 class="hb-text-body-bold">Build it</h3>
+          <p class="hb-text-body intro-muted">Copy each component's example from these docs and fill it with real content.</p>
+        </li>
+        <li class="card">
+          <span class="intro-steps__num">3</span>
+          <h3 class="hb-text-body-bold">Share it</h3>
+          <p class="hb-text-body intro-muted">Send the zip. It opens in any browser by double-click, no server needed.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- 4. What's inside -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">What's inside</h2>
+      <div class="intro-stats">
+        <a class="card intro-stat" href="components/button.html">
+          <span class="intro-stat__value" data-hb-count="components">—</span>
+          <span class="hb-text-body intro-muted">components</span>
+        </a>
+        <a class="card intro-stat" href="components/colors.html">
+          <span class="intro-stat__value" data-hb-count="tokens">—</span>
+          <span class="hb-text-body intro-muted">tokens</span>
+        </a>
+        <a class="card intro-stat" href="components/colors.html">
+          <span class="intro-stat__value">2</span>
+          <span class="hb-text-body intro-muted">themes, light and dark</span>
+        </a>
+        <a class="card intro-stat" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">
+          <span class="intro-stat__value" data-hb-version-text>{version}</span>
+          <span class="hb-text-body intro-muted">current version</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Mini Nectar and Nectar -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Mini Nectar and Nectar</h2>
+      <div class="hb-alert hb-alert--info">
+        <span class="hb-icon hb-alert__icon" aria-hidden="true">info</span>
+        <p class="hb-alert__content">Mini Nectar is for prototyping and trying ideas — it isn't production code. When an idea becomes a feature, it is built with Nectar, using the prototype and the component's guide as the spec.</p>
+      </div>
+    </section>
+
+    <!-- 6. Get started -->
+    <section class="section" id="get-started">
+      <h2 class="section__title hb-text-heading-small">Get started</h2>
 
       <h3 class="hb-text-heading-small intro-h3">With Claude Code</h3>
       <div class="card">
-        <p class="hb-text-body intro-muted">Open this repo in Claude Code and ask for it — the <code>new-prototype</code> skill does the rest:</p>
-        <div class="intro-quote">
-          <p class="hb-text-body-bold">"Create a prototype called alert-review with the case-tab template."</p>
-        </div>
+        <p class="hb-text-body intro-muted">Open this repo in Claude Code and ask for it:</p>
+        <div class="intro-quote"><p class="hb-text-body-bold">"Create a prototype called alert-review with the case-tab template."</p></div>
         <p class="hb-text-body intro-muted">Or run it yourself, from the repo:</p>
-        <div class="install"><pre>python3 scripts/new_prototype.py ~/Documents/Prototypes/alert-review --template case-tab</pre></div>
-        <div class="state-table-wrap" style="margin: 0;">
-          <table class="state-table">
-            <thead><tr><th class="hb-text-caption-bold">Option</th><th class="hb-text-caption-bold">What it does</th></tr></thead>
-            <tbody>
-              <tr><td><code>--template blank</code> · <code>case-tab</code></td><td class="hb-text-body">An empty page, or a tab inside a Hummingbird case.</td></tr>
-              <tr><td><code>--zip</code></td><td class="hb-text-body">Also writes a zip, ready to share.</td></tr>
-              <tr><td><code>--offline</code></td><td class="hb-text-body">Puts everything it loads inside the folder (Mini Nectar, fonts, Tailwind, Alpine), so it opens with no internet.</td></tr>
-              <tr><td><code>--version v1.0.0</code></td><td class="hb-text-body">Pins another release. By default, the latest.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <div class="install"><pre>python3 scripts/new_prototype.py ~/Documents/Prototypes/alert-review --template case-tab --zip</pre></div>
+        <p class="hb-text-body intro-muted"><code>--template blank</code> or <code>case-tab</code> · <code>--zip</code> to share · <code>--offline</code> to open with no internet · <code>--version</code> to pin another release.</p>
       </div>
 
       <h3 class="hb-text-heading-small intro-h3">With Claude Design</h3>
       <div class="card">
-        <p class="hb-text-body intro-muted">Pick the <strong>Mini Nectar</strong> design system. It carries the same tokens, guidelines, component guides, styles and behaviour as this repo.</p>
+        <p class="hb-text-body intro-muted">Pick the <strong>Mini Nectar</strong> design system. It carries the same tokens, guidelines, components and behaviour as this repo.</p>
       </div>
 
       <h3 class="hb-text-heading-small intro-h3">By hand</h3>
       <div class="card">
-        <p class="hb-text-body intro-muted">Load Mini Nectar pinned to a release, so later changes never touch a prototype you've shared:</p>
         <div class="install"><pre data-hb-version-text>&lt;!-- &lt;head&gt; --&gt;
 &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/tokens.css"&gt;
 &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/components.css"&gt;
@@ -117,43 +220,65 @@
 &lt;!-- end of &lt;body&gt; --&gt;
 &lt;script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/hb.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{version}/datepicker.js"&gt;&lt;/script&gt;</pre></div>
-        <p class="hb-text-body intro-muted"><code>hb.js</code> makes components work from their markup — open, close, menus, reorder. Alpine.js is optional, only for a prototype's own logic. Copy any component's markup from its page here.</p>
+      </div>
+
+      <div class="intro-more">
+        <div class="hb-expand hb-expand--card">
+          <div class="hb-expand__header">
+            <h3 class="hb-expand__heading">
+              <button type="button" class="hb-expand__toggle" id="where-btn" aria-controls="where" aria-expanded="false">
+                <span class="hb-expand__title">Where things live</span>
+                <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+              </button>
+            </h3>
+          </div>
+          <div class="hb-expand__region" id="where" role="region" aria-labelledby="where-btn" hidden>
+            <div class="hb-expand__body">
+              <p class="hb-text-body intro-muted" style="margin-bottom: var(--spacing-12);">Each thing is written once, in this repo. Everything else is generated from it.</p>
+              <div class="state-table-wrap" style="margin: 0;">
+                <table class="state-table">
+                  <thead><tr><th class="hb-text-caption-bold">What</th><th class="hb-text-caption-bold">Written in</th><th class="hb-text-caption-bold">Shows up in</th></tr></thead>
+                  <tbody>
+                    <tr><td class="hb-text-body">Tokens</td><td><code>tokens.json</code></td><td class="hb-text-body"><code>tokens.css</code>, the Foundations pages, Claude Design</td></tr>
+                    <tr><td class="hb-text-body">Design rules</td><td><code>guidelines.md</code></td><td class="hb-text-body">The Foundations pages, Claude Design</td></tr>
+                    <tr><td class="hb-text-body">Component guide and examples</td><td><code>components/&lt;name&gt;.md</code></td><td class="hb-text-body">Each component page, Claude Design</td></tr>
+                    <tr><td class="hb-text-body">Component styles</td><td><code>components.css</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
+                    <tr><td class="hb-text-body">Component behaviour</td><td><code>hb.js</code>, <code>datepicker.js</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="hb-text-body intro-muted" style="margin-top: var(--spacing-12);">After a change, the <code>sync-artifact</code> skill copies it to Claude Design. To add a component, use the <code>add-component</code> skill.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hb-expand hb-expand--card">
+          <div class="hb-expand__header">
+            <h3 class="hb-expand__heading">
+              <button type="button" class="hb-expand__toggle" id="versions-btn" aria-controls="versions" aria-expanded="false">
+                <span class="hb-expand__title">Versions</span>
+                <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
+              </button>
+            </h3>
+          </div>
+          <div class="hb-expand__region" id="versions" role="region" aria-labelledby="versions-btn" hidden>
+            <div class="hb-expand__body">
+              <p class="hb-text-body intro-muted" style="margin-bottom: var(--spacing-12);">A prototype stays on the version it was created with. When a set of changes is ready for new prototypes, publish a release:</p>
+              <div class="install"><pre>python3 scripts/release.py 1.1.0 "What changed, in one line"</pre></div>
+              <p class="hb-text-body intro-muted" style="margin-top: var(--spacing-12);">MAJOR when a change can break an existing prototype, MINOR for anything new, PATCH for fixes. Every release is in the <a class="hb-link" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">changelog</a>.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- Where things live -->
-    <section class="section">
-      <h2 class="section__title hb-text-heading-small">Where things live</h2>
-      <p class="section__desc hb-text-body">Each thing is written once, in this repo. Everything else is generated from it.</p>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">What</th><th class="hb-text-caption-bold">Written in</th><th class="hb-text-caption-bold">Shows up in</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body">Tokens</td><td><code>tokens.json</code></td><td class="hb-text-body"><code>tokens.css</code> (via <code>scripts/build_tokens.py</code>), the Foundations pages, Claude Design</td></tr>
-            <tr><td class="hb-text-body">Design rules</td><td><code>guidelines.md</code></td><td class="hb-text-body">The Foundations pages, Claude Design's README</td></tr>
-            <tr><td class="hb-text-body">Component guide and examples</td><td><code>components/&lt;name&gt;.md</code></td><td class="hb-text-body">Each component page, Claude Design</td></tr>
-            <tr><td class="hb-text-body">Component styles</td><td><code>components.css</code></td><td class="hb-text-body">Every prototype, Claude Design (<code>bundle.css</code>)</td></tr>
-            <tr><td class="hb-text-body">Component behaviour</td><td><code>hb.js</code>, <code>datepicker.js</code></td><td class="hb-text-body">Every prototype, Claude Design (<code>bundle.js</code>)</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="hb-text-body intro-muted">After a change, the <code>sync-artifact</code> skill copies it to Claude Design. To add a component, use the <code>add-component</code> skill.</p>
-    </section>
-
-    <!-- Versions -->
-    <section class="section">
-      <h2 class="section__title hb-text-heading-small">Versions</h2>
-      <p class="section__desc hb-text-body">Latest release: <strong data-hb-version-text>{version}</strong>. A prototype stays on the release it was created with. When a set of changes is ready for new prototypes, publish a release:</p>
-      <div class="install"><pre>python3 scripts/release.py 1.1.0 "What changed, in one line"</pre></div>
-      <p class="hb-text-body intro-muted">MAJOR when a change can break an existing prototype, MINOR for anything new, PATCH for fixes. Every release is in the <a class="hb-link" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">changelog</a>.</p>
-    </section>
-
-    <!-- Repo -->
-    <section class="section" style="margin-bottom:0;">
+    <!-- Footer -->
+    <section class="section intro-footer" style="margin-bottom: 0;">
       <a href="https://github.com/tomimar/hb-mininectar" target="_blank" class="hb-btn hb-btn--secondary hb-btn--lg github-link">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
         View on GitHub
       </a>
+      <a class="hb-link" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">Changelog</a>
     </section>
 
   </main>
@@ -161,14 +286,28 @@
 
 <script src="components/sidebar.js"></script>
 <script>
-  // The latest release comes from CHANGELOG.md, so this page never goes stale
+  // Counts and the latest release come from the sources, so this page never goes stale
+  function fill(attr, value) {
+    document.querySelectorAll('[' + attr + ']').forEach(function (el) {
+      if (attr === 'data-hb-version-text') el.innerHTML = el.innerHTML.split('{version}').join(value);
+      else if (el.getAttribute(attr) === value.key) el.textContent = value.n;
+    });
+  }
   fetch('CHANGELOG.md').then(function (r) { return r.text(); }).then(function (log) {
     var m = log.match(/^## (v\d+\.\d+\.\d+)/m);
-    if (!m) return;
-    document.querySelectorAll('[data-hb-version-text]').forEach(function (el) {
-      el.innerHTML = el.innerHTML.split('{version}').join(m[1]);
-    });
+    if (m) fill('data-hb-version-text', m[1]);
   }).catch(function () {});
+  fetch('tokens.json').then(function (r) { return r.json(); }).then(function (t) {
+    var n = 0;
+    Object.keys(t).forEach(function (k) { if (t[k] && t[k].tokens) n += t[k].tokens.length; });
+    fill('data-hb-count', { key: 'tokens', n: n });
+  }).catch(function () {});
+  function countComponents() {
+    if (window.hbDocsNav) fill('data-hb-count', { key: 'components', n: window.hbDocsNav.components.length });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(countComponents, 0); });
+  else countComponents();
 </script>
+<script src="hb.js"></script>
 </body>
 </html>
