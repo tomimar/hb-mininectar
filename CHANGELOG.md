@@ -2,7 +2,9 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
-## Unreleased
+## v1.0.1 — 2026-10-01
+
+Guide clarifications from a fresh-session test
 
 **Changed**
 - Table guide: how to combine selection and expandable rows in the same table.
