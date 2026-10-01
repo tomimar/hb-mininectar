@@ -7,28 +7,42 @@ It is hosted on GitHub Pages so any prototype can reference it with two lines.
 
 ## How to use in a new prototype
 
-Add these two lines in the `<head>` of any HTML file:
+**Start every prototype with the `new-prototype` skill** — it runs:
 
-```html
-<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/tokens.css">
-<link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css">
+```bash
+python3 scripts/new_prototype.py ~/Documents/Prototypes/<name> --template blank   # or case-tab
 ```
 
-Add the component behaviour script (open/close, expand all… — plain JavaScript, no dependencies) at the end of `<body>`:
+It copies a template from `templates/` and pins every Mini Nectar link to the latest release (`https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/…`), so later changes to the design system never change a prototype already shared. Add `--offline` to put everything it loads inside the folder (opens with no internet) and `--zip` to get a zip ready to share.
+
+What a prototype loads, in order:
 
 ```html
-<script src="https://tomimar.github.io/hb-mininectar/hb.js"></script>
+<!-- <head> -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/tokens.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/components.css">
+<link rel="stylesheet" href="custom.css">              <!-- components not in the DS yet -->
+<script src="https://cdn.tailwindcss.com"></script>   <!-- layout utilities only -->
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>  <!-- optional -->
+
+<!-- end of <body> -->
+<script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/hb.js"></script>          <!-- component behaviour -->
+<script src="https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/datepicker.js"></script>  <!-- date picker -->
 ```
 
-Add Tailwind for layout only. Alpine.js is optional — use it for the prototype's own logic (filters, tabs, fake data), never to make a component work:
+- `hb.js` makes components work from their markup (open/close, menus, reorder…). Alpine.js is optional — only for the prototype's own logic (filters, tabs, fake data), never to make a component work.
+- `https://tomimar.github.io/hb-mininectar/…` always serves the latest version: fine for the docs site and quick experiments, not for a prototype you share.
+- Prototypes are static HTML files opened via `file://` — no server needed. They are shared as a zip folder.
 
-```html
-<script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>  <!-- optional -->
+## Releases
+
+A release is a snapshot prototypes can pin to. After a set of changes, publish one:
+
+```bash
+python3 scripts/release.py 1.1.0 "Add hb-foo; fix bar focus ring"
 ```
 
-Prototypes are static HTML files opened via `file://` — no server needed.
-They are shared as a zip folder.
+It updates `CHANGELOG.md`, tags `v1.1.0` and pushes. Bump MAJOR when a change can break an existing prototype (a class renamed or removed, markup that must change), MINOR for anything new, PATCH for fixes.
 
 ---
 
