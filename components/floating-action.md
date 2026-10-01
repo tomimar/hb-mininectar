@@ -7,6 +7,11 @@ A pill-shaped, shadowed action that floats over content instead of sitting in it
 | `--primary` | The single most important quick action in a context. | More than one per context. |
 | `--secondary` | Contextual actions that stay available without dominating. | Replacing the primary. |
 
+```html preview
+<button class="hb-fab hb-fab--primary">New case</button>
+<button class="hb-fab hb-fab--secondary">Filter alerts</button>
+```
+
 ## Sizes
 
 | Size | Class | Height | Padding / gap |
@@ -14,11 +19,34 @@ A pill-shaped, shadowed action that floats over content instead of sitting in it
 | Large | — (default) | 40px | 8px 12px · gap 8px |
 | Small | `--sm` | 32px | 8px · gap 4px |
 
+```html preview
+<button class="hb-fab hb-fab--primary">New case</button>
+<button class="hb-fab hb-fab--primary hb-fab--sm">New case</button>
+```
+
 ## Icons
 
 - `hb-fab__icon` is always 20×20px. Place it before or after the label, or alone.
 - `--icon` makes a square icon-only control (40px, or 32px with `--sm`). It needs an `aria-label`.
-- Use an SVG with `hb-fab__icon`. It follows the text color through `currentColor`.
+- Use an `hb-icon` or an SVG with `hb-fab__icon`. Both follow the button's text color.
+
+```html preview
+<button class="hb-fab hb-fab--primary">
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+  Filter alerts
+</button>
+<button class="hb-fab hb-fab--primary">
+  Open next alert
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 5l7 7-7 7"/></svg>
+</button>
+<button class="hb-fab hb-fab--secondary hb-fab--icon" aria-label="New case">
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"/></svg>
+</button>
+<button class="hb-fab hb-fab--secondary">
+  Columns
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+</button>
+```
 
 ## States
 
@@ -29,6 +57,15 @@ A pill-shaped, shadowed action that floats over content instead of sitting in it
 | Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute or `--disabled` | `ui-disabled` text on `ui-disabled-soft`; not clickable. |
 | Selected | `--selected` | Black (`ui-text`) background, knockout text. The persistent on state — e.g. a filter that is applied. |
+
+```html preview
+<button class="hb-fab hb-fab--primary">Default</button>
+<!-- Hover and focus are forced here so you can see them -->
+<button class="hb-fab hb-fab--primary" style="background: var(--ui-interaction-highlighted);">Hover</button>
+<button class="hb-fab hb-fab--primary" style="outline: 2px solid var(--ui-interaction); outline-offset: 1px;">Focus</button>
+<button class="hb-fab hb-fab--primary" disabled>Disabled</button>
+<button class="hb-fab hb-fab--selected">Selected</button>
+```
 
 ## Writing the label
 
@@ -55,11 +92,11 @@ A pill-shaped, shadowed action that floats over content instead of sitting in it
 
 ## Example
 
-```html
+```html preview
 <button class="hb-fab hb-fab--secondary hb-fab--selected">
-  <svg class="hb-fab__icon" aria-hidden="true">…</svg> Filter alerts
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg> Filter alerts
 </button>
 <button class="hb-fab hb-fab--primary hb-fab--icon" aria-label="New case">
-  <svg class="hb-fab__icon" aria-hidden="true">…</svg>
+  <svg class="hb-fab__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14M5 12h14"/></svg>
 </button>
 ```

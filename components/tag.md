@@ -15,6 +15,21 @@ Each color paints a `-soft` background with its `-contrast` text, so it keeps it
 | Purple, pink, brown | `--purple`, `--pink`, `--brown` | Categories and labels that are not a status. |
 | Outlined | `--outlined` | Low-emphasis metadata, counts, neutral chips. |
 
+```html preview
+<div class="hb-tag-group">
+  <span class="hb-tag hb-tag--blue">Open</span>
+  <span class="hb-tag hb-tag--green">Resolved</span>
+  <span class="hb-tag hb-tag--red">Cancelled</span>
+  <span class="hb-tag hb-tag--yellow">Pending</span>
+  <span class="hb-tag hb-tag--orange">In review</span>
+  <span class="hb-tag hb-tag--grey">Submitted</span>
+  <span class="hb-tag hb-tag--purple">Wire transfer</span>
+  <span class="hb-tag hb-tag--pink">Retail</span>
+  <span class="hb-tag hb-tag--brown">Cash</span>
+  <span class="hb-tag hb-tag--outlined">12 alerts</span>
+</div>
+```
+
 Keep the mapping stable across the product: if blue means Open on one screen, it means Open on every screen.
 
 ## Structure
@@ -25,6 +40,31 @@ Keep the mapping stable across the product: if blue means Open on one screen, it
 - Wrap several tags in `hb-tag-group` for a wrapping row with even spacing.
 - `hb-tag--add` is a 24×24px icon-only button that adds a tag to a group. Give it an `aria-label`.
 - A tag is at most 240px wide; longer text is cut with an ellipsis.
+
+With a leading icon, a remove button, the add button and a long label that truncates:
+
+```html preview
+<div class="hb-tag-group">
+  <span class="hb-tag hb-tag--green">
+    <span class="hb-tag__inner">
+      <span class="hb-icon hb-icon--sm" aria-hidden="true">check_circle</span>
+      <span>Resolved</span>
+    </span>
+  </span>
+  <span class="hb-tag hb-tag--blue">
+    Structuring
+    <button class="hb-tag__remove" aria-label="Remove filter: Structuring">×</button>
+  </span>
+  <span class="hb-tag hb-tag--grey">
+    <span class="hb-tag__inner">
+      <span>Northwind Trading Company Limited, offshore subsidiary</span>
+    </span>
+  </span>
+  <button class="hb-tag hb-tag--add" aria-label="Add tag">
+    <span class="hb-icon hb-icon--sm" aria-hidden="true">add</span>
+  </button>
+</div>
+```
 
 ## Writing the label
 
@@ -43,7 +83,7 @@ Keep the mapping stable across the product: if blue means Open on one screen, it
 
 ## Example
 
-```html
+```html preview
 <div class="hb-tag-group">
   <span class="hb-tag hb-tag--blue">Open</span>
   <span class="hb-tag hb-tag--orange">In review</span>

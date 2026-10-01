@@ -13,6 +13,29 @@ Always add a type modifier. `--info` is the default choice.
 
 Each type paints a `-soft` fill, a matching solid border and `-contrast` text. The icon and the words carry the status together — never the color alone.
 
+Each type:
+
+```html preview
+<div style="display: flex; flex-direction: column; gap: var(--spacing-12); width: 100%;">
+  <div class="hb-alert hb-alert--info">
+    <span class="hb-icon hb-alert__icon" aria-hidden="true">info</span>
+    <p class="hb-alert__content">Scheduled maintenance on Sunday from 2am to 4am.</p>
+  </div>
+  <div class="hb-alert hb-alert--success">
+    <span class="hb-icon hb-alert__icon" aria-hidden="true">check_circle</span>
+    <p class="hb-alert__content">Case CASE-4821 was escalated to the SAR team.</p>
+  </div>
+  <div class="hb-alert hb-alert--warning">
+    <span class="hb-icon hb-alert__icon" aria-hidden="true">warning</span>
+    <p class="hb-alert__content">KYC for this entity expires in 5 days.</p>
+  </div>
+  <div class="hb-alert hb-alert--error">
+    <span class="hb-icon hb-alert__icon" aria-hidden="true">error</span>
+    <p class="hb-alert__content">Transactions could not be loaded. Refresh the page.</p>
+  </div>
+</div>
+```
+
 ## Structure
 
 - `hb-alert` + type modifier.
@@ -59,13 +82,15 @@ Each type paints a `-soft` fill, a matching solid border and `-contrast` text. T
 
 ## Example
 
-```html
-<div class="hb-alert hb-alert--error" role="alert">
-  <svg class="hb-alert__icon" aria-hidden="true">…</svg>
+```html preview
+<div class="hb-alert hb-alert--error" role="alert" style="width: 100%;">
+  <span class="hb-icon hb-alert__icon" aria-hidden="true">error</span>
   <p class="hb-alert__content">
     The SAR draft could not be saved. Try again, or
     <a class="hb-alert__link" href="#">download a copy</a>.
   </p>
-  <button class="hb-alert__dismiss" aria-label="Dismiss">…</button>
+  <button class="hb-alert__dismiss" aria-label="Dismiss">
+    <span class="hb-icon" aria-hidden="true">close</span>
+  </button>
 </div>
 ```

@@ -7,7 +7,20 @@ Indeterminate progress, for waits the product cannot measure.
 | Circular | `--circular` | 20px spinner. | Component-level loading: inside the panel, card or button that is loading. |
 | Linear | `--linear` | Full-width 4px bar. | Page- or section-level loading, at the top of the region it describes. |
 
+```html preview
+<div style="display: flex; flex-direction: column; gap: var(--spacing-24); width: 100%;">
+  <span class="hb-loader hb-loader--circular"></span>
+  <div class="hb-loader hb-loader--linear"></div>
+</div>
+```
+
 `--contrast` is the circular loader on a dark or saturated background, e.g. a loading Toast.
+
+```html preview
+<div style="display: flex; justify-content: center; padding: var(--spacing-32); background: var(--ui-text); border-radius: var(--border-radius-8);">
+  <span class="hb-loader hb-loader--circular hb-loader--contrast"></span>
+</div>
+```
 
 ## When to use
 

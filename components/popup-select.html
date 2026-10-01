@@ -10,210 +10,22 @@
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from popup-select.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Popup select</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A popup select is a floating panel for choosing one or more options from a predefined list. It is triggered outside of form contexts — toolbar filters, table-row actions, segment pickers — where a full form field would be too heavy. Each option pairs a checkbox with a label, so users can select several values at once.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Overview / Anatomy -->
-    <section class="section" id="anatomy">
-      <h2 class="section__title hb-text-heading-small">Overview / Anatomy</h2>
-      <p class="section__desc hb-text-body">The popup select is composed of two regions: a header that names the selection and offers a way to clear it, and a scrollable list of selectable options. It floats above content and is dismissed when the user clicks away or confirms.</p>
-
-      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
-        <div class="hb-popup-select" style="width: 280px;">
-          <div class="hb-popup-select__header">
-            <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Filter by status</span>
-            <button class="hb-popup-select__clear">Clear</button>
-          </div>
-          <div class="hb-popup-select__list">
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox" checked>
-              <span class="hb-popup-select__label">Open</span>
-              <span class="hb-popup-select__count">12</span>
-            </label>
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox">
-              <span class="hb-popup-select__label">In review</span>
-              <span class="hb-popup-select__count">5</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
-          <tbody>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Header</span></td>
-              <td class="hb-text-body">Names what is being selected. Holds the title label and the clear action. Class <code>hb-popup-select__header</code>.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Clear</span></td>
-              <td class="hb-text-body">Text button that resets all selections in one action. Class <code>hb-popup-select__clear</code>.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">List</span></td>
-              <td class="hb-text-body">Scrollable container that holds the options. Class <code>hb-popup-select__list</code>.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">4</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Option</span></td>
-              <td class="hb-text-body">A selectable row: <code>hb-checkbox</code> + <code>hb-popup-select__label</code> + optional <code>hb-popup-select__count</code>.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Example -->
-    <section class="section" id="example">
-      <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">A static popup select shown open so its surface and shadow are visible. In production this panel is triggered from a toolbar button or table cell and appears on click.</p>
-
-      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
-        <div class="hb-popup-select" style="width: 280px;">
-          <div class="hb-popup-select__header">
-            <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Filter by status</span>
-            <button class="hb-popup-select__clear">Clear</button>
-          </div>
-          <div class="hb-popup-select__list">
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox" checked>
-              <span class="hb-popup-select__label">Open</span>
-              <span class="hb-popup-select__count">12</span>
-            </label>
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox" checked>
-              <span class="hb-popup-select__label">In review</span>
-              <span class="hb-popup-select__count">5</span>
-            </label>
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox">
-              <span class="hb-popup-select__label">Resolved</span>
-              <span class="hb-popup-select__count">38</span>
-            </label>
-            <label class="hb-popup-select__option">
-              <input type="checkbox" class="hb-checkbox">
-              <span class="hb-popup-select__label">Cancelled</span>
-              <span class="hb-popup-select__count">2</span>
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__header"</span><span class="token-class">&gt;</span>
-    <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-text-heading-small"</span><span class="token-class">&gt;</span>Filter by status<span class="token-class">&lt;/span&gt;</span>
-    <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__clear"</span><span class="token-class">&gt;</span>Clear<span class="token-class">&lt;/button&gt;</span>
-  <span class="token-class">&lt;/div&gt;</span>
-  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__list"</span><span class="token-class">&gt;</span>
-    <span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__option"</span><span class="token-class">&gt;</span>
-      <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"checkbox"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-checkbox"</span> <span class="token-attr">checked</span><span class="token-class">&gt;</span>
-      <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__label"</span><span class="token-class">&gt;</span>Open<span class="token-class">&lt;/span&gt;</span>
-      <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-popup-select__count"</span><span class="token-class">&gt;</span>12<span class="token-class">&lt;/span&gt;</span>
-    <span class="token-class">&lt;/label&gt;</span>
-  <span class="token-class">&lt;/div&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Usage -->
-    <section class="section" id="usage">
-      <h2 class="section__title hb-text-heading-small">Usage</h2>
-      <p class="section__desc hb-text-body">Reach for a popup select when users pick from a known, finite set of values outside of a form. For in-form selection use a Select field instead.</p>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Use when</th><th class="hb-text-caption-bold">Avoid when</th></tr></thead>
-          <tbody>
-            <tr>
-              <td class="hb-text-body">Selecting multiple values outside a form — toolbar and table filters.</td>
-              <td class="hb-text-body">The control lives inside a form — use a <strong>Select</strong> field for consistent layout and validation.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body">The set of options is predefined and known up front.</td>
-              <td class="hb-text-body">Users need to enter free text or arbitrary values — use an <strong>input</strong>.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body">A lightweight, dismissible panel fits the surface (toolbar, row action).</td>
-              <td class="hb-text-body">Only one value can ever be chosen and persistent display is needed — consider a Select or Radio group.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-popup-select" style="width: 100%;">
-                  <div class="hb-popup-select__header">
-                    <span class="hb-text-heading-small" style="color: var(--ui-text-secondary)">Status</span>
-                    <button class="hb-popup-select__clear">Clear</button>
-                  </div>
-                  <div class="hb-popup-select__list">
-                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox" checked><span class="hb-popup-select__label">Open</span><span class="hb-popup-select__count">12</span></label>
-                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox"><span class="hb-popup-select__label">Resolved</span><span class="hb-popup-select__count">38</span></label>
-                  </div>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Order options logically and show counts so users can gauge impact before selecting.</p>
-            </div>
-            <div>
-              <p class="guidance-card__note hb-text-caption">Keep labels short and scannable — one or two words per option.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-popup-select" style="width: 100%;">
-                  <div class="hb-popup-select__list">
-                    <label class="hb-popup-select__option"><input type="checkbox" class="hb-checkbox"><span class="hb-popup-select__label">Open — issues that have been logged but not yet triaged by the team</span></label>
-                  </div>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't pack long descriptions into options. They break the scannable list rhythm.</p>
-            </div>
-            <div>
-              <p class="guidance-card__note hb-text-caption">Don't use a popup select inside a form — use a Select field so it aligns with surrounding inputs.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="popup-select.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

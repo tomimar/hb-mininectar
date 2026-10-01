@@ -14,6 +14,43 @@ A transient notification in a corner of the viewport that confirms something tha
 
 Toasts are the one inverted surface in the system: a saturated background with `ui-text-knockout` text, so they read as an overlay, not page content. The exception is `--warning`: dark `ui-text` on yellow.
 
+Each type:
+
+```html preview
+<div style="display: flex; flex-direction: column; gap: var(--spacing-12); width: 100%;">
+  <div class="hb-toast hb-toast--info">
+    <span class="hb-icon hb-toast__icon" aria-hidden="true">info</span>
+    <p class="hb-toast__content">Scheduled maintenance starts Sunday at 2am.</p>
+  </div>
+  <div class="hb-toast hb-toast--success">
+    <span class="hb-icon hb-toast__icon" aria-hidden="true">check_circle</span>
+    <p class="hb-toast__content">Note deleted from case 4128.</p>
+    <button class="hb-toast__action">Undo</button>
+  </div>
+  <div class="hb-toast hb-toast--warning">
+    <span class="hb-icon hb-toast__icon" aria-hidden="true">warning</span>
+    <p class="hb-toast__content">Your session expires in 5 minutes.</p>
+    <button class="hb-toast__action">Stay signed in</button>
+    <button class="hb-toast__dismiss" aria-label="Dismiss">
+      <span class="hb-icon" aria-hidden="true">close</span>
+    </button>
+  </div>
+  <div class="hb-toast hb-toast--error">
+    <span class="hb-icon hb-toast__icon" aria-hidden="true">error</span>
+    <p class="hb-toast__content">Alert 9932 could not be assigned.</p>
+    <button class="hb-toast__action">Retry</button>
+    <button class="hb-toast__dismiss" aria-label="Dismiss">
+      <span class="hb-icon" aria-hidden="true">close</span>
+    </button>
+  </div>
+  <div class="hb-toast hb-toast--loading">
+    <span class="hb-loader hb-loader--circular hb-loader--contrast hb-toast__icon"></span>
+    <p class="hb-toast__content">Exporting 1,240 transactions…</p>
+    <button class="hb-toast__action">Cancel</button>
+  </div>
+</div>
+```
+
 ## Structure
 
 - `hb-toast` plus a type modifier.
@@ -59,11 +96,13 @@ The consumer owns placement, stacking and timing.
 
 ## Example
 
-```html
+```html preview
 <div class="hb-toast hb-toast--success">
-  <span class="hb-icon hb-toast__icon">check_circle</span>
+  <span class="hb-icon hb-toast__icon" aria-hidden="true">check_circle</span>
   <p class="hb-toast__content">Case 4128 escalated.</p>
   <button class="hb-toast__action">Undo</button>
-  <button class="hb-toast__dismiss" aria-label="Dismiss">×</button>
+  <button class="hb-toast__dismiss" aria-label="Dismiss">
+    <span class="hb-icon" aria-hidden="true">close</span>
+  </button>
 </div>
 ```

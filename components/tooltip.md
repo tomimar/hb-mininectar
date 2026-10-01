@@ -4,15 +4,25 @@ A short, non-interactive label shown on hover and on keyboard focus.
 
 Wrap the trigger and an `hb-tooltip__content` in `hb-tooltip`. The content carries `role="tooltip"`.
 
-```html
-<span class="hb-tooltip">
-  <button class="hb-fab hb-fab--secondary hb-fab--icon" aria-label="Assign case">…</button>
-  <span class="hb-tooltip__content" role="tooltip">Assign case</span>
-</span>
+```html preview
+<!-- Hover or focus the button to see the tooltip -->
+<div style="padding: var(--spacing-24) var(--spacing-48);">
+  <span class="hb-tooltip">
+    <button class="hb-fab hb-fab--secondary hb-fab--icon" aria-label="Assign case">
+      <span class="hb-icon hb-fab__icon" aria-hidden="true">person_add</span>
+    </button>
+    <span class="hb-tooltip__content" role="tooltip">Assign case</span>
+  </span>
+</div>
 ```
 
 - The bubble: dark background, light text, 12px type, 8px padding, 8px radius, max width 240px. Longer text wraps.
 - `hb-tooltip__content` can also stand alone as a bubble in a custom popover.
+
+```html preview
+<span class="hb-tooltip__content">Assign case</span>
+<span class="hb-tooltip__content">Risk score combines transaction volume, counterparty jurisdictions and prior SAR filings.</span>
+```
 
 ## Placement
 
@@ -24,6 +34,28 @@ Wrap the trigger and an `hb-tooltip__content` in `hb-tooltip`. The content carri
 | Right | `hb-tooltip__content--right` |
 
 8px gap from the trigger.
+
+```html preview
+<!-- Each tooltip is forced visible with opacity: 1 so all placements show at once -->
+<div style="display: flex; gap: var(--spacing-64); padding: var(--spacing-48) var(--spacing-80);">
+  <span class="hb-tooltip">
+    <button class="hb-fab hb-fab--secondary">Bottom</button>
+    <span class="hb-tooltip__content" role="tooltip" style="opacity: 1;">Bottom</span>
+  </span>
+  <span class="hb-tooltip">
+    <button class="hb-fab hb-fab--secondary">Top</button>
+    <span class="hb-tooltip__content hb-tooltip__content--top" role="tooltip" style="opacity: 1;">Top</span>
+  </span>
+  <span class="hb-tooltip">
+    <button class="hb-fab hb-fab--secondary">Left</button>
+    <span class="hb-tooltip__content hb-tooltip__content--left" role="tooltip" style="opacity: 1;">Left</span>
+  </span>
+  <span class="hb-tooltip">
+    <button class="hb-fab hb-fab--secondary">Right</button>
+    <span class="hb-tooltip__content hb-tooltip__content--right" role="tooltip" style="opacity: 1;">Right</span>
+  </span>
+</div>
+```
 
 ## Behavior
 

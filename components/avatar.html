@@ -10,182 +10,22 @@
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from avatar.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Avatar</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Avatars represent a person or entity with an image or initials. They help users quickly identify who is involved in a record, comment, or assignment. Use consistent sizes and colors so people stay recognizable across the product.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Sizes -->
-    <section class="section" id="sizes">
-      <h2 class="section__title hb-text-heading-small">Sizes</h2>
-      <p class="section__desc hb-text-body">Three sizes cover the platform. Medium is the default. Choose a size based on the density of the surrounding context.</p>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead>
-            <tr>
-              <th class="hb-text-caption-bold">Size</th>
-              <th class="hb-text-caption-bold">Class</th>
-              <th class="hb-text-caption-bold">Dimensions</th>
-              <th class="hb-text-caption-bold">Usage</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><div class="hb-avatar hb-avatar--sm" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">SD</div></td>
-              <td class="hb-text-body"><code>hb-avatar--sm</code></td>
-              <td class="hb-text-body">24 × 24px</td>
-              <td class="hb-text-body">Dense tables and chips</td>
-            </tr>
-            <tr>
-              <td><div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div></td>
-              <td class="hb-text-body"><code>hb-avatar--md</code></td>
-              <td class="hb-text-body">32 × 32px</td>
-              <td class="hb-text-body">Default — sidebars, cards, list rows</td>
-            </tr>
-            <tr>
-              <td><div class="hb-avatar hb-avatar--lg" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">SD</div></td>
-              <td class="hb-text-body"><code>hb-avatar--lg</code></td>
-              <td class="hb-text-body">40 × 40px</td>
-              <td class="hb-text-body">Top nav and comment threads</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Types / Colors -->
-    <section class="section" id="colors">
-      <h2 class="section__title hb-text-heading-small">Types &amp; colors</h2>
-      <p class="section__desc hb-text-body">Initials avatars use a soft expressive background paired with the matching contrast color for the text. Assign a consistent color per person so they stay recognizable. A solid variant is available for default or system avatars.</p>
-
-      <div class="preview">
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-green-soft); color: var(--ui-expressive-green)">MR</div>
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-interaction-contrast)">JD</div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md"</span>
-     <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)"</span><span class="token-class">&gt;</span>EC<span class="token-class">&lt;/div&gt;</span>
-
-<span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md"</span>
-     <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-interaction-contrast)"</span><span class="token-class">&gt;</span>JD<span class="token-class">&lt;/div&gt;</span></pre></div>
-
-      <p class="section__desc hb-text-body" style="margin-top: var(--spacing-32)">The <code>hb-avatar--muted</code> variant renders the whole avatar — background and initials — at reduced opacity. Use it to de-emphasize avatars, for example every participant except the active one in an AvatarGroup. It works with any <code>--hb-avatar-bg</code> override.</p>
-
-      <div class="preview">
-        <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-interaction-contrast)">TM</div>
-        <div class="hb-avatar hb-avatar--md hb-avatar--muted">AW</div>
-        <div class="hb-avatar hb-avatar--md hb-avatar--muted" style="--hb-avatar-bg: var(--ui-expressive-purple)">JH</div>
-        <div class="hb-avatar hb-avatar--md hb-avatar--muted" style="--hb-avatar-bg: var(--ui-expressive-green)">RG</div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md hb-avatar--muted"</span><span class="token-class">&gt;</span>AW<span class="token-class">&lt;/div&gt;</span>
-
-<span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md hb-avatar--muted"</span>
-     <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-expressive-purple)"</span><span class="token-class">&gt;</span>JH<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- AvatarGroup -->
-    <section class="section" id="avatar-group">
-      <h2 class="section__title hb-text-heading-small">AvatarGroup</h2>
-      <p class="section__desc hb-text-body">Group overlapping avatars to show several people in a compact space. Avatars overlap with a negative margin (Large -16px, Medium -10px, Small -8px) and keep a 2px separation gap between them. The gap is a transparent cutout — not a painted ring — so it shows whatever surface is behind the group and works on any background without configuration. Show a maximum of 5 avatars and collapse the rest into a <code>+N</code> overflow counter.</p>
-
-      <div class="preview">
-        <div class="hb-avatar-group">
-          <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-          <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
-          <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-          <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-green-soft); color: var(--ui-expressive-green)">MR</div>
-          <span class="hb-avatar-group__overflow">+2</span>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar-group"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md"</span> <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)"</span><span class="token-class">&gt;</span>EC<span class="token-class">&lt;/div&gt;</span>
-  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md"</span> <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)"</span><span class="token-class">&gt;</span>SD<span class="token-class">&lt;/div&gt;</span>
-  <span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar hb-avatar--md"</span> <span class="token-attr">style</span>=<span class="token-str">"--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)"</span><span class="token-class">&gt;</span>AC<span class="token-class">&lt;/div&gt;</span>
-  <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-avatar-group__overflow"</span><span class="token-class">&gt;</span>+2<span class="token-class">&lt;/span&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">SD</div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Use meaningful initials — first and last name.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-green-soft); color: var(--ui-expressive-green)">MR</div>
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Keep avatars the same size within a single context.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar-group">
-                  <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">EC</div>
-                  <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-expressive-brown-soft); color: var(--ui-expressive-brown)">SD</div>
-                  <span class="hb-avatar-group__overflow">+6</span>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Collapse to a +N counter once you pass 5 avatars.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar" style="width:56px;height:56px;font-size:20px;font-weight:var(--font-weight-bold);--hb-avatar-bg: var(--ui-expressive-blue-soft); color: var(--ui-expressive-blue)">SD</div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't scale avatars outside the sm / md / lg tokens.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar hb-avatar--sm" style="--hb-avatar-bg: var(--ui-expressive-green-soft); color: var(--ui-expressive-green)">MR</div>
-                <div class="hb-avatar hb-avatar--lg" style="--hb-avatar-bg: var(--ui-expressive-purple-soft); color: var(--ui-expressive-purple)">AC</div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't mix avatar sizes in the same row or group.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-avatar hb-avatar--md" style="--hb-avatar-bg: var(--ui-interaction-contrast)">JD</div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't use an avatar as a primary navigation trigger without a clear affordance.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="avatar.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

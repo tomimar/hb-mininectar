@@ -286,6 +286,11 @@ code {
 [data-theme="dark"] .guide pre { border: 1px solid var(--ui-border); }
 .guide td code { white-space: nowrap; }
 .guide .code-block pre { padding: 0; margin: 0; background: none; border: none; border-radius: 0; }
-.guide .preview > :is(div, ul, ol) { flex: 1 1 100%; }
+/* Full-width children: layout wrappers and components that fill their
+   container. Components with their own width (search, avatars, popup
+   panels) keep it. */
+.guide .preview > :is(div:not([class]), ul, ol, .hb-table-wrap, .hb-expand, .hb-sidenav-area,
+                      .hb-alert, .hb-toast, .hb-field, .hb-tag-group, .hb-radio-group,
+                      .hb-checkbox-group) { flex: 1 1 100%; }
 .guide .preview p { margin: 0 0 var(--spacing-8) 0; }
 .guide .preview p:last-child { margin-bottom: 0; }

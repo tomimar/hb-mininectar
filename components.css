@@ -264,9 +264,13 @@ body {
 /* Sizes */
 .hb-icon--sm { font-size: var(--icon-size-sm); }
 .hb-icon--lg { font-size: var(--icon-size-lg); }
-/* Inside buttons and links, the icon follows the control's own color */
+/* Inside these components the icon follows the component's own color */
 .hb-btn .hb-icon,
-.hb-link .hb-icon { color: currentColor; }
+.hb-link .hb-icon,
+.hb-fab .hb-icon,
+.hb-tag .hb-icon,
+.hb-alert .hb-icon,
+.hb-toast .hb-icon { color: currentColor; }
 
 
 /* ── Button ───────────────────────────────────────────────── */

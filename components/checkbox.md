@@ -7,12 +7,34 @@ Independent on/off choices — zero, one or many.
 - Group related boxes in `hb-checkbox-group`, with an `hb-checkbox-group__label`.
 - Add `hb-checkbox-group--inline` to lay them in a row, when the options are short and few. (Not in the Figma spec; it mirrors the inline radio group.)
 
-```html
-<div class="hb-checkbox-group">
-  <span class="hb-checkbox-group__label">Group label</span>
-  <label class="hb-checkbox-row">
-    <input type="checkbox" class="hb-checkbox"> <span>Option</span>
-  </label>
+Stacked, then inline:
+
+```html preview
+<div style="display: flex; flex-direction: column; gap: var(--spacing-24);">
+  <div class="hb-checkbox-group">
+    <span class="hb-checkbox-group__label">Alert types</span>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox" checked> <span>Cash structuring</span>
+    </label>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox"> <span>Rapid movement of funds</span>
+    </label>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox" checked> <span>High-risk jurisdiction</span>
+    </label>
+  </div>
+  <div class="hb-checkbox-group hb-checkbox-group--inline">
+    <span class="hb-checkbox-group__label">Transaction channels</span>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox" checked> <span>Wire</span>
+    </label>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox"> <span>ACH</span>
+    </label>
+    <label class="hb-checkbox-row">
+      <input type="checkbox" class="hb-checkbox" checked> <span>Cash</span>
+    </label>
+  </div>
 </div>
 ```
 
@@ -28,6 +50,19 @@ Handled by CSS, no extra classes:
 | Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled-soft` fill (`ui-disabled` when checked); the row text greys out; not clickable. |
 | Indeterminate | `indeterminate` DOM property | Set it in script, not as an attribute. No dedicated style yet: it looks unchecked. |
+
+```html preview
+<div style="display: flex; flex-wrap: wrap; column-gap: var(--spacing-32);">
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox"> <span>Unchecked</span></label>
+  <!-- Hover and focus are forced here so you can see them -->
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" style="border-color: var(--ui-interaction);"> <span>Hover</span></label>
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" checked> <span>Checked</span></label>
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" style="outline: 2px solid var(--ui-interaction); outline-offset: 2px;"> <span>Focus</span></label>
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" disabled> <span>Disabled</span></label>
+  <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" checked disabled> <span>Disabled, checked</span></label>
+  <!-- Indeterminate is not shown: it needs script and looks unchecked -->
+</div>
+```
 
 ## Writing the label
 
@@ -54,7 +89,7 @@ Handled by CSS, no extra classes:
 
 ## Example
 
-```html
+```html preview
 <div class="hb-checkbox-group">
   <span class="hb-checkbox-group__label">Notify me about</span>
   <label class="hb-checkbox-row">

@@ -24,6 +24,35 @@ Exactly one choice from a short, mutually exclusive set.
 | Vertical | `hb-radio-group` | The default. |
 | Inline | `hb-radio-group--inline` | Two or three short options, such as Yes / No / N/A. |
 
+```html preview
+<div style="display: flex; flex-direction: column; gap: var(--spacing-24);">
+  <div class="hb-radio-group" role="radiogroup" aria-labelledby="risk-rating-label">
+    <span class="hb-radio-group__label" id="risk-rating-label">Customer risk rating</span>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="risk-rating" value="low"> <span>Low</span>
+    </label>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="risk-rating" value="medium"> <span>Medium</span>
+    </label>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="risk-rating" value="high"> <span>High</span>
+    </label>
+  </div>
+  <div class="hb-radio-group hb-radio-group--inline" role="radiogroup" aria-labelledby="contacted-label">
+    <span class="hb-radio-group__label" id="contacted-label">Customer contacted?</span>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="customer-contacted" value="yes"> <span>Yes</span>
+    </label>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="customer-contacted" value="no"> <span>No</span>
+    </label>
+    <label class="hb-radio-row">
+      <input type="radio" class="hb-radio" name="customer-contacted" value="na"> <span>N/A</span>
+    </label>
+  </div>
+</div>
+```
+
 ## States
 
 Handled by CSS, no extra classes:
@@ -35,6 +64,18 @@ Handled by CSS, no extra classes:
 | Selected | `checked` attribute | `ui-interaction` fill with a white center dot. |
 | Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled-soft` fill (`ui-disabled` when selected); row text muted; not clickable. |
+
+```html preview
+<div style="display: flex; flex-wrap: wrap; column-gap: var(--spacing-32);">
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states"> <span>Unselected</span></label>
+  <!-- Hover and focus are forced here so you can see them -->
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states" style="border-color: var(--ui-interaction);"> <span>Hover</span></label>
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states" checked> <span>Selected</span></label>
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states" style="outline: 2px solid var(--ui-interaction); outline-offset: 2px;"> <span>Focus</span></label>
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states-disabled" disabled> <span>Disabled</span></label>
+  <label class="hb-radio-row"><input type="radio" class="hb-radio" name="radio-states-disabled" checked disabled> <span>Disabled, selected</span></label>
+</div>
+```
 
 ## Writing the options
 
@@ -61,7 +102,7 @@ Handled by CSS, no extra classes:
 
 ## Example
 
-```html
+```html preview
 <div class="hb-radio-group hb-radio-group--inline" role="radiogroup" aria-labelledby="sar-label">
   <span class="hb-radio-group__label" id="sar-label">File a SAR?</span>
   <label class="hb-radio-row">

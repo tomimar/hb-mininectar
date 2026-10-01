@@ -3,225 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SearchInput — hb-mininectar</title>
+  <title>Search input — hb-mininectar</title>
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <link rel="stylesheet" href="docs.css">
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from search-input.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
-      <h1 class="page-header__title">SearchInput</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">SearchInput lets users quickly find content within the current context by typing keywords or phrases. It provides a familiar search interaction across the platform and enables fast access to information in dense interfaces such as tables, lists, and navigation areas.</p>
+      <h1 class="page-header__title">Search input</h1>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Example -->
-    <section class="section" id="example">
-      <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">Compose <code>hb-search</code> with a leading search icon, an <code>hb-search__input</code>, and an optional <code>hb-search__clear</code> button that only appears while the field has a value.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-search">
-          <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/>
-          </svg>
-          <input class="hb-search__input" type="text" placeholder="Search cases">
-          <button class="hb-search__clear" type="button" aria-label="Clear search">
-            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-search"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-search__icon"</span> <span class="token-attr">viewBox</span>=<span class="token-str">"0 0 24 24"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/svg&gt;</span>
-  <span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-search__input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Search cases"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-search__clear"</span> <span class="token-attr">type</span>=<span class="token-str">"button"</span> <span class="token-attr">aria-label</span>=<span class="token-str">"Clear search"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/button&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Sizes -->
-    <section class="section" id="sizes">
-      <h2 class="section__title hb-text-heading-small">Sizes</h2>
-      <p class="section__desc hb-text-body">Two sizes are available. Large is the default for page-level and primary search. Small is for table toolbars, compact filters and dense layouts.</p>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead>
-            <tr>
-              <th class="hb-text-caption-bold">Size</th>
-              <th class="hb-text-caption-bold">Class</th>
-              <th class="hb-text-caption-bold">Height</th>
-              <th class="hb-text-caption-bold">Use for</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="hb-text-body" style="width:260px;">
-                <div class="hb-search" style="width:100%;">
-                  <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-                  <input class="hb-search__input" type="text" placeholder="Search">
-                </div>
-              </td>
-              <td class="hb-text-body">—</td>
-              <td class="hb-text-body">40px</td>
-              <td class="hb-text-body">Default. Page-level, table and primary search</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body" style="width:260px;">
-                <div class="hb-search hb-search--sm" style="width:100%;">
-                  <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-                  <input class="hb-search__input" type="text" placeholder="Search">
-                </div>
-              </td>
-              <td class="hb-text-body"><code>hb-search--sm</code></td>
-              <td class="hb-text-body">32px</td>
-              <td class="hb-text-body">Table toolbars, compact filters, dense layouts</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- States -->
-    <section class="section" id="states">
-      <h2 class="section__title hb-text-heading-small">States</h2>
-      <p class="section__desc hb-text-body">States are handled automatically via CSS — hover and focus use the wrapper, disabled uses the input's <code>disabled</code> attribute.</p>
-
-      <div class="variant-grid">
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Empty</span>
-            <span class="variant-desc hb-text-caption">Placeholder text in <code>--ui-disabled</code>, border <code>--ui-border-secondary</code>.</span>
-          </div>
-          <div class="preview">
-            <div class="hb-search">
-              <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-              <input class="hb-search__input" type="text" placeholder="Search">
-            </div>
-          </div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Filled</span>
-            <span class="variant-desc hb-text-caption">Value in <code>--ui-text</code>, clear (×) button appears.</span>
-          </div>
-          <div class="preview">
-            <div class="hb-search">
-              <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-              <input class="hb-search__input" type="text" value="Barclays">
-              <button class="hb-search__clear" type="button" aria-label="Clear search"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-            </div>
-          </div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Focus / Active</span>
-            <span class="variant-desc hb-text-caption">Border <code>--ui-interaction</code> + 2px <code>--ui-interaction-soft</code> ring (try clicking it).</span>
-          </div>
-          <div class="preview">
-            <div class="hb-search" style="border-color:var(--ui-interaction); box-shadow:0 0 0 2px var(--ui-interaction-soft);">
-              <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-              <input class="hb-search__input" type="text" value="Value">
-              <button class="hb-search__clear" type="button" aria-label="Clear search"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-            </div>
-          </div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Disabled</span>
-            <span class="variant-desc hb-text-caption">Background <code>--ui-bg-tertiary</code>; add <code>disabled</code> to the input.</span>
-          </div>
-          <div class="preview">
-            <div class="hb-search">
-              <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-              <input class="hb-search__input" type="text" placeholder="Search" disabled>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Anatomy -->
-    <section class="section" id="anatomy">
-      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
-      <div class="preview" style="justify-content:center; padding: var(--spacing-48);">
-        <div class="hb-search" style="pointer-events:none;">
-          <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
-          <input class="hb-search__input" type="text" value="John Doe">
-          <button class="hb-search__clear" type="button"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>
-      </div>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th></th><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Description</th></tr></thead>
-          <tbody>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">1</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Search icon (leading)</span></td>
-              <td class="hb-text-body">20×20px. Indicates that the field is used for searching.</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">2</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Placeholder / value</span></td>
-              <td class="hb-text-body">Inter Regular, 14px. Placeholder describes what users can search (e.g. "Search cases").</td>
-            </tr>
-            <tr>
-              <td class="hb-text-body"><div class="anatomy-num">3</div></td>
-              <td class="hb-text-body"><span class="hb-text-caption-bold">Clear action (×)</span></td>
-              <td class="hb-text-body">20×20px. Resets the query. Only appears while the field contains text.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <p class="hb-text-body" style="color:var(--ui-text-secondary); margin-top:var(--spacing-16);">Unlike Input, SearchInput does not include labels or helper text — the placeholder acts as the primary guidance.</p>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Use clear, descriptive placeholders (e.g. "Search alerts", "Search entities").</p>
-            <p class="guidance-card__note hb-text-body">Show results as the user types when possible.</p>
-            <p class="guidance-card__note hb-text-body">Place the search input close to the content it affects.</p>
-            <p class="guidance-card__note hb-text-body">Provide a clear action to reset the query.</p>
-          </div>
-        </div>
-
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Use SearchInput as a replacement for form inputs.</p>
-            <p class="guidance-card__note hb-text-body">Add labels or helper text — the placeholder provides the guidance.</p>
-            <p class="guidance-card__note hb-text-body">Use it for validated, required or stored data (dates, numbers, currency).</p>
-            <p class="guidance-card__note hb-text-body">Overload the field with multiple icons or actions.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="search-input.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

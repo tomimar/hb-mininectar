@@ -11,12 +11,49 @@ Put the icon name (snake_case) as the text of a `<span class="hb-icon">`. The fo
 - Names come from the Material Icons set (mui.com/material-ui/material-icons): `edit`, `more_vert`, `delete`, `check_circle`.
 - MUI's `EditIcon` is `edit`; `MoreVertIcon` is `more_vert`; `CalendarTodayIcon` is `calendar_today`.
 
+Icons the product uses most:
+
+```html preview
+<span class="hb-icon hb-icon--lg">search</span>
+<span class="hb-icon hb-icon--lg">filter_list</span>
+<span class="hb-icon hb-icon--lg">add</span>
+<span class="hb-icon hb-icon--lg">edit</span>
+<span class="hb-icon hb-icon--lg">delete</span>
+<span class="hb-icon hb-icon--lg">close</span>
+<span class="hb-icon hb-icon--lg">check</span>
+<span class="hb-icon hb-icon--lg">more_vert</span>
+<span class="hb-icon hb-icon--lg">chevron_right</span>
+<span class="hb-icon hb-icon--lg">expand_more</span>
+<span class="hb-icon hb-icon--lg">download</span>
+<span class="hb-icon hb-icon--lg">open_in_new</span>
+<span class="hb-icon hb-icon--lg">visibility</span>
+<span class="hb-icon hb-icon--lg">flag</span>
+<span class="hb-icon hb-icon--lg">info</span>
+<span class="hb-icon hb-icon--lg">warning</span>
+<span class="hb-icon hb-icon--lg">error</span>
+<span class="hb-icon hb-icon--lg">check_circle</span>
+<span class="hb-icon hb-icon--lg">person</span>
+<span class="hb-icon hb-icon--lg">account_balance</span>
+<span class="hb-icon hb-icon--lg">calendar_today</span>
+<span class="hb-icon hb-icon--lg">notifications</span>
+<span class="hb-icon hb-icon--lg">settings</span>
+```
+
 ## Variants
 
 | Variant | Class | Use for |
 |---|---|---|
 | Outlined | `hb-icon` (default) | Everywhere. |
 | Rounded | `hb-icon--rounded` | Prominent actions and important menus. |
+
+```html preview
+<span class="hb-icon hb-icon--lg">flag</span>
+<span class="hb-icon hb-icon--lg">notifications</span>
+<span class="hb-icon hb-icon--lg">more_vert</span>
+<span class="hb-icon hb-icon--lg hb-icon--rounded">flag</span>
+<span class="hb-icon hb-icon--lg hb-icon--rounded">notifications</span>
+<span class="hb-icon hb-icon--lg hb-icon--rounded">more_vert</span>
+```
 
 ## Sizes
 
@@ -26,11 +63,24 @@ Put the icon name (snake_case) as the text of a `<span class="hb-icon">`. The fo
 | 20px | — (default) | Inline UI. |
 | 24px | `hb-icon--lg` | Standalone or prominent icons. |
 
+```html preview
+<span class="hb-icon hb-icon--sm">flag</span>
+<span class="hb-icon">flag</span>
+<span class="hb-icon hb-icon--lg">flag</span>
+```
+
 ## Color
 
 - Default: `ui-icon`.
-- Inside `hb-btn` or `hb-link` it inherits the control's color. Don't override it there.
+- Inside `hb-btn`, `hb-link`, `hb-fab`, `hb-tag`, `hb-alert` or `hb-toast` it inherits the component's color. Don't override it there.
 - To force another color, set `color` inline from a token.
+
+```html preview
+<span class="hb-icon hb-icon--lg">info</span>
+<button class="hb-btn hb-btn--primary hb-btn--lg"><span class="hb-icon">check</span> Approve</button>
+<a href="#" class="hb-link">Download SAR <span class="hb-icon hb-icon--sm">download</span></a>
+<span class="hb-icon hb-icon--lg" style="color: var(--ui-status-danger);">error</span>
+```
 
 ## Do
 
@@ -49,12 +99,14 @@ Put the icon name (snake_case) as the text of a `<span class="hb-icon">`. The fo
 
 ## Example
 
-```html
-<button class="hb-btn hb-btn--secondary">
+```html preview
+<button class="hb-btn hb-btn--secondary hb-btn--lg">
   <span class="hb-icon">download</span> Export alerts
 </button>
-<button class="hb-btn hb-btn--ghost" aria-label="More actions for AML review">
+<button class="hb-btn hb-btn--ghost hb-btn--lg" aria-label="More actions for AML review">
   <span class="hb-icon hb-icon--rounded">more_vert</span>
 </button>
-<span class="hb-icon hb-icon--sm" style="color: var(--ui-status-success)">check_circle</span> Cleared
+<span style="display: inline-flex; align-items: center; gap: var(--spacing-4);">
+  <span class="hb-icon hb-icon--sm" style="color: var(--ui-status-success)">check_circle</span> Cleared
+</span>
 ```

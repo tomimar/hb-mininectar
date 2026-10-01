@@ -10,156 +10,22 @@
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from input.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Input</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A single-line text input captures short free-form values such as names, emails, or IDs. It shares the common field wrapper, label, and help-text structure so it behaves consistently with every other control. Clear labels and predictable states reduce errors and make forms faster to complete.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Field anatomy -->
-    <section class="section" id="anatomy">
-      <h2 class="section__title hb-text-heading-small">Field anatomy</h2>
-      <p class="section__desc hb-text-body">Every control is wrapped in <code>hb-field</code>, which stacks four parts: a <code>hb-field__label</code> (with an optional <code>hb-field__required</code> asterisk), the control itself, and a <code>hb-field__help</code> hint. On error, swap help text for <code>hb-field__error</code>.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Full name <span class="hb-field__required">*</span></label>
-          <input class="hb-input" type="text" placeholder="Enter your full name">
-          <p class="hb-field__help">As it appears on official documents.</p>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;label</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__label"</span><span class="token-class">&gt;</span>Full name <span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__required"</span><span class="token-class">&gt;</span>*<span class="token-class">&lt;/span&gt;&lt;/label&gt;</span>
-  <span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter your full name"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;p</span> <span class="token-attr">class</span>=<span class="token-str">"hb-field__help"</span><span class="token-class">&gt;</span>As it appears on official documents.<span class="token-class">&lt;/p&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Variants -->
-    <section class="section" id="variants">
-      <h2 class="section__title hb-text-heading-small">Variants</h2>
-      <p class="section__desc hb-text-body">Single-line text input. Modifiers: <code>hb-input--sm</code> for dense layouts and <code>hb-input--error</code> for invalid values. Use the native <code>disabled</code> attribute for read-only views.</p>
-
-      <div class="preview preview--col" style="gap:var(--spacing-24);">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Default</label>
-          <input class="hb-input" type="text" value="Acme Corporation">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">With placeholder</label>
-          <input class="hb-input" type="text" placeholder="Enter a value">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Small</label>
-          <input class="hb-input hb-input--sm" type="text" placeholder="Compact input">
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Error</label>
-          <input class="hb-input hb-input--error" type="text" value="invalid@">
-          <p class="hb-field__error">Enter a valid email address.</p>
-        </div>
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Disabled</label>
-          <input class="hb-input" type="text" value="Read-only value" disabled>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"Enter a value"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--sm"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input hb-input--error"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span><span class="token-class">&gt;</span>
-<span class="token-class">&lt;input</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">disabled</span><span class="token-class">&gt;</span></pre></div>
-    </section>
-
-    <!-- States -->
-    <section class="section" id="states">
-      <h2 class="section__title hb-text-heading-small">States</h2>
-      <p class="section__desc hb-text-body">All field controls share the same interaction states, handled automatically via CSS.</p>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">White background with <code>--ui-border-secondary</code> border</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Border darkens slightly to signal interactivity</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus</code></td><td class="hb-text-body">Border turns blue with a ring using <code>--ui-interaction-soft</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Error</span></td><td class="hb-text-body"><code>hb-input--error</code></td><td class="hb-text-body">Border and ring use <code>--ui-status-danger</code>; pair with <code>hb-field__error</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-bg-tertiary</code>, muted text, no pointer events</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Email <span class="hb-field__required">*</span></label>
-                  <input class="hb-input" type="text" placeholder="name@company.com">
-                  <p class="hb-field__help">We'll send confirmations here.</p>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Always pair a control with a visible label, and mark required fields.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Amount</label>
-                  <input class="hb-input hb-input--error" type="text" value="-50">
-                  <p class="hb-field__error">Amount must be greater than zero.</p>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Show errors directly below the field, with help text for guidance.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <input class="hb-input" type="text" placeholder="Email">
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't use the placeholder as the label — it disappears once typing starts.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Tax ID</label>
-                  <input class="hb-input" type="text">
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't leave required fields unmarked — users can't tell what's mandatory.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="input.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

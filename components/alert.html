@@ -10,103 +10,22 @@
 </head>
 <body>
 <div class="page">
-
   <aside class="sidenav" id="hb-sidebar"></aside>
 
+  <!-- Everything below comes from alert.md: edit the .md, never this page -->
   <main class="main">
-
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Alert</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Alerts communicate important feedback messages. They appear at the top of the page (below the navbar) to display system-wide status, warnings, errors or confirmations. Alerts are non-blocking — they inform without interrupting the user's workflow.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Example -->
-    <section class="section" id="example">
-      <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">An alert is an icon + message inside <code>hb-alert</code> with a type modifier. The message, an optional inline link and an optional dismiss button.</p>
-      <div class="preview preview--col">
-        <div class="hb-alert hb-alert--info" style="width:100%;">
-          <svg class="hb-alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          <p class="hb-alert__content">Scheduled maintenance on Sunday from 2am to 4am. Expect brief downtime. <a href="#example" class="hb-alert__link">See our blog</a></p>
-          <button class="hb-alert__dismiss" aria-label="Dismiss"><svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-alert hb-alert--info"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-alert__icon"</span> …<span class="token-class">&gt;&lt;/svg&gt;</span>
-  <span class="token-class">&lt;p</span> <span class="token-attr">class</span>=<span class="token-str">"hb-alert__content"</span><span class="token-class">&gt;</span>Message <span class="token-class">&lt;a</span> <span class="token-attr">class</span>=<span class="token-str">"hb-alert__link"</span><span class="token-class">&gt;</span>See more<span class="token-class">&lt;/a&gt;&lt;/p&gt;</span>
-  <span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-alert__dismiss"</span><span class="token-class">&gt;</span>…<span class="token-class">&lt;/button&gt;</span>
-<span class="token-class">&lt;/div&gt;</span></pre></div>
-    </section>
-
-    <!-- Types -->
-    <section class="section" id="types">
-      <h2 class="section__title hb-text-heading-small">Types</h2>
-      <p class="section__desc hb-text-body">Four variants, each with its own color and icon. Use the one that matches the message's intent.</p>
-      <div class="variant-grid">
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Info</span><span class="variant-desc hb-text-caption">Neutral, informational. No action required.</span></div>
-          <div class="preview"><div class="hb-alert hb-alert--info" style="width:100%;"><svg class="hb-alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-alert__content">Scheduled maintenance on Sunday from 2am to 4am.</p></div></div>
-        </div>
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Success</span><span class="variant-desc hb-text-caption">Confirms a completed action. Pair with auto-dismiss.</span></div>
-          <div class="preview"><div class="hb-alert hb-alert--success" style="width:100%;"><svg class="hb-alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-alert__content">Your changes have been saved successfully.</p></div></div>
-        </div>
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Warning</span><span class="variant-desc hb-text-caption">Potential problem needing attention. Recommended but not blocking.</span></div>
-          <div class="preview"><div class="hb-alert hb-alert--warning" style="width:100%;"><svg class="hb-alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg><p class="hb-alert__content">Your session will expire in 5 minutes. Please save your changes.</p></div></div>
-        </div>
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Error</span><span class="variant-desc hb-text-caption">A failure or blocking problem. Never auto-dismiss.</span></div>
-          <div class="preview"><div class="hb-alert hb-alert--error" style="width:100%;"><svg class="hb-alert__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p class="hb-alert__content">Your request could not be completed. Please try again later.</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Anatomy -->
-    <section class="section" id="anatomy">
-      <h2 class="section__title hb-text-heading-small">Anatomy</h2>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Element</th><th class="hb-text-caption-bold">Notes</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body">Icon</td><td class="hb-text-body">20×20px, variant-specific. Essential for accessibility — never remove it.</td></tr>
-            <tr><td class="hb-text-body">Message</td><td class="hb-text-body">14px medium. Concise and actionable (1–2 lines).</td></tr>
-            <tr><td class="hb-text-body">Background + border</td><td class="hb-text-body">Soft fill with a matching solid border per type.</td></tr>
-            <tr><td class="hb-text-body">Action link (optional)</td><td class="hb-text-body">Inline underlined link inside the message.</td></tr>
-            <tr><td class="hb-text-body">Dismiss button (optional)</td><td class="hb-text-body">20×20px × close icon, top-aligned.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span class="guidance-card__title hb-text-caption-bold">Do</span></div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Use the correct variant for the message type.</p>
-            <p class="guidance-card__note hb-text-body">Keep messages concise and actionable (1–2 lines).</p>
-            <p class="guidance-card__note hb-text-body">Align the icon to the top when text wraps.</p>
-            <p class="guidance-card__note hb-text-body">Show a maximum of one alert at a time.</p>
-          </div>
-        </div>
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg><span class="guidance-card__title hb-text-caption-bold">Don't</span></div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Auto-dismiss error or warning alerts.</p>
-            <p class="guidance-card__note hb-text-body">Use alerts for field-level validation — use the Input error state.</p>
-            <p class="guidance-card__note hb-text-body">Use the warning variant for errors or vice versa.</p>
-            <p class="guidance-card__note hb-text-body">Remove the icon or use alerts as permanent UI content.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="alert.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

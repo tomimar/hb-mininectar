@@ -63,7 +63,7 @@ Loading is `hb-loader`: circular inside a component, linear across a page or sec
 
 Material Icons, Outlined by default; Rounded (`hb-icon--rounded`) for prominent actions and important menus. Write the ligature name as the element's text — `<span class="hb-icon">edit</span>`. Sizes are `icon-size-sm` (16px, dense controls), `icon-size-md` (20px, the default) and `icon-size-lg` (24px, standalone).
 
-An icon defaults to `ui-icon`; inside a button or link it inherits that control's color. Any icon-only control needs an `aria-label` naming the object it acts on — "More actions for AML review", not "More".
+An icon defaults to `ui-icon`; inside a button, link, floating action, tag, alert or toast it inherits that component's color. Any icon-only control needs an `aria-label` naming the object it acts on — "More actions for AML review", not "More".
 
 The Hummingbird logomark (`assets/Logos/logomark.png` in the Claude Design artifact) is single-ink line art. It is the only mark; there is no wordmark file — set "Hummingbird" in Inter at `font-weight-bolder` beside it.
 

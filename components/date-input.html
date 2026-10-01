@@ -10,150 +10,23 @@
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from date-input.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Date input</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">A date field captures a single date. It pairs a text input with a calendar icon and an interactive picker, so users can either type a date or select it visually. Values are always formatted as MM/DD/YYYY.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Example -->
-    <section class="section" id="example">
-      <h2 class="section__title hb-text-heading-small">Example</h2>
-      <p class="section__desc hb-text-body">Add <code>data-hb-datepicker</code> to a <code>hb-date-input</code> wrapper and include <code>datepicker.js</code>. The field works with no dependencies: click to open the calendar, or type a date — slashes are inserted automatically. Try it below.</p>
-
-      <div class="preview preview--col">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Due date</label>
-          <div class="hb-date-input" data-hb-datepicker style="position: relative;">
-            <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
-            <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input"</span> <span class="token-attr">data-hb-datepicker</span> <span class="token-attr">style</span>=<span class="token-str">"position: relative;"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;input</span> <span class="token-attr">type</span>=<span class="token-str">"text"</span> <span class="token-attr">class</span>=<span class="token-str">"hb-input"</span> <span class="token-attr">placeholder</span>=<span class="token-str">"MM/DD/YYYY"</span>
-    <span class="token-attr">style</span>=<span class="token-str">"padding-right: 40px;"</span><span class="token-class">&gt;</span>
-  <span class="token-class">&lt;svg</span> <span class="token-attr">class</span>=<span class="token-str">"hb-date-input__icon"</span> <span class="token-attr">viewBox</span>=<span class="token-str">"0 0 24 24"</span><span class="token-class">&gt;</span> … <span class="token-class">&lt;/svg&gt;</span>
-<span class="token-class">&lt;/div&gt;</span>
-
-<span class="token-class">&lt;script</span> <span class="token-attr">src</span>=<span class="token-str">"https://tomimar.github.io/hb-mininectar/datepicker.js"</span><span class="token-class">&gt;&lt;/script&gt;</span></pre></div>
-    </section>
-
-    <!-- Interactive calendar -->
-    <section class="section" id="calendar">
-      <h2 class="section__title hb-text-heading-small">Interactive calendar</h2>
-      <p class="section__desc hb-text-body">The calendar opens below the field on click or focus. It supports month navigation with the arrows, a year view (click the month label), and a <strong>Today</strong> shortcut. Selecting a day fills the field and closes the picker. No framework required — <code>datepicker.js</code> is plain JavaScript.</p>
-      <div class="preview preview--col" style="min-height: 360px; align-items: flex-start;">
-        <div class="hb-field" style="width:100%;max-width:360px;">
-          <label class="hb-field__label">Pick a date</label>
-          <div class="hb-date-input" data-hb-datepicker style="position: relative;">
-            <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
-            <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- placeholder kept for structure -->
-    <section class="section" id="datepicker" style="display:none;">
-    </section>
-
-    <!-- States -->
-    <section class="section" id="states">
-      <h2 class="section__title hb-text-heading-small">States</h2>
-      <p class="section__desc hb-text-body">All field controls share the same interaction states, handled automatically via CSS.</p>
-
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">State</th><th class="hb-text-caption-bold">How it's triggered</th><th class="hb-text-caption-bold">Visual change</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Default</span></td><td class="hb-text-body">Resting state</td><td class="hb-text-body">White background with <code>--ui-border-secondary</code> border</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Hover</span></td><td class="hb-text-body"><code>:hover</code></td><td class="hb-text-body">Border darkens slightly to signal interactivity</td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Focus</span></td><td class="hb-text-body"><code>:focus</code></td><td class="hb-text-body">Border turns blue with a ring using <code>--ui-interaction-soft</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Error</span></td><td class="hb-text-body"><code>hb-input--error</code></td><td class="hb-text-body">Border and ring use <code>--ui-status-danger</code>; pair with <code>hb-field__error</code></td></tr>
-            <tr><td class="hb-text-body"><span class="hb-text-caption-bold">Disabled</span></td><td class="hb-text-body"><code>disabled</code> attribute</td><td class="hb-text-body">Background → <code>--ui-bg-tertiary</code>, muted text, no pointer events</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Due date</label>
-                  <div class="hb-date-input" style="position: relative;">
-                    <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right: 40px;">
-                    <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Use an <code>MM/DD/YYYY</code> format hint in the placeholder so the expected format is clear.</p>
-            </div>
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Start date</label>
-                  <div class="hb-date-input" style="position: relative;">
-                    <input type="text" class="hb-input" value="06/08/2026" style="padding-right: 40px;">
-                    <svg class="hb-date-input__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                  </div>
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Provide a date picker (DatePicker) for selection so users don't have to type dates by hand.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <div>
-              <div class="guidance-card__example">
-                <div class="hb-field" style="width:100%;">
-                  <label class="hb-field__label">Due date</label>
-                  <input type="text" class="hb-input" placeholder="Enter a date">
-                </div>
-              </div>
-              <p class="guidance-card__note hb-text-caption">Don't rely on free text alone for dates — without a format hint or picker, input is error-prone.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="date-input.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
-  <script src="../datepicker.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="../datepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>

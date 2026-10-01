@@ -10,72 +10,22 @@
 </head>
 <body>
 <div class="page">
-
   <aside class="sidenav" id="hb-sidebar"></aside>
 
+  <!-- Everything below comes from loader.md: edit the .md, never this page -->
   <main class="main">
-
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Loader</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Loaders communicate that a process is underway. Both variants are indeterminate — they animate continuously without tracking specific progress, reducing perceived wait time and signaling that the interface hasn't frozen.</p>
+      <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Types -->
-    <section class="section" id="types">
-      <h2 class="section__title hb-text-heading-small">Types</h2>
-      <p class="section__desc hb-text-body">Two variants for two scopes of loading.</p>
-      <div class="variant-grid">
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Circular</span><span class="variant-desc hb-text-caption">20px spinner. Component- or button-level loading.</span></div>
-          <div class="preview"><span class="hb-loader hb-loader--circular"></span></div>
-          <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-loader hb-loader--circular"</span><span class="token-class">&gt;&lt;/span&gt;</span></pre></div>
-        </div>
-        <div class="variant-row">
-          <div class="variant-row__header"><span class="variant-label hb-text-caption-bold">Linear</span><span class="variant-desc hb-text-caption">Full-width 4px bar. Page- or section-level loading.</span></div>
-          <div class="preview preview--col"><div class="hb-loader hb-loader--linear" style="width:100%;"></div></div>
-          <div class="code-block"><pre><span class="token-class">&lt;div</span> <span class="token-attr">class</span>=<span class="token-str">"hb-loader hb-loader--linear"</span><span class="token-class">&gt;&lt;/div&gt;</span></pre></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- On dark -->
-    <section class="section" id="contrast">
-      <h2 class="section__title hb-text-heading-small">On dark backgrounds</h2>
-      <p class="section__desc hb-text-body">Add <code>hb-loader--contrast</code> to the circular spinner when it sits on a dark surface (e.g. a loading Toast).</p>
-      <div class="preview" style="background: var(--ui-text); justify-content:center; padding: var(--spacing-48);">
-        <span class="hb-loader hb-loader--circular hb-loader--contrast"></span>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;span</span> <span class="token-attr">class</span>=<span class="token-str">"hb-loader hb-loader--circular hb-loader--contrast"</span><span class="token-class">&gt;&lt;/span&gt;</span></pre></div>
-    </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg><span class="guidance-card__title hb-text-caption-bold">Do</span></div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Use linear for page- or section-level loading.</p>
-            <p class="guidance-card__note hb-text-body">Use circular for component- or button-level loading.</p>
-            <p class="guidance-card__note hb-text-body">Unmount the loader as soon as content is ready.</p>
-            <p class="guidance-card__note hb-text-body">Pair with a loading Toast for user-triggered background tasks.</p>
-          </div>
-        </div>
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont"><svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg><span class="guidance-card__title hb-text-caption-bold">Don't</span></div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-body">Use linear inside a button or small element.</p>
-            <p class="guidance-card__note hb-text-body">Use circular as a full-page loader.</p>
-            <p class="guidance-card__note hb-text-body">Show both variants for the same action.</p>
-            <p class="guidance-card__note hb-text-body">Use a loader for operations under ~300ms (causes flicker).</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+    <div class="guide" data-hb-guide="loader.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>
