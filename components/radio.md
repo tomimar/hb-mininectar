@@ -33,7 +33,7 @@ Handled by CSS, no extra classes:
 | Unselected | Resting | White fill, `ui-border-secondary` border. |
 | Hover | `:hover` | Border turns `ui-interaction`. |
 | Selected | `checked` attribute | `ui-interaction` fill with a white center dot. |
-| Focus | `:focus-visible` | 2px ring in `ui-interaction-soft`. |
+| Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled-soft` fill (`ui-disabled` when selected); row text muted; not clickable. |
 
 ## Writing the options

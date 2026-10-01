@@ -53,7 +53,7 @@ Borders do the opposite job: `ui-border` draws structure the eye reads past (tab
 
 ## States
 
-Focus is `2px solid ui-interaction` with a `2px` offset, on every focusable thing, always visible — never removed, never replaced with color alone. Controls also carry a soft halo in `ui-interaction-soft` on focus.
+Focus is a `2px solid ui-interaction` outline, on every focusable thing (set just outside the control, or inset where an outside ring would be clipped), always visible — never removed, never replaced with color alone. Controls also carry a soft halo in `ui-interaction-soft` on focus.
 
 Hover moves to the `-highlighted` step of the same hue. Disabled is `ui-disabled` text on `ui-bg-tertiary` with `ui-disabled-soft` edges, and is deliberately low contrast: a disabled control is exempt from the contrast floor, and the dimness is the message. Never disable a button without saying nearby why.
 

@@ -25,7 +25,7 @@ Handled by CSS, no extra classes:
 | Unchecked | Resting | White fill, `ui-border-secondary` border. |
 | Hover | `:hover` | Border turns `ui-interaction`. |
 | Checked | `checked` attribute | `ui-interaction` fill with a white checkmark. |
-| Focus | `:focus-visible` | 2px ring in `ui-interaction-soft`. |
+| Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled-soft` fill (`ui-disabled` when checked); the row text greys out; not clickable. |
 | Indeterminate | `indeterminate` DOM property | Set it in script, not as an attribute. No dedicated style yet: it looks unchecked. |
 

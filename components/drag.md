@@ -34,7 +34,7 @@ A list whose items can be reordered by dragging or by Up/Down buttons.
 | State | Trigger | What changes |
 |---|---|---|
 | Hover | `:hover` on the item | `ui-bg-secondary` background. Inline: grip and buttons appear. |
-| Focus | `:focus-visible` on a button | 2px ring in `ui-interaction-soft`. Inline: grip and buttons appear. |
+| Focus | `:focus-visible` on a button | 2px ring in `ui-interaction`. Inline: grip and buttons appear. |
 | Dragging | `is-dragging` on the item | The row fades. |
 | Drop target | `is-drop-target` on the item | A `ui-interaction` line on top of the row. |
 | At the ends | `disabled` on Up (first) or Down (last) | The arrow greys out. |

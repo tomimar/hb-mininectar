@@ -30,7 +30,7 @@ Handled by CSS on the wrapper:
 |---|---|---|
 | Empty | Resting | Placeholder in `ui-disabled`, `ui-border-secondary` border. |
 | Hover | `:hover` | Border darkens to `ui-text`. |
-| Focus | `:focus-within` | `ui-interaction` border plus a 2px `ui-interaction-soft` ring. |
+| Focus | `:focus-within` | `ui-interaction` border plus a 2px `ui-interaction` ring. |
 | Filled | The input has a value | Value in `ui-text`; the clear button appears. |
 | Disabled | `disabled` on the input (or `hb-search--disabled` on the wrapper) | `ui-bg-tertiary` background, muted icon and text. |
 

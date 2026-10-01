@@ -322,7 +322,7 @@ body {
   background: var(--ui-interaction-highlighted);
 }
 .hb-btn--primary:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -336,7 +336,7 @@ body {
   background: var(--ui-bg-secondary);
 }
 .hb-btn--secondary:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -350,7 +350,7 @@ body {
   background: var(--ui-interaction-soft);
 }
 .hb-btn--tertiary:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -364,7 +364,7 @@ body {
   background: var(--ui-bg-secondary);
 }
 .hb-btn--ghost:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -377,7 +377,7 @@ body {
   background: var(--ui-status-danger-highlighted);
 }
 .hb-btn--danger:focus-visible {
-  outline: 2px solid var(--ui-status-danger-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -390,7 +390,7 @@ body {
   background: var(--ui-status-success-contrast);
 }
 .hb-btn--confirmation:focus-visible {
-  outline: 2px solid var(--ui-status-success-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -1146,7 +1146,7 @@ body {
 }
 
 .hb-radio:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 2px;
 }
 
@@ -1465,7 +1465,7 @@ body {
 }
 
 .hb-checkbox:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 2px;
 }
 
@@ -1849,7 +1849,7 @@ body {
   background: var(--ui-interaction-highlighted);
 }
 .hb-fab--primary:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -1862,7 +1862,7 @@ body {
   background: var(--ui-bg-secondary);
 }
 .hb-fab--secondary:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 
@@ -1953,7 +1953,7 @@ body {
 
 /* Focus */
 .hb-toggle__input:focus-visible + .hb-toggle__track {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 2px;
 }
 
@@ -2000,7 +2000,7 @@ body {
 }
 
 .hb-link:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 2px;
   border-radius: var(--border-radius-4);
   text-decoration: none;
@@ -2395,7 +2395,7 @@ body {
   max-width: 100%;
 }
 .hb-table-wrap:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
 }
 
@@ -2570,7 +2570,7 @@ body {
 }
 .hb-table__menu-item:hover { background: var(--ui-bg-secondary); }
 .hb-table__menu-item:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
 }
 
@@ -2652,7 +2652,7 @@ body {
 }
 .hb-table__expander:hover { background: var(--ui-bg-tertiary); }
 .hb-table__expander:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: 1px;
 }
 .hb-table__expander-icon {
@@ -2720,7 +2720,7 @@ body {
 }
 .hb-table__resizer:hover::before { opacity: 1; }
 .hb-table__resizer:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
   border-radius: var(--border-radius-4);
 }
@@ -2916,7 +2916,7 @@ body {
 }
 .hb-column-manager__move-btn:hover { background: var(--ui-bg-tertiary); }
 .hb-column-manager__move-btn:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
 }
 .hb-column-manager__move-btn:disabled {
@@ -3022,7 +3022,7 @@ body {
 }
 .hb-drag__move-btn:hover { background: var(--ui-bg-tertiary); }
 .hb-drag__move-btn:focus-visible {
-  outline: 2px solid var(--ui-interaction-soft);
+  outline: 2px solid var(--ui-interaction);
   outline-offset: -2px;
 }
 .hb-drag__move-btn:disabled {

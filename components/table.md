@@ -63,7 +63,7 @@ Handled by CSS, no extra classes:
 | Row hover | `:hover` on the row | `ui-bg-secondary` fill — a scan aid, not a sign the row is clickable. |
 | Row selected | Checked `hb-checkbox` in the row | `ui-interaction-soft` fill. |
 | Row expanded | `aria-expanded="true"` on `__expander` | Chevron rotates; the detail row shows on `ui-bg-secondary`. |
-| Region focus | `:focus-visible` on `hb-table-wrap` | 2px `ui-interaction-soft` outline. |
+| Region focus | `:focus-visible` on `hb-table-wrap` | 2px `ui-interaction` outline. |
 | Menu open | `aria-expanded="true"` on the overflow trigger | The menu can overflow the wrap's scroll area. |
 
 ## Reordering, hiding and resizing columns

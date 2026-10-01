@@ -26,7 +26,7 @@ A pill-shaped, shadowed action that floats over content instead of sitting in it
 |---|---|---|
 | Default | — | Base background + `shadow-action`. |
 | Hover | `:hover` | Primary → `ui-interaction-highlighted`; secondary → `ui-bg-secondary`. |
-| Focus | `:focus-visible` | 2px ring in `ui-interaction-soft`. |
+| Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute or `--disabled` | `ui-disabled` text on `ui-disabled-soft`; not clickable. |
 | Selected | `--selected` | Black (`ui-text`) background, knockout text. The persistent on state — e.g. a filter that is applied. |
 

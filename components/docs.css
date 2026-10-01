@@ -255,3 +255,27 @@ code {
 
 /* Divider */
 .divider { height: 1px; background: var(--ui-border); margin: var(--spacing-40) 0; }
+
+/* Guidelines rendered from components/<name>.md (guide.js) */
+.guide { color: var(--ui-text); font-size: var(--font-size-14); line-height: var(--line-height-ui); }
+.guide h2 {
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-bolder);
+  margin: var(--spacing-32) 0 var(--spacing-12) 0;
+}
+.guide h2:first-child { margin-top: var(--spacing-16); }
+.guide p { margin: 0 0 var(--spacing-12) 0; }
+.guide ul { margin: 0 0 var(--spacing-12) 0; padding-left: var(--spacing-24); }
+.guide li { margin-bottom: var(--spacing-4); }
+.guide .state-table th { font-size: var(--font-size-12); font-weight: var(--font-weight-bold); }
+.guide pre {
+  background: #000000;
+  color: #e8e8e8;
+  border-radius: var(--border-radius-8);
+  padding: var(--spacing-16) var(--spacing-24);
+  margin: 0 0 var(--spacing-16) 0;
+  overflow-x: auto;
+}
+.guide pre code { background: none; border: none; padding: 0; color: inherit; line-height: 1.7; }
+[data-theme="dark"] .guide pre { border: 1px solid var(--ui-border); }
+.guide td code { white-space: nowrap; }

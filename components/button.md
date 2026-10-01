@@ -29,7 +29,7 @@ Handled by CSS, no extra classes:
 | State | Trigger | What changes |
 |---|---|---|
 | Hover | `:hover` | Background darkens to the `-highlighted` token. |
-| Focus | `:focus-visible` | 2px ring in `ui-interaction-soft`. |
+| Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled` text on `ui-disabled-soft`; not clickable. |
 
 ## Writing the label

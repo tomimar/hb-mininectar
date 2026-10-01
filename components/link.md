@@ -15,7 +15,7 @@ Navigation to another place — a case, an entity, a document, an external sourc
 | State | Trigger | What changes |
 |---|---|---|
 | Hover | `:hover` | Underline removed (subtle: underline added). |
-| Focus | `:focus-visible` | 2px `ui-interaction-soft` ring. |
+| Focus | `:focus-visible` | 2px `ui-interaction` ring. |
 | Disabled | `--disabled` | Muted, no underline, not clickable. Removes the target but keeps the text readable. |
 
 ## Structure
