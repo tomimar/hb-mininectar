@@ -139,6 +139,150 @@
     });
   });
 
+  /* ── Multi select ───────────────────────────────────────────
+     .hb-multiselect with a __control (tags + __input + __chevron) and
+     a __menu (hidden while closed) of <label class="__option"> rows,
+     each holding a real checkbox. The checked boxes are the value:
+     hb.js keeps the tags, __option--selected and the open state in
+     step, filters the options as the analyst types, and shows
+     __empty when nothing matches. Write the starting tags in the
+     markup for the boxes that start checked.                      */
+  var REMOVE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">' +
+    '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>';
+
+  function msParts(root) {
+    return {
+      control: root.querySelector('.hb-multiselect__control'),
+      input: root.querySelector('.hb-multiselect__input'),
+      menu: root.querySelector('.hb-multiselect__menu'),
+      empty: root.querySelector('.hb-multiselect__empty'),
+      options: root.querySelectorAll('.hb-multiselect__option')
+    };
+  }
+  function msLabel(option) { return option.textContent.trim(); }
+
+  function msOpen(root, open) {
+    var p = msParts(root);
+    if (!p.menu || root.classList.contains('hb-multiselect--disabled')) return;
+    p.menu.hidden = !open;
+    root.classList.toggle('is-open', open);
+    if (p.input) p.input.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (!open && p.input && p.input.value) { p.input.value = ''; msFilter(root); }
+  }
+
+  function msRender(root) {
+    var p = msParts(root);
+    if (!p.control) return;
+    p.control.querySelectorAll('.hb-multiselect__tag').forEach(function (t) { t.remove(); });
+    p.options.forEach(function (option) {
+      var box = option.querySelector('input[type="checkbox"]');
+      var on = !!(box && box.checked);
+      option.classList.toggle('hb-multiselect__option--selected', on);
+      if (!on) return;
+      var label = msLabel(option);
+      var tag = document.createElement('span');
+      tag.className = 'hb-multiselect__tag';
+      tag.appendChild(document.createTextNode(label));
+      var remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'hb-multiselect__tag-remove';
+      remove.setAttribute('aria-label', 'Remove ' + label);
+      remove.innerHTML = REMOVE_ICON;
+      tag.appendChild(remove);
+      p.control.insertBefore(tag, p.input || null);
+    });
+  }
+
+  function msFilter(root) {
+    var p = msParts(root);
+    var q = p.input ? p.input.value.trim().toLowerCase() : '';
+    var shown = 0;
+    p.options.forEach(function (option) {
+      var match = !q || msLabel(option).toLowerCase().indexOf(q) !== -1;
+      option.hidden = !match;
+      if (match) shown++;
+    });
+    if (p.empty) p.empty.hidden = shown > 0;
+  }
+
+  function msUncheck(root, label) {
+    msParts(root).options.forEach(function (option) {
+      var box = option.querySelector('input[type="checkbox"]');
+      if (box && msLabel(option) === label) box.checked = false;
+    });
+    msRender(root);
+  }
+
+  document.addEventListener('click', function (e) {
+    // Close every open multi select the click is not inside
+    document.querySelectorAll('.hb-multiselect.is-open').forEach(function (root) {
+      if (!root.contains(e.target)) msOpen(root, false);
+    });
+    var root = e.target.closest('.hb-multiselect');
+    if (!root || root.classList.contains('hb-multiselect--disabled')) return;
+
+    var remove = e.target.closest('.hb-multiselect__tag-remove');
+    if (remove) {
+      var tag = remove.closest('.hb-multiselect__tag');
+      msUncheck(root, tag.textContent.trim());
+      return;
+    }
+    if (e.target.closest('.hb-multiselect__chevron')) {
+      msOpen(root, !root.classList.contains('is-open'));
+      return;
+    }
+    if (e.target.closest('.hb-multiselect__control')) {
+      msOpen(root, true);
+      var input = msParts(root).input;
+      if (input) input.focus();
+    }
+  });
+
+  document.addEventListener('change', function (e) {
+    var root = e.target.closest && e.target.closest('.hb-multiselect');
+    if (root && e.target.matches('.hb-multiselect__option input[type="checkbox"]')) msRender(root);
+  });
+
+  document.addEventListener('input', function (e) {
+    var root = e.target.closest && e.target.closest('.hb-multiselect');
+    if (root && e.target.matches('.hb-multiselect__input')) { msOpen(root, true); msFilter(root); }
+  });
+
+  document.addEventListener('focusin', function (e) {
+    var root = e.target.closest && e.target.closest('.hb-multiselect');
+    if (root && e.target.matches('.hb-multiselect__input')) msOpen(root, true);
+  });
+
+  // Tabbing out of the field closes the menu. A pointer press inside it
+  // (on an option label) also moves focus away first: ignore that one.
+  var msPointerRoot = null;
+  document.addEventListener('pointerdown', function (e) {
+    msPointerRoot = e.target.closest ? e.target.closest('.hb-multiselect') : null;
+  });
+  document.addEventListener('pointerup', function () {
+    setTimeout(function () { msPointerRoot = null; }, 0);
+  });
+  document.addEventListener('focusout', function (e) {
+    var root = e.target.closest && e.target.closest('.hb-multiselect');
+    if (!root || !root.classList.contains('is-open') || msPointerRoot === root) return;
+    if (!(e.relatedTarget && root.contains(e.relatedTarget))) msOpen(root, false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var root = e.target.closest && e.target.closest('.hb-multiselect');
+    if (!root) return;
+    if (e.key === 'Escape' && root.classList.contains('is-open')) {
+      msOpen(root, false);
+      var input = msParts(root).input;
+      if (input) input.focus();
+    }
+    // Backspace in an empty field removes the last tag
+    if (e.key === 'Backspace' && e.target.matches('.hb-multiselect__input') && !e.target.value) {
+      var tags = root.querySelectorAll('.hb-multiselect__tag');
+      if (tags.length) msUncheck(root, tags[tags.length - 1].textContent.trim());
+    }
+  });
+
   // Restore remembered states
   function restoreSidenavs() {
     document.querySelectorAll('.hb-sidenav__toggle[data-hb-persist]').forEach(function (toggle) {

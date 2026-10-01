@@ -639,24 +639,25 @@ body {
 /* ── Multi Select (Select · multi variant) ───────────────────
   Lets users pick several options. Selections appear as removable
   tags inside the field; the dropdown lists options with checkboxes.
-  Behaviour (open / type-to-filter / toggle / remove) is wired with
-  Alpine.js in the prototype — this is the markup + styling contract.
+  hb.js does the behaviour (open / close, type-to-filter, toggle,
+  remove, Backspace, Escape) from the markup: the checked boxes are
+  the value. Full guide and examples: components/select.md
 
   Usage:
-    <div class="hb-multiselect" :class="open && 'is-open'">
+    <div class="hb-multiselect">
       <div class="hb-multiselect__control">
-        <span class="hb-multiselect__tag">
-          Option 1
-          <button class="hb-multiselect__tag-remove">[x svg]</button>
+        <span class="hb-multiselect__tag">Option 1
+          <button type="button" class="hb-multiselect__tag-remove" aria-label="Remove Option 1">[x svg]</button>
         </span>
-        <input class="hb-multiselect__input" placeholder="Select a value">
-        <svg class="hb-multiselect__chevron">[chevron]</svg>
+        <input class="hb-multiselect__input" placeholder="Select a value"
+               aria-expanded="false" aria-controls="menu-id" autocomplete="off">
+        <span class="hb-icon hb-multiselect__chevron" aria-hidden="true">expand_more</span>
       </div>
-      <div class="hb-multiselect__menu">
-        <div class="hb-multiselect__option hb-multiselect__option--selected">
+      <div class="hb-multiselect__menu" id="menu-id" hidden>
+        <label class="hb-multiselect__option hb-multiselect__option--selected">
           <input type="checkbox" class="hb-checkbox" checked> Option 1
-        </div>
-        <div class="hb-multiselect__empty">No results found</div>
+        </label>
+        <div class="hb-multiselect__empty" hidden>No results found</div>
       </div>
     </div>
 

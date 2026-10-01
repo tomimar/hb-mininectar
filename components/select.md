@@ -16,42 +16,57 @@ Choice from a known list — one value, or several.
 
 ## Structure
 
-**Single select.** The wrapper supplies the chevron and the styling; the native `<select>` supplies the behaviour and the keyboard. The consumer provides the `<option>` list and a `for`/`id` label.
+### Single select
 
-```html
-<div class="hb-field">
+The wrapper supplies the chevron and the styling; the native `<select>` supplies the behaviour and the keyboard. The consumer provides the `<option>` list and a `for`/`id` label.
+
+```html preview
+<div class="hb-field" style="max-width: 320px;">
   <label class="hb-field__label" for="status">Status</label>
   <div class="hb-select">
     <select id="status">
       <option value="">Select a status</option>
       <option>Open</option>
       <option>In review</option>
+      <option>Escalated</option>
+      <option>Closed</option>
     </select>
   </div>
 </div>
 ```
 
-**Multi select.** Selections become `__tag` chips (each with a `__tag-remove` button) inside `__control`, next to a `__input` and a `__chevron`. The `__menu` lists `__option` rows with checkboxes; `__option--selected` marks the chosen ones, and `__empty` shows when the filter matches nothing.
+### Multi select
 
-```html
-<div class="hb-multiselect is-open">
-  <div class="hb-multiselect__control">
-    <span class="hb-multiselect__tag">Elena Cruz
-      <button class="hb-multiselect__tag-remove" aria-label="Remove Elena Cruz">…</button>
-    </span>
-    <input class="hb-multiselect__input" placeholder="Select assignees">
-    <svg class="hb-multiselect__chevron" aria-hidden="true">…</svg>
-  </div>
-  <div class="hb-multiselect__menu">
-    <div class="hb-multiselect__option hb-multiselect__option--selected">
-      <input type="checkbox" class="hb-checkbox" checked> Elena Cruz
+`hb.js` does the work — no script of your own:
+
+- The menu (`__menu`, with `hidden` while closed) holds one `<label class="hb-multiselect__option">` per option, each wrapping a real checkbox. The checked boxes are the value.
+- Clicking the field or focusing its `__input` opens the menu. A click outside, Escape or tabbing away closes it. The `__chevron` toggles it.
+- Ticking a box adds a `__tag` chip (with a `__tag-remove` button) inside `__control` and marks the row `__option--selected`. Removing a tag, or Backspace in the empty field, unticks it.
+- Typing in `__input` filters the options. `__empty` (start it `hidden`) shows when nothing matches.
+- Write the starting state in the markup: a tag for each box that starts checked. `hb.js` keeps them in step from then on.
+
+Pick a few assignees, remove one, then type to filter:
+
+```html preview
+<div class="hb-field" style="max-width: 360px; min-height: 300px;">
+  <label class="hb-field__label" for="assignees">Assignees</label>
+  <div class="hb-multiselect">
+    <div class="hb-multiselect__control">
+      <span class="hb-multiselect__tag">Elena Cruz<button type="button" class="hb-multiselect__tag-remove" aria-label="Remove Elena Cruz"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg></button></span>
+      <input class="hb-multiselect__input" id="assignees" type="text" placeholder="Select assignees"
+             autocomplete="off" aria-expanded="false" aria-controls="assignees-menu">
+      <span class="hb-icon hb-multiselect__chevron" aria-hidden="true">expand_more</span>
     </div>
-    <div class="hb-multiselect__empty">No results found</div>
+    <div class="hb-multiselect__menu" id="assignees-menu" hidden>
+      <label class="hb-multiselect__option hb-multiselect__option--selected"><input type="checkbox" class="hb-checkbox" checked> Elena Cruz</label>
+      <label class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox"> Daniel Okafor</label>
+      <label class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox"> Priya Raman</label>
+      <label class="hb-multiselect__option"><input type="checkbox" class="hb-checkbox"> Marco Silva</label>
+      <div class="hb-multiselect__empty" hidden>No results found</div>
+    </div>
   </div>
 </div>
 ```
-
-Behaviour — open, type-to-filter, toggle, remove — is the consumer's, wired with Alpine in prototypes. This component is the markup and styling contract.
 
 ## States
 
@@ -62,6 +77,27 @@ Behaviour — open, type-to-filter, toggle, remove — is the consumer's, wired 
 | Focus / open | `:focus`; `is-open` on the `hb-multiselect` root | `ui-interaction` border plus a `ui-interaction-soft` ring. |
 | Error | `hb-select--error` on the wrapper | `ui-status-danger` border and ring. Pair with `hb-field__error`. |
 | Disabled | `disabled` on the `<select>`; `hb-multiselect--disabled` on the root | `ui-bg-tertiary` background, muted text, not clickable. |
+
+```html preview
+<div style="display: flex; gap: var(--spacing-16); flex-wrap: wrap;">
+  <div class="hb-field" style="width: 240px;">
+    <label class="hb-field__label" for="risk">Risk level</label>
+    <div class="hb-select hb-select--error">
+      <select id="risk" aria-invalid="true" aria-describedby="risk-error">
+        <option value="">Select a risk level</option>
+        <option>Low</option><option>Medium</option><option>High</option>
+      </select>
+    </div>
+    <p class="hb-field__error" id="risk-error">Select a risk level to close the case.</p>
+  </div>
+  <div class="hb-field" style="width: 240px;">
+    <label class="hb-field__label" for="queue">Queue</label>
+    <div class="hb-select hb-select--sm">
+      <select id="queue" disabled><option>Screening alerts</option></select>
+    </div>
+  </div>
+</div>
+```
 
 ## Writing the options
 
