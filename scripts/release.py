@@ -4,6 +4,9 @@
     python3 scripts/release.py <version> "<one-line summary>"
 
 - Adds the version and summary at the top of CHANGELOG.md and commits it.
+  Notes written under a "## Unreleased" heading at the top of the
+  changelog (New / Changed / Fixed, as you go) become that release's
+  details.
 - Tags the commit v<version> and pushes the commit and the tag.
 jsDelivr then serves that exact snapshot at
 cdn.jsdelivr.net/gh/tomimar/hb-mininectar@v<version>/…, forever.
@@ -39,7 +42,13 @@ def main():
     log = ROOT / "CHANGELOG.md"
     head = "# Changelog\n\nPrototypes pin a version (see scripts/new_prototype.py). Newest first.\n"
     body = log.read_text()[len(head):] if log.exists() else ""
-    entry = f"\n## {tag} — {datetime.date.today().isoformat()}\n\n{summary}\n"
+    # Notes collected under "## Unreleased" become this release's details
+    details = ""
+    m = re.match(r"\s*## Unreleased\n(.*?)(?=\n## |\Z)", body, re.S)
+    if m:
+        details = m.group(1).strip() + "\n"
+        body = body[m.end():]
+    entry = f"\n## {tag} — {datetime.date.today().isoformat()}\n\n{summary}\n" + (f"\n{details}" if details else "")
     log.write_text(head + entry + body)
 
     git("add", "CHANGELOG.md")

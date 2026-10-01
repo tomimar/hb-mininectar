@@ -23,7 +23,8 @@ Whenever a new component is added to Mini Nectar, complete ALL of these steps (m
 4. **Add a reference link in the repo's CLAUDE.md** — the Figma links table at the bottom, plus the component docs table, so the page is discoverable.
 5. **Sync the Claude Design artifact** with the **`sync-artifact`** skill: regenerate `bundle.css` from `components.css` and add the component's `README.md` + `preview.html` (plus `tokens.json` if tokens changed). Otherwise Claude Design prototypes won't have the component.
 6. **Update the Notion Component Library** (see below).
-7. **Commit and push** to GitHub.
+7. **Note it in `CHANGELOG.md`** under `## Unreleased` → **New** (create the heading at the top if it isn't there).
+8. **Commit and push** to GitHub.
 
 ---
 

@@ -42,7 +42,7 @@ A release is a snapshot prototypes can pin to. After a set of changes, publish o
 python3 scripts/release.py 1.1.0 "Add hb-foo; fix bar focus ring"
 ```
 
-It updates `CHANGELOG.md`, tags `v1.1.0` and pushes. Bump MAJOR when a change can break an existing prototype (a class renamed or removed, markup that must change), MINOR for anything new, PATCH for fixes.
+It updates `CHANGELOG.md`, tags `v1.1.0` and pushes. **As you make changes, note them under a `## Unreleased` heading at the top of `CHANGELOG.md`** (grouped as New / Changed / Fixed, one short line each, saying what changes for someone building a prototype) — the release turns that section into the version's details. Bump MAJOR when a change can break an existing prototype (a class renamed or removed, markup that must change), MINOR for anything new, PATCH for fixes.
 
 ---
 
