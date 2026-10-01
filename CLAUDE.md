@@ -36,7 +36,7 @@ They are shared as a zip folder.
 
 - **Styles**: `tokens.css` + `components.css` from this repo
 - **Layout**: Tailwind CDN (layout utilities only — no colors, no typography)
-- **Component behaviour**: `hb.js` from this repo (no dependencies). Components being migrated still use Alpine — see each component's `.md`
+- **Component behaviour**: `hb.js` from this repo (no dependencies). No component needs Alpine
 - **Prototype logic**: Alpine.js v3 (CDN), optional
 - **Sharing**: zip folder, opened directly in browser via `file://`
 
@@ -167,7 +167,7 @@ Every component has a dedicated documentation page with live examples, all varia
 | Sidenav | `hb-sidenav-area` (wrapper) + `hb-sidenav` + `__toggle` (top-left corner of the content, on its own line — same place on every page; the peek panel hangs from `--hb-sidenav-peek-top` so it never covers it)/`__section`/`__group`/`__item`(`--active`/`--disabled`)/`__icon`/`__label`/`__count`/`__submenu`/`__subitem`(`--active`). In-page section navigation with optional icons and counts, plus one level of submenu (caption bold, shown when its parent is the current section — no chevron, nothing to expand). No background or divider: it shares the surface of the content. Collapses away entirely (`is-collapsed`) to give width back to tables, and floats back over the content on hover (`is-peeking`) — the Notion pattern; click the toggle to pin it open. Width via `--hb-sidenav-width` | https://tomimar.github.io/hb-mininectar/components/sidenav.html |
 | Popup select | `hb-popup-select` (`__header`/`__clear`/`__list`/`__option`/`__label`/`__count`) | https://tomimar.github.io/hb-mininectar/components/popup-select.html |
 | Link | `hb-link` (`--subtle`/`--reverse`/`--disabled`) + `hb-link__icon` | https://tomimar.github.io/hb-mininectar/components/link.html |
-| Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`) | https://tomimar.github.io/hb-mininectar/components/modal.html |
+| Modal | `hb-modal-overlay` + `hb-modal` (`__header`/`__title`/`__close`/`__body`/`__footer`). Opens from `data-hb-modal-open`, closes on `data-hb-modal-close` — `hb.js` handles focus and Escape | https://tomimar.github.io/hb-mininectar/components/modal.html |
 | Tooltip | `hb-tooltip` + `hb-tooltip__content` (`--top`/`--left`/`--right`) | https://tomimar.github.io/hb-mininectar/components/tooltip.html |
 | Alert | `hb-alert` (`--info`/`--success`/`--warning`/`--error`) + `hb-alert__icon`/`__content`/`__link`/`__dismiss` | https://tomimar.github.io/hb-mininectar/components/alert.html |
 | Toast | `hb-toast` (`--info`/`--success`/`--warning`/`--error`/`--loading`) + `hb-toast__icon`/`__content`/`__action`/`__dismiss` | https://tomimar.github.io/hb-mininectar/components/toast.html |

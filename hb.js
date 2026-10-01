@@ -272,6 +272,7 @@
     var root = e.target.closest && e.target.closest('.hb-multiselect');
     if (!root) return;
     if (e.key === 'Escape' && root.classList.contains('is-open')) {
+      e.preventDefault();
       msOpen(root, false);
       var input = msParts(root).input;
       if (input) input.focus();
@@ -482,7 +483,7 @@
     if (e.key === 'Escape') {
       openPopupButtons().forEach(function (open) {
         var popup = popupOf(open);
-        if (popup && (popup.contains(e.target) || e.target === open)) { setPopup(open, false); open.focus(); }
+        if (popup && (popup.contains(e.target) || e.target === open)) { setPopup(open, false); open.focus(); e.preventDefault(); }
       });
       return;
     }
@@ -720,6 +721,83 @@
     p.hidden.innerHTML = root.hbColumns.hidden;
     cmSync(root);
     announce('Columns reset to their defaults');
+  });
+
+  /* ── Modal ──────────────────────────────────────────────────
+     .hb-modal-overlay with an id, starting `hidden`, holding a
+     .hb-modal[role="dialog"][aria-modal="true"]. A button with
+     data-hb-modal-open="<overlay id>" opens it. It closes on the
+     __close button, any [data-hb-modal-close] inside it (Cancel, the
+     commit button in a prototype), a click on the overlay, or Escape.
+     While open, focus moves inside and Tab stays inside; on close it
+     returns to the button that opened it. The page behind doesn't
+     scroll. An `hb-modal-close` event fires on the overlay with the
+     button that closed it ({ detail: { by } }), for a prototype that
+     needs to act on the choice.                                      */
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), ' +
+                  'textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  var openModal = null; // { overlay, trigger }
+
+  function focusables(el) {
+    return Array.prototype.filter.call(el.querySelectorAll(FOCUSABLE), function (f) {
+      return f.offsetParent !== null || f === document.activeElement;
+    });
+  }
+
+  function showModal(overlay, trigger) {
+    if (openModal) closeModal(); // never stacked
+    overlay.hidden = false;
+    openModal = { overlay: overlay, trigger: trigger };
+    document.documentElement.style.overflow = 'hidden';
+    var modal = overlay.querySelector('.hb-modal') || overlay;
+    // First field, else the first footer button, else the dialog itself
+    var target = modal.querySelector('.hb-modal__body ' + FOCUSABLE.split(', ').join(', .hb-modal__body ')) ||
+                 modal.querySelector('.hb-modal__footer button:not([disabled])');
+    if (!target) { modal.setAttribute('tabindex', '-1'); target = modal; }
+    target.focus();
+  }
+
+  function closeModal(by) {
+    if (!openModal) return;
+    var o = openModal;
+    openModal = null;
+    o.overlay.hidden = true;
+    document.documentElement.style.overflow = '';
+    o.overlay.dispatchEvent(new CustomEvent('hb-modal-close', { bubbles: true, detail: { by: by || null } }));
+    if (o.trigger && document.contains(o.trigger)) o.trigger.focus();
+  }
+
+  document.addEventListener('click', function (e) {
+    var opener = e.target.closest('[data-hb-modal-open]');
+    if (opener) {
+      var overlay = document.getElementById(opener.getAttribute('data-hb-modal-open'));
+      if (overlay) showModal(overlay, opener);
+      return;
+    }
+    if (!openModal) return;
+    if (e.target === openModal.overlay) { closeModal(); return; }
+    var closer = e.target.closest('.hb-modal__close, [data-hb-modal-close]');
+    if (closer && openModal.overlay.contains(closer)) closeModal(closer);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (!openModal) return;
+    if (e.key === 'Escape') {
+      // An open menu or multi select inside the modal closes first
+      if (e.defaultPrevented) return;
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    var items = focusables(openModal.overlay);
+    if (!items.length) { e.preventDefault(); return; }
+    var first = items[0], last = items[items.length - 1];
+    if (e.shiftKey && (document.activeElement === first || !openModal.overlay.contains(document.activeElement))) {
+      e.preventDefault(); last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault(); first.focus();
+    }
   });
 
   // Set up what needs it — now, and whenever markup is added later

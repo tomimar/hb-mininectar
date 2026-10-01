@@ -1204,6 +1204,27 @@ body {
 
 /* ── Modal ────────────────────────────────────────────────── */
 /*
+  hb.js opens it from a button with data-hb-modal-open="<overlay id>",
+  closes it (× / [data-hb-modal-close] / overlay click / Escape),
+  traps focus while open and returns it to the trigger.
+  Full guide and examples: components/modal.md
+
+  Usage:
+    <div class="hb-modal-overlay" id="x" hidden>
+      <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="x-title">
+        <div class="hb-modal__header">
+          <span class="hb-modal__title" id="x-title">Escalate case?</span>
+          <button type="button" class="hb-modal__close" aria-label="Close">×</button>
+        </div>
+        <div class="hb-modal__body">...</div>
+        <div class="hb-modal__footer">
+          <button type="button" class="hb-btn hb-btn--ghost hb-btn--lg" data-hb-modal-close>Cancel</button>
+          <button type="button" class="hb-btn hb-btn--primary hb-btn--lg" data-hb-modal-close>Escalate case</button>
+        </div>
+      </div>
+    </div>
+*/
+/*
   Usage:
     <div class="hb-modal-overlay" @click="close">
       <div class="hb-modal" @click.stop>

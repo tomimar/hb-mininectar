@@ -14,22 +14,80 @@ All modals share one structure. The footer changes with the decision:
 ## Structure
 
 ```html
-<div class="hb-modal-overlay">
-  <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="m-title">
+<button type="button" class="hb-btn hb-btn--primary hb-btn--lg" data-hb-modal-open="escalate">Escalate case</button>
+
+<div class="hb-modal-overlay" id="escalate" hidden>
+  <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="escalate-title">
     <div class="hb-modal__header">
-      <span class="hb-modal__title" id="m-title">…</span>
-      <button class="hb-modal__close" aria-label="Close"><span class="hb-icon">close</span></button>
+      <span class="hb-modal__title" id="escalate-title">Escalate case CASE-10482?</span>
+      <button type="button" class="hb-modal__close" aria-label="Close"><span class="hb-icon" aria-hidden="true">close</span></button>
     </div>
     <div class="hb-modal__body">…</div>
-    <div class="hb-modal__footer">…</div>
+    <div class="hb-modal__footer">
+      <button type="button" class="hb-btn hb-btn--ghost hb-btn--lg" data-hb-modal-close>Cancel</button>
+      <button type="button" class="hb-btn hb-btn--primary hb-btn--lg" data-hb-modal-close>Escalate case</button>
+    </div>
   </div>
 </div>
 ```
 
-- `hb-modal-overlay`: fixed, dimmed backdrop that centers the modal.
+- `hb-modal-overlay`: fixed, dimmed backdrop that centers the modal. It has an `id` and starts `hidden`.
 - `hb-modal`: the only surface at `border-radius-16`, on `ui-bg-overlay` with `shadow-floating`. Width 400–720px.
 - `hb-modal__header`: `__title` plus an `__close` button with an `aria-label`.
 - `hb-modal__footer`: right-aligned. Cancel first as a ghost button, commit last as primary — or danger when it destroys something.
+
+## Behaviour
+
+`hb.js` does the work — no script of your own:
+
+- A button with `data-hb-modal-open="<overlay id>"` opens it.
+- It closes on the `__close` button, on any button with `data-hb-modal-close` (Cancel, and the commit button in a prototype), on a click on the overlay, or on Escape.
+- On open, focus moves into the modal (the first field, else the first footer button) and Tab stays inside. On close, focus goes back to the button that opened it. The page behind doesn't scroll.
+- Only one modal at a time: opening another closes the first.
+- A prototype that needs to act on the choice listens for `hb-modal-close` on the overlay: `event.detail.by` is the button that closed it (none for Escape or an overlay click).
+
+Open each one, then close it every way — ×, Cancel, a click outside, Escape:
+
+```html preview
+<button type="button" class="hb-btn hb-btn--primary hb-btn--lg" data-hb-modal-open="modal-escalate">Escalate case</button>
+<button type="button" class="hb-btn hb-btn--danger hb-btn--lg" data-hb-modal-open="modal-delete">Delete note</button>
+
+<div class="hb-modal-overlay" id="modal-escalate" hidden>
+  <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="modal-escalate-title">
+    <div class="hb-modal__header">
+      <span class="hb-modal__title" id="modal-escalate-title">Escalate case CASE-10482?</span>
+      <button type="button" class="hb-modal__close" aria-label="Close"><span class="hb-icon" aria-hidden="true">close</span></button>
+    </div>
+    <div class="hb-modal__body">
+      <div class="hb-field">
+        <label class="hb-field__label" for="escalate-reason">Reason <span class="hb-field__required">*</span></label>
+        <textarea class="hb-textarea" id="escalate-reason" rows="3">Name and date of birth both match the sanctioned party.</textarea>
+        <p class="hb-field__help">Included in the audit trail.</p>
+      </div>
+    </div>
+    <div class="hb-modal__footer">
+      <button type="button" class="hb-btn hb-btn--ghost hb-btn--lg" data-hb-modal-close>Cancel</button>
+      <button type="button" class="hb-btn hb-btn--primary hb-btn--lg" data-hb-modal-close>Escalate case</button>
+    </div>
+  </div>
+</div>
+
+<div class="hb-modal-overlay" id="modal-delete" hidden>
+  <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="modal-delete-title">
+    <div class="hb-modal__header">
+      <span class="hb-modal__title" id="modal-delete-title">Delete note?</span>
+      <button type="button" class="hb-modal__close" aria-label="Close"><span class="hb-icon" aria-hidden="true">close</span></button>
+    </div>
+    <div class="hb-modal__body">
+      <p class="hb-text-body">The note by Elena Cruz on 2 Jul 2026 is removed from CASE-10482. This can't be undone.</p>
+    </div>
+    <div class="hb-modal__footer">
+      <button type="button" class="hb-btn hb-btn--ghost hb-btn--lg" data-hb-modal-close>Cancel</button>
+      <button type="button" class="hb-btn hb-btn--danger hb-btn--lg" data-hb-modal-close>Delete note</button>
+    </div>
+  </div>
+</div>
+```
 
 ## Writing the content
 
@@ -54,27 +112,5 @@ All modals share one structure. The footer changes with the decision:
 
 ## Accessibility
 
-The consumer owns the dialog semantics:
-
-- `role="dialog"` with `aria-modal="true"`, labelled by the title.
-- Move focus into the modal on open and trap it while open.
-- Escape closes it.
-- Return focus to the trigger afterwards.
-
-## Example
-
-```html
-<div class="hb-modal-overlay">
-  <div class="hb-modal" role="dialog" aria-modal="true" aria-labelledby="esc-title">
-    <div class="hb-modal__header">
-      <span class="hb-modal__title" id="esc-title">Escalate case CASE-10482?</span>
-      <button class="hb-modal__close" aria-label="Close"><span class="hb-icon">close</span></button>
-    </div>
-    <div class="hb-modal__body">The case moves to the Level 2 queue and you can no longer edit the narrative.</div>
-    <div class="hb-modal__footer">
-      <button class="hb-btn hb-btn--ghost">Cancel</button>
-      <button class="hb-btn hb-btn--primary">Escalate case</button>
-    </div>
-  </div>
-</div>
-```
+- Give the dialog `role="dialog"` and `aria-modal="true"`, labelled by its title (`aria-labelledby`).
+- `hb.js` handles the rest: focus moves in on open and is trapped while open, Escape closes it, and focus returns to the trigger afterwards.
