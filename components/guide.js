@@ -28,6 +28,12 @@
     }
   });
 
+  // Example links (href="#") would jump to the top of the page: keep them still
+  target.addEventListener('click', function (e) {
+    var link = e.target.closest('.preview a[href="#"]');
+    if (link) e.preventDefault();
+  });
+
   fetch(file)
     .then(function (res) {
       if (!res.ok) throw new Error(res.status);
