@@ -286,6 +286,6 @@ code {
 [data-theme="dark"] .guide pre { border: 1px solid var(--ui-border); }
 .guide td code { white-space: nowrap; }
 .guide .code-block pre { padding: 0; margin: 0; background: none; border: none; border-radius: 0; }
-.guide .preview > div { flex: 1 1 100%; }
+.guide .preview > :is(div, ul, ol) { flex: 1 1 100%; }
 .guide .preview p { margin: 0 0 var(--spacing-8) 0; }
 .guide .preview p:last-child { margin-bottom: 0; }

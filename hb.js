@@ -283,6 +283,154 @@
     }
   });
 
+  /* ── Drag (reorderable list) ────────────────────────────────
+     ul.hb-drag of li.hb-drag__item[draggable="true"], each with a
+     __handle, a __content and a __move group of two __move-btn
+     buttons (Up first, Down second). hb.js moves the <li> itself:
+     - Up / Down buttons — the single-pointer path (WCAG 2.5.7). Focus
+       stays on the pressed button (or its sibling at the ends).
+     - Pointer drag — the parallel path, within one list only, so a
+       nested ul.hb-drag.hb-drag__nested reorders on its own.
+     It names the buttons ("Move <label> up"), disables Up on the first
+     item and Down on the last, announces each move in the shared
+     polite live region (#hb-live-region), and fires an `hb-reorder`
+     event on the list ({ detail: { item, from, to } }) for a
+     prototype that needs to react.                                 */
+  function announce(msg) {
+    var el = document.getElementById('hb-live-region');
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'hb-live-region';
+      el.className = 'hb-visually-hidden';
+      el.setAttribute('aria-live', 'polite');
+      el.setAttribute('aria-atomic', 'true');
+      document.body.appendChild(el);
+    }
+    el.textContent = '';
+    setTimeout(function () { el.textContent = msg; }, 30);
+  }
+  window.hbAnnounce = announce;
+
+  function dragItems(list) {
+    return Array.prototype.filter.call(list.children, function (c) {
+      return c.classList.contains('hb-drag__item');
+    });
+  }
+  function dragLabel(item) {
+    var content = Array.prototype.find.call(item.children, function (c) {
+      return c.classList.contains('hb-drag__content');
+    });
+    return content ? content.textContent.trim() : '';
+  }
+  function dragButtons(item) {
+    var move = Array.prototype.find.call(item.children, function (c) {
+      return c.classList.contains('hb-drag__move');
+    });
+    return move ? move.querySelectorAll('.hb-drag__move-btn') : [];
+  }
+
+  function syncDragList(list) {
+    var items = dragItems(list);
+    items.forEach(function (item, i) {
+      var label = dragLabel(item);
+      var btns = dragButtons(item);
+      if (btns[0]) { btns[0].disabled = i === 0; btns[0].setAttribute('aria-label', 'Move ' + label + ' up'); }
+      if (btns[1]) { btns[1].disabled = i === items.length - 1; btns[1].setAttribute('aria-label', 'Move ' + label + ' down'); }
+    });
+  }
+
+  function dragMoved(list, item, from) {
+    var items = dragItems(list);
+    var to = items.indexOf(item);
+    syncDragList(list);
+    announce(dragLabel(item) + ' moved to position ' + (to + 1) + ' of ' + items.length);
+    list.dispatchEvent(new CustomEvent('hb-reorder', { bubbles: true, detail: { item: item, from: from, to: to } }));
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('.hb-drag__move-btn');
+    if (!btn || btn.disabled) return;
+    var item = btn.closest('.hb-drag__item');
+    var list = item && item.parentElement;
+    if (!list || !list.classList.contains('hb-drag')) return;
+    var btns = dragButtons(item);
+    var up = btn === btns[0];
+    var items = dragItems(list);
+    var from = items.indexOf(item);
+    var swap = items[from + (up ? -1 : 1)];
+    if (!swap) return;
+    if (up) list.insertBefore(item, swap);
+    else list.insertBefore(item, swap.nextSibling);
+    dragMoved(list, item, from);
+    // Keep focus where the keyboard user is
+    btns = dragButtons(item);
+    var keep = up ? btns[0] : btns[1];
+    if (!keep || keep.disabled) keep = up ? btns[1] : btns[0];
+    if (keep) keep.focus();
+  });
+
+  var dragging = null;
+  function clearDropTargets(list) {
+    list.querySelectorAll('.is-drop-target').forEach(function (el) { el.classList.remove('is-drop-target'); });
+  }
+
+  document.addEventListener('dragstart', function (e) {
+    var item = e.target.closest && e.target.closest('.hb-drag__item');
+    if (!item || item !== e.target) return; // drag the row, not a link inside it
+    dragging = item;
+    item.classList.add('is-dragging');
+    if (e.dataTransfer) {
+      e.dataTransfer.effectAllowed = 'move';
+      try { e.dataTransfer.setData('text/plain', dragLabel(item)); } catch (err) {}
+    }
+  });
+  document.addEventListener('dragover', function (e) {
+    if (!dragging) return;
+    var target = e.target.closest && e.target.closest('.hb-drag__item');
+    // Only within the same list: nested levels never mix
+    while (target && target.parentElement !== dragging.parentElement) {
+      target = target.parentElement.closest('.hb-drag__item');
+    }
+    if (!target) return;
+    e.preventDefault();
+    clearDropTargets(dragging.parentElement);
+    if (target !== dragging) target.classList.add('is-drop-target');
+  });
+  document.addEventListener('drop', function (e) {
+    if (!dragging) return;
+    var list = dragging.parentElement;
+    var target = list.querySelector(':scope > .is-drop-target');
+    clearDropTargets(list);
+    if (!target) return;
+    e.preventDefault();
+    var items = dragItems(list);
+    var from = items.indexOf(dragging);
+    if (from < items.indexOf(target)) list.insertBefore(dragging, target.nextSibling);
+    else list.insertBefore(dragging, target);
+    dragMoved(list, dragging, from);
+  });
+  document.addEventListener('dragend', function () {
+    if (!dragging) return;
+    dragging.classList.remove('is-dragging');
+    clearDropTargets(dragging.parentElement);
+    dragging = null;
+  });
+
+  // Name and enable the buttons of every list — now and whenever a list
+  // is added to the page later (a prototype's script, the docs pages)
+  function syncAllDragLists(root) {
+    if (root.matches && root.matches('ul.hb-drag')) syncDragList(root);
+    if (root.querySelectorAll) root.querySelectorAll('ul.hb-drag').forEach(syncDragList);
+  }
+  function watchDragLists() {
+    syncAllDragLists(document);
+    new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        m.addedNodes.forEach(function (n) { if (n.nodeType === 1) syncAllDragLists(n); });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
+  }
+
   // Restore remembered states
   function restoreSidenavs() {
     document.querySelectorAll('.hb-sidenav__toggle[data-hb-persist]').forEach(function (toggle) {
@@ -291,6 +439,7 @@
       if (stored !== null) setCollapsed(toggle, stored === '1');
     });
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', restoreSidenavs);
-  else restoreSidenavs();
+  function init() { restoreSidenavs(); watchDragLists(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();

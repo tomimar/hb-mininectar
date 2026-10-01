@@ -2935,8 +2935,9 @@ body {
 /* ── Drag — reorderable list ─────────────────────────────────
    A generic list whose items can be reordered by dragging OR by
    Up / Down buttons — the single-pointer alternative required by
-   WCAG 2.5.7 (Dragging movements). Pair with the hbReorder() Alpine
-   factory in drag.js. Two presentations:
+   WCAG 2.5.7 (Dragging movements). hb.js moves the rows, names and
+   enables the Up / Down buttons and announces each move — full guide
+   and examples: components/drag.md. Two presentations:
      • default — Up / Down buttons always visible. Use inside a
        dedicated management panel (e.g. the table Columns panel).
      • hb-drag--inline — controls hidden until the row is hovered or
@@ -3052,7 +3053,10 @@ body {
   opacity: 1;
 }
 /* Nested list sits under the item content, indented from the grip */
+/* A row that holds a nested list wraps it onto its own line, indented */
+.hb-drag__item:has(> .hb-drag__nested) { flex-wrap: wrap; }
 .hb-drag__nested {
+  flex-basis: 100%;
   margin-top: 2px;
   margin-left: var(--spacing-24);
 }

@@ -1,4 +1,8 @@
 /* ============================================================
+   DEPRECATED — hb.js now handles hb-drag lists with no Alpine.
+   Kept only until the Table column manager moves to hb.js; do not
+   use it in new prototypes.
+
    hb-mininectar — Reorderable list (hb-drag)
    Self-contained Alpine.js helper for lists that can be reordered
    by dragging OR by Up / Down buttons — the single-pointer
