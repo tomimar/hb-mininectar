@@ -7,108 +7,31 @@
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <link rel="stylesheet" href="docs.css">
-  <style>
-    /* Elevation-specific helpers */
-    .elevation-demo {
-      width: 200px;
-      height: 80px;
-      background: var(--ui-bg);
-      border-radius: var(--border-radius-8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--ui-text-secondary);
-    }
-  </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from guidelines.md ("Elevation and borders") and tokens.json: edit those, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Foundations</span>
       <h1 class="page-header__title">Elevation</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Elevation communicates depth through shadow in light mode. It signals that an element floats above the canvas — apply it only when elements overlap other content, such as dropdowns and modals.</p>
     </header>
-
-    <!-- Shadow tokens -->
-    <section class="section" id="shadows">
-      <h2 class="section__title hb-text-heading-small">Shadow tokens</h2>
-      <p class="section__desc hb-text-body">Two shadow tokens cover the elevation needs of the system. Each is shown on a white surface.</p>
-      <div class="preview" style="gap: var(--spacing-48); padding: var(--spacing-48);">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-12);">
-          <div class="elevation-demo" style="box-shadow: var(--shadow-overlay);"><code>--shadow-overlay</code></div>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Dropdowns, popovers, sticky bars</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-12);">
-          <div class="elevation-demo" style="box-shadow: var(--shadow-floating);"><code>--shadow-floating</code></div>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Modals, floating windows</span>
-        </div>
-      </div>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Token</th><th class="hb-text-caption-bold">Value</th><th class="hb-text-caption-bold">Usage</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body"><code>--shadow-overlay</code></td><td class="hb-text-body">0 2px 6px rgba(0,0,0,0.16)</td><td class="hb-text-body">Dropdowns, popovers, sticky bars</td></tr>
-            <tr><td class="hb-text-body"><code>--shadow-floating</code></td><td class="hb-text-body">0 8px 24px rgba(0,0,0,0.14)</td><td class="hb-text-body">Modals, floating windows</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Guidelines</h2>
+      <div class="guide" data-hb-guidelines="Elevation and borders"></div>
     </section>
-
-    <!-- Layers -->
-    <section class="section" id="layers">
-      <h2 class="section__title hb-text-heading-small">Layers</h2>
-      <p class="section__desc hb-text-body">Each elevation layer maps to a shadow and a typical use.</p>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Layer</th><th class="hb-text-caption-bold">Shadow</th><th class="hb-text-caption-bold">Usage</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body"><code>layer-base</code></td><td class="hb-text-body">none</td><td class="hb-text-body">Canvas and inline content</td></tr>
-            <tr><td class="hb-text-body"><code>elevation-overlay</code></td><td class="hb-text-body"><code>--shadow-overlay</code></td><td class="hb-text-body">Dropdowns, popovers</td></tr>
-            <tr><td class="hb-text-body"><code>elevation-floating</code></td><td class="hb-text-body"><code>--shadow-floating</code></td><td class="hb-text-body">Modals</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Tokens</h2>
+      <div class="guide" data-hb-tokens="shadow"></div>
     </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Apply shadows only when an element overlaps other content.</p>
-            <p class="guidance-card__note hb-text-caption">Use the layer tokens to keep elevation consistent.</p>
-            <p class="guidance-card__note hb-text-caption">Keep to the two floating levels defined by the system.</p>
-          </div>
-        </div>
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Don't use shadows decoratively on resting elements.</p>
-            <p class="guidance-card__note hb-text-caption">Don't stack multiple shadows on one element.</p>
-            <p class="guidance-card__note hb-text-caption">Don't apply elevation to every card or surface.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="tokens-view.js"></script>
 </body>
 </html>

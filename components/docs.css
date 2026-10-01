@@ -294,3 +294,34 @@ code {
                       .hb-checkbox-group) { flex: 1 1 100%; }
 .guide .preview p { margin: 0 0 var(--spacing-8) 0; }
 .guide .preview p:last-child { margin-bottom: 0; }
+
+/* Foundations: token samples rendered from tokens.json (tokens-view.js) */
+.tokens-table td { vertical-align: middle; }
+.tokens-swatch {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--border-radius-4);
+  border: 1px solid var(--ui-border);
+  margin-right: var(--spacing-4);
+  vertical-align: middle;
+}
+.tokens-muted { color: var(--ui-text-tertiary); font-size: var(--font-size-12); }
+.tokens-bar { display: inline-block; height: 12px; min-width: 2px; background: var(--ui-interaction); border-radius: 2px; }
+.tokens-radius {
+  display: inline-block;
+  width: 48px;
+  height: 32px;
+  background: var(--ui-interaction-soft);
+  border: 1px solid var(--ui-interaction);
+}
+.tokens-shadow {
+  display: inline-block;
+  width: 72px;
+  height: 40px;
+  margin: var(--spacing-8);
+  background: var(--ui-bg-overlay);
+  border-radius: var(--border-radius-8);
+}
+.guide h3 { font-size: var(--font-size-14); font-weight: var(--font-weight-bold); margin: var(--spacing-24) 0 var(--spacing-8) 0; }
+.tokens-table td:first-child, .tokens-table code { white-space: nowrap; }

@@ -7,108 +7,31 @@
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <link rel="stylesheet" href="docs.css">
-  <style>
-    /* Spacing-specific helpers */
-    .spacing-row {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-16);
-      padding: var(--spacing-12) 0;
-      border-bottom: 1px solid var(--ui-border);
-    }
-    .spacing-row:last-child { border-bottom: none; }
-    .spacing-row__name { width: 130px; flex-shrink: 0; }
-    .spacing-row__value { width: 56px; flex-shrink: 0; color: var(--ui-text-tertiary); }
-    .spacing-row__bar { flex-shrink: 0; }
-  </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from guidelines.md ("Space and shape") and tokens.json: edit those, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Foundations</span>
       <h1 class="page-header__title">Spacing</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">The spacing scale creates consistent rhythm and alignment across the interface. Use spacing tokens for all padding, margin, and gap values instead of arbitrary pixels — this keeps layouts predictable and easy to maintain.</p>
     </header>
-
-    <!-- Scale -->
-    <section class="section" id="scale">
-      <h2 class="section__title hb-text-heading-small">Scale</h2>
-      <p class="section__desc hb-text-body">Each token maps to a fixed pixel value. The bar shows the relative size of each step.</p>
-      <div class="preview preview--col">
-        <div style="width:100%;">
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-2</code><span class="spacing-row__value hb-text-caption">2px</span><div class="spacing-row__bar" style="width: var(--spacing-2); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-4</code><span class="spacing-row__value hb-text-caption">4px</span><div class="spacing-row__bar" style="width: var(--spacing-4); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-8</code><span class="spacing-row__value hb-text-caption">8px</span><div class="spacing-row__bar" style="width: var(--spacing-8); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-12</code><span class="spacing-row__value hb-text-caption">12px</span><div class="spacing-row__bar" style="width: var(--spacing-12); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-16</code><span class="spacing-row__value hb-text-caption">16px</span><div class="spacing-row__bar" style="width: var(--spacing-16); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-24</code><span class="spacing-row__value hb-text-caption">24px</span><div class="spacing-row__bar" style="width: var(--spacing-24); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-32</code><span class="spacing-row__value hb-text-caption">32px</span><div class="spacing-row__bar" style="width: var(--spacing-32); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-40</code><span class="spacing-row__value hb-text-caption">40px</span><div class="spacing-row__bar" style="width: var(--spacing-40); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-48</code><span class="spacing-row__value hb-text-caption">48px</span><div class="spacing-row__bar" style="width: var(--spacing-48); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-56</code><span class="spacing-row__value hb-text-caption">56px</span><div class="spacing-row__bar" style="width: var(--spacing-56); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-64</code><span class="spacing-row__value hb-text-caption">64px</span><div class="spacing-row__bar" style="width: var(--spacing-64); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-72</code><span class="spacing-row__value hb-text-caption">72px</span><div class="spacing-row__bar" style="width: var(--spacing-72); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-          <div class="spacing-row"><code class="spacing-row__name">--spacing-80</code><span class="spacing-row__value hb-text-caption">80px</span><div class="spacing-row__bar" style="width: var(--spacing-80); height: 16px; background: var(--ui-interaction); border-radius: 2px;"></div></div>
-        </div>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Guidelines</h2>
+      <div class="guide" data-hb-guidelines="Space and shape"></div>
     </section>
-
-    <!-- Usage -->
-    <section class="section" id="usage">
-      <h2 class="section__title hb-text-heading-small">Usage</h2>
-      <p class="section__desc hb-text-body">Guidance on where each part of the scale fits.</p>
-      <div class="state-table-wrap">
-        <table class="state-table">
-          <thead><tr><th class="hb-text-caption-bold">Range</th><th class="hb-text-caption-bold">Use for</th></tr></thead>
-          <tbody>
-            <tr><td class="hb-text-body"><code>--spacing-4</code></td><td class="hb-text-body">Tight internal padding — compact controls, icon gaps</td></tr>
-            <tr><td class="hb-text-body"><code>--spacing-8</code> / <code>--spacing-16</code></td><td class="hb-text-body">Most common — padding and gaps inside components</td></tr>
-            <tr><td class="hb-text-body"><code>--spacing-24</code> and up</td><td class="hb-text-body">Separation between sections and content blocks</td></tr>
-            <tr><td class="hb-text-body"><code>--spacing-48</code> and up</td><td class="hb-text-body">Layout-level spacing — page padding, major regions</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Tokens</h2>
+      <div class="guide" data-hb-tokens="spacing"></div>
     </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Use spacing tokens for all padding, margin and gap values.</p>
-            <p class="guidance-card__note hb-text-caption">Reach for spacing-8 and spacing-16 as your defaults.</p>
-            <p class="guidance-card__note hb-text-caption">Use larger steps to separate sections and layout regions.</p>
-          </div>
-        </div>
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Don't use arbitrary pixel values like 6, 10 or 14.</p>
-            <p class="guidance-card__note hb-text-caption">Don't mix inconsistent spacing within a single component.</p>
-            <p class="guidance-card__note hb-text-caption">Don't hardcode spacing in styles when a token exists.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="tokens-view.js"></script>
 </body>
 </html>

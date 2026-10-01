@@ -7,112 +7,31 @@
   <link rel="stylesheet" href="../tokens.css">
   <link rel="stylesheet" href="../components.css">
   <link rel="stylesheet" href="docs.css">
-  <style>
-    /* Radius-specific helpers */
-    .radius-row {
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-24);
-      padding: var(--spacing-16) 0;
-      border-bottom: 1px solid var(--ui-border);
-    }
-    .radius-row:last-child { border-bottom: none; }
-    .radius-swatch { width: 64px; height: 64px; flex-shrink: 0; }
-    .radius-row__info { display: flex; flex-direction: column; gap: var(--spacing-4); }
-    .radius-row__value { color: var(--ui-text-tertiary); }
-    .radius-row__usage { color: var(--ui-text-secondary); }
-  </style>
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from guidelines.md ("Space and shape") and tokens.json: edit those, never this page -->
   <main class="main">
-
-    <!-- Header -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Foundations</span>
       <h1 class="page-header__title">Border radius</h1>
-      <p class="page-header__desc" style="font-size: var(--font-size-16); line-height: var(--line-height-ui);">Border radius tokens reinforce visual hierarchy and brand character. A small set of consistent values keeps components feeling cohesive — from compact inputs to large surfaces and pill-shaped elements.</p>
     </header>
-
-    <!-- Scale -->
-    <section class="section" id="scale">
-      <h2 class="section__title hb-text-heading-small">Scale</h2>
-      <p class="section__desc hb-text-body">Each token applies a fixed corner radius. Use the smallest value that suits the component.</p>
-      <div class="preview preview--col">
-        <div style="width:100%;">
-          <div class="radius-row">
-            <div class="radius-swatch" style="background:var(--ui-bg-secondary);border:1px solid var(--ui-border);border-radius: var(--border-radius-4);"></div>
-            <div class="radius-row__info">
-              <code>--border-radius-4</code>
-              <span class="radius-row__value hb-text-caption">4px</span>
-              <span class="radius-row__usage hb-text-caption">Inputs, checkboxes, compact components</span>
-            </div>
-          </div>
-          <div class="radius-row">
-            <div class="radius-swatch" style="background:var(--ui-bg-secondary);border:1px solid var(--ui-border);border-radius: var(--border-radius-8);"></div>
-            <div class="radius-row__info">
-              <code>--border-radius-8</code>
-              <span class="radius-row__value hb-text-caption">8px</span>
-              <span class="radius-row__usage hb-text-caption">Buttons, cards, dropdowns (default)</span>
-            </div>
-          </div>
-          <div class="radius-row">
-            <div class="radius-swatch" style="background:var(--ui-bg-secondary);border:1px solid var(--ui-border);border-radius: var(--border-radius-16);"></div>
-            <div class="radius-row__info">
-              <code>--border-radius-16</code>
-              <span class="radius-row__value hb-text-caption">16px</span>
-              <span class="radius-row__usage hb-text-caption">Modals, large surfaces</span>
-            </div>
-          </div>
-          <div class="radius-row">
-            <div class="radius-swatch" style="background:var(--ui-bg-secondary);border:1px solid var(--ui-border);border-radius: var(--border-radius-round);"></div>
-            <div class="radius-row__info">
-              <code>--border-radius-round</code>
-              <span class="radius-row__value hb-text-caption">9999px</span>
-              <span class="radius-row__usage hb-text-caption">Avatars, pills, circular elements</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Guidelines</h2>
+      <div class="guide" data-hb-guidelines="Space and shape"></div>
     </section>
-
-    <!-- Best practices -->
-    <section class="section" id="best-practices">
-      <h2 class="section__title hb-text-heading-small">Best practices</h2>
-      <div class="guidance">
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--do">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-success-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Do</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Use radius-8 as the default for buttons, cards and dropdowns.</p>
-            <p class="guidance-card__note hb-text-caption">Use radius-4 for dense or compact UI like inputs.</p>
-            <p class="guidance-card__note hb-text-caption">Use radius-16 for emphasis on modals and large surfaces.</p>
-            <p class="guidance-card__note hb-text-caption">Use round for pills, avatars and circular elements.</p>
-          </div>
-        </div>
-        <div class="guidance-card">
-          <div class="guidance-card__header guidance-card__header--dont">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color:var(--ui-status-danger-contrast)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
-            <span class="guidance-card__title hb-text-caption-bold">Don't</span>
-          </div>
-          <div class="guidance-card__body">
-            <p class="guidance-card__note hb-text-caption">Don't mix different radii within a single component.</p>
-            <p class="guidance-card__note hb-text-caption">Don't use arbitrary radius values outside the token set.</p>
-            <p class="guidance-card__note hb-text-caption">Don't apply round to rectangular content surfaces.</p>
-          </div>
-        </div>
-      </div>
+    <section class="section">
+      <h2 class="section__title hb-text-heading-small">Tokens</h2>
+      <div class="guide" data-hb-tokens="radius"></div>
     </section>
-
   </main>
 </div>
-  <script src="sidebar.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="../hb.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="tokens-view.js"></script>
 </body>
 </html>

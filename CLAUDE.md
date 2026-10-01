@@ -136,6 +136,8 @@ Every component has a dedicated documentation page with live examples, all varia
 
 ### Foundations
 
+The Foundations pages have no content of their own: each one shows its section of `guidelines.md` and renders its tokens from `tokens.json` (value, dark value and usage note) with `components/tokens-view.js`. Change a rule or a token at the source and the page follows.
+
 | Page | Link |
 |---|---|
 | Colors | https://tomimar.github.io/hb-mininectar/components/colors.html |
