@@ -32,6 +32,24 @@ Each color paints a `-soft` background with its `-contrast` text, so it keeps it
 
 Keep the mapping stable across the product: if blue means Open on one screen, it means Open on every screen.
 
+### Risk levels
+
+Risk always uses the same three tags:
+
+| Risk | Tag | Tokens |
+|---|---|---|
+| High | `hb-tag--red` | `ui-expressive-red-soft` / `-contrast` |
+| Medium | `hb-tag--yellow` | `ui-expressive-yellow-soft` / `-contrast` |
+| Low | `hb-tag--grey` | `ui-bg-tertiary` / `ui-text-secondary` |
+
+```html preview
+<div class="hb-tag-group">
+  <span class="hb-tag hb-tag--red">High</span>
+  <span class="hb-tag hb-tag--yellow">Medium</span>
+  <span class="hb-tag hb-tag--grey">Low</span>
+</div>
+```
+
 ## Structure
 
 - `hb-tag` plus one color modifier. The label is plain text.

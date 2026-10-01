@@ -17,7 +17,7 @@ Buttons are verbs on the object: `Add note`, `Escalate case`, `Download CSV`. Ne
 
 Address the analyst as *you*; the platform is never *I*, *we* or *Hummingbird* in product copy. Empty states say what the screen would hold and what to do next — "No alerts match these filters. Clear filters to see all 412." Errors say what happened and what to do, in that order, and never blame: "This file is over 25 MB. Split it or upload a CSV." No exclamation marks, no emoji, no jokes in a regulated workflow.
 
-Numbers stay exact: amounts with currency and two decimals, dates as `12 Mar 2026`, times with the zone. Truncate a long value with an ellipsis and keep the whole value in a tooltip — never round money for layout.
+Numbers stay exact: amounts with the currency symbol and two decimals (`$9,850.00`, `€32,500.00`, `£4,120.00` — the ISO code only where a symbol is ambiguous, like CAD next to USD), dates as `12 Mar 2026`, times with the zone. Truncate a long value with an ellipsis and keep the whole value in a tooltip — never round money for layout.
 
 ## Color
 

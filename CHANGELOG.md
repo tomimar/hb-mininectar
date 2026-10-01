@@ -6,6 +6,8 @@ Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
 **Changed**
 - Table guide: how to combine selection and expandable rows in the same table.
+- Tag guide: risk levels always use the same tags — High red, Medium yellow, Low grey.
+- Amounts use the currency symbol (`$9,850.00`); the ISO code only where the symbol is ambiguous.
 
 **Fixed**
 - `case-tab` template: the case tag reads "High risk" (sentence case).
