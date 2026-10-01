@@ -60,13 +60,15 @@ def vendor_fonts(tokens_css, vendor):
     fonts_dir = vendor / "fonts"
     fonts_dir.mkdir(parents=True, exist_ok=True)
     local_css = []
+    saved = {}  # font url -> local name: Inter serves one file for every weight
     for url in re.findall(r"@import url\('([^']+)'\);", tokens_css):
         css = fetch(url).decode()
-        for i, font_url in enumerate(re.findall(r"url\((https://[^)]+)\)", css)):
-            name = re.sub(r"[^A-Za-z0-9._-]", "_", font_url.split("/")[-1])
-            name = f"{len(list(fonts_dir.iterdir()))}-{name}"
-            (fonts_dir / name).write_bytes(fetch(font_url))
-            css = css.replace(font_url, f"fonts/{name}")
+        for font_url in re.findall(r"url\((https://[^)]+)\)", css):
+            if font_url not in saved:
+                name = re.sub(r"[^A-Za-z0-9._-]", "_", font_url.split("/")[-1])
+                saved[font_url] = f"{len(saved)}-{name}"
+                (fonts_dir / saved[font_url]).write_bytes(fetch(font_url))
+            css = css.replace(font_url, f"fonts/{saved[font_url]}")
         local_css.append(css)
     (vendor / "fonts.css").write_text("\n".join(local_css))
     return re.sub(r"@import url\('[^']+'\);\n?", "", tokens_css).replace(
