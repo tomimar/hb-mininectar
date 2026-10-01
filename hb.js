@@ -16,7 +16,10 @@
      <span data-label-open="Show less">Show more details</span>
      The element's own text is the closed label.                 */
   function swapLabel(el, open) {
+    // Starting closed, the text is the closed label: remember it.
+    // Starting open, write data-label-closed in the markup too.
     if (!el.hasAttribute('data-label-closed')) {
+      if (!open) return;
       el.setAttribute('data-label-closed', el.textContent);
     }
     el.textContent = open ? el.getAttribute('data-label-open')
@@ -77,4 +80,73 @@
       syncExpandAll();
     }
   });
+
+  /* ── Sidenav ────────────────────────────────────────────────
+     button.hb-sidenav__toggle with aria-controls="<nav id>" and
+     aria-expanded. A click collapses the nav (is-collapsed) or pins it
+     open again. While collapsed, hovering or focusing the toggle — or
+     the floating nav itself — adds is-peeking; leaving removes it after
+     a short delay so it doesn't flicker.
+     Add data-hb-persist="<key>" to the toggle to remember the state in
+     localStorage (per user, not per page).                          */
+  var PEEK_DELAY = 200;
+  var peekTimers = new WeakMap();
+
+  function sidenavFor(el) {
+    if (!el || !el.closest) return null;
+    var nav = el.closest('.hb-sidenav');
+    if (nav) return nav;
+    var toggle = el.closest('.hb-sidenav__toggle[aria-controls]');
+    return toggle ? document.getElementById(toggle.getAttribute('aria-controls')) : null;
+  }
+
+  function setCollapsed(toggle, collapsed) {
+    var nav = document.getElementById(toggle.getAttribute('aria-controls'));
+    if (!nav) return;
+    nav.classList.toggle('is-collapsed', collapsed);
+    nav.classList.remove('is-peeking');
+    toggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+    var name = collapsed ? 'Expand navigation' : 'Collapse navigation';
+    toggle.setAttribute('aria-label', name);
+    toggle.setAttribute('title', name);
+    var icon = toggle.querySelector('.hb-icon');
+    if (icon) icon.textContent = collapsed ? 'last_page' : 'first_page';
+    var key = toggle.getAttribute('data-hb-persist');
+    if (key) { try { localStorage.setItem(key, collapsed ? '1' : '0'); } catch (e) {} }
+  }
+
+  function peek(nav, on) {
+    if (!nav || !nav.classList.contains('is-collapsed')) return;
+    clearTimeout(peekTimers.get(nav));
+    if (on) { nav.classList.add('is-peeking'); return; }
+    peekTimers.set(nav, setTimeout(function () { nav.classList.remove('is-peeking'); }, PEEK_DELAY));
+  }
+
+  document.addEventListener('click', function (e) {
+    var toggle = e.target.closest('.hb-sidenav__toggle[aria-controls]');
+    if (!toggle) return;
+    setCollapsed(toggle, toggle.getAttribute('aria-expanded') !== 'false');
+  });
+
+  // Peek: entering the toggle or the nav shows it; leaving both hides it
+  ['mouseover', 'focusin'].forEach(function (type) {
+    document.addEventListener(type, function (e) { peek(sidenavFor(e.target), true); });
+  });
+  ['mouseout', 'focusout'].forEach(function (type) {
+    document.addEventListener(type, function (e) {
+      var nav = sidenavFor(e.target);
+      if (nav && sidenavFor(e.relatedTarget) !== nav) peek(nav, false);
+    });
+  });
+
+  // Restore remembered states
+  function restoreSidenavs() {
+    document.querySelectorAll('.hb-sidenav__toggle[data-hb-persist]').forEach(function (toggle) {
+      var stored = null;
+      try { stored = localStorage.getItem(toggle.getAttribute('data-hb-persist')); } catch (e) {}
+      if (stored !== null) setCollapsed(toggle, stored === '1');
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', restoreSidenavs);
+  else restoreSidenavs();
 })();

@@ -27,6 +27,26 @@ The secondary navigation inside a page, listing that page's sections — the sec
 - No header or title in the nav: the page already has one.
 - Width comes from `--hb-sidenav-width` (240px by default).
 
+```html preview
+<nav class="hb-sidenav" aria-label="Case sections">
+  <div class="hb-sidenav__section">Investigation</div>
+  <a class="hb-sidenav__item hb-sidenav__item--active" href="#" aria-current="page">
+    <span class="hb-sidenav__label">Alerts</span>
+    <span class="hb-sidenav__count">12</span>
+  </a>
+  <a class="hb-sidenav__item" href="#">
+    <span class="hb-sidenav__label">Transactions</span>
+    <span class="hb-sidenav__count">348</span>
+  </a>
+  <a class="hb-sidenav__item" href="#"><span class="hb-sidenav__label">Narrative</span></a>
+  <div class="hb-sidenav__section">Case</div>
+  <a class="hb-sidenav__item" href="#"><span class="hb-sidenav__label">Files</span></a>
+  <a class="hb-sidenav__item hb-sidenav__item--disabled" href="#" aria-disabled="true">
+    <span class="hb-sidenav__label">SAR filing</span>
+  </a>
+</nav>
+```
+
 ## States
 
 | State | Trigger | What changes |
@@ -54,12 +74,76 @@ The secondary navigation inside a page, listing that page's sections — the sec
 - It shows only while its parent is the current section. There is no chevron and nothing to expand.
 - The current sub-item takes `__subitem--active` and darkens its own segment of the rail. Its parent stays `__item--active`.
 
+```html preview
+<nav class="hb-sidenav" aria-label="Settings sections">
+  <div class="hb-sidenav__group">
+    <a class="hb-sidenav__item" href="#">
+      <span class="hb-sidenav__icon hb-icon" aria-hidden="true">person</span>
+      <span class="hb-sidenav__label">User settings</span>
+    </a>
+  </div>
+  <div class="hb-sidenav__group">
+    <a class="hb-sidenav__item hb-sidenav__item--active" href="#">
+      <span class="hb-sidenav__icon hb-icon" aria-hidden="true">domain</span>
+      <span class="hb-sidenav__label">Organization settings</span>
+    </a>
+    <ul class="hb-sidenav__submenu">
+      <li><a class="hb-sidenav__subitem" href="#">Members</a></li>
+      <li><a class="hb-sidenav__subitem hb-sidenav__subitem--active" href="#" aria-current="page">Review types</a></li>
+      <li><a class="hb-sidenav__subitem" href="#">Tags</a></li>
+    </ul>
+  </div>
+  <div class="hb-sidenav__group">
+    <a class="hb-sidenav__item" href="#">
+      <span class="hb-sidenav__icon hb-icon" aria-hidden="true">apps</span>
+      <span class="hb-sidenav__label">App settings</span>
+    </a>
+  </div>
+</nav>
+```
+
 ## Collapsing
 
-- `is-collapsed` on `hb-sidenav` takes the nav out of the layout, handing its width back to a wide table. Nothing is left behind: no rail, no strip of icons.
-- Hovering (or focusing) the toggle adds `is-peeking`: the nav floats back over the content, fully usable. A short delay on leaving stops it flickering.
-- Clicking `hb-sidenav__toggle` pins it open again. The Notion pattern.
-- Persist the collapsed state per user (localStorage), not per page.
+`hb.js` does the work — no script of your own:
+
+- Clicking `hb-sidenav__toggle` (with `aria-controls` pointing at the nav's `id`) adds `is-collapsed` to `hb-sidenav`: the nav leaves the layout, handing its width back to a wide table. Nothing is left behind: no rail, no strip of icons.
+- While collapsed, hovering or focusing the toggle — or the floating nav — adds `is-peeking`: the nav floats back over the content, fully usable. A short delay on leaving stops it flickering.
+- Clicking the toggle again pins it open. The Notion pattern.
+- `hb.js` keeps the toggle's `aria-expanded`, its name ("Collapse navigation" / "Expand navigation") and its icon (`first_page` / `last_page`) in step.
+- To remember the state per user (not per page), add `data-hb-persist="<key>"` to the toggle: `hb.js` stores it in localStorage.
+
+Collapse the nav, then hover the toggle:
+
+```html preview
+<div class="hb-sidenav-area" style="background: var(--ui-bg); min-height: 280px;">
+  <nav class="hb-sidenav" id="case-nav" aria-label="Case sections">
+    <a class="hb-sidenav__item hb-sidenav__item--active" href="#" aria-current="page">
+      <span class="hb-sidenav__label">Alerts</span>
+      <span class="hb-sidenav__count">12</span>
+    </a>
+    <a class="hb-sidenav__item" href="#"><span class="hb-sidenav__label">Transactions</span></a>
+    <a class="hb-sidenav__item" href="#"><span class="hb-sidenav__label">Files</span></a>
+  </nav>
+  <div style="flex: 1; min-width: 0; padding: var(--spacing-16);">
+    <div style="display: flex; align-items: center; gap: var(--spacing-8); margin-bottom: var(--spacing-16);">
+      <button type="button" class="hb-sidenav__toggle" aria-controls="case-nav" aria-expanded="true"
+              aria-label="Collapse navigation" title="Collapse navigation">
+        <span class="hb-icon" aria-hidden="true">first_page</span>
+      </button>
+      <span class="hb-text-body-bold">CASE-10482 / Alerts</span>
+    </div>
+    <div class="hb-table-wrap">
+      <table class="hb-table">
+        <thead><tr><th>Alert</th><th>Rule</th><th class="hb-table__cell--num">Score</th></tr></thead>
+        <tbody>
+          <tr><td>ALERT-2201</td><td>Cash structuring</td><td class="hb-table__cell--num">92</td></tr>
+          <tr><td>ALERT-2204</td><td>Rapid movement of funds</td><td class="hb-table__cell--num">81</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+```
 
 ## The toggle
 
@@ -97,7 +181,7 @@ The items, the current-section state, and `aria-current="page"` on the active it
 
 - The `<nav>` has an `aria-label`: a page often has two navs, and they must be told apart.
 - Mark the current item with `aria-current="page"`, not only `--active`.
-- Nothing needs `aria-expanded` except the toggle.
+- Nothing needs `aria-expanded` except the toggle (`hb.js` keeps it in step).
 - A submenu is a plain `<ul>` nested under its parent item.
 - Icons are decorative (`aria-hidden`); the label carries the meaning.
 - A collapsed nav is hidden with `visibility`, so its links leave the tab order.
@@ -105,12 +189,15 @@ The items, the current-section state, and `aria-current="page"` on the active it
 
 ## Example
 
+Starting collapsed, remembered per user:
+
 ```html
 <div class="hb-sidenav-area">
-  <nav class="hb-sidenav is-collapsed" aria-label="Case sections">…</nav>
+  <nav class="hb-sidenav is-collapsed" id="case-nav" aria-label="Case sections">…</nav>
   <main>
     <h2>
-      <button class="hb-sidenav__toggle" aria-label="Expand navigation" aria-expanded="false">
+      <button type="button" class="hb-sidenav__toggle" aria-controls="case-nav" aria-expanded="false"
+              aria-label="Expand navigation" title="Expand navigation" data-hb-persist="case-nav-collapsed">
         <span class="hb-icon" aria-hidden="true">last_page</span>
       </button>
       CASE-10482 / Alerts
