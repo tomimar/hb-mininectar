@@ -204,7 +204,7 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 The same system is published as a Claude Design artifact: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd
 
-This repo is the source; the artifact is a copy. **After any change to `tokens.json`, `guidelines.md`, `components.css` or a component's guidelines, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
+This repo is the source; the artifact is a copy. There, `components.css` is `components/bundle.css` and `hb.js` is `components/bundle.js` (Claude Design loads it in previews and prototypes). **After any change to `tokens.json`, `guidelines.md`, `components.css`, `hb.js` or a component's guide, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
 
 ---
 

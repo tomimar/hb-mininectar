@@ -1,7 +1,8 @@
 /* ============================================================
    Hummingbird Design System — Component behaviour
-   Plain JavaScript, no dependencies. Include it once:
-     <script src="https://tomimar.github.io/hb-mininectar/hb.js"></script>
+   Plain JavaScript, no dependencies. Load it once, at the end of <body>,
+   from https://tomimar.github.io/hb-mininectar/hb.js
+   (in the Claude Design artifact it ships as components/bundle.js).
    It works through event delegation on the document, so markup added
    later (by a prototype's own script, or by Alpine) works too.
    Components describe their state in the markup — aria-expanded,

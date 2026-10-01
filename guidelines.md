@@ -69,6 +69,6 @@ The Hummingbird logomark (`assets/Logos/logomark.png` in the Claude Design artif
 
 ## Building with this system
 
-Load `tokens.css`, then the components stylesheet — `components.css` from the repo (`https://tomimar.github.io/hb-mininectar/`), or `components/bundle.css` in the Claude Design artifact — and write plain HTML with the `hb-` classes. Add `hb.js` (`https://tomimar.github.io/hb-mininectar/hb.js`) so components open, close and update themselves from their markup. Add Tailwind for layout utilities only — never its colors or type. Alpine.js is optional, for the prototype's own logic only. Prototypes are static files opened over `file://`. For dark mode, add `data-theme="dark"` to `<html>`.
+Load `tokens.css`, then the components stylesheet — `components.css` from the repo (`https://tomimar.github.io/hb-mininectar/`), or `components/bundle.css` in the Claude Design artifact — and write plain HTML with the `hb-` classes. Add `hb.js` (`https://tomimar.github.io/hb-mininectar/hb.js`; in the Claude Design artifact it is `components/bundle.js`) so components open, close and update themselves from their markup. Add Tailwind for layout utilities only — never its colors or type. Alpine.js is optional, for the prototype's own logic only. Prototypes are static files opened over `file://`. For dark mode, add `data-theme="dark"` to `<html>`.
 
 Every value in this system is a token. If you are about to write a hex, a pixel or a font size by hand, the token is missing and that is worth saying out loud.
