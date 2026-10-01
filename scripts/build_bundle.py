@@ -6,7 +6,7 @@
 Writes two files into that folder:
   bundle.css — the font imports + components.css (the artifact generates
                its own tokens.css from tokens.json)
-  bundle.js  — hb.js, so components behave the same in Claude Design
+  bundle.js  — hb.js + datepicker.js, so components behave the same in Claude Design
                prototypes and previews. The artifact expects the bundle to
                define window.<namespace> ("Nectar").
 """
@@ -28,11 +28,12 @@ def main():
     css = imports + "\n\n" + (ROOT / "components.css").read_text()
     (out / "bundle.css").write_text(css)
 
-    js = (ROOT / "hb.js").read_text()
+    # hb.js + datepicker.js: everything a prototype needs to behave
+    js = (ROOT / "hb.js").read_text() + "\n\n" + (ROOT / "datepicker.js").read_text()
     # The artifact inlines bundle.js in a <script>: these would break it
     for bad in ("</script", "<!--"):
         if bad in js.lower():
-            sys.exit(f"hb.js contains {bad!r}, which can't be inlined in a <script>")
+            sys.exit(f"hb.js or datepicker.js contains {bad!r}, which can't be inlined in a <script>")
     # Line 1: the header the artifact reads to recognise and load the bundle.
     # No React components are exported — hb.js only adds behaviour.
     header = '/* @ds-bundle: {"format":4,"namespace":"%s","components":[]} */\n' % NAMESPACE

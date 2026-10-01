@@ -4,7 +4,7 @@
    Usage:
      <div class="hb-date-input" data-hb-datepicker style="position:relative;">
        <input type="text" class="hb-input" placeholder="MM/DD/YYYY" style="padding-right:40px;">
-       <svg class="hb-date-input__icon" ...><!-- calendar icon --></svg>
+       <svg class="hb-date-input__icon" ...>(calendar icon)</svg>
      </div>
 
    - Click/focus the input to open the calendar.
@@ -23,8 +23,10 @@
   }
 
   function enhance(wrap) {
+    if (wrap.hbDatepicker) return; // already enhanced
     var input = wrap.querySelector('input');
     if (!input) return;
+    wrap.hbDatepicker = true;
     wrap.style.position = wrap.style.position || 'relative';
 
     var state = {
@@ -224,6 +226,16 @@
 
   function init() {
     document.querySelectorAll('[data-hb-datepicker]').forEach(enhance);
+    // Fields added later (a prototype's script, the docs pages) too
+    new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        m.addedNodes.forEach(function (n) {
+          if (n.nodeType !== 1) return;
+          if (n.matches('[data-hb-datepicker]')) enhance(n);
+          n.querySelectorAll('[data-hb-datepicker]').forEach(enhance);
+        });
+      });
+    }).observe(document.body, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') {
