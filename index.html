@@ -205,35 +205,6 @@
         <div class="hb-expand hb-expand--card">
           <div class="hb-expand__header">
             <h3 class="hb-expand__heading">
-              <button type="button" class="hb-expand__toggle" id="where-btn" aria-controls="where" aria-expanded="false">
-                <span class="hb-expand__title">Where things live</span>
-                <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
-              </button>
-            </h3>
-          </div>
-          <div class="hb-expand__region" id="where" role="region" aria-labelledby="where-btn" hidden>
-            <div class="hb-expand__body">
-              <p class="hb-text-body intro-muted" style="margin-bottom: var(--spacing-12);">Each thing is written once, in this repo. Everything else is generated from it.</p>
-              <div class="state-table-wrap" style="margin: 0;">
-                <table class="state-table">
-                  <thead><tr><th class="hb-text-caption-bold">What</th><th class="hb-text-caption-bold">Written in</th><th class="hb-text-caption-bold">Shows up in</th></tr></thead>
-                  <tbody>
-                    <tr><td class="hb-text-body">Tokens</td><td><code>tokens.json</code></td><td class="hb-text-body"><code>tokens.css</code>, the Foundations pages, Claude Design</td></tr>
-                    <tr><td class="hb-text-body">Design rules</td><td><code>guidelines.md</code></td><td class="hb-text-body">The Foundations pages, Claude Design</td></tr>
-                    <tr><td class="hb-text-body">Component guide and examples</td><td><code>components/&lt;name&gt;.md</code></td><td class="hb-text-body">Each component page, Claude Design</td></tr>
-                    <tr><td class="hb-text-body">Component styles</td><td><code>components.css</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
-                    <tr><td class="hb-text-body">Component behaviour</td><td><code>hb.js</code>, <code>datepicker.js</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
-                  </tbody>
-                </table>
-              </div>
-              <p class="hb-text-body intro-muted" style="margin-top: var(--spacing-12);">After a change, the <code>sync-artifact</code> skill copies it to Claude Design. To add a component, use the <code>add-component</code> skill.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="hb-expand hb-expand--card">
-          <div class="hb-expand__header">
-            <h3 class="hb-expand__heading">
               <button type="button" class="hb-expand__toggle" id="versions-btn" aria-controls="versions" aria-expanded="false">
                 <span class="hb-expand__title">Versions</span>
                 <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
@@ -249,6 +220,25 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Where things live -->
+    <section class="section">
+      <h2 class="section__title hb-text-heading">Where things live</h2>
+      <p class="hb-text-body intro-muted" style="margin-bottom: var(--spacing-12);">Each thing is written once, in this repo. Everything else is generated from it.</p>
+      <div class="state-table-wrap" style="margin: 0;">
+        <table class="state-table">
+          <thead><tr><th class="hb-text-caption-bold">What</th><th class="hb-text-caption-bold">Written in</th><th class="hb-text-caption-bold">Shows up in</th></tr></thead>
+          <tbody>
+            <tr><td class="hb-text-body">Tokens</td><td><code>tokens.json</code></td><td class="hb-text-body"><code>tokens.css</code>, the Foundations pages, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Design rules</td><td><code>guidelines.md</code></td><td class="hb-text-body">The Foundations pages, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Component guide and examples</td><td><code>components/&lt;name&gt;.md</code></td><td class="hb-text-body">Each component page, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Component styles</td><td><code>components.css</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
+            <tr><td class="hb-text-body">Component behaviour</td><td><code>hb.js</code>, <code>datepicker.js</code></td><td class="hb-text-body">Every prototype, Claude Design</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="hb-text-body intro-muted" style="margin-top: var(--spacing-12);">After a change, the <code>sync-artifact</code> skill copies it to Claude Design. To add a component, use the <code>add-component</code> skill.</p>
     </section>
 
     <!-- Footer -->
