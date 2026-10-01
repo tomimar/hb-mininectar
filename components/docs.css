@@ -263,7 +263,13 @@ code {
   font-weight: var(--font-weight-bolder);
   margin: var(--spacing-32) 0 var(--spacing-12) 0;
 }
-.guide h2:first-child { margin-top: var(--spacing-16); }
+.guide h2 {
+  padding-bottom: var(--spacing-12);
+  border-bottom: 1px solid var(--ui-border);
+}
+.guide h2:first-child { margin-top: 0; }
+.guide .preview { margin-top: var(--spacing-16); margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.guide .preview + .code-block { border-top-left-radius: 0; border-top-right-radius: 0; }
 .guide p { margin: 0 0 var(--spacing-12) 0; }
 .guide ul { margin: 0 0 var(--spacing-12) 0; padding-left: var(--spacing-24); }
 .guide li { margin-bottom: var(--spacing-4); }
@@ -279,3 +285,4 @@ code {
 .guide pre code { background: none; border: none; padding: 0; color: inherit; line-height: 1.7; }
 [data-theme="dark"] .guide pre { border: 1px solid var(--ui-border); }
 .guide td code { white-space: nowrap; }
+.guide .code-block pre { padding: 0; margin: 0; background: none; border: none; border-radius: 0; }

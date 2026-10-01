@@ -10,137 +10,21 @@
 </head>
 <body>
 <div class="page">
-
-  <!-- Sidebar -->
   <aside class="sidenav" id="hb-sidebar"></aside>
 
-  <!-- Content -->
+  <!-- Everything below comes from button.md: edit the .md, never this page -->
   <main class="main">
-
-    <!-- Header — the summary comes from button.md -->
     <header class="page-header">
       <span class="page-header__badge hb-text-all-caps">Components</span>
       <h1 class="page-header__title">Button</h1>
       <p class="page-header__desc" data-hb-guide-summary style="font-size: var(--font-size-16); line-height: var(--line-height-ui);"></p>
     </header>
-
-    <!-- Live examples -->
-    <section class="section" id="types">
-      <h2 class="section__title hb-text-heading-small">Examples · Types</h2>
-
-      <div class="variant-grid">
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Primary</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--primary hb-btn--lg">Escalate case</button>
-            <button class="hb-btn hb-btn--primary hb-btn--sm">Escalate case</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary hb-btn--lg"</span><span class="token-class">&gt;</span>Escalate case<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Secondary</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--secondary hb-btn--lg">Export</button>
-            <button class="hb-btn hb-btn--secondary hb-btn--sm">Export</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--secondary hb-btn--lg"</span><span class="token-class">&gt;</span>Export<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Tertiary</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--tertiary hb-btn--lg">View all alerts</button>
-            <button class="hb-btn hb-btn--tertiary hb-btn--sm">View all alerts</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--tertiary hb-btn--lg"</span><span class="token-class">&gt;</span>View all alerts<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Ghost</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--ghost hb-btn--lg">Cancel</button>
-            <button class="hb-btn hb-btn--ghost hb-btn--sm">Cancel</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--ghost hb-btn--lg"</span><span class="token-class">&gt;</span>Cancel<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Confirmation</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--confirmation hb-btn--lg">Approve</button>
-            <button class="hb-btn hb-btn--confirmation hb-btn--sm">Approve</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--confirmation hb-btn--lg"</span><span class="token-class">&gt;</span>Approve<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-        <div class="variant-row">
-          <div class="variant-row__header">
-            <span class="variant-label hb-text-caption-bold">Danger</span>
-          </div>
-          <div class="preview">
-            <button class="hb-btn hb-btn--danger hb-btn--lg">Delete note</button>
-            <button class="hb-btn hb-btn--danger hb-btn--sm">Delete note</button>
-          </div>
-          <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--danger hb-btn--lg"</span><span class="token-class">&gt;</span>Delete note<span class="token-class">&lt;/button&gt;</span></pre></div>
-        </div>
-
-      </div>
-    </section>
-
-    <section class="section" id="states">
-      <h2 class="section__title hb-text-heading-small">Examples · States</h2>
-
-      <div class="preview" style="gap: var(--spacing-24);">
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
-          <button class="hb-btn hb-btn--primary hb-btn--lg">Default</button>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Default</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
-          <button class="hb-btn hb-btn--primary hb-btn--lg" style="background:var(--ui-interaction-highlighted)">Hover</button>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Hover</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
-          <button class="hb-btn hb-btn--primary hb-btn--lg" style="background:var(--ui-interaction-highlighted);outline:2px solid var(--ui-interaction);outline-offset:1px">Focus</button>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Focus</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;gap:var(--spacing-8);">
-          <button class="hb-btn hb-btn--primary hb-btn--lg" disabled>Disabled</button>
-          <span class="hb-text-caption" style="color:var(--ui-text-tertiary)">Disabled</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="fullwidth">
-      <h2 class="section__title hb-text-heading-small">Examples · Full width</h2>
-      <div class="preview" style="flex-direction:column;">
-        <button class="hb-btn hb-btn--primary hb-btn--lg hb-btn--full-width">Save changes</button>
-        <button class="hb-btn hb-btn--secondary hb-btn--lg hb-btn--full-width">Save draft</button>
-      </div>
-      <div class="code-block"><pre><span class="token-class">&lt;button</span> <span class="token-attr">class</span>=<span class="token-str">"hb-btn hb-btn--primary hb-btn--lg hb-btn--full-width"</span><span class="token-class">&gt;</span>Save changes<span class="token-class">&lt;/button&gt;</span></pre></div>
-    </section>
-
-    <!-- Guidelines — rendered from button.md, the single source -->
-    <section class="section" id="guidelines">
-      <h2 class="section__title hb-text-heading-small">Guidelines</h2>
-      <div class="guide" data-hb-guide="button.md"></div>
-    </section>
-
+    <div class="guide" data-hb-guide="button.md"></div>
   </main>
 </div>
-  <script src="sidebar.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-  <script src="guide.js"></script>
+
+<script src="sidebar.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="guide.js"></script>
 </body>
 </html>
