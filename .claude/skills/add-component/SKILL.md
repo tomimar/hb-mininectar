@@ -4,7 +4,7 @@ description: Use when adding a new component to Mini Nectar (hb-mininectar)
   or promoting a prototype's custom component into the design system. Covers
   implementing it in components.css using tokens, creating the docs page,
   registering it in sidebar.js, adding Figma + docs links to CLAUDE.md,
-  syncing the Claude Design artifact, syncing the Notion Component Library, and committing. Also covers building
+  syncing the Claude Design artifact, noting it in the changelog, and committing. Also covers building
   a component on the fly inside a prototype's custom.css before promotion.
 ---
 
@@ -22,27 +22,8 @@ Whenever a new component is added to Mini Nectar, complete ALL of these steps (m
 3. **Add the page to the sidebar** by registering it in the `components` array in `components/sidebar.js` (label + filename). The sidebar is universal — adding it once updates every page.
 4. **Add a reference link in the repo's CLAUDE.md** — the Figma links table at the bottom, plus the component docs table, so the page is discoverable.
 5. **Sync the Claude Design artifact** with the **`sync-artifact`** skill: regenerate `bundle.css` from `components.css` and add the component's `README.md` + `preview.html` (plus `tokens.json` if tokens changed). Otherwise Claude Design prototypes won't have the component.
-6. **Update the Notion Component Library** (see below).
-7. **Note it in `CHANGELOG.md`** under `## Unreleased` → **New** (create the heading at the top if it isn't there).
-8. **Commit and push** to GitHub.
-
----
-
-## Notion tracking — Component Library
-
-There is a Notion page that tracks every component and its Mini Nectar status:
-
-- **Page**: https://app.notion.com/p/hummingbirdcharm/Components-2eaccc5a525a8089a7ecf6b2e07cdf3f
-- **Database**: "Component Library" (data source `collection://823d7da7-ce4d-4b5b-87e3-5cd333011a47`)
-- **Column**: `Mini Nectar` — a select with three options: `Added`, `Pending`, `Testing`.
-
-**Whenever a component is added to Mini Nectar, keep this column in sync:**
-
-1. Find the component's row in the Component Library (match by the `Component` title).
-2. If the row exists → change its `Mini Nectar` value from `Pending` to `Added`.
-3. If the row does NOT exist → create a new row for the component and set `Mini Nectar` to `Testing`.
-
-Use the Notion tools (`notion-query-data-sources` to find the row, `notion-update-page` with `update_properties` to set the value, `notion-create-pages` to add a new row under the data source).
+6. **Note it in `CHANGELOG.md`** under `## Unreleased` → **New** (create the heading at the top if it isn't there).
+7. **Commit and push** to GitHub.
 
 ---
 
