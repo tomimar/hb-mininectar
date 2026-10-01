@@ -1483,6 +1483,28 @@ body {
   background-position: center;
 }
 
+/* Indeterminate — set the `indeterminate` DOM property (e.g. a
+   select-all with some rows ticked). A dash instead of the check. */
+.hb-checkbox:indeterminate {
+  background: var(--ui-interaction);
+  border-color: var(--ui-interaction);
+}
+.hb-checkbox:indeterminate:hover {
+  background: var(--ui-interaction-highlighted);
+  border-color: var(--ui-interaction-highlighted);
+}
+.hb-checkbox:indeterminate::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - 1px);
+  left: 25%;
+  width: 50%;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ui-text-knockout);
+  background-image: none;
+}
+
 .hb-checkbox:disabled {
   background: var(--ui-disabled-soft);
   border-color: transparent;
@@ -1716,7 +1738,8 @@ body {
     </div>
 
   - Default width 320px (override with style/width as needed).
-  - Add the `.hb-search__clear` button only while the field has a value.
+  - The clear button shows only while the field has a value (CSS, needs a
+    placeholder on the input); hb.js empties the field when it's clicked.
   - Small size: add hb-search--sm.
 */
 
@@ -1772,6 +1795,9 @@ body {
 .hb-search__input::placeholder {
   color: var(--ui-disabled);
 }
+
+/* Clear button only while there's a value */
+.hb-search:has(.hb-search__input:placeholder-shown) .hb-search__clear { display: none; }
 
 .hb-search__clear {
   flex-shrink: 0;
@@ -1896,10 +1922,17 @@ body {
   outline-offset: 1px;
 }
 
-/* Selected */
-.hb-fab--selected {
+/* Selected — the persistent on state; wins over the type's hover */
+.hb-fab.hb-fab--selected,
+.hb-fab.hb-fab--selected:hover {
   background: var(--ui-text);
   color: var(--ui-text-knockout);
+}
+
+/* Focus — every floating action, whatever its type */
+.hb-fab:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 1px;
 }
 
 /* Disabled */

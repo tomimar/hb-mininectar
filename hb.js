@@ -497,6 +497,20 @@
     items[(i + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length].focus();
   });
 
+  /* ── Search input ───────────────────────────────────────────
+     The __clear button empties the field and puts focus back in it
+     (CSS shows the button only while there's a value). An `input`
+     event fires, so a prototype's own filtering runs again.          */
+  document.addEventListener('click', function (e) {
+    var clear = e.target.closest('.hb-search__clear');
+    if (!clear) return;
+    var input = clear.closest('.hb-search').querySelector('.hb-search__input');
+    if (!input) return;
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+  });
+
   /* ── Table ──────────────────────────────────────────────────
      - Select all: the header checkbox in __select-col ticks every row;
        ticking rows by hand keeps it checked / indeterminate.

@@ -33,7 +33,7 @@ Default width is 320px. Override it with a style when the container demands.
 ```
 
 - `hb-search__icon` leads; `hb-search__input` holds the query.
-- `hb-search__clear` appears only while the field has a value, and always has an `aria-label`.
+- Always include `hb-search__clear` (with an `aria-label`) and a placeholder on the input: CSS shows the button only while the field has a value, and `hb.js` empties the field — and puts focus back in it — when it's clicked.
 
 ## States
 

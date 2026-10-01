@@ -49,7 +49,7 @@ Handled by CSS, no extra classes:
 | Checked | `checked` attribute | `ui-interaction` fill with a white checkmark. |
 | Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled-soft` fill (`ui-disabled` when checked); the row text greys out; not clickable. |
-| Indeterminate | `indeterminate` DOM property | Set it in script, not as an attribute. No dedicated style yet: it looks unchecked. |
+| Indeterminate | `indeterminate` DOM property | `ui-interaction` fill with a white dash. Set it in script, not as an attribute — a table's select-all gets it from `hb.js` when only some rows are ticked. |
 
 ```html preview
 <div style="display: flex; flex-wrap: wrap; column-gap: var(--spacing-32);">
@@ -60,7 +60,7 @@ Handled by CSS, no extra classes:
   <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" style="outline: 2px solid var(--ui-interaction); outline-offset: 2px;"> <span>Focus</span></label>
   <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" disabled> <span>Disabled</span></label>
   <label class="hb-checkbox-row"><input type="checkbox" class="hb-checkbox" checked disabled> <span>Disabled, checked</span></label>
-  <!-- Indeterminate is not shown: it needs script and looks unchecked -->
+  <!-- Indeterminate needs script (the indeterminate property): see Table's select-all -->
 </div>
 ```
 
