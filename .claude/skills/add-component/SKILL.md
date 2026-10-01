@@ -13,6 +13,7 @@ description: Use when adding a new component to Mini Nectar (hb-mininectar)
 Whenever a new component is added to Mini Nectar, complete ALL of these steps (mirroring how every existing component was done):
 
 1. **Implement the component** in `components.css` (and `tokens.json` if new tokens are needed — then run `python3 scripts/build_tokens.py` to regenerate `tokens.css`; never edit `tokens.css` by hand). Always use tokens, never hardcoded values.
+   - If it needs behaviour (open/close, select, reorder…), add it to `hb.js`: plain JavaScript with event delegation on `document`, driven by the markup's ARIA state (`aria-expanded`, `hidden`…). Never make a component depend on Alpine.
    - When the spec **is** in Figma, extract the exact values from it.
    - When the spec is **not** in Figma (common when testing or prototyping a new component), follow the best practices of leading design systems (e.g. Material, Polaris, Carbon, Atlassian) and build it on top of the existing Mini Nectar tokens — reuse spacing, color, radius, elevation and typography tokens so it stays visually consistent. Never invent hardcoded values; if a token is genuinely missing, add it to `tokens.json` (with a light and a dark value) and regenerate.
 2. **Write the component guide** in `components/[component].md` — the single source for everything about it: text AND examples. Same format as `components/button.md`: one-sentence summary on the first line (no `#` title), then short `##` sections — variants, sizes, structure, states, writing the label, when to use, Do, Don't, example.

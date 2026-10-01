@@ -3324,29 +3324,29 @@ body {
    The one component for showing and hiding content — what people
    also call an accordion, a collapsible or a collapse card. A native
    <button> with aria-expanded + aria-controls; the region it controls
-   comes right after it in the DOM. Open / closed state lives in Alpine.
+   comes right after it in the DOM. hb.js flips aria-expanded and the
+   region's `hidden` on click — write the starting state in the markup.
+   Full guide and examples: components/expand.md
 
    Base — behaviour only. Put hb-expand__toggle on any button (usually
    a tertiary hb-btn); the chevron turns over when it is open.
-     <div class="hb-expand" x-data="{ open: false }">
+     <div class="hb-expand">
        <button type="button" class="hb-btn hb-btn--tertiary hb-btn--sm hb-expand__toggle"
-               aria-controls="x-region" :aria-expanded="open ? 'true' : 'false'"
-               @click="open = !open">
-         <span x-text="open ? 'Show less' : 'Show more details'">Show more details</span>
+               aria-controls="x-region" aria-expanded="false">
+         <span data-label-open="Show less">Show more details</span>
          <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
        </button>
-       <div class="hb-expand__region" id="x-region" x-show="open" x-cloak>…</div>
+       <div class="hb-expand__region" id="x-region" hidden>…</div>
      </div>
 
    Card — hb-expand--card. The whole header is ONE button inside a
    heading (h3 by default — pick the level that fits the page outline).
    Actions sit next to the heading, never inside the button.
-     <div class="hb-expand hb-expand--card" x-data="{ open: false }">
+     <div class="hb-expand hb-expand--card">
        <div class="hb-expand__header">
          <h3 class="hb-expand__heading">
            <button type="button" class="hb-expand__toggle" id="x-btn"
-                   aria-controls="x-region" :aria-expanded="open ? 'true' : 'false'"
-                   @click="open = !open">
+                   aria-controls="x-region" aria-expanded="false">
              <span class="hb-expand__title">Linked entities</span>
              <span class="hb-expand__meta">4</span>
              <span class="hb-icon hb-expand__chevron" aria-hidden="true">expand_more</span>
@@ -3354,15 +3354,15 @@ body {
          </h3>
          <div class="hb-expand__actions">…ghost hb-btn / overflow menu…</div>
        </div>
-       <div class="hb-expand__region" id="x-region" role="region" aria-labelledby="x-btn"
-            x-show="open" x-cloak>
+       <div class="hb-expand__region" id="x-region" role="region" aria-labelledby="x-btn" hidden>
          <div class="hb-expand__body">…</div>   (or <ul class="hb-expand__list">)
        </div>
      </div>
 
    Modifiers: hb-expand--muted-header  grey header (the former HbAccordion look)
-              hb-expand--show-more     content partly visible, toggle at the
-                                       bottom in hb-expand__footer
+              hb-expand--show-more     content partly visible (no `hidden`),
+                                       toggle at the bottom in hb-expand__footer
+   Expand all: a button with data-hb-expand-all="<container id>"
    Loading:   aria-busy="true" on the card, hb-expand__skeleton (two
               hb-expand__skeleton-line) in place of the title, toggle [disabled]
               and a visually-hidden "Loading …" name inside it. */

@@ -14,11 +14,17 @@ Add these two lines in the `<head>` of any HTML file:
 <link rel="stylesheet" href="https://tomimar.github.io/hb-mininectar/components.css">
 ```
 
-Also add Tailwind (layout only) and Alpine.js (interactivity):
+Add the component behaviour script (open/close, expand all… — plain JavaScript, no dependencies) at the end of `<body>`:
+
+```html
+<script src="https://tomimar.github.io/hb-mininectar/hb.js"></script>
+```
+
+Add Tailwind for layout only. Alpine.js is optional — use it for the prototype's own logic (filters, tabs, fake data), never to make a component work:
 
 ```html
 <script src="https://cdn.tailwindcss.com"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>  <!-- optional -->
 ```
 
 Prototypes are static HTML files opened via `file://` — no server needed.
@@ -30,7 +36,8 @@ They are shared as a zip folder.
 
 - **Styles**: `tokens.css` + `components.css` from this repo
 - **Layout**: Tailwind CDN (layout utilities only — no colors, no typography)
-- **Interactivity**: Alpine.js v3 (CDN)
+- **Component behaviour**: `hb.js` from this repo (no dependencies). Components being migrated still use Alpine — see each component's `.md`
+- **Prototype logic**: Alpine.js v3 (CDN), optional
 - **Sharing**: zip folder, opened directly in browser via `file://`
 
 ---
