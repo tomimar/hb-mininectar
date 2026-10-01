@@ -51,3 +51,6 @@ drift from Claude Code prototypes.
    Do not send `project/design-system.json` unless its own keys change.
 4. If the publish is refused because the artifact changed, read it again, redo
    the edit once, and publish again.
+5. Verify: `read` the files you just published and check they hold the new
+   content (e.g. a line you added). A failed command earlier in the chain can
+   leave an old copy in `<dir>`, and the publish will happily send it.
