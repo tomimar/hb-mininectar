@@ -27,7 +27,7 @@ Every hue comes in three parts — base, `-soft`, `-contrast`. The base is a fil
 
 Status colors say what happened: danger, success, warning. Expressive colors say what something *is*: entity types, tags, chart series. `ui-expressive-blue` and `ui-interaction` are the same hex — reach for the expressive name when the blue is a category rather than an action, so a later retheme can move one without the other.
 
-Success and danger in this palette are told apart by hue as well as lightness, so every status also carries an icon and a word. Never ship a red/green dot alone.
+Success and danger in this palette are told apart by hue as well as lightness, so a status is never color alone: it always carries a word. A tag's label is that word — the icon in a tag is optional. Where there is no word (a dot, a lone icon, a chart mark), add an icon and a visible label or tooltip. Never ship a red/green dot alone.
 
 Dark mode flips `-soft` and `-contrast` for every hue, rather than re-tinting: what was a pale ground becomes a deep one and the ink lightens. Use the token names, never the hex, and a component follows automatically.
 
