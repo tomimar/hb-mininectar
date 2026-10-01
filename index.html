@@ -53,11 +53,12 @@
     }
     .intro-quote p { margin: 0; color: var(--ui-text); }
     /* Introduction layout */
+    .section__title { border-bottom: none; padding-bottom: 0; margin-bottom: var(--spacing-16); }
     .intro-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-16); }
     .intro-card { gap: var(--spacing-8); align-items: flex-start; }
     .intro-card h3, .intro-steps h3 { margin: 0; }
     .intro-card__icon { color: var(--ui-interaction); }
-    .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-12); }
+    .intro-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--spacing-24); }
     .intro-list li { display: flex; gap: var(--spacing-12); align-items: flex-start; }
     .intro-list__icon { color: var(--ui-interaction); margin-top: 1px; }
     .intro-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-16); }
@@ -68,10 +69,6 @@
       background: var(--ui-interaction-soft); color: var(--ui-interaction-contrast);
       font-weight: var(--font-weight-bolder);
     }
-    .intro-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--spacing-16); }
-    .intro-stat { gap: var(--spacing-4); text-decoration: none; color: inherit; }
-    .intro-stat:hover { border-color: var(--ui-border-secondary); }
-    .intro-stat__value { font-size: 32px; line-height: 1.2; font-weight: var(--font-weight-bolder); color: var(--ui-text); }
     .intro-more { display: flex; flex-direction: column; gap: var(--spacing-8); margin-top: var(--spacing-24); }
     @media (max-width: 640px) { .intro-grid { grid-template-columns: 1fr; } }
     .intro-footer { display: flex; align-items: center; gap: var(--spacing-16); }
@@ -101,7 +98,7 @@
 
     <!-- 1. What it's for -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">What it's for</h2>
+      <h2 class="section__title hb-text-heading">What it's for</h2>
       <div class="intro-grid">
         <div class="card intro-card">
           <span class="hb-icon hb-icon--lg intro-card__icon" aria-hidden="true">web</span>
@@ -128,19 +125,19 @@
 
     <!-- 2. What you get -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">What you get</h2>
+      <h2 class="section__title hb-text-heading">What you get</h2>
       <ul class="intro-list">
         <li><span class="hb-icon intro-list__icon" aria-hidden="true">palette</span><span><strong>It looks like Hummingbird.</strong> Nectar's tokens, type and components, in light and dark mode.</span></li>
         <li><span class="hb-icon intro-list__icon" aria-hidden="true">bolt</span><span><strong>Components work without code.</strong> Menus, modals, tables and reorderable lists behave from their markup through <code>hb.js</code>.</span></li>
         <li><span class="hb-icon intro-list__icon" aria-hidden="true">accessibility_new</span><span><strong>Accessible by default.</strong> Visible focus, full keyboard support and an alternative to every drag.</span></li>
-        <li><span class="hb-icon intro-list__icon" aria-hidden="true">sync</span><span><strong>One source.</strong> What changes here reaches these docs, Claude Code and Claude Design.</span></li>
+        <li><span class="hb-icon intro-list__icon" aria-hidden="true">sync</span><span><strong>One source.</strong> What changes here reaches these docs, Claude Code and the Claude Design artifact, which handles everything for you.</span></li>
         <li><span class="hb-icon intro-list__icon" aria-hidden="true">inventory_2</span><span><strong>Safe to share.</strong> Prototypes pin a version, so later changes never break them — as a zip, even offline.</span></li>
       </ul>
     </section>
 
     <!-- 3. How it works -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">How it works</h2>
+      <h2 class="section__title hb-text-heading">How it works</h2>
       <ol class="intro-steps">
         <li class="card">
           <span class="intro-steps__num">1</span>
@@ -160,41 +157,15 @@
       </ol>
     </section>
 
-    <!-- 4. What's inside -->
-    <section class="section">
-      <h2 class="section__title hb-text-heading-small">What's inside</h2>
-      <div class="intro-stats">
-        <a class="card intro-stat" href="components/button.html">
-          <span class="intro-stat__value" data-hb-count="components">—</span>
-          <span class="hb-text-body intro-muted">components</span>
-        </a>
-        <a class="card intro-stat" href="components/colors.html">
-          <span class="intro-stat__value" data-hb-count="tokens">—</span>
-          <span class="hb-text-body intro-muted">tokens</span>
-        </a>
-        <a class="card intro-stat" href="components/colors.html">
-          <span class="intro-stat__value">2</span>
-          <span class="hb-text-body intro-muted">themes, light and dark</span>
-        </a>
-        <a class="card intro-stat" href="https://github.com/tomimar/hb-mininectar/blob/main/CHANGELOG.md" target="_blank">
-          <span class="intro-stat__value" data-hb-version-text>{version}</span>
-          <span class="hb-text-body intro-muted">current version</span>
-        </a>
-      </div>
-    </section>
-
     <!-- 5. Mini Nectar and Nectar -->
     <section class="section">
-      <h2 class="section__title hb-text-heading-small">Mini Nectar and Nectar</h2>
-      <div class="hb-alert hb-alert--info">
-        <span class="hb-icon hb-alert__icon" aria-hidden="true">info</span>
-        <p class="hb-alert__content">Mini Nectar is for prototyping and trying ideas — it isn't production code. When an idea becomes a feature, it is built with Nectar, using the prototype and the component's guide as the spec.</p>
-      </div>
+      <h2 class="section__title hb-text-heading">Mini Nectar and Nectar</h2>
+      <p class="hb-text-body">Mini Nectar is for prototyping and trying ideas — it isn't production code. When an idea becomes a feature, it is built with Nectar, using the prototype and the component's guide as the spec.</p>
     </section>
 
     <!-- 6. Get started -->
     <section class="section" id="get-started">
-      <h2 class="section__title hb-text-heading-small">Get started</h2>
+      <h2 class="section__title hb-text-heading">Get started</h2>
 
       <h3 class="hb-text-heading-small intro-h3">With Claude Code</h3>
       <div class="card">
@@ -207,7 +178,7 @@
 
       <h3 class="hb-text-heading-small intro-h3">With Claude Design</h3>
       <div class="card">
-        <p class="hb-text-body intro-muted">Pick the <strong>Mini Nectar</strong> design system. It carries the same tokens, guidelines, components and behaviour as this repo.</p>
+        <p class="hb-text-body intro-muted">Pick the <strong>Mini Nectar</strong> design system and describe the screen you want. The artifact takes care of everything: it carries the same tokens, guidelines, components and behaviour as this repo, so there's nothing to install or link.</p>
       </div>
 
       <h3 class="hb-text-heading-small intro-h3">By hand</h3>
@@ -286,27 +257,14 @@
 
 <script src="components/sidebar.js"></script>
 <script>
-  // Counts and the latest release come from the sources, so this page never goes stale
-  function fill(attr, value) {
-    document.querySelectorAll('[' + attr + ']').forEach(function (el) {
-      if (attr === 'data-hb-version-text') el.innerHTML = el.innerHTML.split('{version}').join(value);
-      else if (el.getAttribute(attr) === value.key) el.textContent = value.n;
-    });
-  }
+  // The latest release, from CHANGELOG.md
   fetch('CHANGELOG.md').then(function (r) { return r.text(); }).then(function (log) {
     var m = log.match(/^## (v\d+\.\d+\.\d+)/m);
-    if (m) fill('data-hb-version-text', m[1]);
+    if (!m) return;
+    document.querySelectorAll('[data-hb-version-text]').forEach(function (el) {
+      el.innerHTML = el.innerHTML.split('{version}').join(m[1]);
+    });
   }).catch(function () {});
-  fetch('tokens.json').then(function (r) { return r.json(); }).then(function (t) {
-    var n = 0;
-    Object.keys(t).forEach(function (k) { if (t[k] && t[k].tokens) n += t[k].tokens.length; });
-    fill('data-hb-count', { key: 'tokens', n: n });
-  }).catch(function () {});
-  function countComponents() {
-    if (window.hbDocsNav) fill('data-hb-count', { key: 'components', n: window.hbDocsNav.components.length });
-  }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(countComponents, 0); });
-  else countComponents();
 </script>
 <script src="hb.js"></script>
 </body>
