@@ -2,6 +2,11 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
+## Unreleased
+
+**New**
+- **Tabs** (`hb-tabs`): page tabs under a page header, as buttons with panels or as links. `hb.js` handles click, Arrow keys, Home and End.
+
 ## v1.0.1 — 2026-10-01
 
 Guide clarifications from a fresh-session test

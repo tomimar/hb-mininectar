@@ -3561,3 +3561,64 @@ body {
   .hb-expand__chevron { transition: none; }
   .hb-expand__skeleton-line { animation: none; }
 }
+
+/* ============================================================
+   Tabs — page tabs under a page header.
+   <div class="hb-tabs" role="tablist"> with <button class="hb-tabs__tab"
+   role="tab" aria-selected>, or <nav class="hb-tabs"> with
+   <a class="hb-tabs__tab" aria-current="page"> for tabs that change
+   the URL. Set --hb-tabs-inset to line the first tab up with the page
+   title (24px inside a paper surface).
+   ============================================================ */
+.hb-tabs {
+  --hb-tabs-inset: 0px;
+  display: flex;
+  gap: var(--spacing-24);
+  padding: 0 var(--hb-tabs-inset);
+  border-bottom: 1px solid var(--ui-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.hb-tabs::-webkit-scrollbar { display: none; }
+.hb-tabs__tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  background: none;
+  font: inherit;
+  font-size: var(--font-size-14);
+  font-weight: var(--font-weight-regular);
+  color: var(--ui-text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.hb-tabs__tab:hover { color: var(--ui-text); }
+.hb-tabs__tab[aria-selected="true"],
+.hb-tabs__tab[aria-current="page"] {
+  color: var(--ui-interaction);
+  border-bottom-color: var(--ui-interaction);
+}
+.hb-tabs__tab:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+  border-radius: var(--border-radius-4);
+}
+.hb-tabs__tab[disabled],
+.hb-tabs__tab[aria-disabled="true"] {
+  color: var(--ui-text-tertiary);
+  cursor: not-allowed;
+}
+.hb-tabs__count {
+  font-size: var(--font-size-12);
+  color: var(--ui-text-tertiary);
+}
+.hb-tabs__tab[aria-selected="true"] .hb-tabs__count,
+.hb-tabs__tab[aria-current="page"] .hb-tabs__count { color: inherit; }

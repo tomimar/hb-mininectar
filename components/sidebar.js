@@ -55,6 +55,7 @@
       ['Drag',            'drag.html'],
       ['Expand',          'expand.html'],
       ['Sidenav',         'sidenav.html'],
+      ['Tabs',            'tabs.html'],
       ['Popup select',    'popup-select.html'],
       ['Link',            'link.html'],
       ['Modal',           'modal.html'],

@@ -852,3 +852,56 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+
+
+/* ============================================================
+   Tabs — select on click, move with Arrow keys, Home and End.
+   Panels are linked by aria-controls and shown with hidden.
+   Link tabs (<nav class="hb-tabs"> with <a>) need no script.
+   ============================================================ */
+(function () {
+  if (window.hbTabs) return;
+  window.hbTabs = true;
+
+  function tabsOf(list) {
+    return Array.prototype.filter.call(
+      list.querySelectorAll('[role="tab"]'),
+      function (t) { return !t.disabled && t.getAttribute('aria-disabled') !== 'true'; }
+    );
+  }
+
+  function select(tab, focus) {
+    var list = tab.closest('[role="tablist"]');
+    if (!list) return;
+    list.querySelectorAll('[role="tab"]').forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');
+      var id = t.getAttribute('aria-controls');
+      var panel = id && document.getElementById(id);
+      if (panel) panel.hidden = !on;
+    });
+    if (focus) tab.focus();
+    list.dispatchEvent(new CustomEvent('hb-tabs-change', { bubbles: true, detail: { tab: tab } }));
+  }
+
+  document.addEventListener('click', function (e) {
+    var tab = e.target.closest && e.target.closest('.hb-tabs [role="tab"]');
+    if (!tab || tab.disabled || tab.getAttribute('aria-disabled') === 'true') return;
+    select(tab, false);
+  });
+
+  document.addEventListener('keydown', function (e) {
+    var tab = e.target.closest && e.target.closest('.hb-tabs [role="tab"]');
+    if (!tab) return;
+    var tabs = tabsOf(tab.closest('[role="tablist"]'));
+    var i = tabs.indexOf(tab), next = null;
+    if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+    else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+    else if (e.key === 'Home') next = tabs[0];
+    else if (e.key === 'End') next = tabs[tabs.length - 1];
+    if (!next) return;
+    e.preventDefault();
+    select(next, true);
+  });
+})();
