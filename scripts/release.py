@@ -8,6 +8,9 @@
   changelog (New / Changed / Fixed, as you go) become that release's
   details.
 - Tags the commit v<version> and pushes the commit and the tag.
+- Creates the GitHub Release for the tag, with the changelog entry as its
+  notes (needs the gh CLI, signed in; if it is missing the tag is still out
+  and the script prints the command to run).
 jsDelivr then serves that exact snapshot at
 cdn.jsdelivr.net/gh/tomimar/hb-mininectar@v<version>/…, forever.
 
@@ -61,6 +64,24 @@ def main():
     git("push", "origin", "HEAD")
     git("push", "origin", tag)
     print(f"Released {tag}. Prototypes can pin it: https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@{tag}/")
+    github_release(tag, summary + "\n" + (f"\n{details}" if details else ""))
+
+
+def github_release(tag, notes):
+    # The tag is already pushed: a failure here only means the Releases page
+    # misses this version, so warn instead of failing
+    cmd = ["gh", "release", "create", tag, "--repo", "tomimar/hb-mininectar",
+           "--verify-tag", "--title", tag, "--notes-file", "-"]
+    try:
+        r = subprocess.run(cmd, input=notes, capture_output=True, text=True, cwd=ROOT)
+    except FileNotFoundError:
+        r = None
+    if r and r.returncode == 0:
+        print(f"GitHub Release: {r.stdout.strip()}")
+    else:
+        print(f"Could not create the GitHub Release ({r.stderr.strip() if r else 'gh not installed'}).\n"
+              f"Create it later with: gh release create {tag} --repo tomimar/hb-mininectar "
+              f"--verify-tag --title {tag} --notes-file <notes>", file=sys.stderr)
 
 
 if __name__ == "__main__":
