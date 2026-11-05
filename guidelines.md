@@ -4,10 +4,12 @@ Hummingbird is an anti-money-laundering platform. Its users are compliance analy
 
 ## Principles
 
-- **The data is the interface.** Chrome recedes. A screen is mostly text and tables on white; color appears where it carries meaning, and nowhere else.
-- **Weight before size.** The type scale has three sizes. Hierarchy comes from `font-weight-bold` and `ui-text-secondary`, not from bigger text.
-- **Every state is a token pair.** A status is a `-soft` ground with its `-contrast` ink, plus a word. Never hue alone.
-- **Accessible by construction.** Analysts work under procurement-grade accessibility requirements. Drag is never the only way; a row is never the control; an icon-only button always has a name.
+- **Evidence first.** Every decision made on a screen is defended to a regulator later. Show the facts — amounts, dates, sources, who did what — before any summary, and link every finding to the evidence behind it.
+- **Show who did the work.** Agents now do a growing share of casework alongside analysts. Always make clear whether a person or an agent did something, and how much autonomy the agent had: observing, recommending for approval, or acting on its own. Agent work is marked the same way everywhere and never passes for an analyst's.
+- **No black boxes.** Every action, by a person or an agent, is logged and explainable: its sources cited, its reasoning one step away. An analyst can always add context, correct a finding or overrule a result, and the record shows what changed and why.
+- **Calm at density.** Analysts read for hours. Pack information tightly but quietly: a neutral surface, so the few things in color are the ones that matter.
+- **Nobody is left out.** Procurement-grade accessibility is a requirement, not a polish step. Everything works by keyboard, screen reader and high contrast, and dragging is never the only way.
+- **Prototype what could ship.** Mini Nectar follows Nectar closely enough that a prototype reads as the product. Where it departs, it's on purpose, and the guide says so.
 
 ## Content
 
@@ -21,6 +23,8 @@ Numbers stay exact: amounts with the currency symbol and two decimals (`$9,850.0
 
 ## Color
 
+A screen is mostly text and tables on `ui-bg`. Color appears where it carries meaning — a status, a category, an action — and nowhere else.
+
 Set text in `ui-text` on `ui-bg` or `ui-bg-secondary`; `ui-text-secondary` for labels and captions; `ui-text-tertiary` for placeholders and timestamps and nothing that matters. Knockout text (`ui-text-knockout`) belongs on saturated fills only: `ui-interaction`, `ui-status-danger`, `ui-status-success`, an avatar.
 
 Every hue comes in three parts — base, `-soft`, `-contrast`. The base is a fill or a mark; `-soft` is a tinted ground; `-contrast` is the ink that goes on `-soft`. Pair them as shipped and the contrast holds in both themes; mix across pairs and it does not. `ui-status-warning` is light in both themes and never carries knockout text.
@@ -33,7 +37,7 @@ Dark mode flips `-soft` and `-contrast` for every hue, rather than re-tinting: w
 
 ## Type
 
-One family: Inter, at 12, 14 and 16 pixels. `hb-text-body` (14/1.6/400) is the default and covers most of the product. Labels, help text and metadata take `hb-text-caption` in `ui-text-secondary`. Panel titles take `hb-text-heading`; a section inside a panel takes `hb-text-heading-small`, which is the same size as body and separated by weight alone.
+One family: Inter, at 12, 14 and 16 pixels. `hb-text-body` (14/1.6/400) is the default and covers most of the product. Labels, help text and metadata take `hb-text-caption` in `ui-text-secondary`. Panel titles take `hb-text-heading`; a section inside a panel takes `hb-text-heading-small`, which is the same size as body and separated by weight alone. Hierarchy comes from weight (`font-weight-bold`) and `ui-text-secondary`, never from bigger text.
 
 `hb-text-all-caps` (12px, `tracking-1`, uppercase) marks a group heading above a list or nav section. Never set a sentence in it.
 
@@ -64,6 +68,8 @@ Borders do the opposite job: `ui-border` draws structure the eye reads past (tab
 ## States
 
 Focus is a `2px solid ui-interaction` outline, on every focusable thing (set just outside the control, or inset where an outside ring would be clipped), always visible — never removed, never replaced with color alone. Controls also carry a soft halo in `ui-interaction-soft` on focus.
+
+Every action is a real button or link that a keyboard can reach. A table row is never the control, and anything that can be dragged also has a single-pointer alternative, like Up and Down buttons.
 
 Hover moves to the `-highlighted` step of the same hue. Disabled is `ui-disabled` text on `ui-bg-tertiary` with `ui-disabled-soft` edges, and is deliberately low contrast: a disabled control is exempt from the contrast floor, and the dimness is the message. Never disable a button without saying nearby why.
 

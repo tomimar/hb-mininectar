@@ -2,6 +2,11 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
+## Unreleased
+
+**Changed**
+- Guidelines: new principles — Evidence first, Show who did the work, No black boxes, Calm at density, Nobody is left out, Prototype what could ship. They cover AI agents working alongside analysts: who did the work, how much autonomy an agent had, and a record of every action. The old principles were design rules; they now live in Color, Type and States.
+
 ## v1.2.0 — 2026-11-05
 
 Add table toolbar with selection mode; keep checkbox states in forced colors
