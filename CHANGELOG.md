@@ -2,7 +2,9 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
-## Unreleased
+## v1.2.0 — 2026-11-05
+
+Add table toolbar with selection mode; keep checkbox states in forced colors
 
 **New**
 - **Table toolbar** (`hb-table-toolbar`): the row above a table for its search, filters and Columns panel, with default-size (large) controls. Ticking rows switches it to selection mode — "3 cases selected", the batch actions and Clear selection — in place, with no slide. `hb.js` handles the swap, the count, minimum selections (`data-hb-min-selection`), Clear selection and the announcements.
