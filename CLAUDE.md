@@ -145,7 +145,20 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 The same system is published as a Claude Design artifact: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd
 
-This repo is the source; the artifact is a copy. There, `components.css` is `components/bundle.css` and `hb.js` is `components/bundle.js` (Claude Design loads it in previews and prototypes). **After any change to `tokens.json`, `guidelines.md`, `components.css`, `hb.js` or a component's guide, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes.
+This repo is the source; the artifact is a copy. There, `components.css` is `components/bundle.css` and `hb.js` is `components/bundle.js` (Claude Design loads it in previews and prototypes). **After committing any change to `tokens.json`, `guidelines.md`, `components.css`, `hb.js` or a component's guide, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes. Sync committed work only — `build_bundle.py` refuses while those files have uncommitted changes.
+
+---
+
+## Checking changes
+
+- **Preview the docs site** with the `docs` server in `.claude/launch.json` (port 8765). The preview can't read `~/Documents` (macOS privacy), so it serves a copy: refresh it before previewing or testing.
+
+  ```bash
+  rsync -a --delete --exclude .git ./ /private/tmp/hb-mininectar-docs/
+  ```
+
+- **Check behaviour** with `scripts/check_docs.py` (Playwright; its docstring says how to install it once). It drives the live examples on the docs pages and exits 1 if anything fails. When you add behaviour to `hb.js`, add its checks there.
+- **Parallel sessions** each get their own worktree. Two sessions in this folder mix their uncommitted changes, and then a commit or an artifact sync takes the other's work along.
 
 ---
 

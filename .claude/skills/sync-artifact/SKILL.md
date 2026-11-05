@@ -1,6 +1,6 @@
 ---
 name: sync-artifact
-description: Use after any change to tokens.json, guidelines.md, components.css, hb.js or a component's guide (components/<name>.md) in hb-mininectar, to push the change to the Mini Nectar Claude Design artifact so Claude Design prototypes stay identical to the repo. Covers which artifact files to regenerate (tokens.json, README.md, components/bundle.css + bundle.js, components/<Name>/README.md + preview.html) and how to publish them.
+description: Use after committing any change to tokens.json, guidelines.md, components.css, hb.js or a component's guide (components/<name>.md) in hb-mininectar, to push the change to the Mini Nectar Claude Design artifact so Claude Design prototypes stay identical to the repo. Covers which artifact files to regenerate (tokens.json, README.md, components/bundle.css + bundle.js, components/<Name>/README.md + preview.html) and how to publish them.
 ---
 
 ## Sync the Mini Nectar artifact
@@ -8,6 +8,11 @@ description: Use after any change to tokens.json, guidelines.md, components.css,
 The repo is the single source of truth. The Claude Design artifact is a copy
 that must be updated whenever the repo changes, or Claude Design prototypes
 drift from Claude Code prototypes.
+
+**Sync committed work only.** The artifact must never hold code the repo
+doesn't. Commit first; `build_bundle.py` refuses to run while `components.css`,
+`hb.js` or `datepicker.js` have uncommitted changes. If another session shares
+this folder, don't sync its uncommitted work either — wait for its commit.
 
 - **Artifact**: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd (type "Design System")
 - Its content lives under `project/`. Never write `index.html`, `SKILL.md`,
@@ -43,14 +48,18 @@ drift from Claude Code prototypes.
 
 ### How to publish
 
-1. `read` the artifact files you will change (Artifact tool, `action: "read"`,
-   `paths`) into one scratchpad folder `<dir>`, so the local copies are current.
+1. In ONE message: `read` the artifact itself (Artifact tool, `action: "read"`,
+   `url` only — a publish is refused until you have seen its latest version,
+   and reading only `paths` does not count), and `read` the files you will
+   change (`paths`, `out_dir` = one scratchpad folder `<dir>`), so the local
+   copies are current.
 2. Write the new versions at `<dir>/project/<path>`.
 3. ONE publish: `url` = the artifact, `root` = `<dir>`, `file_path` = one changed
    file (absolute path), `files` = the others (`{"project/…": "project/…"}`).
    Do not send `project/design-system.json` unless its own keys change.
-4. If the publish is refused because the artifact changed, read it again, redo
-   the edit once, and publish again.
+4. If the publish is refused, do step 1 again (both reads), redo the edit on
+   the fresh copies and publish once more. A second refusal: stop and tell
+   the user — never `force`.
 5. Verify: `read` the files you just published and check they hold the new
    content (e.g. a line you added). A failed command earlier in the chain can
    leave an old copy in `<dir>`, and the publish will happily send it.

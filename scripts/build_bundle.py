@@ -11,6 +11,7 @@ Writes two files into that folder:
                define window.<namespace> ("Nectar").
 """
 import pathlib
+import subprocess
 import sys
 
 from build_tokens import IMPORTS, ROOT
@@ -21,6 +22,12 @@ NAMESPACE = "Nectar"
 def main():
     if len(sys.argv) != 2:
         sys.exit("usage: python3 scripts/build_bundle.py <dir>/project/components")
+    # The artifact must never hold code the repo doesn't: sync committed work only
+    sources = ["components.css", "hb.js", "datepicker.js"]
+    dirty = subprocess.run(["git", "status", "--porcelain", "--", *sources],
+                           cwd=ROOT, capture_output=True, text=True, check=True).stdout.strip()
+    if dirty:
+        sys.exit("Commit these first — the artifact only gets committed work:\n" + dirty)
     out = pathlib.Path(sys.argv[1])
     out.mkdir(parents=True, exist_ok=True)
 
