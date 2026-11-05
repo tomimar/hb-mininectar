@@ -81,7 +81,11 @@
     return table(['Token', 'Value', '', 'Use it for'], t.spacing.tokens.map(function (tok) {
       return row([code('--' + tok.name), esc(tok.value),
         '<span class="tokens-bar" style="width:' + esc(tok.value) + '"></span>', usage(tok)]);
-    }));
+    })) + (t.controlHeight ? '<h3>Control height</h3>' +
+      '<p>' + esc(t.controlHeight.note) + '</p>' +
+      table(['Token', 'Value', 'Use it for'], t.controlHeight.tokens.map(function (tok) {
+        return row([code('--' + tok.name), esc(tok.value), usage(tok)]);
+      })) : '');
   }
 
   function renderRadius(t) {

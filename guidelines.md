@@ -69,6 +69,8 @@ Hover moves to the `-highlighted` step of the same hue. Disabled is `ui-disabled
 
 Loading is `hb-loader`: circular inside a component, linear across a page or section.
 
+Selecting rows puts the table's own toolbar into selection mode: the count and the batch actions replace its usual controls, in place, with no animation. Batch actions never float over the page or slide in from the top — they live with the table they act on.
+
 ## Iconography
 
 Material Icons, Outlined by default; Rounded (`hb-icon--rounded`) for prominent actions and important menus. Write the ligature name as the element's text — `<span class="hb-icon">edit</span>`. Sizes are `icon-size-sm` (16px, dense controls), `icon-size-md` (20px, the default) and `icon-size-lg` (24px, standalone).

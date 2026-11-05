@@ -23,6 +23,7 @@ IMPORTS = [
 FAMILIES = [
     ("fontSize", "Font size"),
     ("iconSize", "Icon size"),
+    ("controlHeight", "Control height"),
     ("lineHeight", "Line height"),
     ("fontWeight", "Font weight"),
     ("tracking", "Letter spacing"),

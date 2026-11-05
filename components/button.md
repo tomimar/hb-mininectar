@@ -54,6 +54,7 @@ Handled by CSS, no extra classes:
 | Hover | `:hover` | Background darkens to the `-highlighted` token. |
 | Focus | `:focus-visible` | 2px ring in `ui-interaction`. |
 | Disabled | `disabled` attribute | `ui-disabled` text on `ui-disabled-soft`; not clickable. |
+| Unavailable | `aria-disabled="true"` | Looks disabled but stays focusable, so it can say why through `aria-describedby`. `hb.js` swallows its clicks. Use it when the reason matters, like a batch action that needs more rows. |
 
 ```html preview
 <button class="hb-btn hb-btn--primary hb-btn--lg">Default</button>

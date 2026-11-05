@@ -281,7 +281,8 @@ body {
 
   Types:    primary, secondary, tertiary, ghost, danger, confirmation
   Sizes:    lg (40px, default), sm (32px)
-  Modifiers: hb-btn--full-width, disabled / [disabled]
+  Modifiers: hb-btn--full-width, disabled / [disabled],
+             aria-disabled="true" (looks disabled, stays focusable)
 */
 
 .hb-btn {
@@ -306,12 +307,12 @@ body {
 
 /* Sizes */
 .hb-btn--lg {
-  height: 40px;
+  height: var(--control-height-lg);
   padding: var(--spacing-8) var(--spacing-12);
 }
 
 .hb-btn--sm {
-  height: 32px;
+  height: var(--control-height-sm);
   padding: var(--spacing-8);
   gap: var(--spacing-4);
 }
@@ -1725,6 +1726,20 @@ body {
   pointer-events: none;
 }
 
+/* aria-disabled: looks disabled but stays focusable and hoverable, so a
+   keyboard or screen-reader user can still reach it and hear why it is
+   unavailable (aria-describedby). hb.js swallows its clicks. */
+.hb-btn[aria-disabled="true"] {
+  background: var(--ui-disabled-soft);
+  color: var(--ui-disabled);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+.hb-btn[aria-disabled="true"]:hover { background: var(--ui-disabled-soft); }
+@media (forced-colors: active) {
+  .hb-btn[aria-disabled="true"] { color: GrayText; border: 1px solid GrayText; }
+}
+
 
 /* ── SearchInput ──────────────────────────────────────────── */
 /*
@@ -2149,6 +2164,7 @@ body {
 .hb-tooltip:focus-within .hb-tooltip__content {
   opacity: 1;
 }
+.hb-tooltip__content[hidden] { display: none; }
 
 /* Placements */
 .hb-tooltip .hb-tooltip__content--top {
@@ -2445,6 +2461,8 @@ body {
               __expander __expander-icon __detail-row
               __overflow __menu __menu-item
               __footer __footer-group __footer-label __pagination __page-info
+  Toolbar:    hb-table-toolbar + __controls __spacer __selection __count
+              __divider __actions __menu-wrap __clear
   Utility:    hb-visually-hidden
 */
 
@@ -2693,6 +2711,75 @@ body {
   white-space: nowrap;
   padding: 0 var(--spacing-4);
 }
+
+/* ── Toolbar (optional) ──────────────────────────────────────
+   The row directly ABOVE hb-table-wrap that belongs to its table
+   (data-hb-toolbar-for="<table id>"). Two slots, one shown at a time:
+   - __controls  — the default: search, filters, the Columns panel.
+   - __selection — selection mode, while 1+ rows are ticked: the count,
+     a divider, the batch actions, and Clear selection at the end.
+   hb.js swaps them from the row checkboxes. It has a fixed height so the
+   swap never moves the table, and the swap is instant — no slide — so
+   there is nothing to turn off for prefers-reduced-motion. Same surface
+   as the page: no background, no elevation.
+     <div class="hb-table-toolbar" role="toolbar" aria-label="Open cases"
+          data-hb-toolbar-for="cases" data-hb-noun="case|cases">
+       <div class="hb-table-toolbar__controls"> … </div>
+       <div class="hb-table-toolbar__selection" hidden>
+         <span class="hb-table-toolbar__count hb-text-body-bold"></span>
+         <span class="hb-table-toolbar__divider" aria-hidden="true"></span>
+         <div class="hb-table-toolbar__actions"> hb-btn--secondary hb-btn--lg … </div>
+         <button class="hb-btn hb-btn--ghost hb-btn--lg hb-table-toolbar__clear"
+                 data-hb-selection-clear>Clear selection</button>
+       </div>
+     </div>
+     <div class="hb-table-wrap">…</div> */
+.hb-table-toolbar {
+  display: flex;
+  align-items: center;
+  height: var(--control-height-lg);
+  margin-bottom: var(--spacing-12);
+  font-family: var(--font-family);
+  font-size: var(--font-size-14);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text);
+}
+.hb-table-toolbar__controls,
+.hb-table-toolbar__selection {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+.hb-table-toolbar__controls[hidden],
+.hb-table-toolbar__selection[hidden] { display: none; }
+/* Pushes what follows it to the end of the controls row */
+.hb-table-toolbar__spacer { flex: 1; }
+.hb-table-toolbar__count { white-space: nowrap; }
+/* A border, not a fill, so it survives forced-colors mode */
+.hb-table-toolbar__divider {
+  align-self: stretch;
+  margin: var(--spacing-4) var(--spacing-8);
+  border-left: 1px solid var(--ui-border);
+}
+.hb-table-toolbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+}
+/* A batch action that opens a menu: the wrapper anchors hb-table__menu */
+.hb-table-toolbar__menu-wrap {
+  position: relative;
+  display: inline-block;
+}
+.hb-table-toolbar__menu-wrap .hb-table__menu { left: 0; right: auto; }
+.hb-table-toolbar__clear { margin-left: auto; }
+@media (forced-colors: active) {
+  .hb-table-toolbar__divider { border-left-color: CanvasText; }
+}
+
 
 /* ── Expando / disclosure row ────────────────────────────────
    A disclosure <button> in a cell toggles detail row(s) that follow it

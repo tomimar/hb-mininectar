@@ -535,6 +535,77 @@
     all.indeterminate = on > 0 && on < boxes.length;
   }
 
+  /* Toolbar selection mode: a .hb-table-toolbar[data-hb-toolbar-for="<table id>"]
+     shows __selection instead of __controls while 1+ rows are ticked.
+     - The count reads "1 case selected" / "3 cases selected", from
+       data-hb-noun="case|cases" on the toolbar (default "row|rows").
+     - [data-hb-min-selection="2"] actions are aria-disabled below the
+       minimum; their aria-describedby reason shows only then.
+     - [data-hb-selection-clear] unticks every row and focuses select all.
+     - Each change is announced once, debounced, in #hb-live-region.  */
+  var ANNOUNCE_DELAY = 400;
+  var announceTimers = new WeakMap();
+
+  function toolbarFor(table) {
+    return table.id ? document.querySelector('.hb-table-toolbar[data-hb-toolbar-for="' + table.id + '"]') : null;
+  }
+  function tableFor(toolbar) {
+    return document.getElementById(toolbar.getAttribute('data-hb-toolbar-for'));
+  }
+  function selectionText(toolbar, n) {
+    var noun = (toolbar.getAttribute('data-hb-noun') || 'row|rows').split('|');
+    return n + ' ' + (n === 1 ? noun[0] : noun[1] || noun[0]) + ' selected';
+  }
+  function closePopupsIn(slot) {
+    slot.querySelectorAll('button[aria-haspopup][aria-controls][aria-expanded="true"]').forEach(function (b) {
+      setPopup(b, false);
+    });
+  }
+  function syncMinSelection(toolbar, n) {
+    toolbar.querySelectorAll('[data-hb-min-selection]').forEach(function (btn) {
+      var below = n < parseInt(btn.getAttribute('data-hb-min-selection'), 10);
+      if (!btn.hasAttribute('data-hb-reason')) {
+        btn.setAttribute('data-hb-reason', btn.getAttribute('aria-describedby') || '');
+      }
+      var reasonId = btn.getAttribute('data-hb-reason');
+      var reason = reasonId && document.getElementById(reasonId);
+      if (below) {
+        btn.setAttribute('aria-disabled', 'true');
+        if (reasonId) btn.setAttribute('aria-describedby', reasonId);
+      } else {
+        btn.removeAttribute('aria-disabled');
+        btn.removeAttribute('aria-describedby');
+      }
+      if (reason) reason.hidden = !below;
+    });
+  }
+  function syncToolbar(table, speak) {
+    var toolbar = toolbarFor(table);
+    if (!toolbar) return;
+    var controls = toolbar.querySelector('.hb-table-toolbar__controls');
+    var selection = toolbar.querySelector('.hb-table-toolbar__selection');
+    if (!selection) return;
+    var n = Array.prototype.filter.call(rowBoxes(table), function (b) { return b.checked; }).length;
+    var on = n > 0;
+    if (selection.hidden === on) {
+      // The mode changes. Never leave focus on an element that disappears.
+      var leaving = on ? controls : selection;
+      var lost = !!leaving && leaving.contains(document.activeElement);
+      if (leaving) closePopupsIn(leaving);
+      if (controls) controls.hidden = on;
+      selection.hidden = !on;
+      if (lost) { var all = headBox(table); if (all) all.focus(); }
+    }
+    var count = selection.querySelector('.hb-table-toolbar__count');
+    if (count && on) count.textContent = selectionText(toolbar, n);
+    syncMinSelection(toolbar, n);
+    if (!speak) return;
+    clearTimeout(announceTimers.get(toolbar));
+    announceTimers.set(toolbar, setTimeout(function () {
+      announce(on ? selectionText(toolbar, n) : 'Selection cleared');
+    }, ANNOUNCE_DELAY));
+  }
+
   document.addEventListener('change', function (e) {
     var box = e.target;
     if (!box.matches || !box.matches('.hb-table__select-col .hb-checkbox')) return;
@@ -543,6 +614,34 @@
       rowBoxes(table).forEach(function (b) { b.checked = box.checked; });
     }
     syncSelectAll(table);
+    syncToolbar(table, true);
+  });
+
+  document.addEventListener('click', function (e) {
+    var clear = e.target.closest('[data-hb-selection-clear]');
+    var toolbar = clear && clear.closest('.hb-table-toolbar');
+    var table = toolbar && tableFor(toolbar);
+    if (!table) return;
+    rowBoxes(table).forEach(function (b) { b.checked = false; });
+    syncSelectAll(table);
+    syncToolbar(table, true);
+    var all = headBox(table);
+    if (all) all.focus();
+  });
+
+  // An aria-disabled button stays focusable but does nothing. Capture
+  // phase, so the prototype's own click handlers never see the click.
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('.hb-btn[aria-disabled="true"]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  }, true);
+
+  // Tables that start with rows ticked open in selection mode
+  document.querySelectorAll('.hb-table-toolbar[data-hb-toolbar-for]').forEach(function (toolbar) {
+    var table = tableFor(toolbar);
+    if (table) syncToolbar(table, false);
   });
 
   document.addEventListener('click', function (e) {

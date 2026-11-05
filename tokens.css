@@ -25,6 +25,10 @@
   --icon-size-md:                      20px;
   --icon-size-lg:                      24px;
 
+  /* ── Control height ──────────────────────────────── */
+  --control-height-sm:                 32px;
+  --control-height-lg:                 40px;
+
   /* ── Line height ─────────────────────────────────── */
   --line-height-default:               1.5;
   --line-height-ui:                    1.6;
