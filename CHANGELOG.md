@@ -13,6 +13,9 @@ Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 - Table guide: the Columns panel sits in the toolbar instead of a hand-styled row; new Batch actions section.
 - Guidelines: batch actions live in the table's toolbar, never over the page.
 
+**Fixed**
+- Checkbox, radio and toggle keep their state in Windows High Contrast (forced colors): ticked, indeterminate (e.g. a table's select-all), selected, on and disabled no longer look like empty controls, and the toggle no longer disappears.
+
 ## v1.1.0 — 2026-10-30
 
 Add Tabs component (hb-tabs)

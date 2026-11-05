@@ -1160,6 +1160,29 @@ body {
   outline-offset: 2px;
 }
 
+/* Forced colors: the fill and the dot are backgrounds, which the browser
+   repaints as Canvas. Paint them in system colours. */
+@media (forced-colors: active) {
+  .hb-radio { border-color: CanvasText; }
+  .hb-radio:focus-visible { outline-color: CanvasText; }
+  .hb-radio:checked,
+  .hb-radio:checked:hover {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+  }
+  .hb-radio:checked::after {
+    forced-color-adjust: none;
+    background: HighlightText;
+  }
+  .hb-radio:disabled { border-color: GrayText; }
+  .hb-radio:disabled:checked {
+    background: GrayText;
+    border-color: GrayText;
+  }
+  .hb-radio:disabled:checked::after { background: Canvas; }
+}
+
 .hb-radio-row {
   display: flex;
   align-items: center;
@@ -1520,6 +1543,41 @@ body {
 .hb-checkbox:focus-visible {
   outline: 2px solid var(--ui-interaction);
   outline-offset: 2px;
+}
+
+/* Forced colors (Windows High Contrast): the browser repaints every
+   background as Canvas, which wipes out the fill, the white check and the
+   dash. Paint them ourselves in system colours, and draw the check as a
+   mask so it can take a system colour too. */
+@media (forced-colors: active) {
+  .hb-checkbox { border-color: CanvasText; }
+  .hb-checkbox:focus-visible { outline-color: CanvasText; }
+  .hb-checkbox:checked,
+  .hb-checkbox:indeterminate,
+  .hb-checkbox:checked:hover,
+  .hb-checkbox:indeterminate:hover {
+    forced-color-adjust: none;
+    background: Highlight;
+    border-color: Highlight;
+  }
+  .hb-checkbox:checked::after {
+    forced-color-adjust: none;
+    background: HighlightText;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .hb-checkbox:indeterminate::after {
+    forced-color-adjust: none;
+    background: HighlightText;
+  }
+  .hb-checkbox:disabled { border-color: GrayText; }
+  .hb-checkbox:disabled:checked,
+  .hb-checkbox:disabled:indeterminate {
+    background: GrayText;
+    border-color: GrayText;
+  }
+  .hb-checkbox:disabled:checked::after,
+  .hb-checkbox:disabled:indeterminate::after { background: Canvas; }
 }
 
 /* Row wrapper (checkbox + label, 40px click zone) */
@@ -2047,6 +2105,36 @@ body {
 }
 .hb-toggle:has(.hb-toggle__input:disabled) .hb-toggle__label {
   color: var(--ui-disabled);
+}
+
+/* Forced colors: the track and thumb are backgrounds with no border, so
+   the browser repaints both as Canvas and the toggle disappears. Draw the
+   track's outline and paint the thumb (and the "on" track) in system
+   colours. */
+@media (forced-colors: active) {
+  .hb-toggle__track {
+    forced-color-adjust: none;
+    box-sizing: border-box;
+    background: Canvas;
+    border: 1px solid CanvasText;
+  }
+  .hb-toggle__thumb {
+    top: 1px;
+    left: 1px;
+    background: CanvasText;
+    box-shadow: none;
+  }
+  .hb-toggle__input:checked + .hb-toggle__track {
+    background: Highlight;
+    border-color: Highlight;
+  }
+  .hb-toggle__input:checked + .hb-toggle__track .hb-toggle__thumb { background: HighlightText; }
+  .hb-toggle__input:focus-visible + .hb-toggle__track { outline-color: CanvasText; }
+  .hb-toggle__input:disabled + .hb-toggle__track { background: Canvas; border-color: GrayText; }
+  .hb-toggle__input:disabled + .hb-toggle__track .hb-toggle__thumb { background: GrayText; }
+  .hb-toggle__input:checked:disabled + .hb-toggle__track { background: GrayText; border-color: GrayText; }
+  .hb-toggle__input:checked:disabled + .hb-toggle__track .hb-toggle__thumb { background: Canvas; }
+  .hb-toggle:has(.hb-toggle__input:disabled) .hb-toggle__label { color: GrayText; }
 }
 
 
