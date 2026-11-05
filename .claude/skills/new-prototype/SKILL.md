@@ -11,10 +11,10 @@ description: Use when starting a new Hummingbird HTML prototype with Mini Nectar
 2. Run, from the hb-mininectar repo:
 
    ```bash
-   python3 scripts/new_prototype.py ~/Documents/Prototypes/<name> --template <template>
+   python3 scripts/new_prototype.py <folder>/<name> --template <template>
    ```
 
-   Any folder works — pass the path the user asked for. It must not exist yet.
+   Any folder works — use the path the user asked for, or ask; `../prototypes/<name>` (next to the repo) is a good default. It must not exist yet.
 
    Add `--offline` if it will be opened without internet (it copies Mini Nectar,
    the fonts, Tailwind and Alpine into `vendor/`) and `--zip` to get `<name>.zip`

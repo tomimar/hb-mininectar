@@ -3,6 +3,8 @@
 This repository is Mini Nectar: the design system for Hummingbird HTML prototypes — tokens, component styles, component behaviour and their guides.
 It is the single source for everything: the docs site (GitHub Pages), Claude Code prototypes and the Claude Design artifact all come from it.
 
+**Mini Nectar is shared by everyone at Hummingbird, people and agents.** Everything written into it — guides, code, comments, skills, the artifact, commits, the changelog — is in English, whatever language you chat in. Keep it universal: no personal paths, machine-specific setup or one person's use cases; neutral examples (`../prototypes/<name>`) and steps anyone can follow, saying what access a maintainer-only step needs.
+
 **Before designing or building anything, read [guidelines.md](guidelines.md)** — principles, content and tone, color, type, spacing, states and accessibility rules. It is the single source for these rules (the Claude Design artifact's README is a copy of it).
 
 ## How to use in a new prototype
@@ -10,7 +12,7 @@ It is the single source for everything: the docs site (GitHub Pages), Claude Cod
 **Start every prototype with the `new-prototype` skill** — it runs:
 
 ```bash
-python3 scripts/new_prototype.py ~/Documents/Prototypes/<name> --template blank   # or case-tab
+python3 scripts/new_prototype.py ../prototypes/<name> --template blank   # any folder; or --template case-tab
 ```
 
 It copies a template from `templates/` and pins every Mini Nectar link to the latest release (`https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/…`), so later changes to the design system never change a prototype already shared. Add `--offline` to put everything it loads inside the folder (opens with no internet) and `--zip` to get a zip ready to share.
@@ -41,6 +43,8 @@ A release is a snapshot prototypes can pin to. After a set of changes, publish o
 ```bash
 python3 scripts/release.py 1.1.0 "Add hb-foo; fix bar focus ring"
 ```
+
+Releasing needs push access to the repo and a signed-in `gh`. Without it, open a pull request and ask a maintainer to release.
 
 It updates `CHANGELOG.md`, tags `v1.1.0`, pushes and creates the GitHub Release with the changelog entry as its notes (needs `gh` signed in). **As you make changes, note them under a `## Unreleased` heading at the top of `CHANGELOG.md`** (grouped as New / Changed / Fixed, one short line each, saying what changes for someone building a prototype) — the release turns that section into the version's details. Bump MAJOR when a change can break an existing prototype (a class renamed or removed, markup that must change), MINOR for anything new, PATCH for fixes.
 
@@ -145,17 +149,19 @@ It auto-enhances every `[data-hb-datepicker]`: click/focus to open, type with au
 
 The same system is published as a Claude Design artifact: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd
 
-This repo is the source; the artifact is a copy. There, `components.css` is `components/bundle.css` and `hb.js` is `components/bundle.js` (Claude Design loads it in previews and prototypes). **After committing any change to `tokens.json`, `guidelines.md`, `components.css`, `hb.js` or a component's guide, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes. Sync committed work only — `build_bundle.py` refuses while those files have uncommitted changes.
+This repo is the source; the artifact is a copy. There, `components.css` is `components/bundle.css` and `hb.js` is `components/bundle.js` (Claude Design loads it in previews and prototypes). **After committing any change to `tokens.json`, `guidelines.md`, `components.css`, `hb.js` or a component's guide, run the `sync-artifact` skill** so Claude Design prototypes match Claude Code prototypes. Sync committed work only — `build_bundle.py` refuses while those files have uncommitted changes. Publishing needs edit access to the artifact; without it, ask a maintainer to sync after your change is merged.
 
 ---
 
 ## Checking changes
 
-- **Preview the docs site** with the `docs` server in `.claude/launch.json` (port 8765). The preview can't read `~/Documents` (macOS privacy), so it serves a copy: refresh it before previewing or testing.
+- **Preview the docs site** over http from the repo root (the guides load their `.md` with `fetch`, which `file://` blocks):
 
   ```bash
-  rsync -a --delete --exclude .git ./ /private/tmp/hb-mininectar-docs/
+  python3 -m http.server 8765
   ```
+
+  If your preview tool can't read the repo's folder (macOS protects `~/Documents`, for example), serve a copy from a folder it can read and refresh the copy before each check.
 
 - **Check behaviour** with `scripts/check_docs.py` (Playwright; its docstring says how to install it once). It drives the live examples on the docs pages and exits 1 if anything fails. When you add behaviour to `hb.js`, add its checks there.
 - **Parallel sessions** each get their own worktree. Two sessions in this folder mix their uncommitted changes, and then a commit or an artifact sync takes the other's work along.

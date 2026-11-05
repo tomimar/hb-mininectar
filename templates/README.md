@@ -12,7 +12,7 @@ Once a custom component is approved, promote it to `components.css` with the
 
 1. Create the prototype from the repo root — it copies the template and pins
    Mini Nectar to the latest release:
-   `python3 scripts/new_prototype.py ~/Documents/Prototypes/my-prototype --template case-tab`
+   `python3 scripts/new_prototype.py ../prototypes/my-prototype --template case-tab`
    (add `--offline` to work without internet, `--zip` for a zip to share).
 2. Open `index.html` directly in the browser (`file://` — no server needed).
 3. Build your prototype inside the marked `PROTOTYPE AREA`, replacing the

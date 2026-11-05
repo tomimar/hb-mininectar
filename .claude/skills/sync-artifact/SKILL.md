@@ -15,6 +15,9 @@ doesn't. Commit first; `build_bundle.py` refuses to run while `components.css`,
 this folder, don't sync its uncommitted work either — wait for its commit.
 
 - **Artifact**: https://claude.ai/artifact/3EkAk2dhv5TzvQdrvUwqnd (type "Design System")
+- Publishing needs edit access to it. A read that doesn't say "writer" means
+  you don't have it: stop, and ask the user to have a maintainer sync once the
+  change is merged.
 - Its content lives under `project/`. Never write `index.html`, `SKILL.md`,
   `artifact-type/…`, or the generated `project/tokens.css`, `api/…`, `manifest.json`.
 
