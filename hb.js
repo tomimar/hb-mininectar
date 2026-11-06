@@ -440,7 +440,8 @@
   /* ── Popups: menus and panels ───────────────────────────────
      A button with aria-haspopup and aria-controls opens and closes the
      element it controls (which starts `hidden`): the table's row menu
-     (hb-table__menu), the Columns panel (hb-column-manager__panel).
+     (hb-table__menu), a filter panel (hb-popup-select), the Columns
+     panel (hb-column-manager__panel).
      A click outside or Escape closes it; Escape returns focus to the
      button. In a menu, choosing an item closes it, and the arrow keys
      move between items.                                            */
@@ -642,6 +643,107 @@
   document.querySelectorAll('.hb-table-toolbar[data-hb-toolbar-for]').forEach(function (toolbar) {
     var table = tableFor(toolbar);
     if (table) syncToolbar(table, false);
+  });
+
+  /* ── Table toolbar: applied filters ─────────────────────────
+     .hb-table-toolbar__filters holds one removable hb-tag per applied
+     filter, next to the filter buttons in __controls.
+     - The toolbar keeps its height: tags that don't fit move into a
+       "+N" tag after the group, which opens a panel with the rest. A
+       single tag truncates first, down to 96px.
+     - A tag's remove button fires `hb-filter-remove` on the tag
+       (bubbles, cancelable; detail: { filter: data-hb-filter }), then
+       removes it, moves focus to the next tag (or the previous one, or
+       the first filter button) and announces it.                    */
+  var filtersSeq = 0;
+  function initFilters(group) {
+    if (group.hbFilters || !group.parentNode) return;
+    group.hbFilters = true;
+    var id = 'hb-filters-more-' + (++filtersSeq);
+    var more = document.createElement('span');
+    more.className = 'hb-table-toolbar__more';
+    more.hidden = true;
+    more.innerHTML =
+      '<button type="button" class="hb-tag hb-tag--blue hb-table-toolbar__more-btn" ' +
+      'aria-haspopup="dialog" aria-expanded="false" aria-controls="' + id + '"></button>' +
+      '<div class="hb-table-toolbar__more-panel" id="' + id + '" role="dialog" ' +
+      'aria-label="More applied filters" hidden></div>';
+    group.parentNode.insertBefore(more, group.nextSibling);
+    group.hbMore = more;
+    var panel = more.lastElementChild;
+    var schedule = function () {
+      cancelAnimationFrame(group.hbFrame);
+      group.hbFrame = requestAnimationFrame(function () { layoutFilters(group); });
+    };
+    var watcher = new MutationObserver(schedule);
+    group.hbWatch = function (on) {
+      if (on) {
+        watcher.observe(group, { childList: true });
+        watcher.observe(panel, { childList: true });
+      } else {
+        watcher.takeRecords();
+        watcher.disconnect();
+      }
+    };
+    group.hbWatch(true);
+    if (window.ResizeObserver) new ResizeObserver(schedule).observe(group.parentNode);
+    layoutFilters(group);
+  }
+  function layoutFilters(group) {
+    var more = group.hbMore;
+    if (!more || !group.parentNode || !group.parentNode.getClientRects().length) return; // hidden: selection mode
+    var btn = more.firstElementChild, panel = more.lastElementChild;
+    var focused = document.activeElement;
+    var hadFocus = group.contains(focused) || panel.contains(focused);
+    group.hbWatch(false);
+    while (panel.firstElementChild) group.appendChild(panel.firstElementChild);
+    more.hidden = true;
+    var fits = function () { return group.scrollWidth <= group.clientWidth + 1; };
+    if (!fits()) {
+      more.hidden = false;
+      var inline;
+      while (!fits() && (inline = group.querySelectorAll(':scope > .hb-tag')).length) {
+        panel.insertBefore(inline[inline.length - 1], panel.firstChild);
+      }
+    }
+    var n = panel.children.length;
+    if (!n) {
+      more.hidden = true;
+      if (btn.getAttribute('aria-expanded') === 'true') setPopup(btn, false);
+    }
+    btn.textContent = '+' + n;
+    btn.setAttribute('aria-label', 'Show ' + n + ' more ' + (n === 1 ? 'filter' : 'filters'));
+    group.hbWatch(true);
+    if (hadFocus && document.activeElement !== focused && document.contains(focused)) {
+      if (focused.getClientRects().length) focused.focus();
+      else if (!more.hidden) btn.focus();
+    }
+  }
+
+  // Removing an applied filter. Registered after the popup handler, so
+  // a click inside the "+N" panel doesn't close it.
+  document.addEventListener('click', function (e) {
+    var x = e.target.closest && e.target.closest('.hb-tag__remove');
+    var tag = x && x.closest('.hb-tag');
+    var controls = tag && tag.closest('.hb-table-toolbar__controls');
+    if (!controls || !tag.closest('.hb-table-toolbar__filters, .hb-table-toolbar__more-panel')) return;
+    var all = Array.prototype.slice.call(controls.querySelectorAll(
+      '.hb-table-toolbar__filters .hb-tag__remove, .hb-table-toolbar__more-panel .hb-tag__remove'));
+    var i = all.indexOf(x);
+    var ev = new CustomEvent('hb-filter-remove', {
+      bubbles: true, cancelable: true, detail: { filter: tag.getAttribute('data-hb-filter') }
+    });
+    if (!tag.dispatchEvent(ev)) return;
+    var label = x.getAttribute('aria-label') || 'Remove filter';
+    tag.remove();
+    var group = controls.querySelector('.hb-table-toolbar__filters');
+    if (group) layoutFilters(group);
+    var moreBtn = controls.querySelector('.hb-table-toolbar__more:not([hidden]) .hb-table-toolbar__more-btn');
+    var next = [all[i + 1], all[i - 1], moreBtn,
+      controls.querySelector('button[aria-haspopup="dialog"]:not(.hb-table-toolbar__more-btn)')]
+      .filter(function (el) { return el && document.contains(el) && el.getClientRects().length; })[0];
+    if (next) next.focus();
+    announce(label.replace(/^Remove /, 'Removed '));
   });
 
   document.addEventListener('click', function (e) {
@@ -925,6 +1027,7 @@
     all('[data-hb-columns-for]', initColumnManager);
     all('table[data-hb-resizable]', initResizable);
     all('table', syncSelectAll);
+    all('.hb-table-toolbar__filters', initFilters);
     // A modal written without `hidden` starts open
     all('.hb-modal-overlay', function (overlay) {
       if (!overlay.hidden && !openModal) openModal = { overlay: overlay, trigger: null };

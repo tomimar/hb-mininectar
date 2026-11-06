@@ -4,7 +4,14 @@ Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
 ## Unreleased
 
+**New**
+- Table toolbar: applied filters as removable tags in `hb-table-toolbar__filters` ("Status: Open, In review"). Tags that don't fit collapse into a "+N" tag, so the toolbar keeps its height; removing one fires `hb-filter-remove`, moves focus and is announced (`hb.js`).
+- Table toolbar: `hb-table-toolbar__menu-wrap` anchors a filter's `hb-popup-select` below its button.
+
 **Changed**
+- Table filters and Columns are `hb-btn--secondary hb-btn--lg` buttons in the table toolbar, not floating actions. A filter button has no selected state or count; the applied-filter tags say what is filtered.
+- Floating action: only for a single quick action that stays reachable while content scrolls. Its examples no longer show filters or Columns; Selected is now the on state of a toggle (`aria-pressed`).
+- Popup select: drops from a filter button in the table toolbar.
 - Guidelines: new principles — Evidence first, Show who did the work, No black boxes, Calm at density, Nobody is left out, Prototype what could ship. They cover AI agents working alongside analysts: who did the work, how much autonomy an agent had, and a record of every action. The old principles were design rules; they now live in Color, Type and States.
 
 ## v1.2.0 — 2026-11-05

@@ -123,6 +123,53 @@ def table_toolbar(pg):
         pg.evaluate("document.documentElement.removeAttribute('data-theme')")
     clear.click()
 
+    # Filters and Columns live in the same toolbar
+    fbtn = controls.locator('[aria-controls="batch-cases-status-filter"]')
+    fpanel = pg.locator("#batch-cases-status-filter")
+    fbtn.click()
+    check("filter panel opens from its button", fpanel.is_visible())
+    pg.keyboard.press("Escape")
+    check("Escape closes it and returns focus to the button",
+          not fpanel.is_visible() and fbtn.evaluate(focused))
+    controls.locator('[aria-controls="batch-cases-columns"]').click()
+    check("Columns panel opens from the toolbar", pg.locator("#batch-cases-columns").is_visible())
+    pg.keyboard.press("Escape")
+    check("no floating actions in a table toolbar", pg.locator(".hb-table-toolbar .hb-fab").count() == 0)
+
+    group = controls.locator(".hb-table-toolbar__filters")
+    more = controls.locator(".hb-table-toolbar__more")
+    check("one applied-filter tag, no +N", group.locator(".hb-tag").count() == 1 and not more.is_visible())
+    pg.set_viewport_size({"width": 1600, "height": 900})
+    group.evaluate("""g => ['Risk level: High', 'Owner: Elena Cruz', 'Type: AML investigation',
+        'Region: EMEA', 'Amount: Over $10,000'].forEach(l => {
+      const k = l.split(':')[0], t = document.createElement('span');
+      t.className = 'hb-tag hb-tag--blue';
+      t.innerHTML = `<span class="hb-tag__inner"><span>${l}</span></span>`
+        + `<button type="button" class="hb-tag__remove" aria-label="Remove filter: ${k}">×</button>`;
+      g.appendChild(t); })""")
+    pg.wait_for_timeout(200)
+    hidden_n = more.locator(".hb-table-toolbar__more-panel .hb-tag").count()
+    check("tags that don't fit collapse into +N", more.is_visible() and hidden_n > 0
+          and more.locator(".hb-table-toolbar__more-btn").inner_text() == f"+{hidden_n}", hidden_n)
+    check("the toolbar keeps its height with many filters", bar.bounding_box()["height"] == 40)
+    check("the inline tags fit", group.evaluate("g => g.scrollWidth <= g.clientWidth + 1"))
+    check("the table did not move with many filters", doc_top() == top, f"{top} → {doc_top()}")
+    remove = group.locator(".hb-tag__remove").first
+    nxt = controls.locator(".hb-tag__remove").nth(1).get_attribute("aria-label")  # may sit in the +N panel
+    msgs()  # drop what earlier steps announced
+    remove.click()
+    pg.wait_for_timeout(100)
+    check("removing a tag moves focus to the next one",
+          pg.evaluate("document.activeElement.getAttribute('aria-label')") == nxt)
+    said = msgs()
+    check("removing a tag is announced", said == ["Removed filter: Status"], said)
+    pg.evaluate("document.querySelectorAll('[data-hb-toolbar-for=\"batch-cases\"] .hb-tag__remove').forEach(b => b.click())")
+    pg.wait_for_timeout(100)
+    check("removing the last tag focuses the filter button and hides +N",
+          fbtn.evaluate(focused) and not more.is_visible())
+    msgs()
+    pg.set_viewport_size({"width": 1280, "height": 900})
+
     wf = pg.locator('.hb-table-toolbar[data-hb-toolbar-for="workflows"]')
     wf.locator('[aria-controls="workflows-columns"]').click()
     check("Columns panel opens from its toolbar", pg.locator("#workflows-columns").is_visible())

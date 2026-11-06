@@ -115,7 +115,7 @@ Selection — `hb.js` makes the header checkbox tick every row, and keeps it che
 
 - **Expandable rows** — `__expander` + `__detail-row`. The button has `aria-expanded` and `aria-controls` (never the `<tr>`); the detail row starts `hidden`. `hb.js` toggles both. When the detail is tabular, nest a table in the detail row so child rows keep their own headers.
 - **Row menu** — `__overflow`, `__menu`, `__menu-item`. Use it when a row has more than two actions. Keep the most frequent action visible; the trigger has `aria-haspopup="menu"`, `aria-expanded` and `aria-controls` pointing at the menu, which starts `hidden`; every item is a real `<button role="menuitem">`. `hb.js` opens and closes it (click outside and Escape close it; arrow keys move between items).
-- **Toolbar** — `hb-table-toolbar`, placed directly before the wrap, with default-size (large) controls: search, filters and the Columns panel in `__controls`, and the batch actions in `__selection` while rows are ticked. See Batch actions below.
+- **Toolbar** — `hb-table-toolbar`, placed directly before the wrap, with default-size (large) secondary buttons: search, filter buttons, applied-filter tags and Columns in `__controls`, and the batch actions in `__selection` while rows are ticked. See Toolbar below.
 - **Footer** — `__footer` with `__footer-group`, `__pagination` and `__page-info`, placed after the wrap. For many rows or pages: row count, page-size Select (`__footer-label`) and status on the left; pagination on the right.
 
 Expandable rows:
@@ -233,20 +233,24 @@ Footer:
 </div>
 ```
 
-## Batch actions
+## Toolbar
 
-When analysts act on many rows at once — change their status, assign them, merge them — ticking rows puts the table's toolbar into **selection mode**: the usual controls give way to the selection count and the batch actions. Clearing the selection brings the controls back.
+Everything that acts on the table — search, filters, Columns, export, batch actions — lives in the table's own toolbar, directly above it. Never in a bar or floating action that floats over the page or slides down from the top.
 
-- **Keep the actions next to what they affect.** They live in the table's own toolbar, never in a bar that floats over the page or slides down from the top.
-- **Keep the table still.** The toolbar has a fixed height (`--control-height-lg`, the height of a default button), so swapping modes never moves the rows. The swap is instant — no animation.
-- **Use it for actions on several rows.** An action on one row belongs in that row (`__actions` or the row menu); don't make analysts tick a row to act on it alone.
+- **Keep the table still.** The toolbar has a fixed height (`--control-height-lg`, the height of a default button), so nothing in it ever moves the rows: not applied filters, not selection mode.
+- **Two modes, one shown at a time.** `__controls` by default; `__selection` while rows are ticked (see Batch actions). The swap is instant — no animation.
 
 ### Anatomy
 
 ```html
 <div class="hb-table-toolbar" role="toolbar" aria-label="Open cases"
      data-hb-toolbar-for="cases" data-hb-noun="case|cases">
-  <div class="hb-table-toolbar__controls"> search · filters · Columns </div>
+  <div class="hb-table-toolbar__controls">
+    search · filter buttons
+    <div class="hb-table-toolbar__filters" role="group" aria-label="Applied filters"> tags </div>
+    <span class="hb-table-toolbar__spacer"></span>
+    Export · Columns
+  </div>
   <div class="hb-table-toolbar__selection" hidden>
     <span class="hb-table-toolbar__count hb-text-body-bold"></span>
     <span class="hb-table-toolbar__divider" aria-hidden="true"></span>
@@ -259,8 +263,43 @@ When analysts act on many rows at once — change their status, assign them, mer
 ```
 
 - **The toolbar** sits directly above `hb-table-wrap` and names its table with `data-hb-toolbar-for="<table id>"`. Same surface as the page: no background, no elevation. `role="toolbar"` and an `aria-label` that names the table; Tab moves through it as usual.
-- **`__controls`** — the default slot: search, filters and the Columns panel. A `__spacer` pushes what follows it to the end.
+- **`__controls`** — the default slot. Left to right: search, the filter buttons, the applied filters (`__filters`), a `__spacer`, then view actions such as Export and the Columns button at the end.
 - **`__selection`** — starts `hidden`. Left to right: the count, a divider, the batch actions, and Clear selection at the end.
+
+### Filters and Columns
+
+Every button in the toolbar is `hb-btn--secondary hb-btn--lg` with a leading icon — filters, Columns and batch actions alike. Never a Floating action (`hb-fab`): that is for one quick action that floats over content, not for controls that belong to a table.
+
+- **A filter button** names what it filters ("Status", "Risk level") with a leading `filter_list` icon and a trailing `expand_more` chevron. It opens a Popup select: wrap the button and the `hb-popup-select` in `__menu-wrap` and give the button `aria-haspopup="dialog"`, `aria-expanded` and `aria-controls`; the panel starts `hidden`. `hb.js` opens and closes it, and Escape returns focus to the button. When the analyst applies the filter, close the panel and return focus to the button.
+- **The button has no selected state.** What is filtered shows in the applied-filter tags, never on the button.
+- **The Columns button** is `view_column` + "Columns" + `expand_more`, at the end of `__controls`. It opens the Columns panel (see Reordering, hiding and resizing columns).
+
+### Applied filters
+
+Each applied filter shows as a removable tag in `__filters`, right after the filter buttons: `hb-tag hb-tag--blue` with an `hb-tag__remove`.
+
+```html
+<div class="hb-table-toolbar__filters" role="group" aria-label="Applied filters">
+  <span class="hb-tag hb-tag--blue" data-hb-filter="status">
+    <span class="hb-tag__inner"><span>Status: Open, In review</span></span>
+    <button type="button" class="hb-tag__remove" aria-label="Remove filter: Status">×</button>
+  </span>
+</div>
+```
+
+- **Show what is filtered, not how many filters.** The label is the filter's name and its values: "Status: Open, In review", "Risk level: High". Analysts need it to justify what they reviewed.
+- **One tag per filter.** Several values of one filter share a tag, separated by commas.
+- **The remove button** clears that whole filter. Its `aria-label` names it: "Remove filter: Status".
+- **When the tags don't fit on the line, they collapse into a "+N" tag** at the end of the group; it opens a panel with the rest, each still removable. The toolbar keeps its height, so the table never moves when a filter is applied or removed. A single tag truncates with an ellipsis first. `hb.js` does this by itself — write every tag in `__filters`, never the "+N" yourself.
+- **Removing a tag** — `hb.js` fires `hb-filter-remove` on it (bubbles, cancelable; `detail.filter` is its `data-hb-filter`), removes it, moves focus to the next tag (or the previous one, or the first filter button when none is left) and announces "Removed filter: Status". Listen for the event to update the rows; call `preventDefault()` if your own logic removes the tag.
+- **No filters applied** — leave `__filters` empty; it takes no room.
+
+## Batch actions
+
+When analysts act on many rows at once — change their status, assign them, merge them — ticking rows puts the table's toolbar into **selection mode**: the usual controls give way to the selection count and the batch actions. Clearing the selection brings the controls back.
+
+- **Keep the actions next to what they affect.** They live in the table's toolbar, where the analyst is already looking.
+- **Use it for actions on several rows.** An action on one row belongs in that row (`__actions` or the row menu); don't make analysts tick a row to act on it alone.
 - **The count** reads "1 case selected", "50 cases selected". Give the singular and plural with `data-hb-noun="case|cases"` (default "row|rows"). `hb.js` writes it.
 - **Batch actions** are `hb-btn--secondary hb-btn--lg` with a leading icon. An action that opens options is a menu: wrap it in `__menu-wrap`, end the label with an `expand_more` chevron and use the row-menu markup (`aria-haspopup="menu"`, `hb-table__menu`, `role="menuitem"`). Never `--ghost` for a batch action: next to Clear selection, a "Cancel" action would read as dismissing the toolbar.
 - **Clear selection** (`data-hb-selection-clear`) is the one `hb-btn--ghost` in the row — it dismisses the selection rather than acting on the rows. It unticks every row and moves focus to the select-all checkbox, because the button that had focus disappears.
@@ -274,18 +313,115 @@ Some actions need more than one row — you can't merge one case. Give them `dat
 - Below the minimum, `hb.js` sets `aria-disabled="true"`, not the `disabled` attribute: the button stays focusable, so keyboard and screen-reader users can reach it and hear why it's unavailable. Its clicks do nothing.
 - Put the reason in an `hb-tooltip__content` next to the button so it shows on hover and focus. `hb.js` shows it only while the action is unavailable, and drops the `aria-describedby` once it isn't.
 
-Tick one case, then a second:
+### Example
+
+Open the Status filter, remove the applied filter, open Columns — then tick one case, then a second:
 
 ```html preview
-<div style="min-height: 340px;">
+<div style="min-height: 400px; width: 100%;">
   <div class="hb-table-toolbar" role="toolbar" aria-label="Open cases" data-hb-toolbar-for="batch-cases" data-hb-noun="case|cases">
     <div class="hb-table-toolbar__controls">
-      <div class="hb-search" style="width: 240px;">
+      <div class="hb-search" style="width: 160px;">
         <svg class="hb-search__icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-4.35-4.35M11 18a7 7 0 100-14 7 7 0 000 14z"/></svg>
         <input class="hb-search__input" type="text" placeholder="Search cases…" aria-label="Search cases">
       </div>
+      <span class="hb-table-toolbar__menu-wrap">
+        <button type="button" class="hb-btn hb-btn--secondary hb-btn--lg" aria-haspopup="dialog" aria-expanded="false" aria-controls="batch-cases-status-filter">
+          <span class="hb-icon" aria-hidden="true">filter_list</span> Status <span class="hb-icon" aria-hidden="true">expand_more</span>
+        </button>
+        <div class="hb-popup-select" id="batch-cases-status-filter" role="dialog" aria-labelledby="batch-cases-status-filter-title" hidden>
+          <div class="hb-popup-select__header">
+            <span id="batch-cases-status-filter-title" class="hb-text-heading-small" style="color: var(--ui-text-secondary);">Status</span>
+            <button type="button" class="hb-popup-select__clear">Clear</button>
+          </div>
+          <div class="hb-popup-select__list">
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-popup-select__label">Opened</span>
+              <span class="hb-popup-select__count">1,284</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-popup-select__label">Work started</span>
+              <span class="hb-popup-select__count">312</span>
+            </label>
+            <label class="hb-popup-select__option">
+              <input type="checkbox" class="hb-checkbox">
+              <span class="hb-popup-select__label">Closed</span>
+              <span class="hb-popup-select__count">4,906</span>
+            </label>
+          </div>
+        </div>
+      </span>
+      <div class="hb-table-toolbar__filters" role="group" aria-label="Applied filters">
+        <span class="hb-tag hb-tag--blue" data-hb-filter="status">
+          <span class="hb-tag__inner"><span>Status: Opened, Work started</span></span>
+          <button type="button" class="hb-tag__remove" aria-label="Remove filter: Status">×</button>
+        </span>
+      </div>
       <span class="hb-table-toolbar__spacer"></span>
-      <button type="button" class="hb-btn hb-btn--secondary hb-btn--lg"><span class="hb-icon" aria-hidden="true">download</span> Export CSV</button>
+      <div class="hb-column-manager" data-hb-columns-for="batch-cases">
+        <button type="button" class="hb-btn hb-btn--secondary hb-btn--lg" aria-haspopup="dialog"
+                aria-expanded="false" aria-controls="batch-cases-columns">
+          <span class="hb-icon" aria-hidden="true">view_column</span> Columns <span class="hb-icon" aria-hidden="true">expand_more</span>
+        </button>
+        <div class="hb-column-manager__panel hb-column-manager__panel--end" id="batch-cases-columns"
+             role="dialog" aria-label="Manage columns" hidden>
+          <div class="hb-column-manager__group">
+            <div class="hb-column-manager__header">
+              <span class="hb-icon">visibility</span>
+              <span class="hb-column-manager__title hb-text-caption-bold">Visible columns</span>
+              <button type="button" class="hb-popup-select__clear" data-hb-columns-reset>Reset</button>
+            </div>
+            <ul class="hb-column-manager__list" data-hb-columns="visible" aria-label="Visible columns">
+          <li class="hb-column-manager__item" data-column="type" draggable="true">
+            <span class="hb-column-manager__drag hb-icon" aria-hidden="true">drag_indicator</span>
+            <span class="hb-column-manager__spacer" aria-hidden="true"></span>
+            <label class="hb-column-manager__toggle">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-column-manager__name">Type</span>
+            </label>
+            <div class="hb-column-manager__move">
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_upward</span></button>
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_downward</span></button>
+            </div>
+          </li>
+          <li class="hb-column-manager__item" data-column="status" draggable="true">
+            <span class="hb-column-manager__drag hb-icon" aria-hidden="true">drag_indicator</span>
+            <span class="hb-column-manager__spacer" aria-hidden="true"></span>
+            <label class="hb-column-manager__toggle">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-column-manager__name">Status</span>
+            </label>
+            <div class="hb-column-manager__move">
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_upward</span></button>
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_downward</span></button>
+            </div>
+          </li>
+          <li class="hb-column-manager__item" data-column="net" draggable="true">
+            <span class="hb-column-manager__drag hb-icon" aria-hidden="true">drag_indicator</span>
+            <span class="hb-column-manager__spacer" aria-hidden="true"></span>
+            <label class="hb-column-manager__toggle">
+              <input type="checkbox" class="hb-checkbox" checked>
+              <span class="hb-column-manager__name">Net activity</span>
+            </label>
+            <div class="hb-column-manager__move">
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_upward</span></button>
+              <button type="button" class="hb-column-manager__move-btn"><span class="hb-icon">arrow_downward</span></button>
+            </div>
+          </li>
+            </ul>
+          </div>
+          <div class="hb-column-manager__group">
+            <div class="hb-column-manager__header">
+              <span class="hb-icon">visibility_off</span>
+              <span class="hb-column-manager__title hb-text-caption-bold">Hidden columns</span>
+            </div>
+            <ul class="hb-column-manager__list" data-hb-columns="hidden" aria-label="Hidden columns"></ul>
+            <p class="hb-column-manager__empty">No hidden columns.</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="hb-table-toolbar__selection" hidden>
       <span class="hb-table-toolbar__count hb-text-body-bold"></span>
@@ -315,13 +451,13 @@ Tick one case, then a second:
   <div class="hb-table-wrap" role="region" tabindex="0" aria-labelledby="cap-batch">
     <table class="hb-table" id="batch-cases">
       <caption id="cap-batch" class="hb-table__caption hb-visually-hidden">Open cases</caption>
-      <thead><tr><th scope="col" class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select all cases"></th><th scope="col">Case</th><th scope="col">Type</th><th scope="col">Status</th><th scope="col" class="hb-table__cell--num">Net activity</th></tr></thead>
+      <thead><tr><th scope="col" class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select all cases"></th><th scope="col">Case</th><th scope="col" data-column="type">Type</th><th scope="col" data-column="status">Status</th><th scope="col" data-column="net" class="hb-table__cell--num">Net activity</th></tr></thead>
       <tbody>
-        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10482"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10482</a></th><td>AML investigation</td><td><span class="hb-tag hb-tag--yellow">Opened</span></td><td class="hb-table__cell--num">$1,194,502.06</td></tr>
-        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10511"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10511</a></th><td>Fraud investigation</td><td><span class="hb-tag hb-tag--yellow">Opened</span></td><td class="hb-table__cell--num">$46,704.45</td></tr>
-        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10530"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10530</a></th><td>EDD</td><td><span class="hb-tag hb-tag--blue">Work started</span></td><td class="hb-table__cell--num">$45,225.27</td></tr>
-        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10547"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10547</a></th><td>PEP</td><td><span class="hb-tag hb-tag--yellow">Opened</span></td><td class="hb-table__cell--num">$9,375.00</td></tr>
-        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10552"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10552</a></th><td>Adverse media</td><td><span class="hb-tag hb-tag--yellow">Opened</span></td><td class="hb-table__cell--num">$312.48</td></tr>
+        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10482"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10482</a></th><td data-column="type">AML investigation</td><td data-column="status"><span class="hb-tag hb-tag--yellow">Opened</span></td><td data-column="net" class="hb-table__cell--num">$1,194,502.06</td></tr>
+        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10511"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10511</a></th><td data-column="type">Fraud investigation</td><td data-column="status"><span class="hb-tag hb-tag--yellow">Opened</span></td><td data-column="net" class="hb-table__cell--num">$46,704.45</td></tr>
+        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10530"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10530</a></th><td data-column="type">EDD</td><td data-column="status"><span class="hb-tag hb-tag--blue">Work started</span></td><td data-column="net" class="hb-table__cell--num">$45,225.27</td></tr>
+        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10547"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10547</a></th><td data-column="type">PEP</td><td data-column="status"><span class="hb-tag hb-tag--yellow">Opened</span></td><td data-column="net" class="hb-table__cell--num">$9,375.00</td></tr>
+        <tr><td class="hb-table__select-col"><input type="checkbox" class="hb-checkbox" aria-label="Select CASE-10552"></td><th scope="row" class="hb-table__rowheader"><a href="#" class="hb-link hb-table__link">CASE-10552</a></th><td data-column="type">Adverse media</td><td data-column="status"><span class="hb-tag hb-tag--yellow">Opened</span></td><td data-column="net" class="hb-table__cell--num">$312.48</td></tr>
       </tbody>
     </table>
   </div>
@@ -332,6 +468,7 @@ Tick one case, then a second:
 
 - Each change of the count is announced once through the live region — "3 cases selected", "Selection cleared" — debounced, so ticking select all on 50 rows says it once.
 - Focus never stays on something that disappears: if it was inside the slot being hidden, it moves to the select-all checkbox.
+- Removing an applied filter is announced ("Removed filter: Status") and focus moves to the next tag, never to the top of the page. Closing a filter panel with Escape returns focus to its filter button.
 - The swap is instant, so there is nothing to reduce for `prefers-reduced-motion`. The divider is a border and the unavailable actions use `GrayText`, so both hold in forced-colors mode.
 
 ## States
@@ -353,7 +490,7 @@ Dragging is never the only way (WCAG 2.5.7). `hb.js` does the work — no script
 
 ### Columns panel
 
-- A **Columns** button (`aria-haspopup="dialog"`, `aria-controls`) opens `hb-column-manager__panel`, which starts `hidden`. A click outside or Escape closes it. It goes at the end of the toolbar's `__controls`.
+- A **Columns** button (`hb-btn--secondary hb-btn--lg`, `view_column` icon, `expand_more` chevron, `aria-haspopup="dialog"`, `aria-controls`) opens `hb-column-manager__panel`, which starts `hidden`. A click outside or Escape closes it. It goes at the end of the toolbar's `__controls`.
 - The root names its table: `data-hb-columns-for="<table id>"`. Each data column's cells — `<th>` and `<td>` — carry `data-column="<key>"`; the identifier column has none, so it stays pinned as the row's title.
 - Two lists: `data-hb-columns="visible"` and `data-hb-columns="hidden"`. Each `hb-column-manager__item` has the same `data-column`, a checkbox + `__name`, a `__drag` + `__move` pair (shown while visible) and a `__spacer` (shown while hidden).
 - Reorder the Visible group with the drag handle or the Up/Down buttons — the same behaviour as Drag. The table follows.
@@ -371,7 +508,7 @@ Open Columns, reorder, then hide and show a column:
     <div class="hb-column-manager" data-hb-columns-for="workflows">
       <button type="button" class="hb-btn hb-btn--secondary hb-btn--lg" aria-haspopup="dialog"
               aria-expanded="false" aria-controls="workflows-columns">
-        <span class="hb-icon">view_column</span> Columns
+        <span class="hb-icon" aria-hidden="true">view_column</span> Columns <span class="hb-icon" aria-hidden="true">expand_more</span>
       </button>
       <div class="hb-column-manager__panel hb-column-manager__panel--end" id="workflows-columns"
            role="dialog" aria-label="Manage columns" hidden>
@@ -496,7 +633,8 @@ Open Columns, reorder, then hide and show a column:
 - Keep the identifier column as the row's title, holding the primary link.
 - Make interactivity visible without hover: underlined links, visible buttons, focus rings.
 - Pair every drag (reorder, resize) with a single-pointer path: a button or a double-click. A keyboard path alone is not enough.
-- Put batch actions in the table's toolbar, where the analyst is already looking.
+- Put filters, Columns and batch actions in the table's toolbar, where the analyst is already looking.
+- Show applied filters as tags that name the filter and its values.
 
 ## Don't
 
@@ -505,7 +643,8 @@ Open Columns, reorder, then hide and show a column:
 - Don't hide the row's primary action inside the overflow menu.
 - Don't use `--row-link` where analysts select or copy cell values.
 - Don't make dragging the only way to reorder or resize columns.
-- Don't float batch actions over the page or slide them in from the top.
+- Don't float table controls or batch actions over the page or slide them in from the top. No Floating action (`hb-fab`) in a table toolbar.
+- Don't mark a filter button as selected or put a count on it: the applied-filter tags say what is filtered.
 - Don't disable a batch action with the `disabled` attribute: use `data-hb-min-selection` so it stays focusable and says why.
 
 ## Accessibility

@@ -2549,8 +2549,9 @@ body {
               __expander __expander-icon __detail-row
               __overflow __menu __menu-item
               __footer __footer-group __footer-label __pagination __page-info
-  Toolbar:    hb-table-toolbar + __controls __spacer __selection __count
-              __divider __actions __menu-wrap __clear
+  Toolbar:    hb-table-toolbar + __controls __filters __spacer __selection
+              __count __divider __actions __menu-wrap __clear
+              (__more __more-btn __more-panel: added by hb.js)
   Utility:    hb-visually-hidden
 */
 
@@ -2803,7 +2804,8 @@ body {
 /* ── Toolbar (optional) ──────────────────────────────────────
    The row directly ABOVE hb-table-wrap that belongs to its table
    (data-hb-toolbar-for="<table id>"). Two slots, one shown at a time:
-   - __controls  — the default: search, filters, the Columns panel.
+   - __controls  — the default: search, filter buttons, the applied
+     filters (__filters, removable tags), the Columns button.
    - __selection — selection mode, while 1+ rows are ticked: the count,
      a divider, the batch actions, and Clear selection at the end.
    hb.js swaps them from the row checkboxes. It has a fixed height so the
@@ -2863,7 +2865,67 @@ body {
   display: inline-block;
 }
 .hb-table-toolbar__menu-wrap .hb-table__menu { left: 0; right: auto; }
+/* A filter button's panel (hb-popup-select) drops from the same wrapper */
+.hb-table-toolbar__menu-wrap > .hb-popup-select {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  z-index: 60;
+  width: 280px;
+}
 .hb-table-toolbar__clear { margin-left: auto; }
+
+/* Applied filters: one removable hb-tag per filter, after the filter
+   buttons. Only this group gives way when the row is short of room —
+   hb.js moves the tags that don't fit into a "+N" tag
+   (__more, added by hb.js), so the toolbar keeps its height. */
+.hb-table-toolbar__controls > :not(.hb-table-toolbar__filters):not(.hb-table-toolbar__spacer) { flex-shrink: 0; }
+.hb-table-toolbar__filters {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+.hb-table-toolbar__filters:empty { display: none; }
+.hb-table-toolbar__filters > .hb-tag { flex-shrink: 0; }
+/* A lone tag that doesn't fit truncates (label in hb-tag__inner) down
+   to 96px; below that hb.js moves it into the "+N" too */
+.hb-table-toolbar__filters > .hb-tag:only-child { flex-shrink: 1; min-width: 96px; }
+.hb-table-toolbar__more {
+  position: relative;
+  display: inline-flex;
+}
+.hb-table-toolbar__more[hidden] { display: none; }
+.hb-table-toolbar__more-btn {
+  border: 0;
+  cursor: pointer;
+}
+.hb-table-toolbar__more-btn:hover { text-decoration: underline; }
+.hb-table-toolbar__more-panel {
+  position: absolute;
+  top: calc(100% + var(--spacing-4));
+  left: 0;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-8);
+  width: max-content;
+  max-width: 360px;
+  padding: var(--spacing-8);
+  background: var(--ui-bg-overlay);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--border-radius-8);
+  box-shadow: var(--shadow-overlay);
+}
+.hb-table-toolbar__more-panel[hidden] { display: none; }
+.hb-table-toolbar__more-btn:focus-visible,
+.hb-table-toolbar__filters .hb-tag__remove:focus-visible,
+.hb-table-toolbar__more-panel .hb-tag__remove:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: -2px;
+}
 @media (forced-colors: active) {
   .hb-table-toolbar__divider { border-left-color: CanvasText; }
 }
