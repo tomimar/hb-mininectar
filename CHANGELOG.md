@@ -2,7 +2,9 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
-## Unreleased
+## v1.3.0 — 2026-11-06
+
+Move table filters and Columns into the table toolbar
 
 **New**
 - Table toolbar: applied filters as removable tags in `hb-table-toolbar__filters` ("Status: Open, In review"). Tags that don't fit collapse into a "+N" tag, so the toolbar keeps its height; removing one fires `hb-filter-remove`, moves focus and is announced (`hb.js`).
