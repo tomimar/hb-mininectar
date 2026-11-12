@@ -2,7 +2,9 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
-## Unreleased
+## v1.4.0 — 2026-11-12
+
+Add layouts: global nav, paper, page header, case and dashboard
 
 **New**
 - Layouts: the app shell every screen sits in — `hb-app`, the global nav rail (`hb-global-nav`, with name tooltips, a count badge and a dark mode item) and the paper (`hb-paper`). New Layouts section in the docs: App shell, Page header, Case.
