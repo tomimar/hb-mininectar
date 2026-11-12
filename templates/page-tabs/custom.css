@@ -1,0 +1,15 @@
+/* Components made for this prototype, not in Mini Nectar yet.
+   Name them .hb-<component>, use tokens only, and promote them with the
+   add-component skill once they're approved. */
+
+/* Placeholder hint — delete it with the placeholder when you start building */
+.hb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+  border: 1px dashed var(--ui-border-secondary);
+  border-radius: var(--border-radius-8);
+  color: var(--ui-text-tertiary);
+  font-size: var(--font-size-14);
+}

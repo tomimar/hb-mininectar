@@ -1106,4 +1106,43 @@
     e.preventDefault();
     select(next, true);
   });
+
+  /* ── Theme toggle ───────────────────────────────────────────
+     A button with data-hb-theme-toggle and aria-pressed (usually the
+     dark mode item of hb-global-nav) switches the page between light
+     and dark — data-theme="dark" on <html> — and remembers the choice
+     in localStorage ("hb-theme", the key the docs site uses too).
+     An .hb-icon inside shows dark_mode, or light_mode while dark.     */
+  var THEME_KEY = 'hb-theme';
+
+  function isDark() { return document.documentElement.getAttribute('data-theme') === 'dark'; }
+
+  function syncThemeToggles() {
+    var dark = isDark();
+    document.querySelectorAll('[data-hb-theme-toggle]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+      var icon = btn.querySelector('.hb-icon');
+      if (icon) icon.textContent = dark ? 'light_mode' : 'dark_mode';
+    });
+  }
+
+  function setTheme(dark) {
+    if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    else document.documentElement.removeAttribute('data-theme');
+    try { localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light'); } catch (e) {}
+    syncThemeToggles();
+  }
+
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('[data-hb-theme-toggle]');
+    if (btn) setTheme(!isDark());
+  });
+
+  // A page with a toggle starts in the theme chosen last
+  if (document.querySelector('[data-hb-theme-toggle]')) {
+    var stored = null;
+    try { stored = localStorage.getItem(THEME_KEY); } catch (e) {}
+    if (stored === 'dark' || stored === 'light') setTheme(stored === 'dark');
+    else syncThemeToggles();
+  }
 })();

@@ -12,7 +12,7 @@ It is the single source for everything: the docs site (GitHub Pages), Claude Cod
 **Start every prototype with the `new-prototype` skill** — it runs:
 
 ```bash
-python3 scripts/new_prototype.py ../prototypes/<name> --template blank   # any folder; or --template case-tab
+python3 scripts/new_prototype.py ../prototypes/<name> --template page   # any folder; or dashboard, page-tabs, profile, case-tab, blank
 ```
 
 It copies a template from `templates/` and pins every Mini Nectar link to the latest release (`https://cdn.jsdelivr.net/gh/tomimar/hb-mininectar@vX.Y.Z/…`), so later changes to the design system never change a prototype already shared. Add `--offline` to put everything it loads inside the folder (opens with no internet) and `--zip` to get a zip ready to share.
@@ -98,6 +98,16 @@ The Foundations pages have no content of their own: each one shows its section o
 | Elevation | https://tomimar.github.io/hb-mininectar/components/elevation.html |
 | Typography | https://tomimar.github.io/hb-mininectar/components/typography.html |
 | Icons | https://tomimar.github.io/hb-mininectar/components/icons.html |
+
+### Layouts
+
+Every screen is the app shell: the global nav rail on the left and the paper, the white page the content sits on. Five layouts, each with a template: **Page** (`page`), **Dashboard** (`dashboard`), **Page with tabs** (`page-tabs`), **Record** (`profile`) and **Case** (`case-tab`).
+
+| Layout piece | Classes | Docs |
+|---|---|---|
+| App shell | `hb-app` (on `<body>`) + `__main`. Global nav rail: `hb-global-nav` (`aria-label="Main"`) + `__top`/`__logo`/`__group`/`__item` (an `<a>` with an `hb-icon` and `aria-label`, shown as a tooltip; current one `aria-current="page"`)/`__badge`/`__account`. Dark mode item: `data-hb-theme-toggle` + `aria-pressed` — `hb.js` switches `data-theme` and remembers it. Paper: `hb-paper` + `__body` (`--flush` for a Sidenav area or canvas) | https://tomimar.github.io/hb-mininectar/components/app-shell.html |
+| Page header | `hb-page-header` + `__bar`/`__heading`/`__title` (the `<h1>`)/`__tags` (right of the title)/`__actions`; optional `hb-tabs` as its last child. A title alone is enough. Optional: breadcrumbs `hb-breadcrumbs` (`<nav>` + `<ol>` of ancestor links; the title follows), `__icon` (a section's icon on its main page, or a record's type). Record variant: `__titles`/`__title-row`/`__subtitle` | https://tomimar.github.io/hb-mininectar/components/page-header.html |
+| Case | `hb-case-header` (`__info`/`__title`/`__tags`/`__actions`, above the paper) + `hb-case-tabs` (`__list`/`__tab`(`--home`/`--document`)/`__link` (`aria-current="page"`)/`__label`/`__tab-actions`/`__tab-btn`/`__menu`, at the top of the paper) | https://tomimar.github.io/hb-mininectar/components/case.html |
 
 ### Components
 
@@ -215,5 +225,7 @@ To add a new component to Mini Nectar, or to promote a prototype's custom compon
 | Alert | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8174-1659) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8174-1273) | — |
 | Toast | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-1917) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8239-3395) | — |
 | Loader | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-2332) | [Spec](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8262-1960) | — |
+| Global nav (PrimarySidebar) | [Example screens](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=6878-7264) | — | — |
+| Case | [Example](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=8737-457) | — | — |
 | Sidenav (SectionSidebar) | [Component](https://www.figma.com/design/39uAofuoRFGDFCVOyD9Wby/Nectar-Design-System?node-id=4605-5089) | — | — |
 | Tabs | — (built from the Requests page; no Figma spec yet) | — | — |

@@ -2,6 +2,18 @@
 
 Prototypes pin a version (see scripts/new_prototype.py). Newest first.
 
+## Unreleased
+
+**New**
+- Layouts: the app shell every screen sits in — `hb-app`, the global nav rail (`hb-global-nav`, with name tooltips, a count badge and a dark mode item) and the paper (`hb-paper`). New Layouts section in the docs: App shell, Page header, Case.
+- Page header: `hb-page-header` with a title and, optionally, breadcrumbs (`hb-breadcrumbs`), a section icon, status tags right of the title, actions and tabs; a record variant with type icon, subtitle and tags for profiles.
+- Case: `hb-case-header` and browser-like `hb-case-tabs`, promoted from the `case-tab` template.
+- `hb.js`: a `data-hb-theme-toggle` button switches dark mode and remembers it.
+- Templates `page`, `dashboard` (a section's main page, like Requests), `page-tabs` and `profile`.
+
+**Changed**
+- `case-tab` template: built on the new layout classes. Its header actions are ghost buttons with `hb-icon`s; the case tabs are links (`aria-current="page"`). Only Ask AI stays in its `custom.css`.
+
 ## v1.3.0 — 2026-11-06
 
 Move table filters and Columns into the table toolbar

@@ -103,6 +103,11 @@ body { background: var(--ui-bg-secondary); margin: 0; font-family: var(--font-fa
   margin-bottom: var(--spacing-16);
 }
 
+/* Layout examples: a whole screen, edge to edge, at a fixed height */
+.preview:has(> .hb-app) { padding: 0; overflow: hidden; }
+.preview > .hb-app { width: 100%; height: 560px; }
+.preview > .hb-paper { flex: 1 1 100%; margin: 0; box-shadow: 0 0 0 1px var(--ui-border); }
+
 .preview--col {
   flex-direction: column;
   align-items: flex-start;

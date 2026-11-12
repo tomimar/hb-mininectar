@@ -176,13 +176,41 @@ def table_toolbar(pg):
     pg.keyboard.press("Escape")
 
 
+def layouts(pg):
+    """App shell → dark mode item, rail tooltips, layout pages render."""
+    pg.goto(BASE + "/components/app-shell.html")
+    pg.wait_for_selector(".preview > .hb-app")
+    pg.evaluate("localStorage.removeItem('hb-theme'); document.documentElement.removeAttribute('data-theme')")
+    toggle = pg.locator("[data-hb-theme-toggle]").first
+    theme = lambda: pg.evaluate("document.documentElement.getAttribute('data-theme')")
+    toggle.click()
+    check("dark mode item switches to dark", theme() == "dark")
+    check("dark mode item is pressed and shows light_mode",
+          toggle.get_attribute("aria-pressed") == "true" and toggle.inner_text().strip() == "light_mode")
+    check("dark mode choice is stored", pg.evaluate("localStorage.getItem('hb-theme')") == "dark")
+    toggle.click()
+    check("dark mode item switches back to light", theme() is None and toggle.get_attribute("aria-pressed") == "false")
+
+    item = pg.locator('.hb-global-nav__item[aria-label="Search"]').first
+    item.scroll_into_view_if_needed()
+    item.hover()
+    pg.wait_for_timeout(200)
+    check("rail item shows its name as a tooltip on hover",
+          item.evaluate("e => getComputedStyle(e, '::after').opacity") == "1"
+          and item.evaluate("e => getComputedStyle(e, '::after').content") == '"Search"')
+
+    for page, sel in (("page-header", ".hb-page-header__title"), ("case", ".hb-case-tabs__link[aria-current]")):
+        pg.goto(BASE + f"/components/{page}.html")
+        check(f"{page} examples render", pg.wait_for_selector(sel) is not None)
+
+
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page(viewport={"width": 1280, "height": 900})
     page.set_default_timeout(3000)  # a broken component fails fast instead of hanging 30s
     errors = []
     page.on("pageerror", lambda e: errors.append(str(e)))
-    for scenario in (table_toolbar,):
+    for scenario in (table_toolbar, layouts):
         try:
             scenario(page)
         except Exception as e:  # a step that can't run: report it and go on

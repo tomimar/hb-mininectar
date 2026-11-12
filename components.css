@@ -3859,3 +3859,519 @@ body {
 }
 .hb-tabs__tab[aria-selected="true"] .hb-tabs__count,
 .hb-tabs__tab[aria-current="page"] .hb-tabs__count { color: inherit; }
+
+
+/* ============================================================
+   LAYOUTS — the frame every Hummingbird screen sits in.
+   Guides: components/app-shell.md, components/page-header.md,
+   components/case.md
+
+   <body class="hb-app">
+     <nav class="hb-global-nav" aria-label="Main">…</nav>
+     <main class="hb-app__main">
+       <div class="hb-paper">
+         <header class="hb-page-header">…</header>
+         <div class="hb-paper__body">…</div>
+       </div>
+     </main>
+   </body>
+
+   A case puts hb-case-header above the paper and hb-case-tabs at
+   the top of it.
+   ============================================================ */
+
+/* ── App shell ─────────────────────────────────────────────── */
+.hb-app {
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  background: var(--ui-bg-tertiary);
+  color: var(--ui-text);
+  font-family: var(--font-family);
+  overflow: hidden;
+}
+
+.hb-app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ── Global nav: the 72px rail on the left of every screen ─── */
+.hb-global-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  flex-shrink: 0;
+  width: 72px;
+  box-sizing: border-box;
+  padding: var(--spacing-16) 0;
+  background: var(--ui-bg-tertiary);
+  border-right: 1px solid var(--ui-border);
+}
+
+.hb-global-nav__top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-32);
+}
+
+.hb-global-nav__logo {
+  display: block;
+  width: 40px;
+  height: 31px;
+  color: var(--ui-text);
+  border-radius: var(--border-radius-4);
+}
+.hb-global-nav__logo svg { display: block; width: 100%; height: 100%; }
+.hb-global-nav__logo:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 4px;
+}
+
+.hb-global-nav__group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-12);
+}
+
+/* One destination: an <a> (or a <button> for an action such as dark
+   mode). Its aria-label is its name and shows as a tooltip on the right. */
+.hb-global-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-8);
+  background: transparent;
+  color: var(--ui-icon);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+.hb-global-nav__item .hb-icon { color: inherit; }
+.hb-global-nav__item svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+.hb-global-nav__item:hover { background: var(--ui-bg-secondary); }
+
+.hb-global-nav__item[aria-current="page"],
+.hb-global-nav__item--active {
+  background: var(--ui-bg);
+  color: var(--ui-text);
+}
+
+.hb-global-nav__item:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 2px;
+}
+
+/* Name tooltip, from aria-label — same look as hb-tooltip */
+.hb-global-nav__item[aria-label]::after {
+  content: attr(aria-label);
+  position: absolute;
+  top: 50%;
+  left: calc(100% + var(--spacing-12));
+  transform: translateY(-50%);
+  z-index: 60;
+  width: max-content;
+  max-width: 240px;
+  padding: var(--spacing-8);
+  border-radius: var(--border-radius-8);
+  background: var(--ui-text);
+  color: var(--ui-bg);
+  font-family: var(--font-family);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-default);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+.hb-global-nav__item:hover::after,
+.hb-global-nav__item:focus-visible::after { opacity: 1; }
+
+/* Count of things waiting (approvals, unread). Decorative: put the
+   count in the item's aria-label too ("Approvals, 10 waiting"). */
+.hb-global-nav__badge {
+  position: absolute;
+  top: calc(var(--spacing-4) * -1);
+  right: calc(var(--spacing-4) * -1);
+  min-width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-4);
+  border-radius: var(--border-radius-round);
+  background: var(--ui-interaction);
+  color: var(--ui-text-knockout);
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: 16px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.hb-global-nav__account {
+  display: flex;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-round);
+  background: none;
+  cursor: pointer;
+}
+.hb-global-nav__account:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 2px;
+}
+
+/* ── Paper: the white page the content sits on ──────────────── */
+.hb-paper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  margin: var(--spacing-16);
+  background: var(--ui-bg);
+  border-radius: var(--border-radius-16);
+  overflow: hidden;
+}
+
+/* Under a case header, the paper hangs right below it */
+.hb-case-header + .hb-paper { margin-top: 0; }
+
+.hb-paper__body {
+  flex: 1;
+  min-height: 0;
+  padding: var(--spacing-24);
+  overflow: auto;
+}
+
+/* No padding: for a body that lays out its own regions
+   (a sidenav area, a canvas, a split view) */
+.hb-paper__body--flush { padding: 0; }
+/* A Sidenav area fills it, its items 16px from the paper's edge */
+.hb-paper__body--flush > .hb-sidenav-area {
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: var(--spacing-8);
+}
+
+/* ── Page header: the top of the paper ──────────────────────── */
+.hb-page-header {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+/* Tabs bring their own bottom line */
+.hb-page-header:has(> .hb-tabs) { border-bottom: 0; }
+.hb-page-header > .hb-tabs { --hb-tabs-inset: var(--spacing-24); }
+
+.hb-page-header__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  min-height: var(--control-height-lg);
+  padding: var(--spacing-16) var(--spacing-24);
+}
+.hb-page-header:has(> .hb-tabs) .hb-page-header__bar { padding-bottom: var(--spacing-8); }
+
+.hb-page-header__heading {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  flex: 1;
+  min-width: 0;
+}
+
+.hb-page-header__title {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  letter-spacing: var(--tracking-none);
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hb-page-header__tags {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex-shrink: 0;
+}
+
+.hb-page-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Record variant (profiles, entities): type icon + title + subtitle */
+.hb-page-header__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: var(--border-radius-round);
+  background: var(--ui-bg-secondary);
+  color: var(--ui-icon);
+}
+.hb-page-header__icon .hb-icon { color: inherit; }
+
+.hb-page-header__titles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  min-width: 0;
+}
+
+.hb-page-header__title-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-12);
+  min-width: 0;
+}
+
+.hb-page-header__subtitle {
+  margin: 0;
+  font-size: var(--font-size-12);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Breadcrumbs: the ancestors of the page, before its title ─ */
+.hb-breadcrumbs { flex-shrink: 0; min-width: 0; }
+.hb-breadcrumbs ol {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hb-breadcrumbs li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  font-size: var(--font-size-16);
+  line-height: var(--line-height-ui);
+  color: var(--ui-text-secondary);
+  white-space: nowrap;
+}
+/* Every crumb is followed by a slash: the page title comes next */
+.hb-breadcrumbs li::after {
+  content: "/" / "";
+  color: var(--ui-text-tertiary);
+}
+.hb-breadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--border-radius-4);
+}
+.hb-breadcrumbs a:hover { color: var(--ui-text); text-decoration: underline; }
+.hb-breadcrumbs a:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 2px;
+}
+/* In a header the title follows on the same line, 8px after the slash */
+.hb-page-header__heading > .hb-breadcrumbs { margin-right: calc(var(--spacing-4) * -1); }
+
+/* ── Case header: the case's name, tags, people and actions ─── */
+.hb-case-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  flex-shrink: 0;
+  padding: var(--spacing-12) var(--spacing-16);
+}
+
+.hb-case-header__info {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-16);
+  min-width: 0;
+}
+
+.hb-case-header__title {
+  margin: 0;
+  min-width: 0;
+  font-size: var(--font-size-16);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  letter-spacing: var(--tracking-none);
+  color: var(--ui-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hb-case-header__tags {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex-shrink: 0;
+}
+
+.hb-case-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  flex-shrink: 0;
+}
+/* People sit 16px away from the buttons */
+.hb-case-header__actions .hb-avatar-group { margin-right: var(--spacing-8); }
+
+/* ── Case tabs: browser-like tabs at the top of the case paper ─ */
+.hb-case-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-16);
+  height: 40px;
+  flex-shrink: 0;
+  padding-right: var(--spacing-24);
+  background: var(--ui-bg-secondary);
+}
+
+.hb-case-tabs__list {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* One tab: a link to the view, plus pin / close buttons when it is
+   a document the analyst opened */
+.hb-case-tabs__tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-width: 0;
+  padding: 0 var(--spacing-24);
+  color: var(--ui-text-tertiary);
+  transition: background 100ms ease;
+}
+.hb-case-tabs__tab:hover { background: var(--ui-bg-tertiary); }
+
+/* Divider between two resting tabs */
+.hb-case-tabs__tab + .hb-case-tabs__tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: var(--spacing-8);
+  width: 1px;
+  height: 24px;
+  background: var(--ui-border);
+}
+
+/* Overview tab: icon only, 56px */
+.hb-case-tabs__tab--home { justify-content: center; width: 56px; padding: 0; flex-shrink: 0; }
+
+.hb-case-tabs__link {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-8);
+  min-width: 0;
+  color: inherit;
+  font-size: var(--font-size-12);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-ui);
+  text-decoration: none;
+  white-space: nowrap;
+  border-radius: var(--border-radius-4);
+}
+/* The whole tab is the link's hit area */
+.hb-case-tabs__link::before { content: ""; position: absolute; inset: 0; }
+.hb-case-tabs__link .hb-icon { color: var(--ui-icon); }
+.hb-case-tabs__link:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 2px;
+}
+
+.hb-case-tabs__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Current tab: white, joins the paper below */
+.hb-case-tabs__tab:has(> .hb-case-tabs__link[aria-current="page"]) {
+  background: var(--ui-bg);
+  border-radius: var(--border-radius-8) var(--border-radius-8) 0 0;
+  color: var(--ui-text-secondary);
+}
+.hb-case-tabs__tab:has(> .hb-case-tabs__link[aria-current="page"])::before,
+.hb-case-tabs__tab:has(> .hb-case-tabs__link[aria-current="page"]) + .hb-case-tabs__tab::before {
+  display: none;
+}
+/* An opened document tab has a fixed width and its buttons */
+.hb-case-tabs__tab--document {
+  width: 240px;
+  flex-shrink: 1;
+  justify-content: space-between;
+  padding: 0 var(--spacing-8);
+}
+
+.hb-case-tabs__tab-actions {
+  position: relative; /* above the link's hit area */
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-shrink: 0;
+}
+
+.hb-case-tabs__tab-btn,
+.hb-case-tabs__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: var(--border-radius-4);
+  background: transparent;
+  color: var(--ui-icon);
+  cursor: pointer;
+}
+.hb-case-tabs__tab-btn .hb-icon,
+.hb-case-tabs__menu .hb-icon { color: inherit; }
+.hb-case-tabs__tab-btn:hover,
+.hb-case-tabs__menu:hover { background: var(--ui-bg-tertiary); color: var(--ui-text); }
+.hb-case-tabs__tab-btn:focus-visible,
+.hb-case-tabs__menu:focus-visible {
+  outline: 2px solid var(--ui-interaction);
+  outline-offset: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-global-nav__item,
+  .hb-global-nav__item::after,
+  .hb-case-tabs__tab { transition: none; }
+}

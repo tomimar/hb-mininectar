@@ -37,6 +37,13 @@
       ['Icons',         prefix + 'icons.html',         'icons.html'],
     ];
 
+    // Layouts: [label, filename]
+    var layouts = [
+      ['App shell',   'app-shell.html'],
+      ['Page header', 'page-header.html'],
+      ['Case',        'case.html'],
+    ];
+
     // Components: [label, filename]
     var components = [
       ['Avatar',          'avatar.html'],
@@ -79,6 +86,13 @@
     foundations.forEach(function (f) {
       var active = (f[2] === current) ? ' sidenav__link--active' : '';
       html += '<a href="' + f[1] + '" class="sidenav__link hb-text-body' + active + '">' + f[0] + '</a>';
+    });
+
+    // Layouts
+    html += '<div class="sidenav__section hb-text-all-caps" style="margin-top: var(--spacing-16);">Layouts</div>';
+    layouts.forEach(function (c) {
+      var active = (c[1] === current) ? ' sidenav__link--active' : '';
+      html += '<a href="' + prefix + c[1] + '" class="sidenav__link hb-text-body' + active + '">' + c[0] + '</a>';
     });
 
     // Components

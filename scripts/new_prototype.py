@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Start a prototype from a template, pinned to a Mini Nectar version.
 
-    python3 scripts/new_prototype.py <folder> [--template blank|case-tab]
+    python3 scripts/new_prototype.py <folder> [--template blank|page|dashboard|page-tabs|profile|case-tab]
                                               [--version v1.0.0]
                                               [--offline] [--zip]
 

@@ -6,8 +6,13 @@ description: Use when starting a new Hummingbird HTML prototype with Mini Nectar
 ## Start a prototype
 
 1. Pick a name and a template:
-   - `blank` — an empty page.
-   - `case-tab` — a tab inside a Hummingbird case: global nav, case header, tab strip and a canvas.
+   - `page` — most pages (settings, a list, a form): global nav, paper, page header with a title (breadcrumbs optional).
+   - `dashboard` — a section's main page, like Requests: section icon, title and tabs; a table with its toolbar and footer.
+   - `page-tabs` — one record with sibling views: page header with a status tag, actions and tabs.
+   - `profile` — a profile or entity: type icon, title, subtitle and tags in the header, a Sidenav for its sections.
+   - `case-tab` — a tab inside a Hummingbird case: global nav, case header, case tabs and the open tab.
+   - `blank` — an empty page, for a component experiment.
+   The layouts are explained in `components/app-shell.md`.
 2. Run, from the hb-mininectar repo:
 
    ```bash
